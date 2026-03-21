@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "reaktor-tools": {
+      "command": "/opt/homebrew/bin/uv",
+      "args": [
+        "run",
+        "--project",
+        "/path/to/reaktor-tools",
+        "python",
+        "/path/to/reaktor-tools/reaktor_mcp.py"
+      ]
+    }
+  }
+}

@@ -61,9 +61,7 @@ Reaktor is a modular software synthesizer and sampler by Native Instruments. Thi
 - Reaktor 6 Diving Deeper: https://www.native-instruments.com/fileadmin/ni_media/downloads/manuals/REAKTOR_6_Diving_Deeper_English_0817.pdf
 - Reaktor 6 Building in Primary: https://www.native-instruments.com/fileadmin/ni_media/downloads/manuals/REAKTOR_6_Building_in_Primary_English_0419.pdf
 - Reaktor 6 Building in Core: https://www.native-instruments.com/fileadmin/ni_media/downloads/manuals/REAKTOR_6_Building_in_Core_English_0618.pdf
-- Reaktor 5.5 Module Reference: https://www.native-instruments.com/fileadmin/ni_media/downloads/manuals/Reaktor_5_Modules_and_Macros_Reference_English.pdf
-- Reaktor 5 Manual Addendum: https://www.native-instruments.com/fileadmin/ni_media/downloads/manuals/Reaktor_5_Manual_Addendum_English.pdf
-- Reaktor 5 Core Tutorial: https://www.native-instruments.com/fileadmin/redaktion_upload/pdf/NI_REAKTOR5_Core_Manual_EN.pdf
+- Reaktor 5.5 Core Reference: https://www.native-instruments.com/fileadmin/ni_media/downloads/manuals/Reaktor_5_Core_Reference_English.pdf
 
 ### Reference Papers
 - VA Filter Design 2.1.0 (Vadim Zavalishin): https://www.native-instruments.com/fileadmin/ni_media/downloads/pdf/VAFilterDesign_2.1.0.pdf
@@ -75,3 +73,32 @@ Reaktor is a modular software synthesizer and sampler by Native Instruments. Thi
 ## Notes
 
 This is a living document. Add module details, tips, and patterns as you discover them.
+
+
+## Common Modules (verified in Reaktor 6)
+
+### Clock
+- `Library > Clk Bundle > XR Unpack` — unpacks the SR/CR Bundle into C, R and Reset fibers.
+  Needs explicit SR bus connection: right-click Bundle input → Pickup Std. Distribution Bus → Pickup SR.
+  C = audio clock (fires every sample), R = sample rate in Hz, Reset = zero reset event.
+
+### Math Mod (non-triggering parameter inputs)
+- `Library > Math Mod > x div a` — divides signal x by parameter a. Only x triggers output.
+- `Library > Math Mod > x mul a` — multiplies signal x by parameter a. Only x triggers output.
+- `Library > Math Mod > x + a` — adds parameter a to signal x. Only x triggers output.
+
+### Phase Accumulator (sawtooth oscillator) — IN PROGRESS
+Modules placed so far:
+1. XR Unpack (SR bus connected, C/R/Reset available)
+2. x div a (Freq → x input, R → a input) — produces phase increment
+
+Still to place:
+3. `Library > Math Mod > x + a` — the accumulator (C → x input, increment → a input, feedback from 1 wrap → x input)
+4. `Library > Math > 1 wrap` — wraps phase back to [0,1)
+
+Wiring still to complete:
+- x div a output → a input of x + a
+- XR Unpack C output → x input of x + a  
+- x + a output → 1 wrap input
+- 1 wrap output → Phase output port
+- 1 wrap output → feedback back into x + a (Reaktor 6 auto-resolves, wire turns orange)

@@ -66,14 +66,20 @@ Reaktor is a modular software synthesizer and sampler by Native Instruments. Thi
 ### Reference Papers
 - VA Filter Design 2.1.0 (Vadim Zavalishin): https://www.native-instruments.com/fileadmin/ni_media/downloads/pdf/VAFilterDesign_2.1.0.pdf
 
+### Online Resources
+
 #### NI Community Forums
 - Reaktor: https://community.native-instruments.com/categories/reaktor
 - Building with Reaktor: https://community.native-instruments.com/categories/building-with-reaktor
 
-## Notes
-
-This is a living document. Add module details, tips, and patterns as you discover them.
-
+#### Other Forums
+- Reddit r/reaktor: https://www.reddit.com/r/reaktor/
+- LINES:  
+  - Reaktor thread: https://llllllll.co/t/reaktor-thread/29950
+  - Share your Reaktor ensembles: https://llllllll.co/t/share-your-reaktor-ensembles/6383
+- Gearspace: https://gearspace.com/board/
+- Mod Wiggler: https://www.modwiggler.com/forum/
+- KVR Audio: https://www.kvraudio.com/forum/
 
 ## Common Modules (verified in Reaktor 6)
 
@@ -102,3 +108,5 @@ Wiring still to complete:
 - x + a output → 1 wrap input
 - 1 wrap output → Phase output port
 - 1 wrap output → feedback back into x + a (Reaktor 6 auto-resolves, wire turns orange)
+
+- This is a living document. Add module details, tips, and patterns as you discover them.

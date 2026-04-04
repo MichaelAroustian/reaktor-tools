@@ -1,0 +1,105 @@
+--- Page 15 ---
+
+1
+Welcome to Building in Primary
+ 
+Welcome to Building in Primary, a tutorial for building in REAKTOR’s Primary level. It de-
+scribes the functions in REAKTOR that relate to building custom instruments, effects, or se-
+quencers, enabling you to modify existing Ensembles or create your own.
+This document assumes you are already familiar with the REAKTOR interface, as well as load-
+ing and playing with Ensembles. At the least, you should have read the chapters in the REAK-
+TOR 6 Diving Deeper document regarding navigation in the Structure View.
+This document begins with an introduction to basic functions and concepts, followed with a
+collection of tutorials. These tutorials introduce building concepts through common examples.
+The final sections are guides to additional building features available in REAKTOR, as well as
+some general tutorials for general building tasks (like skinning controls, and preparing Ensem-
+bles for the KOMPLETE PLAYER Browser).
+Welcome to Building in Primary
+ 
+REAKTOR 6 - Building In Primary - 15
+
+
+--- Page 16 ---
+
+1.1
+The REAKTOR 6 Documentation
+ 
+The REAKTOR documentation is accessible from the Help menu
+The documentation for REAKTOR 6 is divided into five separate documents, guiding you from
+loading and playing pre-built Ensembles to building your own Instruments.
+•
+REAKTOR 6 What Is New is written for users who are already familiar with previous versions
+of REAKTOR and only describes the latest features in brief.
+•
+REAKTOR 6 Getting Started is for new users. It is the only document needed for users who
+intend to use REAKTOR for loading and playing pre-built REAKTOR instruments and ef-
+fects.
+•
+REAKTOR 6 Diving Deeper expands on the concepts introduced in the Getting Started docu-
+ment. It provides more detail on subjects like Snapshots (REAKTOR's preset system), and
+introduces advanced topics like OSC control and combining multiple Instruments in one
+Ensemble.
+Welcome to Building in Primary
+The REAKTOR 6 Documentation
+ 
+REAKTOR 6 - Building In Primary - 16
+
+
+--- Page 17 ---
+
+•
+REAKTOR 6 Building in Primary shows you how to build your own Instruments in REAK-
+TOR’s Primary level. It focuses on a series of tutorials that guide you through building
+your first synthesizers, effects, and sequencers.
+•
+REAKTOR 6 Building in Core describes the Core level of REAKTOR with its low-level build-
+ing features, which can be used for implementing custom DSP algorithms. It includes ref-
+erence information about the Core Macro Library, an comprehensive collection of DSP
+building blocks.
+With the exception of the What Is New document, each of the documents listed above builds
+on the knowledge of the previous documents. While it is not necessary to read all of every
+document, some of the more advanced documents, like Building in Primary, assume knowl-
+edge from the previous documents.
+ 
+Welcome to Building in Primary
+The REAKTOR 6 Documentation
+ 
+REAKTOR 6 - Building In Primary - 17
+
+
+--- Page 18 ---
+
+1.2
+Manual Conventions
+ 
+This section introduces you to the signage and text highlighting used in this manual.
+•
+Text appearing in (drop-down) menus (such as Open…, Save as… etc.) and paths to loca-
+tions on your hard disk or other storage devices is printed in italics.
+•
+Text appearing elsewhere (labels of buttons, controls, text next to checkboxes etc.) is
+printed in blue. Whenever you see this formatting applied, you will find the same text ap-
+pearing somewhere on the screen.
+•
+Important names and concepts are printed in bold.
+•
+References to keys on your computer’s keyboard you’ll find put in square brackets (e.g.,
+“Press [Shift] + [Enter]”).
+1.
+Single instructions are introduced by this play button type arrow.
+⇨Results of actions are introduced by this smaller arrow.
+An indented, gray paragraph contains additional, contextual information.
+Furthermore, this manual uses particular formatting to point out special facts and to warn you
+of potential issues. The icons introducing these notes let you see what kind of information is to
+be expected:
+The speech bubble icon indicates a useful tip that may often help you to solve a task
+more efficiently.
+The exclamation mark icon highlights important information that is essential for the giv-
+en context.
+The red cross icon warns you of serious issues and potential risks that require your full
+attention.
+Welcome to Building in Primary
+Manual Conventions
+ 
+REAKTOR 6 - Building In Primary - 18
+

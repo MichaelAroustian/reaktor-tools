@@ -1,0 +1,1418 @@
+--- Page 626 ---
+
+12
+Audio Modifier
+ 
+The Audio Modifier category offers Modules for audio processing. There are Modules for 
+various forms of distortion (shaping, clipping, and mirroring, among other). When building 
+a synthesizer framework, often the control signals stemming from knobs and faders are 
+shaped to achieve a better "feel" when tweaking them. Use the Shaper Modules to control 
+the shape of control curves. For other audio processing applications such as building ef­
+fects based on envelope followers or compression you will find the Slew Limiter, Peak De­
+tector, Sample and Hold, and Frequency Divider Modules.
+12.1
+Saturator
+ 
+Fig. 12.1 Saturator Module
+12.1.1
+Overview
+ 
+The Saturator Module is a simple distortion unit with a smoothly rounded symmetric input-
+output curve for soft transition to saturation. The output value is limited to ±2 (reached for 
+input values bigger than ±4). Very small input values are transmitted linearly (remain un­
+changed). When the incoming signal has values greater/less than ±4, the signal is distort­
+ed less than in the case of the Clipper Module. However, in contrast to the hard clipping, 
+the harmonic content of the saturated signal differs from that of the incoming signal al­
+ready for moderate amplitudes.
+Application
+The Saturator Module is a bread and butter component in audio signal processing Struc­
+tures. Use it to limit signals that might otherwise become too large like in a feedback 
+path. For example, it is worth experimenting with your own filter or delay characteristics 
+(including comb filters) where you combine a feedback path with a filter or delay and 
+place a Saturator Module in between not only to keep the signal from exploding but also to 
+add more color to the signal.
+Audio Modifier
+Saturator
+ 
+REAKTOR 5.5 - Module Reference - 626
+
+
+--- Page 627 ---
+
+12.1.2
+Ports
+ 
+Input Ports
+▪
+(In) "In" is the Audio input port for signal to be saturated.
+Output Ports
+▪
+(Out) "Out" is the Audio output port for the saturated signal.
+12.1.3
+Example: Comb Filter
+ 
+A place where the Saturator Module comes in handy is in the feedback path of a comb 
+filter. A comb filter has a frequency response that looks similar to a comb. This means 
+that certain frequencies at regular intervals are amplified, whereas other frequencies are 
+attenuated. The amplification peaks are multiples of the "base frequency" of the comb fil­
+ter, determined by the delay time set at the Single Delay Module's (↑11.1, Single Delay) 
+"Dly" (delay time) input port.
+The Structure of a comb filter is simple. As can be seen in the figure below, the incoming 
+"dry" signal is combined with the feedback signal using the Mult/Add Module (↑4.6, Mult/
+Add (a * b + c), X+) and fed into the Single Delay Module (↑11.1, Single Delay). With the 
+Mult/Add Module (↑4.6, Mult/Add (a * b + c), X+) you multiply the feedback signal with a 
+value in the range [0 … 1] (received from the "Feedback" knob) and so determine the 
+amount of feedback signal that is sent to the Single Delay Module. Since feedback Struc­
+tures can cause the signal to "explode", a Saturator Module has been placed between the 
+Single Delay Module's output and the Mult/Add Module (↑4.6, Mult/Add (a * b + c), X+). 
+This way the feedback signal never exceeds the bounds [-2 … 2], which is reached for in­
+put values outside the range [-4 … 4].
+The "base frequency" is calculated from a pitch value which is received from the knob la­
+beled "pitch" (range [1 … 128]) and converted to the linear frequency scale using the Exp 
+P-to-F Module (↑4.16, Exp (P-to-F)). The output of the Exp P-to-F Module delivers the 
+pitch in Hertz (oscillations per second) but the we need the corresponding delay time in 
+milliseconds. Therefore we use the Divide Module to divide 1000 by the pitch value in 
+Hertz, giving us an Event signal that gives the delay time in milliseconds. Subsequently we 
+convert this Event signal to an Audio Signal using the Audio Smoother Module (↑14.14, 
+Audio Smoother).
+Audio Modifier
+Saturator
+ 
+REAKTOR 5.5 - Module Reference - 627
+
+
+--- Page 628 ---
+
+Last, the "wet" signal, derived from the Single Delay Module's (↑11.1, Single Delay) out­
+put, is added to the "dry" incoming signal. This is done again using the Mult/Add Module 
+(↑4.6, Mult/Add (a * b + c), X+), where the amount of "wet" signal mixed to the "dry" sig­
+nal can be controlled with the "Mix" knob (range [0 … 1]).
+Fig. 12.2 The Structure of a comb filter.
+12.2
+Saturator 2
+ 
+Fig. 12.3 Saturator 2 Module
+12.2.1
+Overview
+ 
+The Saturator 2 Module is a fourth-order asymmetric parabolic saturator and unlike the 
+Saturator Module, offers control over the saturation curve. The output value is limited to 
+±2 (reached for input values bigger than ±4). Please refer to the description of the input 
+ports for more information on controlling the saturation curve.
+Application
+The Saturator 2 Module is useful for saturation based audio effects. A common application 
+is to filter and equalize the audio signal before feeding it to the "In" input port of the Satu­
+rator 2 Module and then again at the Module's output.
+Audio Modifier
+Saturator 2
+ 
+REAKTOR 5.5 - Module Reference - 628
+
+
+--- Page 629 ---
+
+12.2.2
+Ports
+ 
+Input Ports
+▪
+(LA) "LA" (level asymmetry) is the Event input port for the vertical asymmetry of the 
+shaping polynomial. At LA = 0 the saturation levels for positive and negative input sig­
+nals are equal. For LA > 0 the positive values of the signal are attenuated and at LA = 
+1 all positive input values become zero. For LA < 0 the negative values of the signal 
+are attenuated and at LA = -1 all negative input values become zero. The range for typ­
+ical values at this input port is [-1 … 1] and the default value is "0".
+▪
+(KH) "KH" (KH) (knee hardness) is the Event input port for the "hardness" of the satura­
+tion curve. At KH = 0 the saturation rises as soft as possible. The full range between 
+zero and the saturation level is used for the rounded curve. With growing values of 
+"KH" the curve range is reduced to (1 - KH) of the saturation level. At KH = 1 the sig­
+nal is clipped hard at the saturation level. Use this input port for a parametrized con­
+trol of the amount of higher harmonics generated by the Module, for saturated incom­
+ing signals. The range for typical values at this input port is [0 … 1] and the default 
+value is "0".
+▪
+(KHA) "KHA" (knee hardness asymmetry) is the Event input port to set the vertical sym­
+metry of the "knee hardness" parameter. At KHA = 0 the knee hardness is equal for 
+positive and negative incoming signals. For KHA > 0 the knee hardness for positive 
+parts of the incoming signal is reduced and at KHA = 1 it becomes zero. For KHA < 0 
+the knee hardness is reduced for negative values of the incoming signal and at KHA = 
+-1 it becomes zero. The range for typical values at this input port is [-1 … 1] and the 
+default value is "0".
+▪
+(Offs) "Offs" (offset) is the Event input port to add an offset (DC offset) to the input sig­
+nal, shifting it relative to the saturator curve. For a zero input signal the offset is fully 
+compensated at the output. The range for typical values at this input port is [-2 … 2] 
+and the default value is "0".
+▪
+(In) "In" is the Audio input port for signal to be distorted.
+Output Ports
+▪
+(Out) "Out" is the Audio output port for the distorted signal.
+Audio Modifier
+Saturator 2
+ 
+REAKTOR 5.5 - Module Reference - 629
+
+
+--- Page 630 ---
+
+12.2.3
+Example: Parabolic Saturator as a Distortion Effect
+ 
+When using the Saturator 2 Module to change the harmonic content of the incoming Audio 
+signal, it is best to hear the effect with your own ears. For example, you could build a sim­
+ple Structure, shown in the figure below, to test out the sonic possibilities of the Saturator 
+2 Module with an oscillator signal to which an amplitude envelope has been applied. Note 
+that since the harmonic content changes non-linearly, the effect of the Saturator 2 Module 
+for different oscillator waveforms will be different. Also, since the saturator's transfer func­
+tion is by nature a function of input amplitude, the signal amplitude and hence the enve­
+lope form also have an effect on the way the saturator effect affects the incoming signal.
+Fig. 12.4 The Structure to test out the effect of the Saturator 2 Module with an oscillator that as an amplitude envelope.
+To quickly create knobs (with the right resolution and range) for input ports such as the en­
+velope transition time input ports or the "LA", "KH", "KHA"', and "Offs" input ports of the Sat­
+urator 2 Module, remember to right-click the input port and choose the Create Control menu 
+entry.
+12.3
+Clipper
+ 
+Fig. 12.5 Clipper Module
+Audio Modifier
+Saturator 2
+ 
+REAKTOR 5.5 - Module Reference - 630
+
+
+--- Page 631 ---
+
+12.3.1
+Overview
+ 
+The Clipper Module is a distortion unit with a hard clipping characteristic and adjustable 
+upper and lower limit. When a signal is "clipped" at an upper limit, for example, all values 
+of the incoming signal which are greater than the limit value are replaced by the limit val­
+ue. Similar behavior applies to incoming values which are less than the lower limit value. 
+Signal values between the limits are passed unchanged.
+Application
+The Clipper Module is useful for applying hard distortion to oversaturated signals. It can 
+also be used as a hard limiter in a feedback path. An interesting effect can be achieved 
+when ring modulating an oscillator with its own (perhaps frequency shifted) output signal. 
+Run the feedback (and modulator) signal through the Clipper Module, adjusting the feed­
+back from the Instrument Panel and if you like, modulating the feedback amount with an 
+envelope.
+12.3.2
+Ports
+ 
+Input Ports
+▪
+(Max) "Max" (maximum) is the Audio input port for controlling the upper limit at which 
+the signal is clipped. The typical range of values at this input port is [0 … 2]. When 
+disconnected, the default value used for this input port is "0".
+▪
+(Min) "Min" (minimum) is the Audio input port for controlling the lower limit at which 
+the signal is clipped. The typical range of values at this input port is [-2 … 0]. When 
+disconnected, the default value used for this input port is "0".
+▪
+(In) "In" is the Audio input port for the signal to be clipped.
+Output Ports
+▪
+(Out) "Out is the Audio output port for the clipped signal.
+12.3.3
+Example: Conventional Hard Clipper
+ 
+The most straight-forward example of the Clipper Module is the conventional hard clipper 
+effect which equally clips the input signal both above and below zero. Although it is even 
+easier to create this effect using the Mod Clipper Module (↑12.4, Mod Clipper), the Struc­
+ture for the hard clipper using the Clipper Module is shown in the figure below. The knob 
+Audio Modifier
+Clipper
+ 
+REAKTOR 5.5 - Module Reference - 631
+
+
+--- Page 632 ---
+
+labeled "Thres" is used to determine the absolute value of the signal at which the signal is 
+clipped. It should only send nonnegative values, such as in the range [0 … 1], for exam­
+ple. Since the Knob Module's output values are positive, connect it directly to the "Max" 
+input port of the Clipper Module. To use the same (but negative) value for the "Min" input 
+port, first feed the Knob Module's output signal through an Invert Module (↑4.4, Invert, -
+x).
+Fig. 12.6 The Structure for the hard clipper effect.
+12.4
+Mod Clipper
+ 
+Fig. 12.7 Mod Clipper Module
+12.4.1
+Overview
+ 
+The Mod Clipper Module comprises a hard clipper effect unit with a variable clipping lim­
+it. When the absolute value of the incoming signal exceeds the limit set at the "M" (modu­
+lation) input port, the signal is "clipped" at that value. This means that all incoming values 
+exceeding the limit are replaced by the limit value.
+Signal values between the limits remain unaffected.
+Application
+The Mod Clipper Module is a special case of the Clipper Module (↑12.3, Clipper) when for 
+the latter Min = Max at its input ports. Use the Mod Clipper Module as a quick way to in
+sert a hard clipper effect into your synthesizer. Try connecting the "M" input port to a mod­
+ulating Audio signal from a sampler or oscillator. The Mod Clipper Module can also be 
+used as a hard limiter in a feedback path. An interesting effect can be achieved when ring 
+modulating an oscillator with its own (perhaps frequency shifted) output signal. Run the 
+Audio Modifier
+Mod Clipper
+ 
+REAKTOR 5.5 - Module Reference - 632
+
+
+--- Page 633 ---
+
+feedback (and modulator) signal through the Mod Clipper Module, adjusting the feedback 
+from the Instrument Panel and if you like, modulating the feedback amount with an enve­
+lope.
+12.4.2
+Ports
+ 
+Input Ports
+▪
+(M) "M" (modulator) is the Audio input port for controlling the limit at which the abso­
+lute value of the incoming signal is clipped. For a value "M" at this input port it means 
+that the output range of the Module is [- M … M]. Typical values at the "M" (modula­
+tion) input port are in the range [-1 … 1]. Negative values invert the incoming signal. 
+When unconnected, the default value zero is used.
+▪
+(In) "In" is the Audio input port for the signal to be clipped.
+Output Ports
+▪
+(Out) "Out" is the Audio output port for clipped signal.
+12.4.3
+Example: Hard Clipper
+ 
+The most straight-forward example of the Mod Clipper Module is the conventional hard 
+clipper effect which equally clips the input signal both above and below zero. The Struc­
+ture for the hard clipper is shown in the figure below. The knob labeled "Thres" is used to 
+determine the absolute value of the signal at which the signal is clipped. It should only 
+send nonnegative values to the "M" input port, such as in the range [0 … 1]. Negative val­
+ues, however, are also allowed but in that case their absolute value is used.
+Fig. 12.8 The Structure for the hard clipper effect.
+Audio Modifier
+Mod Clipper
+ 
+REAKTOR 5.5 - Module Reference - 633
+
+
+--- Page 634 ---
+
+12.5
+Mirror 1
+ 
+Fig. 12.9 Mirror 1 Module
+12.5.1
+Overview
+ 
+The Mirror 1 Module is a distortion effect that works by mirroring incoming signal values 
+which are beyond an adjustable mirror level. By "mirroring" it is meant that signal values 
+above the mirror level are folded back at the mirror level. To calculate the value of an out­
+going "mirrored" signal value, subtract the amount that the incoming value exceeds the 
+mirror level from the mirror level value. Signal values below the mirror level, however, re­
+main unchanged.
+Application
+The Mirror 1 Module has an effect that is similar to the Clipper Module (with asymmetric 
+settings) but more pronounced. Folding back the signal at the mirror level creates sharper 
+edges in the outgoing signal and therefore creates more higher harmonics. Try also apply­
+ing this Module to an LFO signal, for example, to create more complex LFO waveforms 
+from the three offered by the LFO Module (↑9.1, LFO)
+12.5.2
+Ports
+ 
+Input Ports
+▪
+(Max) "Max" (maximum) is the Audio input for controlling the mirror level.
+▪
+(In) "In" is the Audio input port for the signal to be modified.
+Output Ports
+▪
+(Out) "Out" is the Audio output port for the modified signal.
+12.5.3
+Example: Mirroring Distortion Effect
+ 
+The Mirror 1 Module allows you to create a variety of distortion effects, mainly adding 
+higher harmonic content to the incoming signal. To explore its sound, you could build a 
+simple Structure, shown in the figure below. This way you can test out the Mirror 1 Mod­
+Audio Modifier
+Mirror 1
+ 
+REAKTOR 5.5 - Module Reference - 634
+
+
+--- Page 635 ---
+
+ule with an oscillator signal to which an amplitude envelope has been applied. Note that 
+since the harmonic content changes non-linearly, the effect of the Mirror 1 Module for dif­
+ferent oscillator waveforms will be different. Also, since the mirror effect is by nature a 
+function of input amplitude, the input signal's amplitude and hence the envelope form al­
+so have an effect on the way the mirroring affects its harmonic content.
+In essence the by just adding the Mirror 1 Module after an oscillator with an amplitude 
+envelope, you can have a signal whose harmonic content varies along with the amplitude 
+levels determined by the envelope. With the right envelope curves and mirroring values you 
+can efficiently create quite dynamic waveforms! The second figure below shows the effect 
+of the Mirror 1 Module on a parabolic oscillator waveform.
+Fig. 12.10 The Structure for a single mirroring distortion effect.
+To quickly create knobs (with the right resolution and range) for input ports such as the en­
+velope transition time input ports or the "Max" input port of the Mirror 1 Module, remember 
+to right-click the input port and choose the Create Control menu entry.
+Fig. 12.11 The resulting waveform of a parabolic oscillator sent through a single level mirroring effect.
+Audio Modifier
+Mirror 1
+ 
+REAKTOR 5.5 - Module Reference - 635
+
+
+--- Page 636 ---
+
+12.6
+Mirror 2
+ 
+Fig. 12.12 Mirror 2 Module
+12.6.1
+Overview
+ 
+The Mirror 2 Module, like its "little brother" the Mirror 1 Module (↑12.5, Mirror 1), is a 
+distortion effect that works by mirroring incoming signal values which are beyond an ad­
+justable mirror levels. By "mirroring" it is meant that signal values beyond a mirror level 
+are folded back at that mirror level. To calculate the value of an outgoing signal value that 
+has been "mirrored" at a positive mirror level, subtract the amount that the incoming value 
+exceeds the mirror level from the mirror level value. For "mirroring" at a negative mirror 
+level you just need to add the amount that the incoming value exceeds the mirror level to 
+the mirror level. Signal values less than the positive mirror level and greater than the nega­
+tive mirror level, however, remain unchanged.
+Application
+The Mirror 2 Module has an effect that is similar to the Clipper Module but more pro­
+nounced. Folding back the signal at the mirror levels creates sharper edges in the outgoing 
+signal and therefore creates more higher harmonics. Try also applying this Module to an 
+LFO signal, for example, to create more complex LFO waveforms from the three offered by 
+the LFO Module (↑9.1, LFO).
+12.6.2
+Ports
+ 
+Input Ports
+▪
+(Max) "Max" (maximum) is the Audio input port for controlling the upper mirror level.
+▪
+(Min) "Min" (minimum) is the Audio input for port controlling the lower mirror level.
+▪
+(In) "In" is the Audio input port for the signal to be modified.
+Output Ports
+▪
+(Out) "Out" is the Audio output for the modified signal.
+Audio Modifier
+Mirror 2
+ 
+REAKTOR 5.5 - Module Reference - 636
+
+
+--- Page 637 ---
+
+12.6.3
+Example: Mirroring Distortion Effect
+ 
+The Mirror 2 Module, like the Mirror 1 Module (↑12.5, Mirror 1), allows you to create a 
+variety of distortion effects (albeit more flexibly), mainly adding higher harmonic content 
+to the incoming signal. To explore its sound, you could build a simple Structure, shown in 
+the figure below. This way you can test out the Mirror 2 Module with an oscillator signal to 
+which an amplitude envelope has been applied. Note that since the harmonic content 
+changes non-linearly, the effect of the Mirror 2 Module for different oscillator waveforms 
+will be different. Also, since the mirror effect is by nature a function of input amplitude, 
+the input signal's amplitude and hence the envelope form also have an effect on the way 
+the mirroring affects its harmonic content.
+In essence the by just adding the Mirror 2 Module after an oscillator with an amplitude 
+envelope, you can have a signal whose harmonic content varies along with the amplitude 
+levels determined by the envelope. With the right envelope curves and mirroring values you 
+can efficiently create quite dynamic waveforms! The second figure below shows the effect 
+of the Mirror 2 Module on a parabolic oscillator waveform.
+Fig. 12.13 The Structure for a double mirroring distortion effect.
+To quickly create knobs (with the right resolution and range) for input ports such as the en­
+velope transition time input ports or the "Max" and "Min" input ports of the Mirror 2 Module, 
+remember to right-click the input port and choose the Create Control menu entry.
+Audio Modifier
+Mirror 2
+ 
+REAKTOR 5.5 - Module Reference - 637
+
+
+--- Page 638 ---
+
+Fig. 12.14 The resulting waveform of a parabolic oscillator sent through a double level mirroring effect.
+12.7
+Chopper
+ 
+Fig. 12.15 Chopper Module
+12.7.1
+Overview
+ 
+The Chopper Module "chops" out parts of the signal incoming at the "In" input port and 
+amplifies them by a factor set at the "X" input port. "Unchopped" signal values are passed 
+to the output port unchanged. "Chopping" happens when the modulation signal at the "M" 
+(modulator) input port is positive, When the modulation signal at the "M" (modulator) in­
+put port is negative, the incoming signal at the "In" input port remains unchanged.
+Application
+The Chopper Module is the most general of the clipper and mirroring type of distortion 
+Modules. With proper signal processing for the values at the "M" and "X" input ports you 
+could recreate the Clipper and Mirror 1 and Mirror 2 Modules with the Chopper Module. 
+However, with more general settings the Chopper Module can create very strong transients 
+and can therefore be the "harshest" sounding of these distortion Modules. If "X" is set to 
+"0", the modulation signal at the "M" input port switches the outgoing signal on and off. 
+Make sure that the signal at the "M" (modulator) input port is an Audio signal that 
+switches between positive and negative values fast enough (e.g. an oscillator) to create Au­
+dio rate effects. For the example given above, turning the signal on and off at LFO-rate will 
+"just" cause clicks in your outgoing signal. Of course, this might exactly be what you want.
+Audio Modifier
+Chopper
+ 
+REAKTOR 5.5 - Module Reference - 638
+
+
+--- Page 639 ---
+
+12.7.2
+Ports
+ 
+Input Ports
+▪
+(M) "M" is the (modulator) Audio input for the modulation signal (only the sign is rele­
+vant). The range of typical values at this input port is [-1 … 1].
+▪
+(X) "X" is the Audio input for controlling the amplification factor used when M is posi­
+tive. The range of values at this input port typically is [-2 … 2].
+▪
+(In) "In" is the Audio input port for the signal to be chopped.
+Output Ports
+▪
+(Out) is the Audio output port for the chopped signal.
+12.7.3
+Example: Chopper Distortion Effect
+ 
+The Chopper Module lets you create heavy lo-fi distortion effects. To explore its sound, you 
+could build a simple Structure, shown in the figure below. This way you can test out the 
+Chopper Module with an oscillator signal to which an amplitude envelope has been ap­
+plied.
+Here the Sine Module (↑6.14, Sine Oscillator) has been used as the periodic modulator 
+signal which oscillates between positive and negative values and is fed to the "M" (modula­
+tor) input port of the Chopper Module. The Knob Module labeled "Mod" controls the ampli­
+fication factor when "M" is positive. Here too you could connect an oscillating (or other­
+wise dynamic) signal to create interesting effects. Note that the chopping is not deter­
+mined by the signal values at the "In" input port but by the sign of the current signal value 
+at the "M" (modulator) input port. This means that the chopper distortion effect inherently 
+lacks the dynamic properties that arise from the amplitude dependency of the distortion of 
+the Saturation, Mirroring, Clipping, and Breakpoint Shaper Modules. The second figure be­
+low shows the effect of the Chopper Module on a parabolic oscillator waveform.
+Audio Modifier
+Chopper
+ 
+REAKTOR 5.5 - Module Reference - 639
+
+
+--- Page 640 ---
+
+Fig. 12.16 The Structure for a chopper distortion effect.
+To quickly create knobs (with the right resolution and range) for input ports such as the en­
+velope transition time input ports or the "X" input port of the Chopper Module, remember to 
+right-click the input port and choose the Create Control menu entry.
+Fig. 12.17 The resulting waveform of a parabolic oscillator sent through a chopper effect.
+12.8
+Shaper 1 BP
+ 
+Fig. 12.18 Shaper 1 BP Module
+Audio Modifier
+Shaper 1 BP
+ 
+REAKTOR 5.5 - Module Reference - 640
+
+
+--- Page 641 ---
+
+12.8.1
+Overview
+ 
+The Shaper 1 BP is a signal shaper consisting of a piecewise linear transfer function with 
+one breakpoint. The input signal is fed to the "In" input port. Incoming signal values below 
+the "Bp" (breakpoint) value are transmitted linearly (remain unchanged). Incoming values 
+above the "Bp" value are scaled by a linear transfer function that has a slope set with the 
+"Sl" (slope) input port.
+Application
+The Shaper Modules can be used for waveshaping type of effects on Audio signals. The 
+sharper the edges are in a transfer function, the more higher harmonics are created in the 
+output signal. Waveshaping is an efficient way of creating signals with a variable harmonic 
+distribution (and higher harmonic content) from simple oscillator signals such as the sine 
+wave. Experiment with different transfer functions on different signals to see which "color­
+ings" the different transfer functions add to incoming signals. You can feed envelope sig­
+nals through Audio Shaper Modules to create interesting envelope curves which can be 
+modulated at Audio Rate.
+12.8.2
+Ports
+ 
+Input Ports
+▪
+(Bp) "Bp" (breakpoint) is the Audio input port for controlling the level of the breakpoint. 
+The typical range of values at this input port is [0 … 1]. When disconnected, the de­
+fault value "0" is used for this input port.
+▪
+(Sl) "Sl" (slope) is the Audio input port for controlling the slope of the upper part of the 
+transfer function (input/output curve). The typical range of values at this input port is 
+[-1 … 4]. Sl = 0 corresponds to clipping, Sl = 1 corresponds to no change in the in­
+coming signal, and Sl > 1 corresponds to peak emphasis. Negative values cause nega­
+tive slopes which "fold back" the signal values which are greater than the "Bp" (break­
+point) value. This works the same as "mirroring" in the Mirror 1 (↑12.5, Mirror 1) and 
+Mirror 2 Modules (↑12.6, Mirror 2).
+▪
+(In) "In" is the Audio input port for the signal to be shaped.
+Output Ports
+▪
+(Out) "Out" is the Audio output port for the shaped signal.
+Audio Modifier
+Shaper 1 BP
+ 
+REAKTOR 5.5 - Module Reference - 641
+
+
+--- Page 642 ---
+
+12.8.3
+Example: Simple Single Breakpoint Shaper
+ 
+The Shaper 1 BP Module is similar to the Mirror 1 Module (↑12.5, Mirror 1), but with the 
+added possibility to gradually control how sharply the input signal is mirrored. Sharper cor­
+ners in the output signal mean more high harmonics. To explore how this effect sounds 
+with this added degree of freedom, you could build a simple Structure, shown in the figure 
+below. This way you can test out the Shaper 1 BP Module with an oscillator signal to 
+which an amplitude envelope has been applied. Note that since the harmonic content 
+changes non-linearly, the effect of the Shaper 1 BP Module for different oscillator wave­
+forms will be different. Also, since waveshaping is by nature done as a function of input 
+amplitude, the signal amplitude and hence the envelope form also have an effect on the 
+way the shaping affects the harmonic content of the signal.
+In essence the by just adding the Shaper 1 BP Module after an oscillator with an ampli­
+tude envelope, you can have a signal whose harmonic content varies along with the ampli­
+tude levels determined by the envelope. You could even add an additional LFO or envelope 
+to the "Slp" and "BP" input ports to create very dynamic waveforms! This is the basis for 
+waveshaping synthesis. The second figure below shows the effect of the Shaper 1 BP Mod­
+ule on a parabolic oscillator waveform. Note the similarity to the effect of the Mirror 1 
+Module (↑12.5, Mirror 1).
+Fig. 12.19 The Structure for a waveshaping effect with one breakpoint.
+To quickly create knobs (with the right resolution and range) for input ports such as the en­
+velope transition time input ports or the "BP" and "Sl" input ports of the Shaper 1 BP Mod­
+ule, remember to right-click the input port and choose the Create Control menu entry.
+Audio Modifier
+Shaper 1 BP
+ 
+REAKTOR 5.5 - Module Reference - 642
+
+
+--- Page 643 ---
+
+Fig. 12.20 The resulting waveform of a parabolic oscillator sent through a waveshaper with one breakpoint. Note the similar­
+ity to the Mirror 1 Module's effect on the same input signal.
+12.9
+Shaper 2 BP
+ 
+Fig. 12.21 Shaper 2 BP Module
+12.9.1
+Overview
+ 
+The Shaper 2 BP is a signal shaper consisting of a piecewise linear transfer function with 
+two breakpoints. The input signal is fed to the "In" input port. Incoming signal values be­
+low the "Bp2" (lower breakpoint) value are transmitted by a linear transfer function with 
+the slope set by the "Sl2" (lower slope) input port. Independent of the "Sl2" value, for In = 
+Bp2 the output is also "Bp2" (Out = Bp2). Values between "Bp2" and "Bp1" remain un­
+changed. Incoming values subsequently above the "Bp1" (higher breakpoint) are scaled by 
+a linear transfer function with the slope set by the "Sl1" (higher) input port. Again, the 
+transfer function is such that for In = Bp1 also Out = Bp1.
+Application
+The Shaper Modules can be used for waveshaping type of effects on Audio signals. The 
+sharper the edges are in a transfer function, the more higher harmonics are created in the 
+output signal. Waveshaping is an efficient way of creating signals with a variable harmonic 
+distribution (and higher harmonic content) from simple oscillator signals such as the sine 
+wave. Experiment with different transfer functions on different signals to see which "color­
+Audio Modifier
+Shaper 2 BP
+ 
+REAKTOR 5.5 - Module Reference - 643
+
+
+--- Page 644 ---
+
+ings" the different transfer functions add to incoming signals. You can feed envelope sig­
+nals through Audio Shaper Modules to create interesting envelope curves which can be 
+modulated at Audio Rate.
+12.9.2
+Ports
+ 
+Input Ports
+▪
+(Bp1) "Bp1" (higher breakpoint) is the Audio input port for controlling the level of the 
+upper breakpoint. The typical range for values at this input port is [0 … 1] and when 
+this input port is disconnected, the default value of "0" is used.
+▪
+(Sl1) "Sl1" (higher slope) is the Audio input port for controlling the slope of the transfer 
+function (input/output curve) above the "Bp1" (higher breakpoint) value. The typical 
+range of values at this input port is [-1 … 4]. The default value is "0". Sl1 = 0 corre­
+sponds to clipping, Sl1 = 1 corresponds to no change in the incoming signal, and Sl1 
+> 1 corresponds to peak emphasis. Negative values cause negative slopes which "fold 
+back" the signal values which are greater than the "Bp1" value. This works the same as 
+"mirroring" in the Mirror 1 (↑12.5, Mirror 1) and Mirror 2 Modules (↑12.6, Mirror 2).
+▪
+(Bp2) "Bp2" (lower breakpoint) is the Audio input port for controlling the level of the 
+lower breakpoint. The typical range for values at this input port is [-1 … 0] and when 
+this input port is disconnected, the default value of "0" is used.
+▪
+(Sl2) "Sl2" (lower slope) is the Audio input port for controlling the slope of the transfer 
+function (input/output curve) below the "Bp2" (lower breakpoint) value. The typical 
+range of values at this input port is [-1 … 4]. The default value is "0". Sl2 = 0 corre­
+sponds to clipping, Sl2 = 1 corresponds to no change in the incoming signal, and Sl2 
+> 1 corresponds to peak emphasis. Negative values cause negative slopes which "fold 
+back" the signal values which are greater than the "Bp2" value. This works the same as 
+"mirroring" in the Mirror 1 (↑12.5, Mirror 1) and Mirror 2 Modules (↑12.6, Mirror 2).
+▪
+(In) "In" is the Audio input port for the signal to be shaped.
+Output Ports
+▪
+(Out) "Out" is the Audio output port for the shaped signal.
+Audio Modifier
+Shaper 2 BP
+ 
+REAKTOR 5.5 - Module Reference - 644
+
+
+--- Page 645 ---
+
+12.9.3
+Example: Simple Two Breakpoint Shaper
+ 
+The Shaper 2 BP Module is similar to the Mirror 2 Module (↑12.6, Mirror 2), but with the 
+added possibility to gradually control how sharply the input signal is mirrored at each 
+breakpoint. Sharper corners in the output signal mean more high harmonics. To explore 
+how this effect sounds with these two added degrees of freedom, you could build a simple 
+Structure, shown in the figure below. This way you can test out the Shaper 2 BP Module 
+with an oscillator signal to which an amplitude envelope has been applied. Note that since 
+the harmonic content changes non-linearly, the effect of the Shaper 2 BP Module for dif­
+ferent oscillator waveforms will be different. Also, since waveshaping is by nature done as 
+a function of input amplitude, the signal amplitude and hence the envelope form also 
+have an effect on the way the shaping affects the harmonic content of the signal.
+In essence the by just adding the Shaper 2 BP Module after an oscillator with an ampli­
+tude envelope, you can have a signal whose harmonic content varies along with the ampli­
+tude levels determined by the envelope. You could even add an additional LFO or envelope 
+to the input ports for the breakpoint and slope parameters to create waveforms with truly 
+dynamic harmonic content! This is the basis for waveshaping synthesis. The second figure 
+below shows the effect of the Shaper 2 BP Module on a parabolic oscillator waveform. 
+Note the similarity to the effect of the Mirror 2 Module (↑12.6, Mirror 2).
+Fig. 12.22 The Structure for a waveshaping effect with two breakpoints.
+To quickly create knobs (with the right resolution and range) for input ports such as the en­
+velope transition time input ports or the "BP1","Sl1", "Bp2", and "Sl2" input ports of the 
+Shaper 2 BP Module, remember to right-click the input port and choose the Create Control 
+menu entry.
+Audio Modifier
+Shaper 2 BP
+ 
+REAKTOR 5.5 - Module Reference - 645
+
+
+--- Page 646 ---
+
+Fig. 12.23 The resulting waveform of a parabolic oscillator sent through a waveshaper with two breakpoints. Note the simi­
+larity to the Mirror 2 Module's effect on the same input signal. Here a positive slope value, "4", was used for the segment 
+after the second breakpoint. That is why the upper part of the waveform is not mirrored.
+12.10 Shaper 3 BP
+ 
+Fig. 12.24 Shaper 3 BP Module
+12.10.1 Overview
+ 
+The Shaper 3 BP is a signal shaper consisting of a piecewise linear transfer function with 
+three breakpoints, two of which are adjustable. The input signal is fed to the "In" input 
+port. Incoming signal values below the "Bp2" (lower breakpoint) value are transmitted by a 
+linear transfer function with the slope set by the "Sl2" (lower slope) input port. Independ­
+ent of the "Sl2" value, for In = Bp2 the output is also "Bp2" (Out = Bp2). Values between 
+"Bp2" and "0" are transmitted according to a linear transfer function with the slope set by 
+the "Sl-" (slope to zero) input port. Values between "0" and "Bp1" are transmitted accord­
+ing to a linear transfer function with the slope set by the "Sl+" (slope from zero) input port. 
+Incoming values subsequently above the "Bp1" (higher breakpoint) are scaled by a linear 
+transfer function with the slope set by the "Sl1" (higher) input port. Again, the transfer 
+function is such that for In = Bp1 also Out = Bp1.
+Audio Modifier
+Shaper 3 BP
+ 
+REAKTOR 5.5 - Module Reference - 646
+
+
+--- Page 647 ---
+
+Application
+The Shaper Modules can be used for waveshaping type of effects on Audio signals. The 
+sharper the edges are in a transfer function, the more higher harmonics are created in the 
+output signal. Waveshaping is an efficient way of creating signals with a variable harmonic 
+distribution (and higher harmonic content) from simple oscillator signals such as the sine 
+wave. Experiment with different transfer functions on different signals to see which "color­
+ings" the different transfer functions add to incoming signals. You can feed envelope sig­
+nals through Audio Shaper Modules to create interesting envelope curves which can be 
+modulated at Audio Rate.
+12.10.2 Ports
+ 
+Input Ports
+▪
+(Bp1) "Bp1" (higher breakpoint) is the Audio input port for controlling the level of the 
+upper breakpoint. The typical range for values at this input port is [0 … 1] and when 
+this input port is disconnected, the default value of "0" is used.
+▪
+(Sl1) "Sl1" (higher slope) is the Audio input port for controlling the slope of the transfer 
+function (input/output curve) above the "Bp1" (higher breakpoint) value. The actual 
+higher slope is determined by the value at this input port and the value at the "Sl+" 
+(slope from zero) input port. The typical range of values at this input port is [-1 … 4]. 
+The default value is "0". Sl1 = 0 corresponds to clipping, Sl1 = 1 corresponds to no 
+change in the incoming signal, and Sl1 > 1 corresponds to peak emphasis. Negative 
+values cause negative slopes which "fold back" the signal values which are greater than 
+the "Bp1" value. This works the same as "mirroring" in the Mirror 1 (↑12.5, Mirror 1) 
+and Mirror 2 Modules (↑12.6, Mirror 2).
+▪
+(Bp2) "Bp2" (lower breakpoint) is the Audio input port for controlling the level of the 
+lower breakpoint. The typical range for values at this input port is [-1 … 0] and when 
+this input port is disconnected, the default value of "0" is used.
+▪
+(Sl2) "Sl2" (lower slope) is the Audio input port for controlling the slope of the transfer 
+function (input/output curve) below the "Bp2" (lower breakpoint) value. The actual low­
+er slope is determined by the value at this input port and the value at the "Sl-" (slope 
+to zero) input port. The typical range of values at this input port is [-1 … 4]. The de­
+fault value is "0". Sl2 = 0 corresponds to clipping, Sl2 = 1 corresponds to no change in 
+the incoming signal, and Sl2 > 1 corresponds to peak emphasis. Negative values cause 
+Audio Modifier
+Shaper 3 BP
+ 
+REAKTOR 5.5 - Module Reference - 647
+
+
+--- Page 648 ---
+
+negative slopes which "fold back" the signal values which are greater than the "Bp2" 
+value. This works the same as "mirroring" in the Mirror 1 (↑12.5, Mirror 1) and Mirror 2 
+Modules (↑12.6, Mirror 2).
+▪
+(Sl+) "Sl+" (slope from zero) is the Audio input port for the slope of the transfer func­
+tion from zero to "Bp1". Note that this slope value also affects the lower slope parame­
+ter. The typical range for values at this input port is [0.25 … 4] When disconnected, 
+the default value of "0" is used. The input values are interpreted the same as for the 
+"Sl1" (higher slope) and "Sl2" (lower slope) input ports.
+▪
+(Sl-) "Sl-" (slope to zero) is the Audio input port for the slope of the transfer function 
+from "Bp2" to zero. Note that this slope value also affects the higher slope parameter. 
+The typical range for values at this input port is [0.25 … 4] When disconnected, the 
+default value of "0" is used. The input values are interpreted the same as for the "Sl1" 
+(higher slope) and "Sl2" (lower slope) input ports.
+▪
+(In) "In" is the Audio input port for the signal to be shaped.
+Output Ports
+▪
+(Out) "Out" is the Audio output port for the shaped signal.
+12.10.3 Example: Modulated Three Breakpoint Shaper
+ 
+The Shaper 3 BP Module is the tool for waveshaping synthesis with the most flexibility. 
+Sharper corners in the output signal mean more high harmonics. To explore how this ef­
+fect sounds, you could build a simple Structure, shown in the figure below. This way you 
+can test out the Shaper 3 BP Module with an oscillator signal to which an amplitude enve­
+lope has been applied.
+To add a strong inharmonic components resulting from the waveshaping, the Sine Module 
+has been used as a source for Audio Rate modulation of the transfer function parameters 
+"S+" (slope from zero) and "S-" (slope to zero). Since the Sine Module (↑6.14, Sine Oscil­
+lator) oscillates at audible frequencies, its audible effect to the incoming signal is similar 
+to ring modulation.
+Note that since the harmonic content changes non-linearly, the effect of the Shaper 3 BP 
+Module for different oscillator waveforms will be different. Also, since waveshaping is by 
+nature done as a function of input amplitude, the signal amplitude and hence the enve­
+lope form also have an effect on the way the shaping affects the harmonic content of the 
+signal
+Audio Modifier
+Shaper 3 BP
+ 
+REAKTOR 5.5 - Module Reference - 648
+
+
+--- Page 649 ---
+
+In essence the by just adding the Shaper 3 BP Module after an oscillator with an ampli­
+tude envelope, you can have a signal whose harmonic content varies along with the ampli­
+tude levels determined by the envelope. You could even add an additional LFO or envelope 
+to the input ports for the breakpoint and slope parameters to create waveforms with truly 
+dynamic harmonic content! This is the basis for waveshaping synthesis. The second figure 
+below shows the effect of the Shaper 3 BP Module with Audio Rate modulation on a para­
+bolic oscillator waveform.
+Fig. 12.25 The Structure for a waveshaping effect with three breakpoints and Audio Rate modulation for two of the four 
+slope parameters.
+To quickly create knobs (with the right resolution and range) for input ports such as the en­
+velope transition time input ports or the "BP1","Sl1", "Bp2", "Sl2", "S+", and "S-" input ports 
+of the Shaper 3 BP Module, remember to right-click the input port and choose the Create 
+Control menu entry.
+Fig. 12.26 The resulting waveform of a parabolic oscillator sent through a waveshaper with three breakpoints where two 
+slopes are modulated by a sine oscillator with pitch set by the "Mod Pitch" knob.
+Audio Modifier
+Shaper 3 BP
+ 
+REAKTOR 5.5 - Module Reference - 649
+
+
+--- Page 650 ---
+
+12.11 Parabolic Shaper
+ 
+Fig. 12.27 Parabolic Shaper Module
+12.11.1 Overview
+ 
+The Parabolic Shaper Module is a signal shaper that has a parabolic (2nd order polyno­
+mial) transfer function (input/output curve). In general, the transfer function can be de­
+scribed as follows: f(x) = a*x + b*x^2 where "x" denotes the incoming signal at the "In" 
+input port and f(x) the outgoing signal at the "Out" output port. The parameters "a" and "b" 
+can be set at the "Lin" (linear) and "Par" (parabolic) input ports, respectively.
+Application
+The Parabolic Shaper Module is useful for audio waveshaping type effects where smooth 
+transfer functions are desired. Special for the Parabolic Shaper Module is that increasing 
+the "Lin" parameter simply amplifies the incoming signal and increasing the "Par" parame­
+ter gradually adds second and higher even harmonics to the output signal. However, the 
+Parabolic Shaper Module is also useful for shaping control signals (see example).
+12.11.2 Ports
+ 
+Input Ports
+▪
+(Lin) "Lin" (linear) is the Audio input port for controlling the level of the parameter "a" 
+in the transfer function f(x) = a*x + b*x^2 .
+▪
+(Par) "Par" (parabolic) is the Audio input port for controlling the level of parameter "b" 
+in the transfer function f(x) = a*x + b*x^2.
+▪
+(In) "In" is the Audio input port for the signal to be shaped.
+Output Ports
+▪
+(Out) "Out" is the Audio output port for the shaped signal.
+Audio Modifier
+Parabolic Shaper
+ 
+REAKTOR 5.5 - Module Reference - 650
+
+
+--- Page 651 ---
+
+12.11.3 Example: Parabolic Control Shaper
+ 
+If you have a control parameter (that you control with a knob) in the range [0 … 1] and for 
+which you want more precision for small values, then the Parabolic Shaper Module is what 
+you need since the parabolic part of the transfer function adds more "weight" (in the form 
+of a smaller slope) to the incoming values that are close to zero. Naturally, you would need 
+to connect a non-zero value to the "Par" (parabolic) input port to observe the described 
+shaping effect. The scope in the figure shows the output signal corresponding to an input 
+ramp from "0" to "1".
+Fig. 12.28 The resulting signal of an incoming ramp from "0" to "1" to a Parabolic Shaper Module with Lin = 0 and Par = 1.
+12.12 Cubic Shaper
+ 
+Fig. 12.29 Cubic Shaper Module
+12.12.1 Overview
+ 
+The Cubic Shaper Module is a signal shaper that has a cubic (3rd order polynomial) trans­
+fer function (input/output curve). In general, the transfer function can be described as fol­
+lows: f(x) = a*x + b*x^2 + c*x^3 where "x" denotes the incoming signal at the "In" input 
+port and f(x) the outgoing signal at the "Out" output port. The parameters "a", "b", and "c" 
+can be set at the "Lin" (linear), "Par" (parabolic), and "Cub" (cubic) input ports, respective­
+ly.
+Audio Modifier
+Parabolic Shaper
+ 
+REAKTOR 5.5 - Module Reference - 651
+
+
+--- Page 652 ---
+
+Application
+The Cubic Shaper Module is useful not only for audio waveshaping type effects, but also 
+for shaping control signals. An easy way to create an Audio signal with a variable harmonic 
+distribution is to feed a simple oscillator signal into the shaper Module. In the case of a 
+sine signal you can vary the harmonic distribution from just consisting of the sine's fre­
+quency component to a distribution with strong high components.
+12.12.2 Ports
+ 
+Input Ports
+▪
+(Lin) "Lin" (linear) is the Audio input port for controlling the level of the parameter "a" 
+in the transfer function f(x) = a*x + b*x^2 + c*x^3.
+▪
+(Par) "Par" (parabolic) is the Audio input port for controlling the level of parameter "b" 
+in the transfer function f(x) = a*x + b*x^2 + c*x^3.
+▪
+(Cub) "Cub" (cubic) is the Audio input port for controlling the level of the parameter "c" 
+in the transfer function f(x) = a*x + b*x^2 + c*x^3.
+▪
+(In) "In" is the Audio input port for the signal to be shaped.
+Output Ports
+▪
+(Out) "Out" is the Audio output port for the shaped signal.
+12.12.3 Example: Simple Cubic Shaper
+ 
+The Cubic Shaper Module has a smooth transfer function as determined by the polynomial 
+coefficients set at its "Lin", "Par", and "Cub" input ports. This means that although giving 
+your three degrees of waveshaping freedom, the Cubic Shaper Module only relatively softly 
+adds higher harmonics to the output signal. To explore how the cubic shaper sounds you 
+could build a simple Structure, shown in the figure below. A good way to test it is with a 
+Sine oscillator, since the sine signal represents one frequency component and any compo­
+nents added by the Cubic Shaper Module can easily be distinguished. Note however, that 
+since the harmonic content changes non-linearly, the effect of the Cubic Shaper Module 
+for different oscillator waveforms will be different. Also, since waveshaping is by nature 
+done as a function of input amplitude, the signal amplitude and hence the envelope form 
+also have an effect on the way the shaping affects the harmonic content of the signal.
+Audio Modifier
+Cubic Shaper
+ 
+REAKTOR 5.5 - Module Reference - 652
+
+
+--- Page 653 ---
+
+In essence the by just adding the Cubic Shaper Module after an oscillator with an ampli­
+tude envelope, you can have a signal whose harmonic content varies along with the ampli­
+tude levels determined by the envelope. You could even add an additional LFO or envelope 
+to the input ports for the polynomial's parameters to create waveforms with softly changing 
+harmonic content! This is the basis for waveshaping synthesis. The second figure below 
+shows the effect of Cubic Shaper Module on a sine oscillator waveform.
+Fig. 12.30 The Structure for a simple cubic waveshaper.
+Fig. 12.31 For a sine input signal the Cubic Shaper Module does not add any sharp transients to the output signal.
+12.13 Slew Limiter
+ 
+Fig. 12.32 Slew Limiter Module
+Audio Modifier
+Slew Limiter
+ 
+REAKTOR 5.5 - Module Reference - 653
+
+
+--- Page 654 ---
+
+12.13.1 Overview
+ 
+The Slew Limiter Module comprises a slew rate limiter with separately adjustable maxi­
+mum rates for rising and falling signals. The output signal tracks the input signal, but for 
+fast movement and jumps at the input, the output follows with a limited rate of change 
+(ramp) until its value reaches that of the input signal.
+Application
+Use the Slew Limiter Module to create effects based on envelope followers but which don’t 
+need a fast attack time. Feed an Audio signal to the "In" input port and use the output 
+signal as a control signal for an effect parameter such as a filter cutoff, delay time, or the 
+drive of a distortion input. Depending on your input signal, you need to make sure that the 
+slew rates are set about an order of magnitude lower than the lowest audible frequencies.
+12.13.2 Ports
+ 
+Input Ports
+▪
+(Up) "Up" is the Audio input port for controlling the maximum slew rate for rising sig­
+nals. The rate of the rising signal is limited to the "Up" value in units of Hertz. The 
+typical range for values at this input port is [20 … 2000]. If left disconnected, the de­
+fault value used for this input port is 0 Hz, meaning that the Slew Limiter Module does 
+not follow rising signals.
+▪
+(Dn) "Dn" (down) is the Audio input port for controlling the maximum slew rate for fall­
+ing signals. The rate of the rising signal is limited to the "Dn" value in units of Hertz. 
+The typical range for values at this input port is [20 … 2000]. If left disconnected, the 
+default value used for this input port is 0 Hz, meaning that the Slew Limiter Module 
+does not follow falling signals.
+▪
+(In) "In" is the Audio input port for signal to be slew rate limited
+Output Ports
+▪
+(Out) "Out" is the Audio output port for slew rate limited signal.
+Audio Modifier
+Slew Limiter
+ 
+REAKTOR 5.5 - Module Reference - 654
+
+
+--- Page 655 ---
+
+12.13.3 Example: Beat Tracing
+ 
+In this example the Slew Limiter Module is used to extract the rough rhythmic pattern of a 
+drum loop sample. This Structure is displayed in the figure below. A Sampler Module 
+(↑7.1, Sampler) plays back the drum loop sample on which to demonstrate the Slew Limit­
+er Module's capabilities. The "Pitch" and "Ampl" controls send values for the "P" (pitch) 
+and "A" (amplitude) input ports of the Sampler Module, respectively. Sample playback is 
+triggered by pressing a MIDI (or computer keyboard) key, as is evident from the Gate Mod­
+ule (↑2.3, Gate) that has been connected to the Sampler Module's (↑7.1, Sampler) "Trig" 
+(trigger) input port.
+The played back sample's Audio signal is sent to the Slew Limiter Module's "In" input port. 
+The upwards and downwards slew rates are controlled by Knob Modules at the "Up" and 
+"Dn" input ports, respectively. The second figure below shows how the Sampler output sig­
+nal (left Audio Table, labeled "Beat Loop") is processed by the Slew Limiter Module (right 
+Audio Table, labeled "Slew Limiter"). Note that the upward slew rate is "425", meaning 
+that it quickly follows sharp increases in incoming signal values but the downward slew 
+rate is "1", causing the output signal to fall slowly. The result is a trace of the sample's 
+rhythmic grid.
+The Sampler Module's (↑7.1, Sampler) output signal as well as the Slew Limiter Module's 
+output signal were recorded using Audio Tables. Please refer to section 11.2 in the Applica­
+tion Reference for information on recording signals with Table modules.
+Fig. 12.33 The Slew Limiter traces the signal incoming from the Sampler Module, depending on the slew rates set at the 
+"Up" and "Down" input ports.
+Audio Modifier
+Slew Limiter
+ 
+REAKTOR 5.5 - Module Reference - 655
+
+
+--- Page 656 ---
+
+Fig. 12.34 The left Audio Table (labeled "Beat Loop") shows the signal going into the Slew Limiter Module and the right 
+Audio Table (labeled "Slew Limiter") shows the signal coming out of the Slew Limiter whose slew rates are set with the knobs 
+on the top left.
+12.14 Peak Detector
+ 
+Fig. 12.35 Peak Detector Module
+12.14.1 Overview
+ 
+The Peak Detector Module detects the peak amplitude of the incoming Audio signal. Tech­
+nically, the input signal is rectified and smoothed with an adjustable release time. The re­
+sult is fed to the output. The attack time of peak detection is zero.
+Application
+The result of the Peak Detector’s action is that the output value follows the amplitude en­
+velope of the input. Use the Peak Detector Module as an envelope follower. Since the at­
+tack time of the peak detection is zero, you can use the Peak Detector Module when build­
+ing a simple compressor in the Primary Level.
+12.14.2 Ports
+ 
+Input Ports
+▪
+(Rel) "Rel" (release) is the logarithmic Event input port for controlling the release time 
+of the detected peak level. The release time is considered the time that it takes for a 
+detected peak level to fall to 1 / 10th of its value (given that no other peaks are detect­
+Audio Modifier
+Peak Detector
+ 
+REAKTOR 5.5 - Module Reference - 656
+
+
+--- Page 657 ---
+
+ed). Rel = 0 corresponds to 2.3 ms, Rel = 20 corresponds to 23 ms, Rel = 40 corre­
+sponds to 230 ms, and Rel = 60 corresponds to 2300 ms. It takes twice as long for 
+the peak level to fall to 1 / 100th of its original level.
+▪
+(In) "In" Audio input port for the signal whose peaks are to be detected.
+Output Ports
+▪
+(Out) "Out" Audio output port for the peak level of the incoming signal. When a nonzero 
+signal is present at the "In" input port the values at this output port are always positive.
+12.14.3 Example: Envelope Follower
+ 
+A good way to modulate your effects, filters, envelopes, and oscillators, is using envelope 
+followers. An envelope follower takes an input signal and uses its peaks to trigger an enve­
+lope whose amplitude matches that of the peak. The Structure in the figure below illus­
+trates such an envelope follower Structure, utilizing the Peak Detector (↑12.14, Peak De­
+tector), Differentiator (↑12.14, Peak Detector), Sample and Hold (↑12.15, Sample & 
+Hold), HR Envelope (↑9.4, HR - Env), and a 1-Pole Filter (↑10.2, HP/LP 1-Pole FM).
+The incoming signal that is to trigger the envelope is first fed into the Peak Detector Mod­
+ule (↑12.14, Peak Detector). Depending on the frequency of peaks, the release time of the 
+peaks in the Peak Detector's output signal is set with the "PkRel" knob at the "Rel" input 
+port. Next, the Peak Detector Module's output is fed to the Sample and Hold Module 
+(↑12.15, Sample & Hold). This signal is only sampled and held when a negative value at 
+the Sample and Hold Module's "Trig" (trigger) input port goes from a negative value to a 
+positive value. At the same time, the Differentiator Module (↑10.22, Differentiator) records 
+if the Peak Detector Module's output is rising or falling. Therefore, if the Peak Detector 
+signal goes from a falling state to a rising state, its output is sampled and forwarded to the 
+"A" (amplitude) input port of the HR Envelope Module (↑9.4, HR - Env). At the same time, 
+the HR Envelope Module is triggered (with this new amplitude, ultimately received from 
+the Peak Detector Module). The envelope's output signal is then smoothed by a 1-Pole Fil­
+ter (low-pass) where the value at its "P" (pitch) input port determines the amount of 
+smoothing.
+Audio Modifier
+Peak Detector
+ 
+REAKTOR 5.5 - Module Reference - 657
+
+
+--- Page 658 ---
+
+Fig. 12.36 The Structure for an envelope follower effect.
+12.15 Sample & Hold
+ 
+Fig. 12.37 Sample and Hold Module
+12.15.1 Overview
+ 
+The Sample and Hold Module comprises a sample & hold circuit with an input port for the 
+trigger signal. When a trigger signal arrives at the "Trig" (trigger) input port the current val­
+ue at the "In" input port is passed to the output and held there until the next trigger ar­
+rives, upon which a new value is fetched from the "In" input port. The result is a step 
+waveform at the output. The signal at the "Trig" input port sends a sample and hold trigger 
+when it rises from a negative value to a positive value (positive zero crossing).
+Application
+You can use the Sample and Hold Module to create a sample reduction effect. Make sure 
+that you have a periodic oscillating signal with precise frequency control at the "Trig" (trig­
+ger) input port. A Ramp Module would suffice for this. You can then control the sample 
+and hold frequency via the frequency of the Ramp Module (at its "F" (frequency) input 
+port). Note that the maximum sample reduction frequency is half the Nyquist frequency. 
+You can fetch this value from the System Info Module (↑14.20, System Info).
+Audio Modifier
+Sample & Hold
+ 
+REAKTOR 5.5 - Module Reference - 658
+
+
+--- Page 659 ---
+
+12.15.2 Ports
+ 
+Input ports
+▪
+(Trig) "Trig" (trigger) is the Audio input port for the trigger signal. When the signal at 
+this input port rises from a negative value to a positive value, it triggers the sample and 
+hold process.
+▪
+(In) "In" is the Audio input port for the signal to be sampled.
+Output Port
+▪
+(Out) "Out" is the Audio output port for the sampled signal.
+12.15.3 Example: Envelope Follower
+ 
+A good way to modulate your effects, filters, envelopes, and oscillators, is using envelope 
+followers. An envelope follower takes an input signal and uses its peaks to trigger an enve­
+lope whose amplitude matches that of the peak. The Structure in the figure below illus­
+trates such an envelope follower Structure, utilizing the Peak Detector (↑12.14, Peak De­
+tector), Differentiator (↑12.14, Peak Detector), Sample and Hold, HR Envelope (↑9.4, HR 
+- Env), and a 1-Pole Filter (↑10.2, HP/LP 1-Pole FM).
+The incoming signal that is to trigger the envelope is first fed into the Peak Detector Mod­
+ule (↑12.14, Peak Detector). Depending on the frequency of peaks, the release time of the 
+peaks in the Peak Detector's output signal is set with the "PkRel" knob at the "Rel" input 
+port. Next, the Peak Detector Module's output is fed to the Sample and Hold Module. This 
+signal is only sampled and held when a negative value at the Sample and Hold Module's 
+"Trig" (trigger) input port goes from a negative value to a positive value. At the same time, 
+the Differentiator Module (↑10.22, Differentiator) records if the Peak Detector Module's 
+output is rising or falling. Therefore, if the Peak Detector signal goes from a falling state to 
+a rising state, its output is sampled and forwarded to the "A" (amplitude) input port of the 
+HR Envelope Module (↑9.4, HR - Env). At the same time, the HR Envelope Module is trig­
+gered (with this new amplitude, ultimately received from the Peak Detector Module). The 
+envelope's output signal is then smoothed by a 1-Pole Filter (low-pass) where the value at 
+its "P" (pitch) input port determines the amount of smoothing.
+Audio Modifier
+Sample & Hold
+ 
+REAKTOR 5.5 - Module Reference - 659
+
+
+--- Page 660 ---
+
+Fig. 12.38 The Structure for an envelope follower effect.
+12.16 Audio Frequency Divider
+ 
+Fig. 12.39 Audio Frequency Divider Module
+12.16.1 Overview
+ 
+The Audio Frequency Divider Module is a pulse sub-oscillator with independently control­
+lable duration of the pulse's high and low states. The outgoing pulse wave is generated by 
+counting the positive zero crossings of the input signal. A positive zero crossing happens 
+then the signal rises from a negative value to a positive value. The frequency of the output 
+waveform will be a fraction of the frequency of the input waveform. The frequency ratio 
+between the output signal and the incoming zero crossings can be adjusted by the follow­
+ing formula: fout = 2 * fin / ( C+ + C– ) where "fout" and "fin" correspond to the frequen­
+cies of the outgoing signal and incoming zero crossings, respectively. "C+" and "C-" are ad­
+justable parameters at the corresponding input ports, as described below. An asymmetric 
+output waveform results when "C+" and "C-" have different values.
+Application
+The Audio Frequency Divider Module is the Audio counterpart of the Event Frequency Di­
+vider Module (↑13.4, Event Frequency Divider). You can use it create a regular pulsed 
+clock signal from an incoming period signal with zero crossings. The frequency stays the 
+same if both "C+" and "C-" are equal to "1". You can also creatively use the Audio Frequen­
+cy Divider Module as a pulse oscillator with a special type of Audio Rate pulse width mod­
+ulation at the "C+" and "C-" input ports.
+Audio Modifier
+Audio Frequency Divider
+ 
+REAKTOR 5.5 - Module Reference - 660
+
+
+--- Page 661 ---
+
+12.16.2 Ports
+ 
+Input Ports
+▪
+(C+) "C+" (positive clock) is the Audio input port for controlling the duration of the high 
+states of the output, in number of positive zero crossings of the input signal.
+▪
+(C-) "C-" (negative clock) is the Audio input port for controlling the duration of the low 
+states of the output, in number of positive zero crossings of the input signal.
+▪
+(A) "A" (amplitude) is the Audio input port for controlling the output amplitude. The 
+output signal switches between the high state (Out = +A) and the low state (Out = –A).
+▪
+(In) "In" is the Audio input port for the signal to be frequency-divided
+Output Ports
+▪
+(Out) "Out" is the Audio output port for the frequency divided signal.
+12.16.3 Example: Envelope Follower with Frequency Divider
+ 
+The Frequency Divider Module takes an Audio clock signal which is based on positive zero 
+crossings and turns it into an Audio clock signal which is based on pulses, including posi­
+tive zero crossings (when the output value goes from the low to the high pulse state). Addi­
+tionally, you can reduce the frequency of these pulses (and zero crossings) in respect to 
+the positive zero crossings of the incoming signal.
+Looking at the "envelope follower" example in the previous section (see also Sample and 
+Hold Module in ↑12.15, Sample & Hold), you might get the wish to be able to reduce how 
+many peaks detected by the Peak Detector Module (↑12.14, Peak Detector) actually go on 
+to trigger the HR Envelope Module (↑9.4, HR - Env). For this, use the Frequency Divider 
+Module, as shown in the figure below, to create an Audio clock signal with reduced fre­
+quency from the positive zero crossings sent from the Differentiator Module (↑10.22, Dif­
+ferentiator). For this application the amplitude of the outgoing Audio clock signal from the 
+Frequency Divider Module can be an arbitrary nonzero value, so we choose "1" (as indicat­
+ed by the constant connected to that Module's "A" (amplitude input port). With the Fre­
+quency Divider Module connected to the HR Envelope Module's (↑9.4, HR - Env)"Trig" 
+(trigger) input port, the envelope is triggered each time the Frequency Divider's output 
+goes from the low pulse state to the high pulse state (positive zero crossing). One this is 
+set up, you only have to define the frequency division factor by connecting values or knobs 
+to the "C+" and "C-" input ports of the Frequency Divider Module. For example, to have on­
+Audio Modifier
+Audio Frequency Divider
+ 
+REAKTOR 5.5 - Module Reference - 661
+
+
+--- Page 662 ---
+
+ly one in every four positive zero crossings at the Frequency Divider Module's input port 
+send a trigger signal to the HR Envelope Module, set both the "C+" and "C-" values to "2" 
+(as explained in the Ports subsection). Of course, since the Frequency Divider's output 
+pulse width does not matter here, you could also use values "1" and "3" for "C+" and "C-", 
+respectively, or even the other way around. In any case you will get a positive zero crossing 
+at the Frequency Module's output for every four positive zero crossings at its "In" input. 
+This way every fourth peak that is detected by the Peak Detector Module (↑12.14, Peak 
+Detector) actually triggers the HR Envelope Module.
+Fig. 12.40 In this modified envelope follower Structure, the Frequency Divider Module lets you filter out positive zero cross­
+ings which trigger the HR Envelope Module.
+12.17 Audio Table
+ 
+Fig. 12.41 Audio Table Module
+12.17.1 Overview
+ 
+The Audio Table Module holds a table of data values and offers read and write access to 
+these values. The values can be read out as an Audio signal and a Monophonic Audio sig­
+nal can be loaded from a file or written into the table via the "In" input port. Supported file 
+Audio Modifier
+Audio Table
+ 
+REAKTOR 5.5 - Module Reference - 662
+
+
+--- Page 663 ---
+
+types are the native table file (*.ntf), text file (*.txt), and the *.aif and *.wav audio files. 
+Stored values can be displayed and edited graphically with draw and data manipulation 
+functions on the Module's Panel representation.
+The internal table can be 1-dimensional (a row of values) where each cell is addressed by 
+the "RX" (read X) and "WX" (write X) input port for read and write operations, respectively. 
+It can also be 2-dimensional (a matrix of rows and columns, or a set of independent rows). 
+In the 2-dimensional case each cell is addressed by the "RX" (read X) and "RY" (read Y) 
+input ports for read operations and by the "WX" (write X) and "WY" (write Y) input ports for 
+write operations.
+The value at the "Out" output port is taken from the table by a read operation at the posi­
+tion given by the "RX" and "RY" input ports. With a "read pointer" to the table cells moving 
+at Audio Rate you can get an audible signal at the Audio Table's "Out" port.
+Incoming values at the "In" input port are written to individual cells according to the posi­
+tion determined by the "WX" and "WY" input ports, and only when a positive signal lies at 
+the "W" (write) input port.
+In the Panel representation's graphic display, "X" is the horizontal table cell position, 
+counted from left to right and "Y" is the vertical table cell position, counted from top to 
+bottom. The table cells are always counted starting with "0" for the first table cell. The Au­
+dio Table Module’s Panel representation can show all the data or a limited region of it. 
+You can control the range of displayed table cells in the horizontal dimension by specify­
+ing the "X" coordinate of the first displayed table cell at the "XO" (X origin) input port and 
+the number of displayed table cells in the "X" dimension at the "XR" (X range) input port. If 
+you have chosen a graph style that shows 2-dimensional tables, you can analogously speci­
+fy the coordinate of the first table cell in the "Y" dimension at the "YO" (Y origin) input port 
+and the number of displayed table cells in the "Y" dimension at the "YR" input port. Many 
+options in the Properties pages allow customizing the behavior.
+For full details on the Properties pages of the Audio Table Module and a tutorial on recording 
+and playing back an Audio signal, please refer to chapter 11 in the Application Reference.
+Application
+Use the Audio Table Module to record Audio signals within your Structure in a live setting. 
+With extensive possibilities for specifying and warping the read pointer, you can then play­
+back the recorded or loaded table data in a multitude of ways. You can also use the Audio 
+Table Module as an oscillator, as described in the tutorial in chapter 11 of the Application 
+Audio Modifier
+Audio Table
+ 
+REAKTOR 5.5 - Module Reference - 663
+
+
+--- Page 664 ---
+
+Reference. The read-out pointer then should be a ramp signal, as supplied by the Ramp 
+Module. Use the "DX" (dimension X) and "DY" (dimension Y) output ports to forward the 
+information about the table dimensions to the ramp signal generator such that the read 
+pointer fits the number of table cells.
+12.17.2 Ports
+ 
+Input Ports
+▪
+(RX) "RX" (read X) is the Audio input port for the "X" position of the table cell from 
+which the data is read.
+▪
+(RY) "RY" (read Y) is the Audio input port for the "Y" position of the table cell from 
+which the data is read. This is used in 2-dimensional tables for addressing the row 
+number if more than one row exists.
+▪
+(WX) "WX" (write X) is the Audio input port for the "X" position of the table cell to which 
+the value at the "In" input port is written. Write operations are executed when a posi­
+tive value lies at the "W" (write) input port.
+▪
+(WY) "WY" (write Y) is the Audio input port for the "Y" position of the table cell to which 
+the value at the "In" input port is written. Write operations are executed when a posi­
+tive value lies at the "W" (write) input port.
+▪
+(In) "In" is the Audio input port for the signal to be written into the table. When the 
+value at the "W" (write) input port is greater than 0, the value at the "In" input port is 
+written into the table cell that is at the position given by the "WX" and "WY" input 
+ports.
+▪
+(W) "W" (write) is the Audio input port for activating table write operation.
+▪
+(XO) "XO" (X origin) is the Event input port for the horizontal offset of the displayed da­
+ta region. "XO" controls which table cell appears in the left edge of the Panel represen­
+tation's graphic display. The values at this input port should be specified in the units 
+set with the X Units drop-down menu in the Function page.
+▪
+(XR) "XR" ( X range) is the Event input port for the horizontal range of the displayed 
+data region. "XR" controls how many units of data fit in the display, i.e. it lets you 
+graphically zoom into the data. The values at this input port should be specified in the 
+units set with the X Units drop-down menu in the Function page.
+Audio Modifier
+Audio Table
+ 
+REAKTOR 5.5 - Module Reference - 664
+
+
+--- Page 665 ---
+
+▪
+(YO) "YO" (Y origin) is the Event input port for the vertical offset of the displayed data 
+region. "YO" controls which table cell appears in the bottom edge of the Panel repre­
+sentation's graphic display. The values at this input port should be specified in the 
+units set with the Y Units drop-down menu in the Function page.
+▪
+(YR) "YR" (Y range) is the Event input port for the vertical range of the displayed data 
+region in a 2-dimensional graphic display. "YR" controls how many units of data fit in 
+the display, i.e. it lets you graphically zoom into the data. The values at this input port 
+should be specified in the units set with the Y Units drop-down menu in the Function 
+page.
+Output Ports
+▪
+(Out) "Out" is the Audio output port for the signal read from the table cell at the posi­
+tion controlled by the "RX" and "RY" input ports.
+▪
+(DX) "DX" (dimension X) is the Event output port for the horizontal size of the table in 
+units set with the X Units drop-down menu in the Function page. Use this output port to 
+forward the information about the table dimension to the Structures for the read and 
+write pointers such that they agree with the number of table cells.
+▪
+(DY) "DY" (dimension Y) is the Event output port for the vertical size of the vertical ta­
+ble in the units set with the Y Units drop-down menu in the Function page. Use this out­
+put port to forward the information about the table dimension to the Structures for the 
+read and write pointers such that they agree with the number of table cells.
+Audio Modifier
+Audio Table
+ 
+REAKTOR 5.5 - Module Reference - 665
+

@@ -1,0 +1,316 @@
+--- Page 209 ---
+
+16
+Table Framework
+ 
+The tutorial in section ↑8, Drag and Drop Sampler introduces the basics of the Table Frame-
+work in a practical application. This section is a more technical reference, giving you informa-
+tion regarding the fundamental functionality of the Framework.
+This section will also cover aspects of the Core level of REAKTOR, and thus it is advantageous
+to have experience with Core, or to read the REAKTOR 6 Building in Core document, before
+proceeding with this section.
+ 
+16.1
+Tables and Samples
+ 
+A Table is a two-dimensional array of numbers which, on a technical level, is the same as a
+stereo audio file. Digital audio is essentially a sequence of numbers, each representing a sam-
+pled amplitude value. Taken out of this audio context, each sample is like an element in an
+array and the amplitude values are just numbers in the array.
+The Table Framework allows you to share the data from an audio sample throughout an Ensem-
+ble Structure with ease. It also allows samples to be read as data in Core Cells, which enables
+the possibility of building sample-based DSP in Core.
+Currently the Table Framework is designed primarily for the sharing of audio data, and
+thus only accepts wav or aiff files; however, there are plans to expand the Table Frame-
+work in the future to make it more flexible.
+16.2
+Table Reference Wires
+ 
+As suggested by its name, the Table Reference wire does not send the contents of a Table
+along it; rather, it passes a unique reference to a Table’s memory location. This makes it unlike
+the other wires in REAKTOR, which transmit values. Table Reference wires simply join Mod-
+ules and Core Cells so that they share the same Table data.
+Table Framework
+Tables and Samples
+ 
+REAKTOR 6 - Building In Primary - 209
+
+
+--- Page 210 ---
+
+16.3
+Table Reference Ports
+ 
+Table Reference Ports can be identified by their orange square appearance.
+The Table Info Module has a Table Reference input
+For Built-in Modules, these ports are always labelled with a *.
+Certain other Modules can accept Table Reference Connections:
+•
+Merge
+•
+Order
+•
+Routers (all types)
+•
+Value
+•
+Switch
+•
+To/From Voice
+Ports that can accept Table Reference connections can be identified by their dark and hollow
+appearance.
+The Order Module can accept Table Reference connections
+Table Framework
+Table Reference Ports
+ 
+REAKTOR 6 - Building In Primary - 210
+
+
+--- Page 211 ---
+
+16.4
+The Table List Module
+ 
+The Table List Module
+This Module is the main Table manager and lets you maintain and select from a list of current-
+ly active Tables. It is the only Table Framework Module with Snapshot support and a Panel ele-
+ment.
+The Panel view of the Table List is the same as the List Module, and contains a list of the cur-
+rently active Tables.
+The Table List Panel Element
+16.4.1
+Adding a Table to the Table List
+ 
+There are two methods for adding a Table to the Table List:
+•
+A Table Reference Event at the *Ins input will insert the referred Table at the index set at
+the Idx input and pushes any existing tables down the list.
+•
+A Table Reference Event at the *Wr input will overwrite any Table at the index set at the
+Idx input. If the index is greater than the highest index currently used, then the new Table
+will be added to the end of the list.
+Table Framework
+The Table List Module
+ 
+REAKTOR 6 - Building In Primary - 211
+
+
+--- Page 212 ---
+
+16.4.2
+Removing a Table from the Table List
+ 
+To remove a Table from the Table List:
+1.
+Send a value to the Idx input to select a Table index.
+2.
+Send an event to the Del input to delete the Table at the selected index.
+⇨Upon deletion, the N and, if necessary, the Idx output values are updated.
+If the currently selected Table was deleted, then the * Table Reference output is set to
+Null. In this case the Idx output is set to 1.
+16.4.3
+Selecting a Table Reference to Output
+ 
+There are two methods for selecting a Table Reference:
+From the Structure
+1.
+Send a value to the Idx input to select a Table index.
+2.
+Send an event to the Sel input to trigger the selection.
+⇨The Idx output will update and the selected Table Reference will be sent from the * out
+port.
+When a selection is made from the Structure, the Table List’s Panel element will be updated
+to show which Table has been selected.
+Idx in port values should be kept between zero and max index. Anything outside this
+range is ignored.
+From the Panel
+The Panel view of the Table List can be used to select a table.
+1.
+Click on a Table Reference in the Table List to select it.
+1.
+⇨The Idx output will update and the selected Table Reference will be sent from the * out
+port.
+Table Framework
+The Table List Module
+ 
+REAKTOR 6 - Building In Primary - 212
+
+
+--- Page 213 ---
+
+16.5
+The Sample Map Module
+ 
+The Sample Map Module
+The Sample Map Module allows you to send sample data from a Sample Map into a Core Cell
+or Table Framework Module as a Table.
+•
+The sample is selected using the pitch (P) and velocity (Vel) inputs.
+•
+The sample is then sent to the output as a Table when an Event is sent to the Trig input.
+16.6
+The Table Info Module
+ 
+The Table Info Module
+The Table Info Module outputs a specific piece of information (meta-info) about the current
+table, such as Sample Rate, Table Size, Loop Points, etc.
+•
+The table meta-info to be read is selected in the Module Properties.
+•
+If the meta-info is not present in the selected table, then the Miss output sends a value of
+1.
+•
+If the meta-info is present, then the value is sent from the Val output.
+Table Framework
+The Sample Map Module
+ 
+REAKTOR 6 - Building In Primary - 213
+
+
+--- Page 214 ---
+
+16.7
+The Table Location
+ 
+The location of a Table depends on its origin:
+•
+When using the Sample Map Module, the location of the Table is the same as that of the
+sample. So if the sample is embedded, then the Table will also be embedded in the En-
+semble; if the sample is not embedded, then the Table maintains a reference to the loca-
+tion on the disk.
+•
+A Table that originated from an embedded sample in the Sample Map Module remains
+embedded when it is stored in a Table List Module.
+•
+A sample that was dragged onto the Mouse Area Module and then stored in a Table List
+maintains a reference to the location on the disk, like a non-embedded sample.
+16.8
+Drag and Drop
+ 
+The Mouse Area Module supports the dragging and dropping of Table References.
+16.8.1
+The Drag and Drop Process
+ 
+To give the builder full control over which samples are accepted and when, the following se-
+quence happens when a user drags a sample or a group of samples over the Mouse Area:
+•
+When the user drags a sample or a group of samples over the Mouse Area this is a drop
+request and the DrpG out port is set to 2.
+•
+The *Drp out port iterates through the Table Reference of all samples being dragged.
+•
+When the Table Reference iteration is finished, the DrpG out port is set to 0 and the *Drp
+output is set to Null.
+•
+If DpA is set to 1, then the samples may also be dropped by the user by releasing the
+mouse button.
+•
+When the user releases the mouse button, the DrpG out port is set to 1 (indicating drop
+receive).
+Table Framework
+The Table Location
+ 
+REAKTOR 6 - Building In Primary - 214
+
+
+--- Page 215 ---
+
+•
+The *Drp out port iterates through the Table Reference of all samples being dropped.
+•
+When the Table Reference iteration is finished, the DrpG out port is set to 0 and the *Drp
+output is set to Null.
+16.8.2
+Dragging a Table Reference from a Mouse Area
+ 
+You can also drag a Table Reference out of a Mouse Area and into another one.
+When a drag event happens on the Mouse Area, the *DgI in port listens for any incoming Table
+References and these are added to the dragged object.
+Example: Dragging a Table Reference from one Mouse Area to Another
+An Example Structure Illustrating Drag and Drop between Mouse Area Modules.
+In the above example, when the user clicks to start dragging from the Source Mouse Area, the
+*DgI in port is fed with a Table Reference to the sample at note 0 in the Sample Map.
+The Table Reference can then be dragged and dropped into the Destination Mouse Area, where
+it is subsequently stored in a Table List Module.
+Table Framework
+Drag and Drop
+ 
+REAKTOR 6 - Building In Primary - 215
+
+
+--- Page 216 ---
+
+The Example Structure’s Panel View.
+16.9
+Table References in Core
+ 
+16.9.1
+TableRef Input
+ 
+A Table Reference can be passed into a Core Cell by using the TableRef input type.
+1.
+Insert a TableRef input by right-clicking on the input area to the left and selecting New ->
+TableRef from the menu.
+1.
+⇨A TableRef input will be created.
+By default, the TableRef input will have 2 outputs, one for each channel of a stereo sample.
+•
+Output [0] references the data in the left channel.
+Table Framework
+Table References in Core
+ 
+REAKTOR 6 - Building In Primary - 216
+
+
+--- Page 217 ---
+
+•
+Output [1] references the data in the right channel.
+•
+If the audio sample is mono, then both outputs reference the same mono data.
+The number of outputs from the TableRef can be set in its Properties:
+1.
+Select the TableRef input and open its Properties.
+2.
+Navigate to the Function tab.
+3.
+Use the Output Count parameter in the FUNCTION section to set the number of outputs.
+4.
+Currently the output count can only be 2 or 1, so set the Output Count parameter to 1 to
+see how the TableRef input changes.
+⇨The TableRef input will be reduced to 1 output.
+16.9.2
+Accessing Table References
+ 
+In Core, a Table Reference is accessed and treated like a normal Core Array or Table. The data
+in the Table can be accessed using the Index and Read Modules or the Read [] Macro.
+An example of a Core Structure that reads the data from a Table Reference
+At the time of writing Tables are read only; data cannot be written into a Table Refer-
+ence.
+You can access the size of the Table using the Size [] Module.
+Table Framework
+Table References in Core
+ 
+REAKTOR 6 - Building In Primary - 217
+
+
+--- Page 218 ---
+
+Reading the Table size using the Size [] Module
+The Size [] Module will also output an Event any time the Table Reference is updated from the
+Primary level. So the Size [] Module can be used to trigger any processes that need to happen
+after a new Table is loaded.
+16.9.3
+Deleting Tables
+ 
+When a Table is deleted from the Table List Module and the Table Reference becomes Null,
+the Size [] Module in Core will not send out a new Event. This means that deleting a Table will
+not be registered in Core in the same way as changing a Table. Therefore, it is important to
+build your own structure in Core to deal with the deletion of Tables.
+Although precautions have been put in place so that REAKTOR should not crash, read-
+ing data from a deleted table is a behavior that is undefined and should be avoided.
+Table Framework
+Table References in Core
+ 
+REAKTOR 6 - Building In Primary - 218
+

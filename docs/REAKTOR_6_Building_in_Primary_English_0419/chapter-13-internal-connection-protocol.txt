@@ -1,0 +1,111 @@
+--- Page 197 ---
+
+13
+Internal Connection Protocol
+ 
+The Internal Connection protocol (IC protocol, in short) is a feature that lets you send and re-
+ceive Events to and from different parts of the structure without the need of wires. It also al-
+lows you to directly connect panel elements to each other, or to other IC Modules.
+13.1
+Connecting Two Panel Elements via the IC Protocol
+ 
+First of all, you will need to create two controls:
+1.
+Create a new Ensemble.
+2.
+Unlock the Panel.
+3.
+Right-click the Panel area and choose the Built-In Module > Knob menu entry.
+4.
+Repeat the previous step to create a second Knob.
+5.
+Move the Knobs so that they do not overlap.
+6.
+Double-click on each knob's label and rename the knobs to “Knob A” and “Knob B”.
+7.
+Lock the Instrument Panels by pressing the Panel Lock button.
+With the knobs in place, you can now use Internal Connections to control Knob B with Knob A:
+1.
+Select Knob A to view its properties and navigate to the Connect tab.
+2.
+At the bottom of the Connect tab is an area called INTERNAL CONNECTIONS.
+Internal Connection Protocol
+Connecting Two Panel Elements via the IC Protocol
+ 
+REAKTOR 6 - Building In Primary - 197
+
+
+--- Page 198 ---
+
+3.
+In this area is a button labelled To…, click on this to activate Knob A as a potential IC
+Send Module.
+4.
+Go to the Connect tab of Knob B and find the INTERNAL CONNECTIONS area.
+5.
+Click on the From… button to activate Knob B as a potential IC Receiver.
+⇨Since Knob A was already activated as a potential IC Send, a "wireless" connection is made
+between Knob A and Knob B.
+If you now move Knob A, Knob B will mirror the value of Knob A. However, if you move Knob
+B, Knob A will remain as it was. Note that this holds true even if Knob B has a different value
+range than Knob A.
+You can also set up an additional Internal Connection with Knob B as the sender and
+Knob A as the receiver. REAKTOR handles this in such a way as it will not cause any
+infinite feedback loops.
+Internal Connection Protocol
+Connecting Two Panel Elements via the IC Protocol
+ 
+REAKTOR 6 - Building In Primary - 198
+
+
+--- Page 199 ---
+
+13.2
+IC Send/Receive Modules
+ 
+As well as being able to connect controls to each other, REAKTOR also includes IC Send and
+IC Receive modules for other uses.
+The IC Send and IC Receive Modules
+To give an example of how this works, this tutorial will show you how to create a knob that de-
+activates a button whenever it is set to zero.
+1.
+Create a new Ensemble.
+2.
+Enter the Ensemble structure and create a Knob, a Button, and an IC Send Module.
+You will now need a way of sending a zero event only when the knob is at zero.
+1.
+Create a Separator Module (Built-In-Module > Event Processing) to split the events from
+the Knob depending on their value.
+2.
+Connect the output of the Knob to the In port of the Separator, and then connect the Lo
+out port of the Separator to the IC Send Module.
+3.
+The Thld (threshold) port of the Separator does not need a Constant attached, since it de-
+faults to zero, which is the value needed in this example.
+Internal Connection Protocol
+IC Send/Receive Modules
+ 
+REAKTOR 6 - Building In Primary - 199
+
+
+--- Page 200 ---
+
+4.
+You can connect the IC Send module to the Button in the same way as described in the
+previous section.
+5.
+In order for everything to work as desired, you will need to activate the Always Active op-
+tion in the Function tab of the IC Send properties.
+⇨When you return to the Panel, you will be able to active the Button by clicking on it, and
+then deactivate it by turning the Knob to 0.
+On the panel you will also notice that the IC Send has a Panel element. This control allows you
+to make or break Internal Connections with any IC enabled Module from the Panel.
+The settings made with this control are not saved in the Snapshot, but are saved in the Ensem-
+ble. As such, this control is generally reserved for helping with prototyping, and is often hidden
+when releasing an Ensemble to the public.
+ 
+Internal Connection Protocol
+IC Send/Receive Modules
+ 
+REAKTOR 6 - Building In Primary - 200
+

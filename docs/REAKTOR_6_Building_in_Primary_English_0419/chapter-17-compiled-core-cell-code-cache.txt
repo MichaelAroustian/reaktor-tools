@@ -1,0 +1,68 @@
+--- Page 219 ---
+
+17
+Compiled Core Cell Code Cache
+ 
+When opening an Ensemble with large Core Cell structures in REAKTOR, a cache file of the
+compiled Core Cell code is saved on your hard drive. The next time you load the Ensemble,
+REAKTOR will access this cache file and skip the compiling stage, which significantly speeds
+up the loading process.
+•
+The Compiled Core Cell Code is only used when REAKTOR is in Play Mode.
+•
+Switching to Edit Mode when using Ensembles with large Core Cell structures causes a re-
+load of the Core Cells, which can cause REAKTOR to pause momentarily.
+17.1
+Default Cache Location
+ 
+The default location of the Compiled Core Cell Code Cache is:
+•
+Windows: C:\Users\<your user name>\AppData\Local\Native Instruments\Reaktor6\Cache \
+•
+OS X: Macintosh HD/Users/<your user name>/Library/Application Support/Native Instru-
+ments/Reaktor6/Cache/
+17.1.1
+Changing the Compiled Core Cell Code Cache Location
+ 
+To change the Compiled Core Cell Code Cache location:
+1.
+Open the Preferences window by clicking on Preferences… in the File menu or by press-
+ing [Ctrl] + [,] on Windows or [Cmd] + [,] on OS X.
+2.
+Navigate to the Directories tab. At the bottom of the Directories tab you will see an area
+labeled Compiled Core Cell Code Cache.
+Compiled Core Cell Code Cache
+Default Cache Location
+ 
+REAKTOR 6 - Building In Primary - 219
+
+
+--- Page 220 ---
+
+3.
+To change the Cache location, either click on the browser button on the left to locate the
+target directory on your system, or type in the location manually.
+4.
+Click Close to close the window.
+5.
+If your operating system prompts you, allow REAKTOR to make changes to your hard
+drive.
+17.2
+Purging the Compiled Core Cell Code Cache
+ 
+1.
+To delete all unused or corrupt files from the Cache directory, click on the Clean Up but-
+ton under Compiled Core Cell Code Cache in the Directories tab of the Preferences.
+The following files will be deleted:
+•
+Any Compiled Core Cell Code file for which the parent Ensemble can no longer be found
+•
+Any corrupt Compiled Core Cell Code files
+You can remove all of the files in the Cache manually, but REAKTOR will re-create the Com-
+piled Core Cell Code files the next time you load Ensembles containing large Core Cell struc-
+tures in Play mode.
+Compiled Core Cell Code Cache
+Purging the Compiled Core Cell Code Cache
+ 
+REAKTOR 6 - Building In Primary - 220
+

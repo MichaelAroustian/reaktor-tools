@@ -1,0 +1,614 @@
+--- Page 107 ---
+
+5
+Building Practices and Conventions
+ 
+5.1
+Expression Computation
+ 
+The simultaneity of event processing in REAKTOR Core makes the computation of single-argu-
+ment mathematical expressions quite straightforward. One thing to keep in mind is that, as a
+general rule, it is better to connect the constants to the Modulation Macros:
+Computation of the x/(1+|x|) formula by a Core Macro.
+The reason for using Modulation Macros is clearly illustrated by the following Structure:
+A questionable implementation of the 1/x^2 formula.
+Building Practices and Conventions
+Expression Computation
+ 
+REAKTOR 6 - - 107
+
+
+--- Page 108 ---
+
+The problem is that if there is no input event during the initialization, the constant at the up-
+per input of the divider will trigger the computation. Since no event has ever arrived at the low-
+er input of the divider, though, the value at this input is zero. Therefore a division by zero will
+be performed, causing an INF value to be sent further downstream (see section ↑5.5, Denor-
+mals and Other Bad Numbers for further details on why this should rather be avoided) Howev-
+er, if it is certain that the initialization event will arrive at the lower input of the divider, the
+above Structure can be used.
+The computation of multiple argument expressions is fairly straightforward as well, except that
+one needs to watch for potential initialization issues.
+Computing x^2+y^2.
+5.2
+Generation of Audio and Other Regularly Clocked Events
+ 
+The audio-generating Structures typically should be internally clocked by the SR.C:
+Building Practices and Conventions
+Generation of Audio and Other Regularly Clocked Events
+ 
+REAKTOR 6 - - 108
+
+
+--- Page 109 ---
+
+A naïve (non-antialiased) sawtooth generator Macro.
+The 1 wrap Macro used in the above Structure is found under Library > Math.
+There is a general convention for the audio generating and processing Modules that they
+should perform their 'sample tick' computations and send output events in and only in
+response to the SR.C. The usage of the modulation adder in the above sawtooth oscilla-
+tor ensures that no additional events (from the F input) will cause iteration triggering
+and/or sending of an output event.
+The same convention applies for CR-clocked processing and is a good candidate for the
+application to other regularly clocked Structures.
+Rather than binding the Macro to the usage of the SR bus available in the context, it might be
+useful to allow an SR Bundle to be connected explicitly to a dedicated input of the Macro. A
+useful pattern for this is illustrated in the following picture:
+Building Practices and Conventions
+Generation of Audio and Other Regularly Clocked Events
+ 
+REAKTOR 6 - - 109
+
+
+--- Page 110 ---
+
+A Macro with a dedicated SR input port.
+The Macro employs the Scoped Bus overriding technique to redefine the SR bus locally. If
+there is no connection at the SR input of the Macro, the redefined bus will simply be connect-
+ed to the SR bus from the Macro's parent context, so the Macro will work exactly in the same
+way as if the SR bus was not redefined at all. However, if there is an explicit connection at the
+SR input of the Macro, the Macro will use the explicitly connected SR Bundle instead.
+An audio generating Structure might also need to perform some specific actions in response to
+the SR.Reset. For a free-running oscillator, however, the Reset event can be completely ignored.
+The above trick involving the local redefinition of the SR Scoped Bus will not work cor-
+rectly inside a non-solid Macro, since the bus redefinition will also affect the outside
+Structure. In this case the internal wiring of the SR.C, SR.R and SR.Reset needs to be
+done using normal wires and/or QuickBuses.
+5.3
+Processing of Audio and Other Regularly Clocked Events
+ 
+The processing of audio and other regularly clocked events is similar to the generation. Besides
+the usage of Modulation Macros in places where the control signals are mixed with audio
+events, it is a good idea to reclock the audio input with SR.C just in case that a non-audio sig-
+nal is connected to the input from the outside (one particularly common case of this is leaving
+an input disconnected, which implies a zero constant):
+Building Practices and Conventions
+Processing of Audio and Other Regularly Clocked Events
+ 
+REAKTOR 6 - - 110
+
+
+--- Page 111 ---
+
+A naïve 1-pole lowpass filter.
+Discrete-time difference LTI systems can be directly implemented in REAKTOR Core by simply
+wiring up the system's block diagram using the z^-1 fbk and z^-1 ffd Macros for z-1 blocks, mod-
+ulation multipliers for gains, and adders for summation points. The above picture provides an ex-
+ample.
+In the above Structure the Latch and the z^-1 fbk Macros serve as SR.C-clocked signal sour-
+ces, which are then combined in various ways. The only other signal which is coming in (the
+normalized cutoff control signal derived from the input "F") is connected via a Modulation Mac-
+ro. This ensures that no other clocks or trigger sources can accidentally generate an output
+event.
+The same convention as for the audio generators is applied here: the output signal
+events must be produced in and only in response to SR.C. The same convention applies
+to CR.C and potentially to other regular clocks.
+The SR.Reset fiber is automatically handled by the internal Structure of the z^-1 fbk Macro, so
+that the filter's state is zeroed in response.
+In the above filter Structure the processing of the cutoff control input "F" is not done by the
+Modulation Macros. If the F signal is clocked by CR.C, the filter Structure might seem to vio-
+late the above guidelines of processing the clock signals, however in fact this does not.
+The clocking guidelines apply to entire Library or framework Macros, not to some parts
+of their internal Structure.
+Building Practices and Conventions
+Processing of Audio and Other Regularly Clocked Events
+ 
+REAKTOR 6 - - 111
+
+
+--- Page 112 ---
+
+Imagine a modulation multiplier had been used to combine F with the 6.28319/SR.R
+value. Furthermore, imagine there was change of the sampling rate without a change of
+the F input's value at the same time. In this case, the multiplier output would not have
+been updated, which would have clearly been a bug.
+As to whether one should have used a modulation divider to compute 6.28319/SR.R, this does
+not matter since SR.R should be guaranteed to arrive during the initialization.
+Had this guarantee not been in place, the divider could have produced an INF value at
+the initialization, which would most likely result in a NaN value stuck in the filter feed-
+back loop (see section ↑5.5, Denormals and Other Bad Numbers).
+5.4
+Rounding
+ 
+There is only one type of rounding available in Core by default: rounding to the nearest integer.
+The other rounding modes (rounding down, rounding up and rounding towards zero) are not
+provided. There are a number of technical reasons behind this, related to the precision and ef-
+ficiency of the generated code.
+While in principle the other rounding modes could be implemented as Core Macros, often the
+same Structures can be implemented just using the round-to-nearest mode, thereby not losing
+the efficiency. For example, an interpolated read from a buffer in a classical implementation
+rounds the non-integer position x down to an integer n and then performs a linear interpolation
+between the values at n and n+1, where the interpolation weights are 1-(x-n) and x-n. Howev-
+er, instead one could round (x-0.5) to the nearest integer. Since for values with a fractional
+part of exactly 0.5 the round-to-nearest direction is not specified, sometimes, for an exact inte-
+ger x, the value x-0.5 will be rounded to n=x-1 rather than n=x. However, for the interpolation
+it does not matter, since the interpolation weights in this case will be 0 and 1 instead of 1 and
+0, producing the same result.
+One might need to ensure that the buffer has at least one 'extra sample' on each side of the re-
+gion, which is read by the interpolator (this is usually a good idea regardless of the rounding mode
+used, since there can be precision losses in the computations). These extra samples can be set to
+an arbitrary value (within the same value range as the typical values in the buffer), since the in-
+terpolation weights for the extra samples will be very close to zero.
+Building Practices and Conventions
+Rounding
+ 
+REAKTOR 6 - - 112
+
+
+--- Page 113 ---
+
+In situations where a division result needs to be rounded down, usually an integer divi-
+sion is meant semantically and this is what normally should be used as well. Note that
+the integer division rounding mode is 'towards zero'.
+The reason that the integer division rounding mode is 'towards zero' rather than 'down' is that this
+is the mode supported by modern processors. Implementing a rounding down mode instead would
+produce a higher CPU load. However, there is no difference between the two modes for non-nega-
+tive integers.
+The rounding down mode of the integer division seems to be generally more useful in
+signal processing applications. Therefore, if future processors support this mode natively
+in an efficient way, it is possible that Core integer division will also employ this mode.
+While in this case Core will probably implement a legacy mode switch, it is recommend-
+ed to stay away from relying on specific rounding direction when there are negative inte-
+gers involved in the division.
+5.5
+Denormals and Other Bad Numbers
+ 
+The IEEE floating point representation, which is typically used on modern computers, has sev-
+eral different classes of special values, which are often processed at a much higher CPU time
+cost. A single value of this sort occasionally popping up in the real-time data should not cause
+noticeable harm. The problem is that quite often these values tend to stick in the state memo-
+ry for quite long periods of time, if not forever (that is until the memory reinitialization).
+Denormals
+In 32 bit floating point, denormals are the values approximately in the absolute magnitude
+range between 10-37 and 10-45. The values below this range cannot be represented in this for-
+mat and are replaced by zeros.
+For 64bit floating point the denormal range is approximately between 10-307 and 10-324 in magni-
+tude.
+Building Practices and Conventions
+Denormals and Other Bad Numbers
+ 
+REAKTOR 6 - - 113
+
+
+--- Page 114 ---
+
+One most critical situation where denormals can appear is exponentially decaying feedback
+loops (such as feedback loops in the filters, feedback delays, reverbs, etc.). Denormals appear
+when the signal level decays to 10-38 and stays there for a while until it drops below 10-45,
+which, depending on the decay speed, can take quite a while.
+Denormals are also generated in some other situations as well.
+In order to mitigate the above problem, REAKTOR Core offers a DN Cancel Module whose pur-
+pose is to kill the denormals. In the current implementation it is done by adding a small value
+to the incoming signal.
+•
+If the incoming value is within a typical signal value range (approximately above 10-10),
+then the addition of the denormal compensation value will not change the incoming value
+at all, due to the limited precision of the floating point.
+•
+If the incoming value is lower (including the denormal range), it will be possibly modified,
+but, due to the limited precision of the floating point, will also never produce a denormal
+result.
+Because the denormals are so likely to appear in feedback loops, the library z^-1 fbk
+Macro includes a DN Cancel internally.
+An additional side effect of the DN Cancel embedded into z^-1 fbk is that the z^-1 fbk acts as an
+internal excitation source for the self-oscillating filters, like circuit noise in an analog filter. In ab-
+sence of the DN Cancel such filters would not produce signals on their own without an external
+excitation signal.
+Denormals are rarely a problem in feedback loops that are not exponentially decaying.
+For example, typical oscillator Structures include some kind of feedback loop, which is
+implicitly formed between the Read and the Write Modules in the oscillator's phase in-
+crement Structure. However, since this Structure is not exponentially decaying, but rath-
+er produces a repeating ramp signal, the denormals are not a problem here.
+Modern CPUs can often be configured in such way that denormals do not cause extra CPU load
+(typically in this mode the CPUs simply flush them to zero). So, denormals have become less
+of a problem in recent years. Nevertheless, it is probably reasonable to take measures against
+them anyway because:
+Building Practices and Conventions
+Denormals and Other Bad Numbers
+ 
+REAKTOR 6 - - 114
+
+
+--- Page 115 ---
+
+•
+we do not know how the situation with handling of denormals by CPUs will develop in the
+future.
+•
+at some point REAKTOR Core might support a different processor architecture, which
+does have problems with denormals.
+•
+DN Cancel can serve as an internal excitation source for self-oscillating filters.
+Infinities
+Dividing a non-zero value by zero will produce an infinity (INF). INFs have a tendency to 'stick'
+in the processing path for a long time, and they also have an increased risk of being converted
+into a NaN.
+NaNs
+A NaN (not-a-number) is typically produced when some mathematical operation cannot deliver
+a valid result. If combined with another value a NaN would normally produce another NaN,
+which results in the tendency of NaNs to 'stick' in the processing paths, similarly to the INFs.
+Initialization problems in filter Structures are one typical source of stuck NaNs, quite likely with
+some infinities generated along the way.
+There is no embedded way in REAKTOR Core to kill NaNs (or infinities). It is the respon-
+sibility of the builder to prevent their appearance.
+5.6
+Optimization hints
+ 
+5.6.1
+Core Cell Handlers
+ 
+When compiling a Core Cell, the compiler generates a number of different functions, or 'han-
+dlers', which correspond to the Primary level internal Module API:
+•
+Initialization handler: This handler is invoked once at the very beginning of processing and
+also upon a 'hard reset' of a Core Cell.
+Building Practices and Conventions
+Optimization hints
+ 
+REAKTOR 6 - - 115
+
+
+--- Page 116 ---
+
+•
+Event handlers: Each of the event-mode inputs of the Core Cell has a corresponding event
+handler. The event handler unconditionally sends the event from the respective input into
+the Core Cell's Structure.
+•
+Audio handler: This handler is invoked on each audio tick. The audio clock event is uncon-
+ditionally sent from all respective sources inside the Core Cell.
+Each of the handlers is compiled and optimized separately.
+•
+The compiler identifies the areas of the Structure which do not receive any events within
+the particular handler and does not generate the respective code.
+•
+The compiler identifies the events which are being sent unconditionally within the partic-
+ular handler (e.g. an audio clock within the audio handler) and does not generate any run-
+time checks for these events.
+•
+For events that are sent conditionally the compiler generates the runtime checks, which
+determine whether a particular event is being sent or not.
+5.6.2
+Latches and Modulation Macros
+ 
+Often in Structure building there is a question of whether a Latch should be used at a particu-
+lar position. In answering this question the logical function of the Latch and the associated
+CPU consumption can be considered. As it was already mentioned, the compiler is treating
+latches (and the 'read followed by a write' pattern in general) in a special optimized way. Thus,
+the relationship between the usage of a Latch at a particular place and the associated change
+in the CPU load is not straightforward.
+•
+Generally, if it is not necessary to store the value into the memory (because the value is
+immediately read afterwards anyway), the compiler will not do so. In such situations a
+Latch by itself will not add to the CPU load.
+•
+On the other hand, not placing a Latch on some signal path may result in a more compli-
+cated triggering logic of the downstream Structure and thus in a higher CPU load pro-
+duced not by the Latch itself, but by this downstream Structure.
+Thus, there is no general rule whether using a Latch will increase the CPU load or decrease it.
+It is best to simply use latches wherever logically appropriate.
+As Modulation Macros are simply shortcuts for the mathematical operations combined with Latch-
+es, the same applies to the Modulation Macros.
+Building Practices and Conventions
+Optimization hints
+ 
+REAKTOR 6 - - 116
+
+
+--- Page 117 ---
+
+The already familiar naive 1-pole lowpass filter Structure illustrates:
+A naïve 1-pole lowpass filter.
+Depending on the clocking of the signal at the upper input there are the following two typical
+situations:
+•
+If the input signal is already clocked at the audio rate, the latch at the input is fully trans-
+parent and is not going to produce any compiled code.
+•
+If the input signal is not an audio rate signal, the latch will store its value upon the arrival
+of the input event, the value being read back upon every audio clock.
+The compiler will also handle a number of more complicated situations in regards to the input
+signal clocking relative to the audio clock.
+As for the cutoff control signal at the F input, the same situations are handled in the following
+ways:
+•
+If the cutoff is an audio rate signal, the output of the first multiplier will be directly used
+by the internal multiplier of the Modulation Macro during the audio clock processing.
+•
+If the cutoff is not an audio rate signal, the internal latch of the modulation multiplier will
+store the value, and read it back upon the following audio clock tick.
+On the other hand, the following Structure illustrates the case where a usual multiplier had
+been used instead of the modulation multiplier:
+Building Practices and Conventions
+Optimization hints
+ 
+REAKTOR 6 - - 117
+
+
+--- Page 118 ---
+
+A naïve 1-pole lowpass filter with a buggy use of a non-modulation multiplier.
+In the above Structure the following problems would have arisen if a non-audio event arrives at
+the F input.
+•
+The non-audio event at the F input will trigger the computation and the sending of the
+new output value at an inappropriate (non-audio-clock) time moment.
+•
+The subtraction, which is normally done on the audio clock, will not be triggered during
+this non-audio computation, since neither the z^-1 fbk Macro nor the input latch send an
+event. However, the second multiplier and the adder will be triggered and the computa-
+tion result will be stored in the z^-1 fbk Macro, overriding the previously stored state.
+Thus, the filter will have performed a 'halfway update cycle', basically destroying its own
+state.
+•
+The triggering conditions of the second multiplier and of the adder will be a mixture of
+the audio clock and the cutoff event. If the audio clock is not the default clock (which is
+unconditionally sent during the audio handler), but something else (e.g. downsampled or
+gated audio clock), the mixture will require the compilation of a runtime check before the
+second multiplier, causing a higher CPU load.
+Thus a removal of the Latch from the Modulation Macro in the above 1-pole filter Structure
+could have caused both incorrect functioning and a higher CPU load.
+5.6.3
+Routing and Merging
+ 
+The compiler recognizes the following routing/merging patterns:
+Building Practices and Conventions
+Optimization hints
+ 
+REAKTOR 6 - - 118
+
+
+--- Page 119 ---
+
+•
+Two signal branches from a router are merged back afterwards. Such merging is treated
+like an endpoint of the splitting:
+•
+A branch is being merged back to the pre-router signal. This is also a kind of endpoint of
+the splitting:
+Triggering-wise, most of the arithmetic Modules are equivalent to the Merge Modules and are also
+subject to a similar recognition by the compiler.
+The above patterns imply that no additional triggering events have been merged into the
+branch (e.g. the branch is consistently employing Modulation Macros to mix in further signals).
+The following Structure illustrates this:
+Building Practices and Conventions
+Optimization hints
+ 
+REAKTOR 6 - - 119
+
+
+--- Page 120 ---
+
+An incorrect merging of two branches.
+The Structure is supposed to add the lower input to the negative values of the upper input,
+while the non-negative values should be left untouched. The Structure however neither works
+as expected nor the mergepoint really merges the two signal branches back (triggering-wise).
+•
+If the events arrive simultaneously at both inputs of the Macro, the event at the lower in-
+put will trigger the adder. The adder will use the latest negative value of the upper input
+(which is available at the lower output of the router) as the other addend. The result of
+the addition will be sent through the Merge Module to the Macro's output regardless of
+the sign of the value at the upper input.
+•
+If an event arrives at the lower input only, the situation is similar. The adder will use the
+latest negative value as the other addend and send it through the Merge to the output.
+•
+If an event arrives at the upper input only, the Structure works as expected. The value is
+forwarded to the output untouched.
+Regarding the triggering conditions of the output, rather than being identical to those of the
+input, they are a complicated mixture of the triggering conditions of the first and the second
+inputs and the sign of the value at the upper input. Thus, no splitting endpoint occurs trigger-
+ing-wise.
+Replacing the adder with a modulation adder will fix all of the above problems.
+The above example and other kinds of merging do not correspond to the splitting end-
+points, because the post-mergepoint triggering information is not identical to the pre-
+router triggering information. Therefore there is additional CPU overhead at the merging
+point due to the necessity of checking the runtime triggering condition for the subse-
+quent signal path.
+Building Practices and Conventions
+Optimization hints
+ 
+REAKTOR 6 - - 120
+
+
+--- Page 121 ---
+
+The compiler does not recognize identical or related conditions originating from different
+BoolCtl sources. A merging of such signals will produce additional runtime overhead as any
+merging of unrelated signals:
+A merging of two formally unrelated signals.
+Neither does the compiler identify 'always true' or 'always false' conditions from numerical
+comparisons:
+The compiler will not recognize that the event is always routed to the upper output.
+Disconnected BoolCtl ports are recognized as providing constant control conditions.
+Building Practices and Conventions
+Optimization hints
+ 
+REAKTOR 6 - - 121
+
+
+--- Page 122 ---
+
+ES Ctl
+The BoolCtl signal produced by an ES Ctl Module is in the true state when there is an incom-
+ing event at the ES Ctl Module's input at the very same,moment, and in the false state other-
+wise. Thus, the ES Ctl Module allows you to check whether some event and the event at the
+Router's input are arriving simultaneously.
+The routing controlled by ES Ctl Modules is subject to further special optimization, where a
+router can be found to be in an 'always true' or an 'always false' state. This is particularly de-
+tected in the following cases:
+•
+The signal at the ES Ctl Module is the 'triggering parent' of the input signal of the Router.
+•
+The event at the ES Ctl Module is mutually exclusive with the event at the Router's input,
+because it lies on a different branch of some other Router or because the event simply never
+arrives within a particular handler.
+This is illustrated by the following picture:
+ES Ctl controlled by a 'parent' trigger.
+Within the audio handler both the SR.C and the audio-mode Core Cell input (in the inputs area
+on the left) are triggered unconditionally. Therefore the SR.C and the audio-mode input are
+considered as the same (unconditional) clock source. So, within the audio handler, the audio
+rate clock from the Core Cell's input is being sent through the first router. Thus, the input of
+the second Router is some subset of the audio rate events and there is always an SR.C coming
+to the ES Ctl simultaneously with the second Router's input events. Due to the 'parent-child'
+relationship between these two events (one being obtained by routing the other), the compiler
+is aware of this relationship and will deduce that the second Router can be always considered
+to be in the true state.
+Building Practices and Conventions
+Optimization hints
+ 
+REAKTOR 6 - - 122
+
+
+--- Page 123 ---
+
+Within the initialization handler the compiler will detect that the SR.C will never come at all
+and will deduce that the second Router is always in the false state.
+Actually, compared to the event and especially the audio handlers, it is not crucial to ensure that
+the initialization handler is optimized, because the initialization handler is executed rarely. The
+REAKTOR Core compiler also performs less optimization for the initialization handler, often for
+the sake of being able to perform better optimization for the event and audio handlers.
+Reclocking
+At each mergepoint the compiler attempts to detect whether a splitting endpoint occurs. In
+cases where 'chaotic routing' (when the routing branches are not merged back together, but
+rather some signals with unrelated triggering sources are mixed) has been used in excessive
+amounts, the analysis time can grow drastically. In the worst cases this can cause the compiler
+to appear to 'hang indefinitely' (the compiler's progress bar stops completely).
+NI is aware of this issue and is looking for a solution.
+In a 'chaotic merging' situation practically each Module represents a new mergepoint with a
+new set of triggering conditions. While the analysis of these triggering conditions consumes the
+compilation time, the respective runtime check eventually generated by the compiler con-
+sumes the runtime.
+'Chaotic merging' by itself is not necessarily bad. The builder simply needs to be aware
+of the associated CPU overhead. Such overhead can be completely acceptable e.g. in
+processing of a rarely sent control events. The mentioned growth of the compilation
+times is another problem requiring the builder's awareness.
+To kill the problem of 'chaotic merging' at its very root the builder can do the following:
+•
+Use Modulation Macros at all logically appropriate places. The Modulation Macros copy
+the triggering information from their triggering input (as long as they have only one trig-
+gering input, which is true for the majority of such Macros), thus the signal stays within
+the same routing/triggering branch.
+Building Practices and Conventions
+Optimization hints
+ 
+REAKTOR 6 - - 123
+
+
+--- Page 124 ---
+
+•
+Use control and audio clocks to make sure that the merged signals are either identically
+clocked or at least clocked with a small number of different clocks. It is even better if the
+clocks are derived from some common master clock in a hierarchical fashion, because
+merging a 'subclock' to its 'parent' will simply produce the 'parent' clock again.
+•
+Use the technique of reclocking.
+Reclocking means that the builder places Latches at a number of points within a 'chaotically
+merging' structure. The Latches should be clocked by events with a relatively simple triggering.
+Some candidates for such clocks are the following.
+•
+A control or an audio clock signal:
+•
+A control or an audio clock signal, put through a router, which is controlled by a Boolean
+variable, where the latter is being set upon any arriving merged event and reset upon the
+event passing through the Router:
+Other strategies based on the specifics of given Structures can be used.
+5.6.4
+Numerical Operations
+ 
+When computing mathematical expressions, various issues need to be taken into account.
+Building Practices and Conventions
+Optimization hints
+ 
+REAKTOR 6 - - 124
+
+
+--- Page 125 ---
+
+Relative Cost
+The relative CPU cost of various operations can vary from one processor to the other. However,
+broadly speaking, the following hints can be kept in mind:
+•
+The cheapest operations are float/int addition, float/int subtraction, float multiplication.
+Negation, absolute value and integer bitwise operations are equal or slightly more expen-
+sive. DN Cancel in the current implementation is using an addition internally.
+•
+Float/int division and integer multiplication are noticeably more expensive.
+•
+Float exp and log Modules are the most expensive.
+•
+The cost of runtime condition checks (occurring in routing and non-split endpoint merg-
+ing) can noticeably vary depending on the circumstances. At any rate they are probably
+less desirable than a couple of cheap mathematical operations such as addition, so when-
+ever possible, the latter might be preferred.
+•
+The Read and Write operations are comparable in cost to the cheapest mathematical op-
+erations. They might be marginally more expensive for the arrays (this applies to the array
+memory access, array indexing is more expensive).
+•
+Array indexing internally contains a safety clipping mechanism, which is essentially a run-
+time check. So avoid sending unnecessary events to the array Index Module. Equally, con-
+sider sharing an array Index Module between a Read and a Write in such situations.
+Relative Order
+Check the relative order of the expression computation and consider how often various input
+events arrive. For example, the following Structure is taking into consideration that the sam-
+pling rate changes much more rarely than the frequency control signal, therefore the division
+will be done only upon sampling rate changes, otherwise only the much cheaper multiplication
+will be performed:
+Computation of the normalized frequency for an oscillator.
+Building Practices and Conventions
+Optimization hints
+ 
+REAKTOR 6 - - 125
+
+
+--- Page 126 ---
+
+Had the above Structure been implemented just by dividing F by SR.R, the division would
+have been performed on each F event, potentially causing a noticeable increase in the CPU
+load.
+Type Conversions
+Conversions between floats and integer and between floats of different precisions are generally
+comparable in cost to the cheapest mathematical operations, but this could drastically vary de-
+pending on the platform (and used to in the past). Therefore, as a general rule, unnecessary
+conversions should be avoided.
+The following Structure for example does two unnecessary conversions between float and int:
+Unnecessary implicit type conversion.
+Even though this Structure should typically perform correctly (unless the integer values exceed
+the range where the integers are exactly representable by floating point), the CPU load of the
+Structure is higher than necessary due to the type conversions implicitly occurring on both
+sides of the absolute value Module.
+Avoid Bad Numbers
+Various special types of values causing higher CPU load have been mentioned in section ↑5.5,
+Denormals and Other Bad Numbers. These have to be avoided. Since these values can be par-
+ticularly produced when mathematical operations are computed for the out-of-range inputs,
+care needs to be taken to keep the values in the supported range.
+Even if a particular out-of-range value does not result in a 'bad number' in a given im-
+plementation of REAKTOR Core, this might change in the future versions or on different
+hardware. The result of processing an out-of-range value should not be relied upon.
+Building Practices and Conventions
+Optimization hints
+ 
+REAKTOR 6 - - 126
+

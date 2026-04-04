@@ -1,0 +1,247 @@
+--- Page 171 ---
+
+11
+Automation
+ 
+Automation is a way of controlling the parameters of an instrument or effect from a host pro-
+gram. When any new control (like a knob or button) is added to an Ensemble, it is automatical-
+ly given an Automation ID and added to the automation list.
+11.1
+Customizing Automation Properties
+ 
+Disabling Automation
+In some cases, you may wish to remove the ability to automate a control (for example, if the
+control is used to change the display in some way).
+1.
+Click on the control you wish to edit and open its properties.
+2.
+Click on the Connect tab.
+3.
+At the bottom of the Connect tab area is a section called AUTOMATION.
+4.
+Click on the Enable checkbox so that it is empty.
+⇨The control will no longer be automatable and will be removed from the automation list.
+Automation Name
+By default, the automation name for a control will be the name of the control combined with
+its location in the Instrument structure.
+However, this is not always the best way to identify a parameter, so it is possible to change this
+name.
+1.
+Open the control's properties and click on the Connect tab.
+2.
+Navigate to the AUTOMATION section.
+Automation
+Customizing Automation Properties
+ 
+REAKTOR 6 - Building In Primary - 171
+
+
+--- Page 172 ---
+
+3.
+Click on the text in the section called Custom Parameter Name (it should currently say
+<empty>).
+4.
+Enter the name you wish to give the control.
+5.
+Once you are finished, press [Enter].
+⇨The control will now use the Custom Parameter Name as its automation name.
+Automation ID
+As well as an automation name, each parameter has an automation ID. This is a number used
+to identify the parameter and to order the parameters.
+An ID is assigned when a new control is created, and it will automatically be the next number
+after the ID of the last control that was created.
+Like the automation name, this ID number can be changed.
+1.
+Open the control's properties and click on the Connect tab.
+2.
+Navigate to the AUTOMATION section.
+3.
+The parameter called ID will be displaying the current automation ID of the control.
+4.
+Double-click on this number to enter a new number.
+5.
+Once you have finished, press [Enter]
+⇨The newly entered number will now be used as the automation ID
+Automation
+Customizing Automation Properties
+ 
+REAKTOR 6 - Building In Primary - 172
+
+
+--- Page 173 ---
+
+11.2
+The Automation Module
+ 
+The Automation Module
+The Automation module is a module that sends and receives automation data to/from the host.
+It can be used to add custom automation to an existing control, or can be used as part of a
+custom control element you may want to create from scratch.
+The Automation Module also gives you the ability to dynamically change the automation name
+for the Module. This means that you could use this as part of a control whose function changes
+depending on a setting in the instrument. For example, a distortion effect might have a control
+that functions as a Drive control, but the effect may be able to change to a Bitcrusher, and the
+Drive control becomes a Bit-depth control.
+11.2.1
+Sending and Receiving Automation Values
+ 
+The Automation Module has 3 input ports that relate to sending automation values, which are
+ordered from top to bottom in the order you should use them:
+•
+Tch (touch): sends the touch-state of the parameter, in other words: this lets the host
+know whether or not the user is moving the connected control.
+◦A value greater than 0 should be sent if the touch-state is active.
+◦A value of 0 or less should be sent if the touch-state is inactive.
+•
+Val (value): sets the current value of the module to be sent when an event arrives at the
+Trig input.
+•
+Trig (trigger): an event at this input triggers a send of the value currently at the Val input.
+To send, the Tch input also needs to be set to active state. If Tch input is in inactive
+state, then this Trig input has no effect.
+Automation
+The Automation Module
+ 
+REAKTOR 6 - Building In Primary - 173
+
+
+--- Page 174 ---
+
+The module has a single output port, which sends a value event whenever it receives automa-
+tion values from the host.
+11.2.2
+Dynamically Changing Automation Names
+ 
+By default, the automation name for the Automation Module is the name given to the Module
+itself. Re-naming the Module will change the automation name.
+However, there are some cases in which you may want to change the automation name dynam-
+ically.
+First of all, you will need to create the name entries:
+1.
+Select the Automation Module and open its properties.
+2.
+Click on the CONNECT tab.
+3.
+In the CUSTOM PARAMETER NAMES table, click the ADD button to add an entry, or
+click on the trashcan icon to delete an entry from the list.
+Each entry has an index (#) and a value (Value) field:
+•
+The index is automatically set as an integer, starting from 0 for the first entry.
+•
+The value is the automation name that is to be sent to the host.
+To change a value:
+Automation
+The Automation Module
+ 
+REAKTOR 6 - Building In Primary - 174
+
+
+--- Page 175 ---
+
+1.
+Double-click on the text you want to edit and then type the text you want to be associated
+with the corresponding index.
+The Sel input selects which entry from the list is used as the automation parameter label:
+•
+If the Sel input is not connected, then entry 0 is used.
+•
+If the list is empty, then the original default automation name will be used (i.e. the mod-
+ule’s name and its macro path). The Sel input will be ignored.
+•
+If the Sel input is out of bounds, then it is clipped to 0 → n-1, where n is number of
+items in the list.
+You can create and edit lists of automation parameter labels outside of REAKTOR, which will
+considerably speed up the process of creating and saving large lists. To open, save, or clear
+lists of automation parameter labels, use the CUSTOM PARAMETER NAMES table’s additional
+buttons. From left to right these are:
+•
+Read from File: Click the folder icon to open a file selection dialog that allows you to select
+a plain text file. The list of automation parameter labels will be filled with the content of
+this file.
+This action will replace any existing list content.
+•
+Save to File: Click the disk icon to open a file save dialog that allows you to save the cur-
+rent list of automation parameter labels as plain text file.
+•
+Clear List: Click the document icon to clear the entire list of automation parameter labels.
+Automation
+The Automation Module
+ 
+REAKTOR 6 - Building In Primary - 175
+
+
+--- Page 176 ---
+
+The file format used by REAKTOR is plain ASCII text (*.txt or *.asc) with one line per
+entry. An entry index number is not required, as REAKTOR will create these numbers.
+11.2.3
+Custom Control Example
+ 
+The following tutorial is a quick example designed to introduce you to the Automation Module.
+You will create a custom control using the Mouse Area Module and a Meter to mimic a fader.
+1.
+Create a Mouse Area Module and an Automation Module.
+2.
+The control will have its touch-state activated when the left mouse button is pressed, so
+connect the BL (button left) output of the Mouse Area Module to the Tch (touch) input of
+the Automation Module.
+3.
+When using a software fader, the Y position of the mouse on the fader sets the value of
+the control. Use the Y output of the Mouse Area to send the value. However, the Y output
+also needs to trigger the value of the Automation Module and send it to the host. To in-
+sure a correct event order, create an Order Module.
+Automation
+The Automation Module
+ 
+REAKTOR 6 - Building In Primary - 176
+
+
+--- Page 177 ---
+
+4.
+Connect the Y output of the Mouse Area to the input of the Order Module.
+5.
+Connect output port 1 of the Order Module to the Val input of the Automation Module.
+6.
+Then connect output port 2 to the Trig input.
+⇨The Structure should look like this:
+Since both the Mouse Area interaction and the automation received from the host will be used
+to drive the fader value, the Y output of the Mouse Area will need to be merged with the output
+of the Automation Module. This can be done be using a Merge Module.
+Automation
+The Automation Module
+ 
+REAKTOR 6 - Building In Primary - 177
+
+
+--- Page 178 ---
+
+1.
+Create a Merge Module and connect output port 1 of the Order Module and the Val output
+of the Automation Module to its inputs.
+The final stage will be creating the fader itself, and for this you can use a Meter Module.
+1.
+Create a Meter Module
+2.
+Connect the output of the Merge Module to the input of the Meter.
+Automation
+The Automation Module
+ 
+REAKTOR 6 - Building In Primary - 178
+
+
+--- Page 179 ---
+
+3.
+In the Meter's properties, make sure the Always Active option is checked.
+⇨Clicking and dragging in the Mouse Area will now change the level of the Meter.
+Now that the control is working, you can save the Ensemble and open it in a host. If everything
+is connected correctly, writing and reading automation values will function as it does for any
+other REAKTOR control.
+ 
+Automation
+The Automation Module
+ 
+REAKTOR 6 - Building In Primary - 179
+

@@ -1,0 +1,1079 @@
+--- Page 127 ---
+
+6
+Macro Reference
+ 
+6.1
+Low-level Macros
+ 
+6.1.1
+Math
+ 
+The Macros for computing various mathematical operations, which are not implemented by the
+built-in Modules: maximum, minimum, reciprocation, square root, rounding, wrapping etc. As
+with math built-in Modules, each input is a triggering one.
+Trig-Hyp
+Trigonometric and hyperbolic functions and their inverses.
+Shaper
+Functions for control signal shaping.
+BLT Prewarp
+Frequency pre-warping for the bilinear transform (used in digital filter construction). Various
+argument ranges and precisions.
+6.1.2
+Math Mod
+ 
+Modulation Macros for computing various mathematical operations. See section ↑4.6, Modula-
+tion Macros for the explanation of the modulation concept.
+The 'tap' Macros are a special kind of Modulation Macros, where the triggering is done by the
+'control' input rather than by the 'signal' inputs.
+Shaper
+Modulation versions of control signal shaper functions.
+Macro Reference
+Low-level Macros
+ 
+REAKTOR 6 - - 127
+
+
+--- Page 128 ---
+
+6.1.3
+Clipping
+ 
+Modulation Macros for clipping the values to specified ranges. The clipping threshold inputs
+are non-triggering.
+6.1.4
+Saturator
+ 
+There are some 'hard saturators', which ensure that the output signal level does not exceed a
+certain threshold and some 'soft saturators', which do not have a saturation threshold.
+6.1.5
+Convert
+ 
+Dedicated mathematical Macros for conversion between different value scales (for example
+pitch/frequency, gain/decibel etc.).
+6.1.6
+Memory
+ 
+Scalar and array storage handling Macros. Latches, array read/write, z^-1.
+6.1.7
+Flow
+ 
+Additional router Macros, which employ a threshold input instead of a BoolCtl one. The routing
+is done depending on how the input signal compares to the threshold value.
+6.1.8
+Event
+ 
+Macros specifically focusing on the processing of events (value + triggering). Filtering dupli-
+cates, raw clock handling, delaying the events.
+6.1.9
+Logic
+ 
+Boolean value handling. The Boolean values are represented by integer type signals.
+Macro Reference
+Low-level Macros
+ 
+REAKTOR 6 - - 128
+
+
+--- Page 129 ---
+
+The built in BoolCtl signal type does not implement true signals in the same sense as scalar
+types, because it does not transmit triggering information. A related issue is that they do not
+support classical Boolean operations like AND and OR. If Boolean algebraic computations are
+required, the Logic Macros can be used instead. Particularly they contain:
+•
+Comparison operations producing logical signals.
+•
+Classical Boolean AND, OR, NOT and XOR.
+•
+Dedicated float and integer signal routers controlled by a logical signal.
+•
+Conversion to and from BoolCtl.
+6.2
+Audio
+ 
+The Library > Audio menu contains a number of low-level audio processing Macros (delays,
+crossfaders, panners). Further audio processing Macros can be found in the submenus.
+6.2.1
+Oscillator
+ 
+Classical analog waveforms
+Classical analog waveform Macros.
+The inputs are the following:
+•
+F: The oscillator frequency in Hz. Negative frequencies can be specified as well.
+•
+PW: The width of the pulse waveform.
+◦0 means 0% width
+◦1 means 100% width
+◦0.5 means 50% width (default)
+Macro Reference
+Audio
+ 
+REAKTOR 6 - - 129
+
+
+--- Page 130 ---
+
+•
+Rst: Oscillator restart trigger. The value of the restart event specifies the restart phase:
+◦0 restarts to the beginning of the cycle
+◦1 restarts to the end of the cycle (which is the same as the beginning, since the wave-
+form is fully periodic)
+◦0.5 restarts to the middle of the cycle
+◦0.3 restarts to the 30% of the cycle
+◦Values different by a whole integer restart to the same position, for example 1.3 re-
+starts to the 30% of the cycle
+The classical analog waveform oscillators (as well as their slave versions) have a latency
+of 1 sample. This may need to be taken into account if you need sample-precise control
+of your structures.
+The Rst input is intended for occasional oscillator restarts, for example in response to
+the MIDI gate signal and should not be used to implement audio oscillator sync. For os-
+cillator sync use the slave versions of the same oscillators.
+The SR input is the standard SR Bundle connector explained in section ↑4.9, SR and CR Buses.
+The upper output of the oscillators delivers the oscillator signal. The lower (Bundle) output is
+for connection of the slave oscillators.
+A special 4-Wave oscillator Macro delivers all four waveforms simultaneously. The waveforms
+produced by this oscillator are phase locked to each other.
+The 4-Wave oscillator.
+Macro Reference
+Audio
+ 
+REAKTOR 6 - - 130
+
+
+--- Page 131 ---
+
+'Slave' Oscillators
+The 'slave' oscillators are the audio-synced versions of the ordinary oscillators. Compared to the
+ordinary oscillators, they have two additional inputs:
+A 'slave' sawtooth oscillator.
+•
+Sync: Can be connected to the lower (Bundle) output of a master oscillator to produce the
+audio sync effect. Only ordinary (non-slave) oscillators can serve as master oscillators.
+•
+SncH: Controls the sync hardness:
+◦1 = hard sync
+◦0 = no sync
+◦0 to 1 = various degrees of soft-sync
+Sub Oscillator
+The sub oscillator is a special kind of 'slave' pulse oscillator, which is phase-locked to the mas-
+ter.
+Sub oscillator.
+The idea of the sub oscillator is that it changes its output from -1 to 1 or back whenever there
+is a transition (a cycle completion) in the master, thereby producing a square waveform one
+octave below the master oscillator's frequency. By leaving out some of the master transitions
+out, further sub oscillator modes are available:
+•
+0 = -1 octave, 50% pulse width (use every master transition)
+•
+1 = -2 octaves, 50% pulse width (use every other master transition)
+Macro Reference
+Audio
+ 
+REAKTOR 6 - - 131
+
+
+--- Page 132 ---
+
+•
+2 = -2 octaves, 75% pulse width (use 1st, 4th, 5th, 8th etc. master transitions)
+The sub oscillator is fully driven by the master oscillator. Therefore it stops whenever the mas-
+ter is stopped.
+Sync Gate
+The Sync Gate Macro allows to interrupt the sync signal from the master to a slave or a sub
+oscillator.
+Using a sync gate to stop the audio sync.
+The signal at the G input should be either 0 or 1. In the 0 state the sync signal does not come
+through, effectively disabling the synchronization of the slave to the master.
+A sub oscillator would be completely stopped if the gate is off.
+Noise Oscillators
+These generate different kinds of noise.
+Noise oscillators.
+If several identical noise oscillators are used, then by default they will produce fully identical
+signals. This can be avoided by connecting different constants to their Seed inputs, which then
+initializes their internal (pseudo) random number generators with different values.
+Macro Reference
+Audio
+ 
+REAKTOR 6 - - 132
+
+
+--- Page 133 ---
+
+6.2.2
+Filter
+ 
+The Core Macro Library contains a selection of ZDF filters. The filters are built using the ZDF
+toolkit, which is also part of the Library (see section ↑6.4.3, ZDF Toolkit).
+The filters built using the ZDF toolkit are optimized for Structure readability, not for CPU efficien-
+cy. A number of filters have been redone with CPU efficiency in mind. These can be told by the
+"(opt)" suffix (standing for optimized) at the end of their names.
+Linear Filters
+Linear filters only change the frequency spectrum of the signal and do not introduce any dis-
+tortion. A number of these filters can resonate but cannot self-oscillate (at least not reliably).
+The maximum resonance setting of these filters, where applicable, is therefore limited to (ap-
+proximately) 1.
+The most important Macros implementing the linear filters are the following.
+•
+1-pole > 1-pole: A multimode linear 1-pole filter producing a low-pass and a high-pass
+signals with a -6dB/octave roll-off.
+•
+2-pole > SVF: A multimode 2-pole resonating filter producing a low-pass, a band-pass and
+a high-pass output. The roll-off of low-pass and high-pass is -12dB/octave. The roll-off of
+the band-pass is -6dB/octave on each of the two slopes. Modal pickups (see below) can
+be used to obtain further modes.
+Macro Reference
+Audio
+ 
+REAKTOR 6 - - 133
+
+
+--- Page 134 ---
+
+Intuitively, although not fully correctly, one could imagine each of the filter's poles to be
+responsible for a -6dB/octave roll-off: one pole is responsible for the -6dB/octave slope
+to the left of the filter's center frequency, and the other pole is responsible for the -6dB/
+octave slope to the right of the filter's center frequency.
+•
+4-pole > Ladder LP: A 4-pole resonating low-pass filter, emulating the classical transistor
+ladder filter design. The roll-off is -24dB/octave. At higher resonance settings this filter
+naturally produces a drop in the bass frequencies. This drop can be avoided by using the
+modal pickups (see below).
+•
+4-pole > Ladder HP: A 4-pole resonating high-pass filter. The roll-off is -24dB/octave. The
+Ladder LP modal pickups (see below) can be used with Ladder HP, producing 'flipped' fil-
+ter shapes (high-pass instead of low-pass etc.).
+•
+4-pole > Ladder BP: A 4-pole resonating band-pass filter. The roll-off of each of the two
+slopes is -12dB/octave. The filter does not provide the modal pickup connector, but two
+further modes with lower pole counts (BP3 and BP2) are provided directly by the Module
+outputs. At zero resonance the BP3 mode has a -12dB low-pass roll-off and -6dB high-
+pass roll-off, while BP2 has both roll-offs at -6dB/octave
+The F input specifies the filter cutoff frequency in Hz.
+Macro Reference
+Audio
+ 
+REAKTOR 6 - - 134
+
+
+--- Page 135 ---
+
+The Res input, if available, controls the filter's resonance. The range is from 0 to approximate-
+ly 1. In fact, the maximum resonance value is clipped slightly below 1, because at too high
+resonance settings linear filters may produce very loud resonance peaks. For higher resonance
+settings use nonlinear filters (see below).
+The resonance control of the filter Macros is implemented by linear mapping of the resonance pa-
+rameter to the filter's internal parameters (such as feedback amount or damping). This does not
+necessarily provide the best resonance control curves. Use control signal shapers (such as those
+found in Math Mod > Shapers) to change the resonance control curve. For example, an SVF reso-
+nance control knob can be shaped with a Hyp Shaper whose bending parameter is set to 0.3. This
+will make the resonance control of the SVF LP feel similar to the one of the Ladder LP.
+Nonlinear Filters
+Nonlinear filters, besides the purely filtering effect, apply some nonlinear processing to the sig-
+nal, causing it to saturate internally in the filter. As a result, the resonance of such filters can
+be driven to excessive values (above 1) without causing the filter to 'explode'. At these exces-
+sive resonance settings the filters may produce sound even in the absence of the input signal,
+which is referred to as the self-oscillation effect.
+The most important nonlinear filters in the Core Macro Library are the following.
+•
+2-pole > SKF LP (NL): Nonlinear Sallen–Key low-pass filter (with an additional band-pass
+output). In the linear range (low signal levels) this filter sounds identically to the SVF and
+therefore can be thought of as a nonlinear counterpart of the latter. The SatL input con-
+trols the internal saturation level of the filter. The smaller is the saturation level setting,
+the stronger the filter will saturate (default value is 1).
+For a larger variety of output signals use nonlinear TSK filters, which have dedicated pickup Mac-
+ros. The Core Macro Library also contains a nonlinear SVF, but SKF and TSK are the recommend-
+ed option for nonlinear filters.
+Macro Reference
+Audio
+ 
+REAKTOR 6 - - 135
+
+
+--- Page 136 ---
+
+•
+4-pole > Ladder LP (NL): A nonlinear counterpart of Ladder LP. The SatL input controls
+the internal saturation level of the filter. The smaller is the saturation level setting, the
+stronger the filter will saturate (default value is 1). The F HP and HP A inputs control the
+cutoff (in Hz) and the amount (from 0 to 1) of the internal high-pass filtering of the feed-
+back signal. One particular effect of this high-pass filtering is prevention of the loss of
+bass frequencies. When used together with normalized DC gain pickups (such as Lad-
+der LP -> LPn), it can produce an extra bass boost.
+The Core Macro Library also contains 8-pole nonlinear ladder filters. The 8-pole band-pass ladder
+filter stands out among those by having two resonance peaks in the negative resonance self-oscil-
+lation range, which can generate quite special sounds.
+In order to better balance the behavior of the saturating nonlinear filters in the low-resonance
+and self-oscillation it is recommended to connect an additional saturator (see section ↑6.1.4,
+Saturator) at the filter's output.
+Modal Pickups
+With many filter designs (including Ladder, SVF and TSK) a large number of different modes
+can be picked up from the filter. In order to keep the number of outputs low, many filter Mac-
+ros in the Core Macro Library provide only the main mode (or a small number of 'main modes')
+directly as their outputs. The remaining modes can be picked up from the dedicated modal
+Bundle output:
+Modal Bundle outputs of SVF and Ladder LP filters.
+Macro Reference
+Audio
+ 
+REAKTOR 6 - - 136
+
+
+--- Page 137 ---
+
+The pickup can be done by using the modal pickup Macros, located in the Pickup submenus
+of the respective menus. For example, modal pickups for the 2-pole filters are located in Audio
+> Filter > 2-pole > Pickups. The pickup Macros are categorized as follows.
+•
+SVF pickups: Can be used with linear and nonlinear 2-pole SVF filters.
+•
+TSK LP pickups: Can be used with linear and nonlinear TSK LP filters.
+•
+Ladder LP pickups: Can be used with linear and nonlinear Ladder LP filters. The same
+pickups can also be 'abused' with the Ladder HP filter, producing 'flipped' modes (for ex-
+ample HP modes instead of LP modes etc.).
+A modal pickup picking up a normalized-DC-gain low-pass mode of a Ladder LP.
+There is a special XX pickup category. These pickups do not pick up a specific mode, but rath-
+er allow dynamic control over which specific mode is being picked up. The control is per-
+formed via a selector input. The specific meanings of the selector values can be taken from the
+information of the respective pickup Macros.
+Dynamic modal pickup.
+The upper output of such dynamic pickup Macros provides the picked up modal signal.
+The lower Bundle output of "XX" pickups provides the modal mixing coefficients for the selected
+mode. These coefficients can be particularly used by the TF modal pickup Macros from the
+TF Toolkit (see section ↑6.4.4, TF toolkit).
+Multinotch
+Contains multi-notches with a low notch count and a comb filter.
+Macro Reference
+Audio
+ 
+REAKTOR 6 - - 137
+
+
+--- Page 138 ---
+
+Butterworth
+Butterworth filters are a classical signal processing filter type. By design, they are intended to
+statically cut a frequency band from a signal, therefore they do not have any resonance setting.
+Nevertheless, their parameters can be modulated, as with the other filters in the Core Macro
+Library.
+The Butterworth 2 filter group contains the 2nd kind (resonating) Butterworth filters as described
+in The Art of VA Filter Design by Vadim Zavalishin.
+Shelving
+Each of the shelving filters simultaneously produces three different responses at the respective
+three outputs: low-shelving, high-shelving and tilting (simultaneously low- and high-shelving in
+opposite directions and at half amounts). Due to technical reasons the high-shelving output
+has inverted control of the gain (for example if Gain input is set to +12, the high frequencies
+will be lowered by 12dB). As a convenience means for controlling the high-shelving gain, there
+is an inverting Gain input.
+An 8-pole shelving filter.
+Shelving filters have an additional Slope input which controls the slope steepness. The range
+is 0 to 3 for the 8-pole shelving filter. Shelving filters with lower pole counts cover a smaller
+range of Slope value, the maximum supported slope setting being 2 for 4-pole, 1 for 2-pole
+and 0 (therefore there is no slope input) for the 1-pole.
+The shelving group also contains band-shelving filters, which also have three outputs: band-
+shelving, “notch”-shelving and band-tilting. The most important output is the band-shelving
+one, the other two are provided mostly for completeness, as an analogy to the low-shelving/
+high-shelving/tilting outputs. The “notch” shelving is an “inverted” version of the band-shelv-
+ing (the variable-gain shelves are on the left and on the right of the center band) and is con-
+trolled by an inverted gain signal. The band-tilting is a combination of band- and notch-shelv-
+Macro Reference
+Audio
+ 
+REAKTOR 6 - - 138
+
+
+--- Page 139 ---
+
+ing done in opposite directions at half amounts. The BW input controls the shelving bandwidth
+in octaves. The range of the Slope parameter for band-shelving filters is 0 to 2 for the 8-pole,
+0 to 1 for the 4-pole and 0 to 0 (no Slope input) for the 2-pole.
+Crossovers
+The crossover Macros come in groups of four to be used together. In the simple case you will
+need only two of the respective Macros. For example, in the picture below a signal is being
+split into three bands by a 4th-order Linkwitz-Riley crossover. The original signal and the three
+bands are processed by four independent processors and then are merged together, where you
+need to use a special dedicated Macro for merging (there is a different Macro for each kind of
+crossover). The reason you need this Macro is that there are phase differences between the sig-
+nals and they need to be phase corrected before the merging.
+A usage example of a 3-band crossover with band thresholds at 100Hz and 5kHz
+If you don’t need to merge the original signal back, a somewhat less CPU-intensive Macro can
+be used instead:
+A cheaper mixer for the 3-band crossover.
+On the other hand, if you merge the original signal later, you need to use a separate Macro for
+the phase compensation:
+Macro Reference
+Audio
+ 
+REAKTOR 6 - - 139
+
+
+--- Page 140 ---
+
+Phase correction of the unsplit signal.
+6.2.3
+FX
+ 
+A selection of various effects.
+Modulation Effects
+The modulation effects include phaser, flanger, chorus, tremolo and autopan. Except for auto-
+pan, there are mono and stereo versions of these effects. Most of their control parameters are
+identical or similar.
+The phaser Macros are discussed below as typical examples. Further details about the effect
+parameters which are different from those of the phasers can be found in the information of
+the respective Macros.
+Stereo and mono versions of 2-notch phaser.
+The following inputs are available:
+Macro Reference
+Audio
+ 
+REAKTOR 6 - - 140
+
+
+--- Page 141 ---
+
+•
+L, R (stereo) or the top nameless input (mono): Input signal.
+•
+Rate: The rate of internal LFO in Hz.
+•
+P1, P2: The boundary pitches of the modulation range. The center cutoff frequency of the
+internal multinotch filter is modulated within this pitch range.
+•
+Fbk: Feedback amount. Range -1 to 1. The feedback setting affects the width of the
+notches, positive values making the notches wider, negative values making them smaller.
+•
+Spread: Adjust the spreading of the notches. Negative values increase the notch density,
+positive values spread them wider apart.
+•
+Inv: The notch inversion mode switch. Swaps the positions of the peaks and the notches.
+0 = off, 1 = on.
+•
+LFO Bend (effects with exponential LFO): Controls the bending of the exponential LFO
+segments. 0 = linear, +1/-1 = rectangular jumps.
+•
+LFO Shape (effects with triangle-sine morphing LFO): Controls the morphing amount from
+the triangle LFO shape to the sine LFO shape.
+•
+Dry/Full: Controls the mixing amount of the dry and wet signals. 0 = dry signal only, 1 =
+'strongest sounding' mixture of dry and wet signals.
+The following outputs are available:
+•
+L, R (stereo) or the top nameless output (mono): Output signal.
+•
+Wet L, Wet R (stereo) or Wet (mono): Pure wet signal. To be used with the 'send' style of
+effect usage, when several sounds are sent to the same effect with different 'send'
+amounts, producing a common 'wet' signal which is then returned back to the entire mix.
+Delay Effects
+The delay effects are using audio delays to produce echo sounds. A stereo feedback delay Mac-
+ro illustrates:
+Macro Reference
+Audio
+ 
+REAKTOR 6 - - 141
+
+
+--- Page 142 ---
+
+Stereo feedback delay.
+The following inputs are available:
+•
+L, R: Signal inputs.
+•
+InPan: Controls stereo balance of the input signal. Range -1..1.
+•
+Time: Specifies the delay time in seconds. Maximum delay time at 192 kHz sampling
+rate is 1 sec. At lower sampling rates the maximum time is larger. It can be further in-
+creased by modifying the delay buffers inside the Macro:
+•
+Fbk: Feedback amount. Range -1..1.
+Macro Reference
+Audio
+ 
+REAKTOR 6 - - 142
+
+
+--- Page 143 ---
+
+•
+XFbk: Cross-channel (left/right) feedback amount. Range -1..1.
+•
+Post: The 'post-feedback-gain' output mode. If this input is set to 1, the output signal is
+picked up after the feedback gain has been applied (if the feedback setting is zero, there
+will be no wet output signal in this mode).
+•
+Dry: Amount of dry signal to be sent to the outputs
+•
+Wet: Amount of wet signal to be sent to the outputs.
+The following outputs are available:
+•
+L, R: Output signal.
+6.2.4
+Transfer Functions
+ 
+A set of Macros for computing the transfer functions (more precisely, frequency responses) of
+the filters is located under Library > Audio > Filters > Tranfer Func. These are the counterparts
+to the respective filters. They follow one and the same set of conventions. The SVF transfer
+function Macro illustrates:
+An SVF [TF] Macro.
+The inputs and the outputs of a TF Macro are roughly identical to those of the respective filter
+Macro with some differences.
+•
+The upper input of a TF Macro receives a signal frequency value in Hz instead of the au-
+dio signal. The Macro will output the value of the filter's frequency response at this fre-
+quency.
+In order to build a graphical display of filter's amplitude or phase response, send an iterated
+range of signal frequency values to this input and pick up the respective output values.
+•
+Other inputs of a TF Macro receive the parameter values identical to those of the respec-
+tive filter Macro.
+Macro Reference
+Audio
+ 
+REAKTOR 6 - - 143
+
+
+--- Page 144 ---
+
+•
+The 'audio signal' outputs of the TF Macro (those corresponding to the audio signal out-
+puts of the filter) produce the frequency response value at the frequency specified by the
+upper input. These are complex values which can be converted into the amplitude and
+phase response parts by using the to Polar Macro from the TF toolkit (see section ↑6.4.4,
+TF toolkit):
+•
+The bottom 'modal Bundle' output contains a Bundle of modal TF values, which can be
+picked up by a dedicated TF pickup Macro. Except for the all-pass mode, the modal SVF
+frequency response pickup is done by using the SVF [TF] to XX Macro. The SVF [TF] to XX
+Macro does not have an integer modal selector input, in place of it is expecting a modal
+coefficients Bundle from the SVF to XX selector:
+The SVF to XX Macro in the above picture does not need to be connected to an audio filter:
+Macro Reference
+Audio
+ 
+REAKTOR 6 - - 144
+
+
+--- Page 145 ---
+
+The TF Macros compute the ideal analog frequency responses, not taking into account
+the discrete-time warping of the frequency axis.
+Some of audio filters do not have TF counterparts. However, often there is a TF counterpart,
+which is not immediately obvious. Below are some examples.
+•
+There are no dedicated TF Macros for nonlinear filters (since frequency responses in un-
+stable range do not really make sense anyway). Use the corresponding linear TF Macros.
+•
+The frequency response of TSK filters is identical to those of SVF, so simply use an
+SVF TF Macro to obtain TSK frequency response.
+•
+The Ladder LP [TF] Macro has the F HP and HP A inputs available only for the Lad-
+der LP (NL) Macro. To obtain the frequency response of a low-pass ladder filter without a
+high-pass in the feedback these inputs can be simply left disconnected.
+6.3
+Control
+ 
+6.3.1
+Envelope
+ 
+A small selection of prebuilt envelopes of varying complexity. If the selection is not sufficient,
+the existing envelopes can be easily extended by the builder, because they are built using the
+Envelope toolkit (see section ↑6.4.2, Envelope Toolkit).
+The envelopes follow one and the same set of conventions. The AHDSR (attack-hold-decay-
+sustain-release) envelope is used here as an example to illustrate these conventions:
+Macro Reference
+Control
+ 
+REAKTOR 6 - - 145
+
+
+--- Page 146 ---
+
+AHDSR envelope.
+The envelope inputs are the following.
+•
+G: Should be connected to a gate Bundle (see below for the explanation of Core's gate
+Bundle conventions). It is responsible for triggering the attack (upon the 'gate on' event)
+and release (upon the 'gate off') modes of the envelope and for sending the keypress ve-
+locity information, if any.
+•
+A, H, D, S, R: The 'main' control parameters. A, H, D and R specify the time constants for
+the attack, hold, decay and release stages. S specifies the sustain level, which normally
+should be in the range 0 to 1, since the attack peak level is always 1.
+•
+BendA, BendD, BendR: The bending of the attack, decay, and release stage curves. The
+bending applies only to the finite-time curves (see the finite-time mode explanation be-
+low). The Bend parameter range is -10 to 10. Zero bending produces linear curves, nega-
+tive bending produces 'slowing down' curves, positive bending produces 'speeding up
+curves'. The following pictures illustrate the attack and decay shapes for zero, negative
+and positive bends respectively:
+Macro Reference
+Control
+ 
+REAKTOR 6 - - 146
+
+
+--- Page 147 ---
+
+•
+FinD, FinR: The finite-time mode of the decay and release stages. When the mode is set
+to 1 (finite), the respective stage has the duration as specified by the D or R input. When
+the mode is set to 0 (infinite), the respective stage decays infinitely to its target value
+(sustain level or zero).
+•
+Rst0: The zero-reset mode of the envelope. When set to 1 the attack always starts from
+zero level. When set to 0 the attack starts from the current level of the envelope.
+•
+VelS: Velocity sensitivity, the range is 0 to 1. If set to 0, the envelope ignores the velocity
+information in the gate Bundle completely. If set to 1, the envelope scales its level ac-
+cording to the velocity (provided the velocity information is present in the Bundle, see the
+discussion of the gate Bundle below). At intermediate settings the envelope partially
+scales its level according to the velocity.
+The CR input is the standard CR Bundle connector explained in section ↑4.9, SR and CR Buses.
+Gate Bundle
+The envelope gate connections are employing a special gate Bundle. The Bundle internally
+transmits the information about the gate on/off events and the associated velocities.
+The gate Bundle can be obtained by converting from a Primary level gate event (forwarded to
+Core via an event-mode Core Cell port). The conversion is implemented by the Gate from Prim
+Macro (Library > Control > Envelope > Gate > Gate from Prim) and includes the gate on/off
+events and the 'on' velocity (no 'off' velocity):
+AR envelope controlled by a Primary gate event signal.
+The XZero to Gate Macro (Library > Control > Envelope > Gate > XZero to Gate) sends gate
+events in response to positive and negative zero crossings of the input signal (positive zero
+crossings produce 'gate on' events, negative zero crossings produce 'gate off' events):
+Macro Reference
+Control
+ 
+REAKTOR 6 - - 147
+
+
+--- Page 148 ---
+
+AR envelope controlled by zero crossings of the incoming audio signal.
+Internally the gate Bundle consists up to four fibers:
+A Bundle Pack for all four fibers of the gate Bundle.
+The conventions for the gate Bundle are the following.
+•
+On: Transmits the 'gate on' trigger. The consumers should ignore the value of this fiber.
+The producers should always send zero values on this fiber.
+•
+Off: Optional fiber. Transmits the 'gate off' trigger. The consumers should ignore the value
+of this fiber. The producers should always send zero values on this fiber. If this fiber is
+absent, it means that the 'gate off' trigger events are never sent.
+•
+On Vel: Optional fiber. If present, specifies the current 'on velocity'. The standard range is
+positive numbers less than or equal to 1, however, larger values are allowed as well. Gen-
+erally speaking, this value should be sent only simultaneously with 'gate on' events (or
+sent during the initialization, if the value is constant). If an 'on velocity' event comes at
+any other moment, the consumers may respond to it or ignore it until the next 'gate on'.
+Velocity-sensitive consumers should treat the missing "On Vel" filber as a value of 1.
+•
+Off Vel: Optional fiber. If present, specifies the current 'off velocity'. The convention is the
+same as for the 'on velocity', except that the 'off velocity' events should be sent together
+with the 'gate off' events.
+Macro Reference
+Control
+ 
+REAKTOR 6 - - 148
+
+
+--- Page 149 ---
+
+A number of preconfigured Bundle Pack and Unpack Modules with different numbers of fiber def-
+initions/pickups are available under Library > Control > Envelope > Gate.
+The Add Gate Defaults Macro (Library > Control > Envelope > Gate > Add Gate Defaults)
+automatically adds Off, On Vel and Off Vel to the Bundle, in case these fibers are miss-
+ing (the added velocities are equal to 1). It is intended to be used in implementations of
+gate Bundle consumers and other Structures.
+When constructing a gate Bundle, never leave the triggering fibers On and Off discon-
+nected. Disconnected fibers imply a zero constant, which will send a trigger event upon
+initialization. Simply leave the optional fiber away from the Bundle, or connect it to a
+No Event Macro if you do not want any events sent.
+6.3.2
+LFO
+ 
+A number of LFOs of classical shapes. These are intended to be used as modulation sources,
+not as audio signal sources. Particularly, the LFO Macros do not contain any anti-aliasing.
+Various LFOs available in the Core Macro Library.
+The inputs are similar to those of the oscillators (see section ↑6.2.1, Oscillator).
+The CR input is the standard CR Bundle connector explained in section ↑4.9, SR and CR Buses.
+The MultiWave LFO provides the same waveforms (except the parabolic one) phase-locked to
+each other.
+Macro Reference
+Control
+ 
+REAKTOR 6 - - 149
+
+
+--- Page 150 ---
+
+MultiWave LFO.
+The Tri/Sin LFO can be smoothly morphed between the triangular and sinusoidal shapes. The
+T/S input controls the morphing (0 = triangle, 1 = sine, other values in between specify inter-
+mediate shapes).
+Tri/Sin LFO.
+The Exp LFO is generating analog-like slowing down exponential curves. The slowdown amount
+varies from a purely linear segment to a discontinuous jump, thereby morphing between trian-
+gular and rectangular shapes at the zero and maximum settings. Instead of slowing down
+shapes, the speeding up shapes can also be generated. The Bend parameter controls the seg-
+ment shape (0 = linear, 0..-1 = slowdown, -1 = rectangular, 0..1 = speedup, 1 = rectangular).
+The PW parameter controls the 'pulse width'.
+Exp LFO.
+The Random LFO is delivering the signal which would be produced by a white-noise driven
+S&H. The Seed parameter is similar to the one of the noise oscillators (see section ↑6.2.1, Os-
+cillator).
+Macro Reference
+Control
+ 
+REAKTOR 6 - - 150
+
+
+--- Page 151 ---
+
+Random LFO.
+The triangle, sine and parabolic LFO shapes are also delivered in stereo versions. Compared to
+mono versions, these have an additional Offs input, which controls the offset between the left-
+and the right-channel phase-locked LFO shapes. At zero Offs both left and right channel sig-
+nals are identical. For Offs between 0 and 0.5 the left channel LFO is 'preceding' the right
+channel one ('movement from left to right'). For Offs between 0 and -0.5 the right channel is
+'preceding' the left one ('movement from right to left'). At ±0.5 the channels have opposite
+phases (both +0.5 and -0.5 settings have identical effect). The Offs value can exceed the ±0.5
+range, so that at ±1 the channels are again in sync and so on.
+Stereo LFOs.
+Tempo and transport position syncing
+The Multiwave LFO Sync Macro is capable of syncing to the tempo and/or transport position:
+Tempo- and transport-syncable LFO
+Macro Reference
+Control
+ 
+REAKTOR 6 - - 151
+
+
+--- Page 152 ---
+
+The Mode input controls the syncing where you can independently enable tempo and transport
+position syncing (see the Macro’s info for the details).
+If tempo syncing is enabled, instead of the F input specifying the LFO rate in Hz, the Div input
+is used, specifying the division of the whole note. For example, Div=8 sets the duration of one
+LFO cycle equal to the duration of an 8th note.
+If transport position syncing is enabled, the LFO doesn’t freely run but strictly follows the song
+position. This guarantees that the LFO will always have one and the same value at each given
+song position, therefore LFO works exactly the same each time, like an automation curve. If
+the transport is stopped, the LFO can continue to run freely or stop, like an automation curve
+would do (this choice is also separately controlled by the Mode parameter).
+Note that in the transport position-synced mode the LFO’s value may jump on a loop
+boundary or if song position is changed manually.
+The tempo and transport position syncing require the transport information to be available.
+This can be achieved by using the Prim Transport Macro (Library > Control > LFO > Helpers >
+Prim Transport) which defines a number of scoped buses based on primary level signals.
+Prim Transport Macro providing the transport information.
+The input signals for the Prim Transport Macro need to be obtained from the respective pri-
+mary modules.
+Obtaining signals for the Prim Transport Macro.
+If you need only tempo- or only transport position-syncing, you need to provide only the respec-
+tive signals to the Prim Transport Macro.
+Macro Reference
+Control
+ 
+REAKTOR 6 - - 152
+
+
+--- Page 153 ---
+
+Obtaining only the tempo information.
+Other tempo and transport position synced LFOs (for example the ones with only tempo
+or only transport position syncing, or providing only one output waveform) can be built,
+by stripping down and/or modifying the internals of the Multiwave LFO Sync Macro. For
+doing such modifications using the LFO toolkit Macros is recommended.
+6.3.3
+Smoother
+ 
+Please refer to section ↑4.9.4, CR rate change for the details of using smoothers.
+6.4
+Toolkits
+ 
+6.4.1
+LFO Toolkit
+ 
+The LFO toolkit consists of two parts: Helpers (Library > Control > LFO > Helpers) and Phase
+Shapers (Library > Control > LFO > Phase Shapers). The Helpers part concerns itself with gen-
+eration of the LFO phase signals. The Phase Shapers part contains Macros for converting the
+phase signal into LFO waveforms.
+As a simple example of the usage of the toolkit Macros consider the internal structure of the
+Sine LFO Macro from the Core Macro Library:
+Here the phase driver is directly connected to the shaper, the later converting the phase signal
+to the sine waveform.
+Macro Reference
+Control
+ 
+REAKTOR 6 - - 153
+
+
+--- Page 154 ---
+
+The Sine LFO Stereo Macro additionally uses two phase offset helper Macro to shift the left
+and right channels symmetrically in the opposite directions:
+To build LFOs with tempo and/or transport position syncing features it is easiest to use the
+Phase Drv Sync helper Macro (which is the core of the MulltiWave LFO Sync Macro). Lower-
+level helpers such as Position Sync and Div to F Macros can also be used.
+6.4.2
+Envelope Toolkit
+ 
+The envelope toolkit (Library > Control > Envelope > Toolkit) contains the building blocks of
+the envelopes in the Core Macro Library. In fact there are only two Macros (Stage and Process)
+in the toolkit and each envelope is built using these two Macros, where the Process Macro is
+used exactly once in each given envelope. Therefore in order to build a custom envelope one
+could simply start off with the existing envelope and duplicate the Stage Macro within that en-
+velope as necessary.
+In fact this duplication approach should be even preferred, because due to the development of
+the Core Macro Library, different versions of the Stage and Process Macros may become incom-
+patible with each other.
+The implementation of the ADSR envelope found in the Core Macro Library illustrates this:
+Macro Reference
+Toolkits
+ 
+REAKTOR 6 - - 154
+
+
+--- Page 155 ---
+
+The internal Structure of an ADSR envelope.
+The A, D and R Macros are simply the renamed copies of the Stage Macro. There is no dedi-
+cated Macro for the sustain stage, because in this envelope the decay stage is infinitely decay-
+ing. Thus there is really no sustain stage, only the sustain level as the target level of the decay
+stage.
+The Process Macro on the right is the one which generates the real envelope signal, the Stage
+Macros only being responsible for setting the stage parameters. The upper input of the Process
+Macro specifies the speed coefficient for the envelope. This can be useful if the envelope tool-
+kit is used to build an LFO, otherwise this coefficient should be set to 1, so that the stage du-
+rations are exactly as specified by the respective stage's parameters.
+The three parallel connection paths at the bottom are used to connect the stages together in
+their natural order. The Process Macro must be at the end of the chain. For the first stage
+Macro these three inputs must be left disconnected, except for the lowest of them. This should
+be connected to a 64-bit precision float array. The number of elements of the array must be
+equal (or at least equal) to the number of the stage Macros times 6.
+The other inputs of the stage Macros are as follows.
+Macro Reference
+Toolkits
+ 
+REAKTOR 6 - - 155
+
+
+--- Page 156 ---
+
+•
+!: This is the explicit triggering input of the stage. An event at this input will force the
+envelope to immediately jump to this stage. Notice that the 'Gate On' event is connected
+to the triggering input of the attack stage, while the 'Gate Off' event is connected to the
+triggering input of the release stage.
+•
+Mode: A bitwise OR of stage modal flags:
+◦1 = jump mode. If specified, this flag causes the stage to start (when explicitly trig-
+gered or automatically switched to) at the level specified by the Y0 input. Otherwise
+the stage starts at the current output level of the envelope (no jump).
+◦2 = infinite mode. If specified, this flag causes the stage to infinitely decay from the
+starting level (according to the jump mode and Y0 settings) to the end level specified
+by Y1. The infinite decay is exponential, the decay characteristic time being control-
+led by the T input.
+◦4 = constant mode. If specified, this flag causes the stage to stay at its starting level
+(according to the jump mode and Y0 settings) infinitely. The segment end level speci-
+fied by Y1 and duration specified by T are ignored.
+•
+Y0: The starting level of the stage. Used only if the jump mode is specified.
+•
+Y1: The end level of the stage. Used unless the constant mode is specified.
+•
+T: The segment duration in seconds. In the infinite mode this input specifies the seg-
+ment's characteristic time. In the constant mode this input is ignored.
+•
+Bend: The exponential bending of the segment. Does not apply to infinite or constant seg-
+ments. Refer to section ↑6.3.1, Envelope for more details about this parameter.
+•
+Next: The zero-based index of the 'next' segment (the segment which should be switched
+to after this segment runs out). If disconnected, assumes the 'natural' next segment, ac-
+cording to the order of connection of the stage Macros.
+The parameters can be modulated in real-time. Particularly the modulation of Y1, T and
+Bend parameters of the currently running segment will cause real-time changes of the
+envelope behavior.
+Macro Reference
+Toolkits
+ 
+REAKTOR 6 - - 156
+
+
+--- Page 157 ---
+
+6.4.3
+ZDF Toolkit
+ 
+The ZDF toolkit (Library > Audio > Filters > ZDF Toolkit) contains the building blocks of the
+filters in the Core Macro Library. The purpose of the toolkit is to allow the implementation of
+ZDF (zero delay feedback) filters in an intuitively readable manner.
+The following building blocks correspond to the fundamental elements of the continuous-time
+('analog') filter block diagrams:
+ZDF toolkit Macros implementing the fundamental continuous time audio processing primitives.
+•
+Integrator: A fundamental 'analog memory element'. Roughly corresponds to the z-1 blocks
+in the digital filter block diagrams, but is not functionally equivalent to the latter. The w/2
+input should be connected to the pre-warped half-cutoff value
+•
+Adder: Adds to ZDF signals together.
+•
+Gain: Multiplies a ZDF signal by a specified gain factor. The gain input is non-triggering,
+therefore this gain Macro is similar to the modulation multiplier.
+•
+Subtractor: Subtracts one ZDF signal from another. A convenience shortcut for a combina-
+tion of an adder and a -1 gain.
+Each 'audio signal connection wire' in the ZDF toolkit needs to be implemented by two parallel
+wires:
+A single audio path implemented by two parallel ZDF wires.
+Each feedback loop needs to be implemented by a single nonsolid Macro. The following SVF
+Structure illustrates.
+Macro Reference
+Toolkits
+ 
+REAKTOR 6 - - 157
+
+
+--- Page 158 ---
+
+A nonsolid Structure implementing the main part of a low-pass SVF.
+The guidelines are the following.
+•
+Each Macro must implement exactly one feedback loop. Any other feedback loops (if ex-
+isting) should be contained in the nested Macros built according to the same guidelines.
+•
+The Macro may have exactly one audio input. This input must be directly connected to an
+Input -Fbk (as in the picture above) or an Input +Fbk Macro from the ZDF toolkit. This
+Input ±Fbk Macro is the point where the input signal is 'injected' into the feedback loop.
+The difference between the two Macros is simply that Input -Fbk inverts the feedback signal. One
+could use a ZDF gain Macro to invert the signal instead.
+•
+The audio path inside the feedback loop may split and merged back (for example in the
+picture above the path splits after the first integrator and is merged back at the adder).
+However no further feedback loops are allowed, except in the nested Macros built accord-
+ing to the same guidelines.
+Sometimes this limitation can be worked around by treating two feedback loops as one loop 'nest-
+ed' into the other. However, there are situations where the inner feedback loop is 'instantaneously
+unstable' (see the instantaneous instability discussion below) on its own, and only the presence of
+the outer feedback loop stabilizes it back. In this case such nesting decompositions will not be
+handled correctly by the ZDF toolkit, as it requires each feedback loop to be stable (in the instan-
+taneous sense only) on its own, without outer stabilization factors. This is for example the reason
+why a non-transposed version of the Sallen–Key filter cannot be (directly, without additional man-
+ual 'hacks') implemented by the ZDF toolkit.
+Macro Reference
+Toolkits
+ 
+REAKTOR 6 - - 158
+
+
+--- Page 159 ---
+
+•
+The Macro may have several outputs. However each output needs to be 'implemented' by
+a dedicated Output Macro from the ZDF toolkit. The Ext input of the Output Macro needs
+to be connected to the Ext output of the Input Macro of the Structure.
+The outermost Macro of a ZDF implementation should be (normally) a solid Macro and imple-
+ment the conversion between the ordinary and ZDF audio signals (using to ZDF and from ZDF
+Macros from the toolkit):
+The outermost Structure of a ZDF low-pass SVF implementation.
+Besides the audio conversion, this Structure is using an F to w/2 Macro from the ZDF toolkit to
+convert the cutoff in Hz to a pre-warped half-cutoff for the ZDF integrators. It also converts the
+resonance parameter into the damping gain 2R.
+The above guidelines can be violated in principle, as long as the following hard restric-
+tions are taken into account: Each feedback loop must have only a single input point
+implemented by an Input ±Fbk Macro and correctly employ the ZDF Output Macros. The
+guidelines simply provide a framework for following these hard restrictions.
+Saturators
+In order to build filters which can self-oscillate one needs to introduce saturating nonlinearities
+into the filters. The ZDF toolkit provides two different versions of a tanh saturator and a satu-
+rating integrator:
+Saturating ZDF primitives.
+Macro Reference
+Toolkits
+ 
+REAKTOR 6 - - 159
+
+
+--- Page 160 ---
+
+The L input controls the saturation level (the horizontal asymptote of the saturation curve).
+Filter Primitives
+Often filters are used as building blocks for more complex filters. The Filter Primitives subme-
+nu of the ZDF toolkit contains some of such low-level filters.
+The following example illustrates how a ladder filter is built from four 1-pole filters.
+Ladder filter Structure.
+Instantaneous Instability
+At certain extreme parameter settings (typically, in cases of excessive positive feedback) the
+routine application of the ZDF approach will not deliver correct results anymore. The mathe-
+matical reasons for this can be found in the corresponding literature. What this means practi-
+cally is that the denominator of the zero delay feedback equation becomes zero or negative,
+which can be checked by monitoring the denominator value inside the feedback solver, which
+is located inside Input ±Fbk Macros:
+Macro Reference
+Toolkits
+ 
+REAKTOR 6 - - 160
+
+
+--- Page 161 ---
+
+The feedback solver inside the Input -Fbk Macro. The denominator value is available at the 1/G port of the solver.
+The instantaneous instability normally happens far in the seloscillation range of the filters or in
+some untypical designs or usage cases. Some of the examples are the following.
+•
+Ladder filter with excessive unclipped negative resonance settings (since the ladder filter
+employs an inverted feedback, negative resonance means positive feedback).
+•
+SVF with excessive unclipped resonance settings (in the self-oscillation range the internal
+damping of the SVF is negative, which together with the inversion of the feedback signal
+results in a positive feedback).
+•
+An attempt to implement a non-transposed Sallen–Key filter by feedback loop decomposi-
+tion. The Sallen–Key filter has two feedback points. Since each feedback point needs to
+be implemented by a dedicated Input ±Fbk Macro, and since there can be only one such
+Macro per feedback loop, it is not implementable in a straightforward manner using the
+ZDF toolkit. One could attempt a workaround, by decomposing it into two feedback loops,
+one nested into the other. However, the inner feedback loop employs positive feedback,
+which at certain (not excessive at all) settings can become instantaneously unstable on its
+own. It is the presence of the outer loop which stabilizes the inner feedback again. The
+instantaneous instability of the inner loop results in the ill-conditioning of the entire
+Structure, and the filter may produce INFs and NaNs at its output and in its state as the
+result.
+This problem with the non-transposed Sallen–Key filter is not the limitation of the ZDF approach
+as such, but the one of the toolkit. In principle, with some manual 'hacking' the toolkit also could
+allow a non-transposed Sallen–Key filter implementation.
+Macro Reference
+Toolkits
+ 
+REAKTOR 6 - - 161
+
+
+--- Page 162 ---
+
+It is the Structure builder’s responsibility to clip the filter parameters, if necessary, so
+that the instantaneous instability does not occur.
+6.4.4
+TF toolkit
+ 
+The 'transfer function' toolkit (located under Library > Audio > Filter > Tranfer Func > TF Tool-
+kit) contains the building blocks of the transfer function Macros in the Core Macro Library and
+can be used to modify the existing transfer function Macros or build the new ones.
+The absolute majority of the Macros in the toolkit are simply implementing the complex math
+operations. The complex values themselves are represented by a Bundle containing Re and Im
+fibers.
+The special 'input' and 'output' Macros of the toolkit are the following Macros.
+•
+s: This Macro takes the specified frequency f and the specified cutoff frequency F and
+produces an imaginary value j f / F. This complex value specifies the point on the s-plane
+where the (unit cutoff) transfer function needs to be evaluated.
+•
+to Polar: This Macro converts a complex value z to its absolute magnitude |z| and argu-
+ment arg z. Normally used to obtain amplitude and phase responses from the frequency
+response value.
+Macro Reference
+Toolkits
+ 
+REAKTOR 6 - - 162
+

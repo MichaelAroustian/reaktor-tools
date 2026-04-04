@@ -1,0 +1,3432 @@
+--- Page 307 ---
+
+6
+Oscillators
+ 
+An oscillator is a signal generating process that results in a periodic audio signal. Oscilla­
+tors are usually used as audio signal sources. The only other alternatives for generating au­
+dio signals in REAKTOR are playing samples using Samplers or using an external audio 
+signal. The oscillator section includes the usual, single-cycle waveform generators (sine, 
+pulse, sawtooth, and so on) as well as impulse, step, noise, and table-driven generators for 
+generating audio signals. There are also a couple of Modules, like the Clock Oscillator 
+Module and Ramp Module, which are used for purposes other than audio signal genera­
+tion.
+All of REAKTOR's oscillators can run at any frequency, from 0 Hz (standstill) through the 
+entire audio range right up to the limit set by the sample rate. Since very low frequencies 
+are allowed, these oscillators are also suited for use as LFOs, although the audio rate proc­
+essing requires more CPU resources. Furthermore, oscillators with waveforms that, have 
+strong transients (like the Sawtooth Module) have anti-aliasing in REAKTOR and are there­
+fore not well suited for use as LFOs. When you do decide to use an oscillator as an LFO to 
+modulate another Module"s Event input port (for example "P" as opposed to "F"), you need 
+to insert an A to E (perm) Module to convert the audio signal to an Event signal.
+6.1
+Sawtooth Oscillator
+ 
+Fig. 6.1 Sawtooth Module
+6.1.1
+Overview
+ 
+The Sawtooth Module is an oscillator with a sawtooth waveform, as shown on the Structure 
+icon of the Module. It features logarithmic pitch control at the "P" input port and linear 
+amplitude modulation at the "A" input port.
+Application
+The sawtooth oscillator delivers a signal rich in harmonics which is a good starting point 
+for subtractive synthesis.
+Oscillators
+Sawtooth Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 307
+
+
+--- Page 308 ---
+
+6.1.2
+Ports
+ 
+Input Ports
+▪
+(P) "P" (pitch) is the Event input port for controlling the pitch (oscillator frequency) in 
+the logarithmic pitch scale. The pitch value is given in semitones in the range [0 … 
+127] where "69" corresponds to "Concert A" or 440 Hz.
+▪
+(A) "A" (amplitude) is the Audio input port for controlling the oscillator amplitude. In 
+other words, the output signal of the Module has the range [-A … A].
+Output Ports
+▪
+(Out) "Out" is the output port for the audio signal with the sawtooth waveform.
+6.1.3
+Example: Rehearsing the Oscillator
+ 
+This example shows how to get a sawtooth waveform with constant unit amplitude and a 
+pitch set with the MIDI controller or the keyboard. The pitch information for the Sawtooth 
+Module is sent to the "P" input port from the output port of the Note Pitch Module.
+Fig. 6.2 A simple implementation of the Sawtooth Module.
+The best way to get acquainted with the oscillators in REAKTOR is to hear them in action 
+while tweaking the different parameters. You can hear the sound of this oscillator and 
+compare it to the other oscillators in the Oscillator Rehearsal Ensemble. The Ensemble 
+consists of an easy to use interface to select and tweak your oscillator of choice while fol­
+lowing the change in its sound with your ears and the change in waveform on the scope. 
+Since each oscillator can have its own set of controls besides pitch and amplitude, 
+Stacked Macro Modules (↑1.19, Stacked Macro) have been used to make only the relevant 
+controls appear when an oscillator has been selected from the "Oscillators" list.
+Oscillators
+Sawtooth Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 308
+
+
+--- Page 309 ---
+
+Fig. 6.3 The sawtooth waveform.
+6.2
+Saw FM Oscillator
+ 
+Fig. 6.4 Saw FM Module
+6.2.1
+Overview
+ 
+The Saw FM Module is an oscillator with a sawtooth waveform, as shown on the Structure 
+icon of the Module. It features logarithmic pitch control at the "P" input port, linear fre­
+quency modulation at the "F" input port, and linear amplitude modulation at the "A" input 
+port. The "F" input port accepts audio signals and is meant for FM synthesis.
+Application
+The sawtooth oscillator delivers a signal rich in harmonics which is a good starting point 
+for subtractive synthesis. Since the Saw FM Module has an Audio input port for linear fre­
+quency control, it can be used as a carrier oscillator in FM synthesis.
+6.2.2
+Ports
+ 
+Input Ports
+▪
+(P) "P" (pitch) is the Event input port for controlling the pitch (oscillator frequency) in 
+the logarithmic pitch scale. The pitch value is given in semitones in the range [0 … 
+127] where "69" corresponds to "Concert A" or 440 Hz.
+Oscillators
+Saw FM Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 309
+
+
+--- Page 310 ---
+
+▪
+(F) "F" (frequency) is the Audio input port for linear frequency modulation in Hz. The 
+value at the "F" (frequency) input port is added to the frequency determined by the "P" 
+(pitch) input port. The sum is then the final oscillator frequency.
+▪
+(A) "A" (amplitude) is the Audio input port for controlling the oscillator amplitude. In 
+other words, the output signal of the Module has the range [-A … A].
+Output Ports
+▪
+(Out) "Out" is the output port for the audio signal with the possibly frequency modulat­
+ed sawtooth waveform.
+6.2.3
+Example: Rehearsing the Oscillator
+ 
+This example shows how to get a sawtooth waveform with constant unit amplitude, a pitch 
+set with the MIDI controller or the keyboard, and frequency modulation by a sine wave. 
+The pitch information for the Saw FM Module is sent to the "P" (pitch) input port from the 
+output port of the Note Pitch Module. The pitch of the frequency modulator (a Sine Mod­
+ule, see ↑6.14, Sine Oscillator) is determined by the "Mod Pitch" Knob Module and the 
+frequency modulation amount is determined by the "FM" Knob Module.
+Fig. 6.5 A simple implementation of the Saw FM Module.
+The best way to get acquainted with the oscillators in REAKTOR is to hear them in action 
+while tweaking the different parameters. You can hear the sound of this oscillator and 
+compare it to the other oscillators in the Oscillator Rehearsal Ensemble. The Ensemble 
+consists of an easy to use interface to select and tweak your oscillator of choice while fol­
+lowing the change in its sound with your ears and the change in waveform on the scope. 
+Since each oscillator can have its own set of controls besides pitch and amplitude, 
+Stacked Macro Modules (↑1.19, Stacked Macro) have been used to make only the relevant 
+controls appear when an oscillator has been selected from the "Oscillators" list.
+Oscillators
+Saw FM Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 310
+
+
+--- Page 311 ---
+
+Fig. 6.6 An example of a frequency modulated sawtooth waveform.
+6.3
+Saw Sync Oscillator
+ 
+Fig. 6.7 Saw Sync Module
+6.3.1
+Overview
+ 
+The Saw Sync Module is an oscillator with a sawtooth waveform, as shown on the Struc­
+ture icon of the Module. It features logarithmic pitch control at the "P" (pitch) input port 
+and linear amplitude modulation at the "A" input port. In addition, this Module supports 
+phase synchronization (also known as hard sync): a positive zero crossing of the signal at 
+the "Snc" input port causes the phase of the sawtooth oscillator to be reset to the phase 
+specified at the "Ph" input port. A positive zero crossing of a signal happens when signal 
+values go from negative to positive. The signal at the "Snc" input port is usually another 
+oscillator. When the synchronizing oscillator has the same frequency as the synchronized 
+oscillator, there is no audible effect. The frequency of the sawtooth sync oscillator can be 
+linearly modulated by an audio signal at the "F" input port, making FM synthesis possible.
+Application
+The sawtooth oscillator delivers a signal rich in harmonics which is a good starting point 
+for subtractive synthesis. Also, the oscillator can be hard synced to another oscillator to 
+create the classic oscillator sync sound. Since the Saw Sync Module has an Audio input 
+port for linear frequency control, it can be used as a carrier oscillator in FM synthesis.
+Oscillators
+Saw Sync Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 311
+
+
+--- Page 312 ---
+
+6.3.2
+Ports
+ 
+Input Ports
+▪
+(P) "P" (pitch) is the Event input port for controlling the pitch (oscillator frequency) in 
+the logarithmic pitch scale. The pitch value is given in semitones in the range [0 … 
+127] where "69" corresponds to "Concert A" or 440 Hz.
+▪
+(F) "F" (frequency) is the Audio input port for linear frequency modulation in Hz. The 
+value at the "F" (frequency) input port is added to the frequency determined by the "P" 
+(pitch) input port. The sum is then the final oscillator frequency.
+▪
+(A) "A" (amplitude) is the Audio input port for controlling the oscillator amplitude. In 
+other words, the output signal of the Module has a range within [-A … A], depending 
+on the phase synchronization.
+▪
+(Snc) "Snc" (sync) is the Audio input port for controlling synchronization of the wave­
+form. A positive crossing of the signal at this input port restarts the oscillator phase 
+from the phase specified at the "Ph" input port. A positive zero crossing of a signal 
+happens when signal values go from negative to positive.
+▪
+(Ph) "Ph" (phase) is the input port for specifying the phase (position in the waveform) 
+to which the oscillator is reset when synchronization occurs. The range for the "Ph" in­
+put port is [-1 … 1] where "-1" corresponds to a phase of -180 degrees and "1" corre­
+sponds to a phase 180 degrees.
+Output Ports
+▪
+(Out) "Out" is the output port for the audio signal with the possibly frequency modulat­
+ed and/or hard synchronized sawtooth waveform.
+6.3.3
+Example: Rehearsing the Oscillator
+ 
+This example shows how to get a sawtooth waveform with constant unit amplitude, a pitch 
+set with the MIDI controller or the keyboard, and frequency modulation and hard synchro­
+nization by two separate sine waves. The pitch information for the Saw Sync Module is 
+sent to the "P" (pitch) input port from the output port of the Note Pitch Module. The pitch 
+of the frequency modulator (a Sine Module, see ↑6.14, Sine Oscillator) is determined by 
+the "Mod Pitch" Knob Module and the frequency modulation amount is determined by the 
+"FM" Knob Module. The Saw Sync Module is hard synchronized to a second sine wave, the 
+Oscillators
+Saw Sync Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 312
+
+
+--- Page 313 ---
+
+pitch of which is determined by the "Snc Pitch" Knob Module. The phase to which the 
+sawtooth wave is reset upon a positive zero-crossing at the "Snc" input port is determined 
+by the "SncPhase" Knob Module at the "Ph" input port.
+Fig. 6.8 A simple implementation of the Saw Sync Module.
+The best way to get acquainted with the oscillators in REAKTOR is to hear them in action 
+while tweaking the different parameters. You can hear the sound of this oscillator and 
+compare it to the other oscillators in the Oscillator Rehearsal Ensemble. The Ensemble 
+consists of an easy to use interface to select and tweak your oscillator of choice while fol­
+lowing the change in its sound with your ears and the change in waveform on the scope. 
+Since each oscillator can have its own set of controls besides pitch and amplitude, 
+Stacked Macro Modules (↑1.19, Stacked Macro) have been used to make only the relevant 
+controls appear when an oscillator has been selected from the "Oscillators" list.
+Fig. 6.9 An example of a hard synchronized sawtooth waveform.
+Oscillators
+Saw Sync Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 313
+
+
+--- Page 314 ---
+
+6.4
+Saw Pulse Oscillator
+ 
+Fig. 6.10 Saw Pulse Module
+6.4.1
+Overview
+ 
+The Saw Pulse Module is an oscillator with a variable waveform that morphs between a 
+sawtooth and an impulse train. You can morph between the sawtooth and impulse wave­
+forms by changing the slope of the ramp with a signal at the "Slp" input port. The Saw 
+Pulse Module features logarithmic pitch control at the "P" (pitch) input port and linear am­
+plitude modulation at the "A" input port.
+Application
+The Saw Pulse Module delivers a signal with variable richness in harmonics which is a 
+good starting point for subtractive synthesis. Morphing the waveform from a sawtooth to an 
+impulse train decreases the amount of lower harmonics and increases the amount of high­
+er harmonics in the signal spectrum.
+6.4.2
+Ports
+ 
+Input Ports
+▪
+(P) "P" (pitch) is the Event input port for controlling the pitch (oscillator frequency) in 
+the logarithmic pitch scale. The pitch value is given in semitones in the range [0 … 
+127] where "69" corresponds to "Concert A" or 440 Hz.
+▪
+(A) "A" (amplitude) is the Audio input port for controlling the oscillator amplitude. In 
+other words, the output signal of the Module has a range within [-A … A], depending 
+on the "Slp" value.
+▪
+(Slp) "Slp" (slope) is the Audio input port for controlling the slope of the waveform. A 
+value of "0" produces a normal sawtooth waveform, a larger value shortens the ramp to 
+an impulse. The range for the "Slp" input port is [0 … 20] where "0" corresponds to 
+the sawtooth waveform and "20" corresponds to the impulse train.
+Oscillators
+Saw Pulse Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 314
+
+
+--- Page 315 ---
+
+Output Ports
+▪
+(Out) "Out" is the output port for the audio signal with the sawtooth/pulse waveform.
+6.4.3
+Example: Rehearsing the Oscillator
+ 
+This example shows how to get a sawtooth/pulse waveform with constant unit amplitude 
+and a pitch set with the MIDI controller or the keyboard. The pitch information for the Saw 
+Pulse Module is sent to the "P" (pitch) input port from the output port of the Note Pitch 
+Module.
+Fig. 6.11 A simple implementation of the Saw Pulse Module.
+The best way to get acquainted with the oscillators in REAKTOR is to hear them in action 
+while tweaking the different parameters. You can hear the sound of this oscillator and 
+compare it to the other oscillators in the Oscillator Rehearsal Ensemble. The Ensemble 
+consists of an easy to use interface to select and tweak your oscillator of choice while fol­
+lowing the change in its sound with your ears and the change in waveform on the scope. 
+Since each oscillator can have its own set of controls besides pitch and amplitude, 
+Stacked Macro Modules (↑1.19, Stacked Macro) have been used to make only the relevant 
+controls appear when an oscillator has been selected from the "Oscillators" list.
+Fig. 6.12 A possible saw pulse Waveform.
+Oscillators
+Saw Pulse Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 315
+
+
+--- Page 316 ---
+
+6.5
+Bi-Saw Oscillator
+ 
+Fig. 6.13 Bi-Saw Module
+6.5.1
+Overview
+ 
+The Bi-Saw Module is an oscillator with a bipolar sawtooth waveform featuring pulse width 
+modulation at the "W" input port. The positive zero-crossing of the waveform is locked to 
+zero-phase, so the pulse width modulation results in a modulation of the slope of the 
+ramps. A positive zero crossing of a signal happens when signal values go from negative to 
+positive. The Bi-Saw Module features logarithmic pitch control at the "P" (pitch) input port 
+and linear amplitude modulation at the "A" input port.
+Application
+The Bi-Saw Module delivers a signal with variable richness in harmonics which is a good 
+starting point for subtractive synthesis. Morphing the waveform from a "W" value of "0" to a 
+a "W" value of "1" decreases the amount of lower harmonics and increases the amount of 
+higher harmonics in the signal.
+6.5.2
+Ports
+ 
+Input Ports
+▪
+(P) "P" (pitch) is the Event input port for controlling the pitch (oscillator frequency) in 
+the logarithmic pitch scale. The pitch value is given in semitones in the range [0 … 
+127] where "69" corresponds to "Concert A" or 440 Hz.
+▪
+(A) "A" (amplitude) is the Audio input port for controlling the oscillator amplitude. In 
+other words, the output signal of the Module has the range [-A … A].
+▪
+(W) "W" (width) is the Audio input port for controlling the width of the zero signal be­
+tween individual sawtooth ramps (also known as pulse width modulation or PWM). The 
+positive zero-crossing of the waveform is locked to zero-phase, so the pulse width mod­
+ulation results in a modulation of the slope of the ramps. A positive zero crossing of a 
+signal happens when signal values go from negative to positive. The range of values for 
+Oscillators
+Bi-Saw Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 316
+
+
+--- Page 317 ---
+
+"W" is about [0 … 6] where the upper bound can be stretched a bit. For W = 0 you get 
+a normal sawtooth waveform and larger values for "W" result in steeper ramps between 
+and a longer zero signal between these ramps.
+Output Ports
+▪
+(Out) "Out" is the output port for the audio signal with a bipolar sawtooth waveform.
+6.5.3
+Example: Rehearsing the Oscillator
+ 
+This example shows how to create a bipolar sawtooth waveform with constant unit ampli­
+tude and a pitch set with the MIDI controller or the keyboard. The pitch information for 
+the Bi-Saw Module is sent to the "P" (pitch) input port from the output port of the Note 
+Pitch Module. The pulse width value is determined with a Knob Module labeled "P-Width" 
+at the "W" input port.
+Fig. 6.14 A simple implementation of the Bi-Saw Module.
+The best way to get acquainted with the oscillators in REAKTOR is to hear them in action 
+while tweaking the different parameters. You can hear the sound of this oscillator and 
+compare it to the other oscillators in the Oscillator Rehearsal Ensemble. The Ensemble 
+consists of an easy to use interface to select and tweak your oscillator of choice while fol­
+lowing the change in its sound with your ears and the change in waveform on the scope. 
+Since each oscillator can have its own set of controls besides pitch and amplitude, 
+Stacked Macro Modules (↑1.19, Stacked Macro) have been used to make only the relevant 
+controls appear when an oscillator has been selected from the "Oscillators" list.
+Oscillators
+Bi-Saw Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 317
+
+
+--- Page 318 ---
+
+Fig. 6.15 A possible bi-saw waveform.
+6.6
+Triangle Oscillator
+ 
+Fig. 6.16 Triangle Module
+6.6.1
+Overview
+ 
+The Triangle Module is an oscillator with a symmetric triangle waveform, as shown on the 
+Structure icon of the Module. It features logarithmic pitch control at the "P" (pitch) input 
+port and linear amplitude modulation at the "A" input port.
+Application
+The triangle oscillator delivers a signal that has only odd harmonics present, with ampli­
+tudes that decrease as the square of the harmonic number. This yields a mellow timbre, 
+somewhere between a sine and pulse wave. An upwardly transposed triangle wave can be 
+mixed to a sum of sine waves, for example, to add harmonic content. It can also be useful 
+as a modulating signal in frequency modulation or ring moduation where the harmonic 
+density should not be too great, as might be the case with the sawtooth waveform.
+6.6.2
+Ports
+ 
+Input Ports
+▪
+(P) "P" (pitch) is the Event input port for controlling the pitch (oscillator frequency) in 
+the logarithmic pitch scale. The pitch value is given in semitones in the range [0 … 
+127] where "69" corresponds to "Concert A" or 440 Hz.
+Oscillators
+Triangle Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 318
+
+
+--- Page 319 ---
+
+▪
+(A) "A" (amplitude) is the Audio input port for controlling the oscillator amplitude. In 
+other words, the output signal of the Module has the range [-A … A].
+Output Ports
+▪
+(Out) "Out" is the output port for the audio signal with the triangle waveform.
+6.6.3
+Example: Rehearsing the Oscillator
+ 
+This example shows how to get a triangle waveform with constant unit amplitude and a 
+pitch set with the MIDI controller or the keyboard. The pitch information for the Triangle 
+Module is sent to the "P" (pitch) input port from the output port of the Note Pitch Module.
+Fig. 6.17 A simple implementation of the Triangle Module.
+The best way to get acquainted with the oscillators in REAKTOR is to hear them in action 
+while tweaking the different parameters. You can hear the sound of this oscillator and 
+compare it to the other oscillators in the Oscillator Rehearsal Ensemble. The Ensemble 
+consists of an easy to use interface to select and tweak your oscillator of choice while fol­
+lowing the change in its sound with your ears and the change in waveform on the scope. 
+Since each oscillator can have its own set of controls besides pitch and amplitude, 
+Stacked Macro Modules (↑1.19, Stacked Macro) have been used to make only the relevant 
+controls appear when an oscillator has been selected from the "Oscillators" list.
+Fig. 6.18 The triangle waveform.
+Oscillators
+Triangle Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 319
+
+
+--- Page 320 ---
+
+6.7
+Tri FM Oscillator
+ 
+Fig. 6.19 Triangle FM Module
+6.7.1
+Overview
+ 
+The Triangle FM Module is an oscillator with a symmetric triangle waveform, as shown on 
+the Structure icon of the Module. It features logarithmic pitch control at the "P" (pitch) 
+input port, linear frequency modulation at the "F" input port, and linear amplitude modula­
+tion at the "A" input port. The "F" input port accepts audio signals and is meant for FM 
+synthesis.
+Application
+The triangle oscillator delivers a signal that has only odd harmonics present, with ampli­
+tudes that decrease as the square of the harmonic number. This yields a mellow timbre, 
+somewhere between a sine and pulse wave. An upwardly transposed triangle wave can be 
+mixed to a sum of sine waves, for example, to add harmonic content. It can also be useful 
+as a modulating signal in frequency modulation or ring moduation where the harmonic 
+density should not be too great, as might be the case with the sawtooth waveform. Since 
+the Triangle FM Module has an Audio input port for linear frequency control, it can be 
+used as a carrier oscillator in FM synthesis.
+6.7.2
+Ports
+ 
+Input Ports
+▪
+(P) "P" (pitch) is the Event input port for controlling the pitch (oscillator frequency) in 
+the logarithmic pitch scale. The pitch value is given in semitones in the range [0 … 
+127] where "69" corresponds to "Concert A" or 440 Hz.
+▪
+(F) "F" (frequency) is the Audio input port for linear frequency modulation in Hz. The 
+value at the "F" (frequency) input port is added to the frequency determined by the "P" 
+(pitch) input port. The sum is then the final oscillator frequency.
+Oscillators
+Tri FM Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 320
+
+
+--- Page 321 ---
+
+▪
+(A) "A" (amplitude) is the Audio input port for controlling the oscillator amplitude. In 
+other words, the output signal of the Module has the range [-A … A].
+Output Ports
+▪
+(Out) "Out" is the output port for the audio signal with the possibly frequency modulat­
+ed triangle waveform.
+6.7.3
+Example: Rehearsing the Oscillator
+ 
+This example shows how to get a triangle waveform with constant unit amplitude, a pitch 
+set with the MIDI controller or the keyboard, and frequency modulation by a sine wave. 
+The pitch information for the Triangle FM Module is sent to the "P" (pitch) input port from 
+the output port of the Note Pitch Module. The pitch of the frequency modulator (a Sine 
+Module, see ↑6.14, Sine Oscillator) is determined by the "Mod Pitch" Knob Module and 
+the frequency modulation amount is determined by the "FM" Knob Module.
+Fig. 6.20 A simple implementation of the Tri FM Module.
+The best way to get acquainted with the oscillators in REAKTOR is to hear them in action 
+while tweaking the different parameters. You can hear the sound of this oscillator and 
+compare it to the other oscillators in the Oscillator Rehearsal Ensemble. The Ensemble 
+consists of an easy to use interface to select and tweak your oscillator of choice while fol­
+lowing the change in its sound with your ears and the change in waveform on the scope. 
+Since each oscillator can have its own set of controls besides pitch and amplitude, 
+Stacked Macro Modules (↑1.19, Stacked Macro) have been used to make only the relevant 
+controls appear when an oscillator has been selected from the "Oscillators" list.
+Oscillators
+Tri FM Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 321
+
+
+--- Page 322 ---
+
+Fig. 6.21 An example of a frequency modulated triangle waveform.
+6.8
+Tri Sync Oscillator
+ 
+Fig. 6.22 Tri Sync Module
+6.8.1
+Overview
+ 
+The Tri Sync Module is an oscillator with a triangle waveform, as shown on the Structure 
+icon of the Module. It features logarithmic pitch control at the "P" (pitch) input port and 
+linear amplitude modulation at the "A" input port. In addition, this Module supports phase 
+synchronization (also known as hard sync): a positive zero crossing of the signal at the 
+"Snc" input port causes the phase of the triangle oscillator to be reset to the phase speci­
+fied at the "Ph" input port. A positive zero crossing of a signal happens when signal values 
+go from negative to positive. The signal at the "Snc" input port is usually another oscillator. 
+When the synchronizing oscillator has the same frequency as the synchronized oscillator, 
+there is no audible effect. The frequency of the triangle sync oscillator can be linearly 
+modulated by an audio signal at the "F" input port, making FM synthesis possible.
+Application
+The triangle oscillator delivers a signal that has only odd harmonics present, with ampli­
+tudes that decrease as the square of the harmonic number. This yields a mellow timbre, 
+somewhere between a sine and pulse wave. An upwardly transposed triangle wave can be 
+mixed to a sum of sine waves, for example, to add harmonic content. It can also be useful 
+as a modulating signal in frequency modulation or ring moduation where the harmonic 
+Oscillators
+Tri Sync Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 322
+
+
+--- Page 323 ---
+
+density should not be too great, as might be the case with the sawtooth waveform. Since 
+the Triangle Sync Module has an Audio input port for linear frequency control, it can be 
+used as a carrier oscillator in FM synthesis. Also, the oscillator can be hard synced to an­
+other oscillator to create the classic oscillator sync sound.
+6.8.2
+Ports
+ 
+Input Ports
+▪
+(P) "P" (pitch) is the Event input port for controlling the pitch (oscillator frequency) in 
+the logarithmic pitch scale. The pitch value is given in semitones in the range [0 … 
+127] where "69" corresponds to "Concert A" or 440 Hz.
+▪
+(F) "F" (frequency) is the Audio input port for linear frequency modulation in Hz. The 
+value at the "F" (frequency) input port is added to the frequency determined by the "P" 
+(pitch) input port. The sum is then the final oscillator frequency.
+▪
+(A) "A" (amplitude) is the Audio input port for controlling the oscillator amplitude. In 
+other words, the output signal of the Module has a range within [-A … A], depending 
+on the phase synchronization..
+▪
+(Snc) "Snc" (sync) is the Audio input port for controlling synchronization of the wave­
+form. A positive crossing of the signal at this input port restarts the oscillator phase 
+from the phase specified at the "Ph" input port. A positive zero crossing of a signal 
+happens when signal values go from negative to positive.
+▪
+(Ph) "Ph" (phase) is the input port for specifying the phase (position in the waveform) 
+to which the oscillator is reset when synchronization occurs. The range for the "Ph" in­
+put port is [-1 … 1] where "-1" corresponds to a phase of -180 degrees and "1" corre­
+sponds to a phase 180 degrees.
+Output Ports
+▪
+(Out) "Out" is the output port for the audio signal with the possibly frequency modulat­
+ed and/or hard synchronized triangle waveform.
+6.8.3
+Example: Rehearsing the Oscillator
+ 
+This example shows how to get a triangle waveform with constant unit amplitude, a pitch 
+set with the MIDI controller or the keyboard, and frequency modulation and hard synchro­
+nization by two separate sine waves. The pitch information for the Tri Sync Module is sent 
+to the "P" (pitch) input port from the output port of the Note Pitch Module. The pitch of 
+Oscillators
+Tri Sync Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 323
+
+
+--- Page 324 ---
+
+the frequency modulator (a Sine Module, see ↑6.14, Sine Oscillator) is determined by the 
+"Mod Pitch" Knob Module and the frequency modulation amount is determined by the 
+"FM" Knob Module. The Tri Sync Module is hard synchronized to a second sine wave, the 
+pitch of which is determined by the "Snc Pitch" Knob Module. The phase to which the tri­
+angle wave is reset upon a positive zero-crossing at the "Snc" input port is determined by 
+the "SncPhase" Knob Module at the "Ph" input port.
+Fig. 6.23 A simple implementation of the Tri Sync Module.
+The best way to get acquainted with the oscillators in REAKTOR is to hear them in action 
+while tweaking the different parameters. You can hear the sound of this oscillator and 
+compare it to the other oscillators in the Oscillator Rehearsal Ensemble. The Ensemble 
+consists of an easy to use interface to select and tweak your oscillator of choice while fol­
+lowing the change in its sound with your ears and the change in waveform on the scope. 
+Since each oscillator can have its own set of controls besides pitch and amplitude, 
+Stacked Macro Modules (↑1.19, Stacked Macro) have been used to make only the relevant 
+controls appear when an oscillator has been selected from the "Oscillators" list.
+Fig. 6.24 An example of a hard synchronized triangle waveform.
+Oscillators
+Tri Sync Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 324
+
+
+--- Page 325 ---
+
+6.9
+Tri/Par Symm Oscillator
+ 
+Fig. 6.25 Tri/Par Symm Module
+6.9.1
+Overview
+ 
+The Tri/Par Symm Module is an oscillator that generates two basic waveforms: parable and 
+triangle. You can change the symmetry of the waveforms from completely symmetric (less 
+harmonics) to asymmetric (more harmonics) by controlling the value at the "W" input port. 
+The Tri/Par Symm Module features logarithmic pitch control at the "P" (pitch) input port 
+and linear amplitude modulation at the "A" input port.
+Application
+The Tri/Par Symm Module delivers signals with variable richness in harmonics. These out­
+put signals are good as modulating signals in frequency modulation or ring modulation. 
+They can also be a starting point for subtractive synthesis.
+6.9.2
+Ports
+ 
+Input Ports
+▪
+(P) "P" (pitch) is the Event input port for controlling the pitch (oscillator frequency) in 
+the logarithmic pitch scale. The pitch value is given in semitones in the range [0 … 
+127] where "69" corresponds to "Concert A" or 440 Hz.
+▪
+(A) "A" (amplitude) is the Audio input port for controlling the oscillator amplitude. In 
+other words, the output signal of the Module has the range [-A … A].
+▪
+(W) "W" (width) is the Event input port for controlling the symmetry of the waveform. A 
+value of "-1" produces a falling-ramp sawtooth with a linear ramp at the "Tri" output 
+port and a parabolic ramp at the "Par" output port. "0" produces a triangle waveform at 
+the "Tri" output port and a parabolic waveform at the "Par" output port. "+1" produces a 
+rising-ramp sawtooth with a linear ramp at the "Tri" output port and a parabolic ramp at 
+the "Par output port.
+Oscillators
+Tri/Par Symm Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 325
+
+
+--- Page 326 ---
+
+Output Ports
+▪
+(Tri) "Tri" (triangle) is the output port for the audio signal with the variable triangle 
+waveform.
+▪
+(Par) "Par" (parable) is the output port for the audio signal with the variable parable 
+waveform.
+6.9.3
+Example: Rehearsing the Oscillator
+ 
+This example shows how to create triangle and parabolic waveforms with variable symme­
+try, constant unit amplitude, and a pitch set with the MIDI controller or the keyboard. The 
+pitch information for the Tri/Par Symm Module is sent to the "P" (pitch) input port from 
+the output port of the Note Pitch Module. The symmetry value is determined with a Knob 
+Module labeled "Symm" at the "W" input port.
+Fig. 6.26 A simple implementation of the Tri/Par Symm Module.
+The best way to get acquainted with the oscillators in REAKTOR is to hear them in action 
+while tweaking the different parameters. You can hear the sound of this oscillator and 
+compare it to the other oscillators in the Oscillator Rehearsal Ensemble. The Ensemble 
+consists of an easy to use interface to select and tweak your oscillator of choice while fol­
+lowing the change in its sound with your ears and the change in waveform on the scope. 
+Since each oscillator can have its own set of controls besides pitch and amplitude, 
+Stacked Macro Modules (↑1.19, Stacked Macro) have been used to make only the relevant 
+controls appear when an oscillator has been selected from the "Oscillators" list.
+Fig. 6.27 A possible waveform of the Tri/Par Symm Module with the "Par" setting.
+Oscillators
+Tri/Par Symm Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 326
+
+
+--- Page 327 ---
+
+Fig. 6.28 A possible waveform of the Tri/Par Symm Module with the "Tri" setting.
+6.10
+Parabol Oscillator
+ 
+Fig. 6.29 Parabol Module
+6.10.1
+Overview
+ 
+The Parabol Module is an oscillator with a parabolic waveform, as shown on the Structure 
+icon of the Module. The waveform consists of two parabolas that meet at zero level. The 
+Parabol Module features logarithmic pitch control at the "P" (pitch) input port and linear 
+amplitude modulation at the "A" input port.
+Application
+The parabolic waveform sounds like a sine wave with some added odd numbered overtones 
+at very low level. In many cases the parabolic waveform can be used as replacement for a 
+sine generator with less computational load.
+6.10.2
+Ports
+ 
+Input Ports
+▪
+(P) "P" (pitch) is the Event input port for controlling the pitch (oscillator frequency) in 
+the logarithmic pitch scale. The pitch value is given in semitones in the range [0 … 
+127] where "69" corresponds to "Concert A" or 440 Hz.
+▪
+(A) "A" (amplitude) is the Audio input port for controlling the oscillator amplitude. In 
+other words, the output signal of the Module has the range [-A … A].
+Oscillators
+Parabol Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 327
+
+
+--- Page 328 ---
+
+Output Ports
+▪
+(Out) "Out" is the output port for audio signal with the parabolic waveform.
+6.10.3
+Example: Rehearsing the Oscillator
+ 
+This example shows how to get a parabolic waveform with constant unit amplitude and a 
+pitch set with the MIDI controller or the keyboard. The pitch information for the Parabol 
+Module is sent to the "P" (pitch) input port from the output port of the Note Pitch Module.
+Fig. 6.30 A simple implementation of the Parabol Module.
+The best way to get acquainted with the oscillators in REAKTOR is to hear them in action 
+while tweaking the different parameters. You can hear the sound of this oscillator and 
+compare it to the other oscillators in the Oscillator Rehearsal Ensemble. The Ensemble 
+consists of an easy to use interface to select and tweak your oscillator of choice while fol­
+lowing the change in its sound with your ears and the change in waveform on the scope. 
+Since each oscillator can have its own set of controls besides pitch and amplitude, 
+Stacked Macro Modules (↑1.19, Stacked Macro) have been used to make only the relevant 
+controls appear when an oscillator has been selected from the "Oscillators" list.
+Fig. 6.31 The waveform of the parabol oscillator.
+Oscillators
+Parabol Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 328
+
+
+--- Page 329 ---
+
+6.11
+Par FM Oscillator
+ 
+Fig. 6.32 Par FM Module
+6.11.1
+Overview
+ 
+The Par FM Module is an oscillator with a parabolic waveform, as shown on the Structure 
+icon of the Module. The waveform consists of two parabolas that meet at zero level. It fea­
+tures logarithmic pitch control at the "P" (pitch) input port, linear frequency modulation at 
+the "F" input port, and linear amplitude modulation at the "A" input port. The "F" input 
+port accepts audio signals and is meant for FM synthesis.
+Application
+The parabolic waveform sounds like a sine wave with some added odd numbered overtones 
+at very low level. In many cases the parabolic waveform can be used as replacement for a 
+sine generator with less computational load. Since the Par FM Module has an Audio input 
+port for linear frequency control, it can be used as a carrier oscillator in FM synthesis.
+6.11.2
+Ports
+ 
+Input Ports
+▪
+(P) "P" (pitch) is the Event input port for controlling the pitch (oscillator frequency) in 
+the logarithmic pitch scale. The pitch value is given in semitones in the range [0 … 
+127] where "69" corresponds to "Concert A" or 440 Hz.
+▪
+(F) "F" (frequency) is the Audio input port for linear frequency modulation in Hz. The 
+value at the "F" (frequency) input port is added to the frequency determined by the "P" 
+(pitch) input port. The sum is then the final oscillator frequency.
+▪
+(A) "A" (amplitude) is the Audio input port for controlling the oscillator amplitude. In 
+other words, the output signal of the Module has the range [-A … A].
+Oscillators
+Par FM Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 329
+
+
+--- Page 330 ---
+
+Output Ports
+▪
+(Out) "Out" is the output port for the audio signal with the possibly frequency modulat­
+ed parabolic waveform.
+6.11.3
+Example: Rehearsing the Oscillator
+ 
+This example shows how to get a parabolic waveform with constant unit amplitude, a pitch 
+set with the MIDI controller or the keyboard, and frequency modulation by a sine wave. 
+The pitch information for the Par FM Module is sent to the "P" (pitch) input port from the 
+output port of the Note Pitch Module. The pitch of the frequency modulator (a Sine Mod­
+ule, ↑6.14, Sine Oscillator) is determined by the "Mod Pitch" Knob Module and the fre­
+quency modulation amount is determined by the "FM" Knob Module.
+Fig. 6.33 A simple implementation of the Par FM Module.
+The best way to get acquainted with the oscillators in REAKTOR is to hear them in action 
+while tweaking the different parameters. You can hear the sound of this oscillator and 
+compare it to the other oscillators in the Oscillator Rehearsal Ensemble. The Ensemble 
+consists of an easy to use interface to select and tweak your oscillator of choice while fol­
+lowing the change in its sound with your ears and the change in waveform on the scope. 
+Since each oscillator can have its own set of controls besides pitch and amplitude, 
+Stacked Macro Modules (↑1.19, Stacked Macro) have been used to make only the relevant 
+controls appear when an oscillator has been selected from the "Oscillators" list.
+Fig. 6.34 An example of a frequency modulated parabol oscillator.
+Oscillators
+Par FM Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 330
+
+
+--- Page 331 ---
+
+6.12
+Par Sync Oscillator
+ 
+Fig. 6.35 Par Sync Module
+6.12.1
+Overview
+ 
+The Par Sync Module is an oscillator with a parabolic waveform, as shown on the Structure 
+icon of the Module. The waveform consists of two parabolas that meet at zero level. It fea­
+tures logarithmic pitch control at the "P" (pitch) input port and linear amplitude modula­
+tion at the "A" input port. In addition, this Module supports phase synchronization (also 
+known as hard sync): a positive zero crossing of the signal at the "Snc" input port causes 
+the phase of the parabolic oscillator to be reset to the phase specified at the "Ph" input 
+port. A positive zero crossing of a signal happens when signal values go from negative to 
+positive. The signal at the "Snc" input port is usually another oscillator. When the synchro­
+nizing oscillator has the same frequency as the synchronized oscillator, there is no audible 
+effect. The frequency of the parabolic sync oscillator can be linearly modulated by an au­
+dio signal at the "F" input port, making FM synthesis possible.
+Application
+The parabolic waveform sounds like a sine wave with some added odd numbered overtones 
+at very low level. In many cases the parabolic waveform can be used as replacement for a 
+sine generator with less computational load. Since the Par Sync Module has an Audio in­
+put port for linear frequency control, it can be used as a carrier oscillator in FM synthesis. 
+Also, the oscillator can be hard synced to another oscillator to create the classic oscillator 
+sync sound.
+Oscillators
+Par Sync Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 331
+
+
+--- Page 332 ---
+
+6.12.2
+Ports
+ 
+Input Ports
+▪
+(P) "P" (pitch) is the Event input port for controlling the pitch (oscillator frequency) in 
+the logarithmic pitch scale. The pitch value is given in semitones in the range [0 … 
+127] where "69" corresponds to "Concert A" or 440 Hz.
+▪
+(F) "F" (frequency) is the Audio input port for linear frequency modulation in Hz. The 
+value at the "F" (frequency) input port is added to the frequency determined by the "P" 
+(pitch) input port. The sum is then the final oscillator frequency.
+▪
+(A) "A" (amplitude) is the Audio input port for controlling the oscillator amplitude. In 
+other words, the output signal of the Module has a range within [-A … A], depending 
+on the phase synchronization..
+▪
+(Snc) "Snc" (sync) is the Audio input port for controlling synchronization of the wave­
+form. A positive crossing of the signal at this input port restarts the oscillator phase 
+from the phase specified at the "Ph" input port. A positive zero crossing of a signal 
+happens when signal values go from negative to positive.
+▪
+(Ph) "Ph" (phase) is the input port for specifying the phase (position in the waveform) 
+to which the oscillator is reset when synchronization occurs. The range for the "Ph" in­
+put port is [-1 … 1] where "-1" corresponds to a phase of -180 degrees and "1" corre­
+sponds to a phase 180 degrees.
+Output Ports
+▪
+(Out) "Out" is the output port for the audio signal with the possibly frequency modulat­
+ed and/or hard synchronized triangle waveform.
+6.12.3
+Example: Rehearsing the Oscillator
+ 
+This example shows how to get a parabolic waveform with constant unit amplitude, a pitch 
+set with the MIDI controller or the keyboard, and frequency modulation and hard synchro­
+nization by two separate sine waves. The pitch information for the Par Sync Module is sent 
+to the "P" (pitch) input port from the output port of the Note Pitch Module. The pitch of 
+the frequency modulator (a Sine Module) is determined by the "Mod Pitch" Knob Module 
+and the frequency modulation amount is determined by the "FM" Knob Module. The Par 
+Sync Module is hard synchronized to a second sine wave, the pitch of which is determined 
+Oscillators
+Par Sync Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 332
+
+
+--- Page 333 ---
+
+by the "Snc Pitch" Knob Module. The phase to which the parabolic wave is reset upon a 
+positive zero-crossing at the "Snc" input port is determined by the "SncPhase" Knob Mod­
+ule at the "Ph" input port.
+Fig. 6.36 A simple implementation of the Par Sync Module.
+The best way to get acquainted with the oscillators in REAKTOR is to hear them in action 
+while tweaking the different parameters. You can hear the sound of this oscillator and 
+compare it to the other oscillators in the Oscillator Rehearsal Ensemble. The Ensemble 
+consists of an easy to use interface to select and tweak your oscillator of choice while fol­
+lowing the change in its sound with your ears and the change in waveform on the scope. 
+Since each oscillator can have its own set of controls besides pitch and amplitude, 
+Stacked Macro Modules (↑1.19, Stacked Macro) have been used to make only the relevant 
+controls appear when an oscillator has been selected from the "Oscillators" list.
+Fig. 6.37 An example of the waveform of a hard synchronized parabol oscillator.
+Oscillators
+Par Sync Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 333
+
+
+--- Page 334 ---
+
+6.13
+Par PWM Oscillator
+ 
+Fig. 6.38 Par PWM Module
+6.13.1
+Overview
+ 
+This variable waveform is also particularly effective when used as an LFO. The Par PWM 
+Module is an oscillator with a variable parabolic waveform. The parabolic waveform con­
+sists of two parabolas that meet at zero level. You can change the ratio between the length 
+of the upper parabolic signal and the lower parabolic signal with an Event signal to the "W" 
+input port. The Par PWM Module features logarithmic pitch control at the "P" (pitch) input 
+port and linear amplitude modulation at the "A" input port.
+Application
+The Par PWM Module delivers a signal with variable richness in harmonics which is a good 
+starting point for subtractive synthesis. Morphing the waveform from a "W" value of "-1" to 
+a value of "0" decreases the amount of harmonics in the signal; morphing from a "W" value 
+of "0" to "+1" increases the amount of harmonics in the signal.
+6.13.2
+Ports
+ 
+Input Ports
+▪
+(P) "P" (pitch) is the Event input port for controlling the pitch (oscillator frequency) in 
+the logarithmic pitch scale. The pitch value is given in semitones in the range [0 … 
+127] where "69" corresponds to "Concert A" or 440 Hz.
+▪
+(A) "A" (amplitude) is the Audio input port for controlling the oscillator amplitude. In 
+other words, the output signal of the Module has a range within [-A … A], depending 
+on the pulse width setting.
+▪
+(W) "W" (width) is the Event input port for controlling the waveform of the parabolic os­
+cillator. At W = 0 the parabolic waveform consists of two parabolas that meet at zero 
+level. By changing "W" within the range [-1 … 1] you can change the ratio between the 
+Oscillators
+Par PWM Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 334
+
+
+--- Page 335 ---
+
+length of the upper parabolic signal and the lower parabolic signal. For W = -1 you get 
+a waveform solely consisting of downward parabolas and for W = +1 you get a wave­
+form solely consisting of upward parabolas.
+Output Ports
+▪
+(Out) "Out" is the output port for the audio signal with a variable parabolic waveform.
+6.13.3
+Example: Rehearsing the Oscillator
+ 
+This example shows how to create a variable parabolic waveform with constant unit ampli­
+tude and a pitch set with the MIDI controller or the keyboard. The pitch information for 
+the Par PWM Module is sent to the "P" (pitch) input port from the output port of the Note 
+Pitch Module. The pulse width value is determined with a Knob Module labeled "P-Width" 
+at the "W" input port.
+Fig. 6.39 A simple implementation of the Par PWM Module.
+The best way to get acquainted with the oscillators in REAKTOR is to hear them in action 
+while tweaking the different parameters. You can hear the sound of this oscillator and 
+compare it to the other oscillators in the Oscillator Rehearsal Ensemble. The Ensemble 
+consists of an easy to use interface to select and tweak your oscillator of choice while fol­
+lowing the change in its sound with your ears and the change in waveform on the scope. 
+Since each oscillator can have its own set of controls besides pitch and amplitude, 
+Stacked Macro Modules (↑1.19, Stacked Macro) have been used to make only the relevant 
+controls appear when an oscillator has been selected from the "Oscillators" list.
+Fig. 6.40 A typical waveform of a Par PWM Module.
+Oscillators
+Par PWM Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 335
+
+
+--- Page 336 ---
+
+6.14
+Sine Oscillator
+ 
+Fig. 6.41 Sine Module
+6.14.1
+Overview
+ 
+The Sine Module is an oscillator with a sinus waveform, as shown on the Structure icon of 
+the Module. A sine signal has one harmonic at the frequency of the oscillator. It features 
+logarithmic pitch control at the "P" (pitch) input port and linear amplitude modulation at 
+the "A" input port.
+Application
+Typical applications for the Sine Module include:
+▪
+Having the Sine Module as a modulating oscillator in FM synthesis or ring modulation
+▪
+Using the Sine Module as a sub-oscillator to introduce a deep fundamental frequency 
+to a sound coming from the oscillators section in a synthesizer.
+If the sine tone does not need to be completely pure, the parabolic oscillator makes a good 
+replacement with less computational load.
+6.14.2
+Ports
+ 
+Input Ports
+▪
+(P) "P" (pitch) is the Event input port for controlling the pitch (oscillator frequency) in 
+the logarithmic pitch scale. The pitch value is given in semitones in the range [0 … 
+127] where "69" corresponds to "Concert A" or 440 Hz.
+▪
+(A) "A" (amplitude) is the Audio input port for controlling the oscillator amplitude. In 
+other words, the output signal of the Module has the range [-A … A].
+Output Ports
+▪
+(Out) "Out" Audio signal output for the sine waveform.
+Oscillators
+Sine Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 336
+
+
+--- Page 337 ---
+
+6.14.3
+Example: Rehearsing the Oscillator
+ 
+This example shows how to get a sine waveform with constant unit amplitude and a pitch 
+set with the MIDI controller or the keyboard. The pitch information for the Sine Module is 
+sent to the "P" (pitch) input port from the output port of the Note Pitch Module.
+Fig. 6.42 A simple implementation of the Sine Module.
+The best way to get acquainted with the oscillators in REAKTOR is to hear them in action 
+while tweaking the different parameters. You can hear the sound of this oscillator and 
+compare it to the other oscillators in the Oscillator Rehearsal Ensemble. The Ensemble 
+consists of an easy to use interface to select and tweak your oscillator of choice while fol­
+lowing the change in its sound with your ears and the change in waveform on the scope. 
+Since each oscillator can have its own set of controls besides pitch and amplitude, 
+Stacked Macro Modules (↑1.19, Stacked Macro) have been used to make only the relevant 
+controls appear when an oscillator has been selected from the "Oscillators" list.
+Fig. 6.43 The sine waveform.
+6.15
+Sine FM Oscillator
+ 
+Fig. 6.44 Sine FM Module
+Oscillators
+Sine Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 337
+
+
+--- Page 338 ---
+
+6.15.1
+Overview
+ 
+The Sine FM Module is an oscillator with a sinus waveform, as shown on the Structure 
+icon of the Module. A sine signal has one harmonic at the frequency of the oscillator. It 
+features logarithmic pitch control at the "P" (pitch) input port, linear frequency modulation 
+at the "F" input port, and linear amplitude modulation at the "A" input port. The "F" input 
+port accepts audio signals and is meant for FM synthesis.
+Application
+Typical applications for the Sine FM module include:
+▪
+Using it as a modulating oscillator in FM synthesis or ring modulation.
+▪
+Using it as a sub-oscillator to introduce a deep fundamental frequency to a sound com­
+ing from the oscillators section in a synthesizer.
+▪
+Since the Sine FM Module has an Audio input port for linear frequency control, it can 
+be used as a carrier oscillator in FM synthesis.
+If the sine tone does not need to be completely pure, the parabolic oscillator makes a good 
+replacement with less computational load.
+6.15.2
+Ports
+ 
+Input Ports
+▪
+(P) "P" (pitch) is the Event input port for controlling the pitch (oscillator frequency) in 
+the logarithmic pitch scale. The pitch value is given in semitones in the range [0 … 
+127] where "69" corresponds to "Concert A" or 440 Hz.
+▪
+(F) "F" (frequency) is the Audio input port for linear frequency modulation in Hz. The 
+value at the "F" (frequency) input port is added to the frequency determined by the "P" 
+(pitch) input port. The sum is then the final oscillator frequency.
+▪
+(A) "A" (amplitude) is the Audio input port for controlling the oscillator amplitude. In 
+other words, the output signal of the Module has the range [-A … A].
+Output Ports
+▪
+(Out) "Out" is the output port for the audio signal with the possibly frequency modulat­
+ed sine waveform.
+Oscillators
+Sine FM Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 338
+
+
+--- Page 339 ---
+
+6.15.3
+Example: Rehearsing the Oscillator
+ 
+This example shows how to get a sine waveform with constant unit amplitude, a pitch set 
+with the MIDI controller or the keyboard, and frequency modulation by another sine wave. 
+The pitch information for the Sine FM Module is sent to the "P" (pitch) input port from the 
+output port of the Note Pitch Module. The pitch of the frequency modulator (a Sine Mod­
+ule, ↑6.14, Sine Oscillator) is determined by the "Mod Pitch" Knob Module and the fre­
+quency modulation amount is determined by the "FM" Knob Module.
+Fig. 6.45 A simple implementation of the Sine FM Module.
+The best way to get acquainted with the oscillators in REAKTOR is to hear them in action 
+while tweaking the different parameters. You can hear the sound of this oscillator and 
+compare it to the other oscillators in the Oscillator Rehearsal Ensemble. The Ensemble 
+consists of an easy to use interface to select and tweak your oscillator of choice while fol­
+lowing the change in its sound with your ears and the change in waveform on the scope. 
+Since each oscillator can have its own set of controls besides pitch and amplitude, 
+Stacked Macro Modules (↑1.19, Stacked Macro) have been used to make only the relevant 
+controls appear when an oscillator has been selected from the "Oscillators" list.
+Fig. 6.46 An example of a frequency modulated sine waveform.
+Oscillators
+Sine FM Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 339
+
+
+--- Page 340 ---
+
+6.16
+Sine Sync Oscillator
+ 
+Fig. 6.47 Sine Sync Module
+6.16.1
+Overview
+ 
+The Sine Sync Module is an oscillator with a sinus waveform, as shown on the Structure 
+icon of the Module. A sine signal has one harmonic at the frequency of the oscillator. It 
+features logarithmic pitch control at the "P" (pitch) input port and linear amplitude modu­
+lation at the "A" input port. In addition, this Module supports phase synchronization (also 
+known as hard sync): a positive zero crossing of the signal at the "Snc" input port causes 
+the phase of the sine oscillator to be reset to the phase specified at the "Ph" input port. A 
+positive zero crossing of a signal happens when signal values go from negative to positive. 
+The signal at the "Snc" input port is usually another oscillator. When the synchronizing os­
+cillator has the same frequency as the synchronized oscillator, there is no audible effect. 
+The frequency of the sine sync oscillator can be linearly modulated by an audio signal at 
+the "F" input port, making FM synthesis possible.
+Application
+Typical uses for the Sine Sync Module include:
+▪
+The sine oscillator delivers a signal with a single harmonic at the frequency of the os­
+cillator. It can be used as a modulating oscillator in FM synthesis or ring modulation or 
+as a sub-oscillator to introduce a deep fundamental frequency to a sound coming from 
+the oscillators section in a synthesizer.
+▪
+Since the Sine Sync Module has an Audio input port for linear frequency control, it can 
+be used as a carrier oscillator in FM synthesis.
+▪
+The oscillator can be hard synced to another oscillator to create the classic oscillator 
+sync sound.
+If the sine tone does not need to be completely pure, the parabolic oscillator makes a good 
+replacement with less computational load.
+Oscillators
+Sine Sync Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 340
+
+
+--- Page 341 ---
+
+6.16.2
+Ports
+ 
+Input Ports
+▪
+(P) "P" (pitch) is the Event input port for controlling the pitch (oscillator frequency) in 
+the logarithmic pitch scale. The pitch value is given in semitones in the range [0 … 
+127] where "69" corresponds to "Concert A" or 440 Hz.
+▪
+(F) "F" (frequency) is the Audio input port for linear frequency modulation in Hz. The 
+value at the "F" (frequency) input port is added to the frequency determined by the "P" 
+(pitch) input port. The sum is then the final oscillator frequency.
+▪
+(A) "A" (amplitude) is the Audio input port for controlling the oscillator amplitude. In 
+other words, the output signal of the Module has a range within [-A … A], depending 
+on the phase synchronization..
+▪
+(Snc) "Snc" (sync) is the Audio input port for controlling synchronization of the wave­
+form. A positive crossing of the signal at this input port restarts the oscillator phase 
+from the phase specified at the "Ph" input port. A positive zero crossing of a signal 
+happens when signal values go from negative to positive.
+▪
+(Ph) "Ph" (phase) is the input port for specifying the phase (position in the waveform) 
+to which the oscillator is reset when synchronization occurs. The range for the "Ph" in­
+put port is [-1 … 1] where "-1" corresponds to a phase of -180 degrees and "1" corre­
+sponds to a phase 180 degrees.
+Output Ports
+▪
+(Out) "Out" is the output port for the audio signal with the possibly frequency modulat­
+ed and/or hard synchronized sine waveform.
+6.16.3
+Example: Rehearsing the Oscillator
+ 
+This example shows how to get a sine waveform with constant unit amplitude, a pitch set 
+with the MIDI controller or the keyboard, and frequency modulation and hard synchroniza­
+tion by two separate sine waves. The pitch information for the Sine Sync Module is sent to 
+the "P" (pitch) input port from the output port of the Note Pitch Module. The pitch of the 
+frequency modulator (a Sine Module, see ↑6.14, Sine Oscillator) is determined by the 
+"Mod Pitch" Knob Module and the frequency modulation amount is determined by the 
+"FM" Knob Module. The Sine Sync Module is hard synchronized to a second sine wave, the 
+Oscillators
+Sine Sync Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 341
+
+
+--- Page 342 ---
+
+pitch of which is determined by the "Snc Pitch" Knob Module. The phase to which the tri­
+angle wave is reset upon a positive zero-crossing at the "Snc" input port is determined by 
+the "SncPhase" Knob Module at the "Ph" input port.
+Fig. 6.48 A simple implementation of the Sine Sync Module.
+The best way to get acquainted with the oscillators in REAKTOR is to hear them in action 
+while tweaking the different parameters. You can hear the sound of this oscillator and 
+compare it to the other oscillators in the Oscillator Rehearsal Ensemble. The Ensemble 
+consists of an easy to use interface to select and tweak your oscillator of choice while fol­
+lowing the change in its sound with your ears and the change in waveform on the scope. 
+Since each oscillator can have its own set of controls besides pitch and amplitude, 
+Stacked Macro Modules (↑1.19, Stacked Macro) have been used to make only the relevant 
+controls appear when an oscillator has been selected from the "Oscillators" list.
+Fig. 6.49 An example of a hard synchronized sine waveform.
+Oscillators
+Sine Sync Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 342
+
+
+--- Page 343 ---
+
+6.17
+Sine 4x Oscillator
+ 
+Fig. 6.50 Sine 4x Module
+6.17.1
+Overview
+ 
+The Sine 4x Module comprises four sine oscillators with sine waveforms. For each of these 
+oscillators the amplitude and relative frequency to the fundamental pitch can be specified 
+at the dedicated input ports. The fundamental pitch is controlled with a signal at the "P" 
+(pitch) input port and the pitches for the four oscillators are controlled at the "F1", "F2", 
+"F3", and "F4" input ports. All pitch values are in the logarithmic pitch scale. The ampli­
+tudes for the oscillators are controlled in the linear scale at the "A1", "A2", "A3", and "A4" 
+input ports. You can either use the sum of the sinus signals at the "Out" output port or tap 
+each individual sine signal at the "S1", "S2", "S3", and "S4" output ports.
+Application
+Each sine oscillator delivers a signal with a single harmonic at the frequency of that oscil­
+lator. This way you can use a signal with 4 harmonics that you specify at the input ports or 
+4 individual harmonics. These can be used as modulating signals in FM synthesis or ring 
+modulation. The Multi-Sine Module can be substituted by the Additive Bank Module. The 
+Multi-Sine Module is only available for backward compatibility.
+6.17.2
+Ports
+ 
+Input Ports
+▪
+(P) "P" (pitch) is the Event input port for controlling the pitch (oscillator frequency) in 
+the logarithmic pitch scale. The pitch value is given in semitones in the range [0 … 
+127] where "69" corresponds to "Concert A" or 440 Hz.
+Oscillators
+Sine 4x Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 343
+
+
+--- Page 344 ---
+
+▪
+(F1) "F1" (frequency 1) is the Audio input port for controlling the frequency of the first 
+oscillator. The value at the input port is given as a harmonic number relative to the 
+fundamental pitch at the "P" (pitch) input port. For example, a value of "1" results in a 
+frequency for the first oscillator that is the frequency of the fundamental. The typical 
+range for this input port is [0 … 20].
+▪
+(A1) "A1" (amplitude 1) is the Audio input port for controlling the amplitude of the first 
+oscillator. In other words, the signal at the "S1" output port has the range [-A1 … A1]. 
+Since this is an Audio input port, it can be used for ring modulation.
+▪
+(F2) "F2" (frequency 2) is the Audio input port for controlling the frequency of the sec­
+ond oscillator. The value at the input port is given as a harmonic number relative to the 
+fundamental pitch at the "P" (pitch) input port. For example, a value of "3" results in a 
+frequency for the second oscillator that is triple the frequency of the fundamental. The 
+typical range for this input port is [0 … 20].
+▪
+(A2) "A2" (amplitude 2) is the Audio input port for controlling the amplitude of the sec­
+ond oscillator. In other words, the signal at the "S2" output port has the range [-A2 … 
+A2]. Since this is an Audio input port, it can be used for ring modulation.
+▪
+(F3) "F3" (frequency 3) is the Audio input port for controlling the frequency of the third 
+oscillator. The value at the input port is given as a harmonic number relative to the 
+fundamental pitch at the "P" (pitch) input port. For example, a value of "1" results in a 
+frequency for the third oscillator that is the frequency of the fundamental. The typical 
+range for this input port is [0 … 20].
+▪
+(A3) "A3" (amplitude 3) is the Audio input port for controlling the amplitude of the 
+third oscillator. In other words, the signal at the "S3" output port has the range [-A3 … 
+A3]. Since this is an Audio input port, it can be used for ring modulation.
+▪
+(F4) "F4" (frequency 4) is the Audio input port for controlling the frequency of the 
+fourth oscillator. The value at the input port is given as a harmonic number relative to 
+the fundamental pitch at the "P" (pitch) input port. For example, a value of "2" results 
+in a frequency for the fourth oscillator that is double the frequency of the fundamental 
+pitch. The typical range for this input port is [0 … 20].
+▪
+(A4) "A4" (amplitude 4) is the Audio input port for controlling the amplitude of the 
+fourth oscillator. In other words, the signal at the "S4" output port has the range [-A4 
+… A4]. Since this is an Audio input port, it can be used for ring modulation.
+Output Ports
+▪
+(S1) "S1" (sine 1) is the output port for the first sine oscillator.
+Oscillators
+Sine 4x Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 344
+
+
+--- Page 345 ---
+
+▪
+(S2) "S2" (sine 2) is the output port for the second sine oscillator.
+▪
+(S3) "S3" (sine 3) is the output port for the third sine oscillator.
+▪
+(S4) "S4" (sine 4) is the output port for the fourth sine oscillator.
+▪
+(Out) "Out" is the output port for the sum of the four sine oscillators.
+6.17.3
+Example: Rehearsing the Oscillator
+ 
+This example shows how to get five signals with four of them carrying a sine wave and the 
+last one carrying the sum of the previous four signals. The amplitudes and frequencies of 
+the sine waves can be controlled using Knob Modules and the fundamental pitch is set 
+with the MIDI controller or the keyboard. The pitch information for the Multi-Sine Module 
+is sent to the "P" (pitch) input port from the output port of the Note Pitch Module. All of 
+the signals from the output ports of the Multi-Sine Module are sent to a Selector Module 
+where the signal to be forwarded to the Out Port is chosen on the instrument panel with a 
+List Module, the output of which is connected to the "Pos" input port of the Selector Mod­
+ule.
+Fig. 6.51 A simple implementation of the Sine 4x Module.
+The best way to get acquainted with the oscillators in REAKTOR is to hear them in action 
+while tweaking the different parameters. You can hear the sound of this oscillator and 
+compare it to the other oscillators in the Oscillator Rehearsal Ensemble. The Ensemble 
+consists of an easy to use interface to select and tweak your oscillator of choice while fol­
+lowing the change in its sound with your ears and the change in waveform on the scope. 
+Since each oscillator can have its own set of controls besides pitch and amplitude, 
+Stacked Macro Modules (↑1.19, Stacked Macro) have been used to make only the relevant 
+controls appear when an oscillator has been selected from the "Oscillators" list.
+Oscillators
+Sine 4x Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 345
+
+
+--- Page 346 ---
+
+Fig. 6.52 An example of a waveform composed of 4 additive sine waves.
+6.18
+Sine Bank
+ 
+Fig. 6.53 Sine Bank Module
+6.18.1
+Overview
+ 
+The Sine Bank Module is a bank of parallel sine oscillators, called partials. This Module 
+enables you to perform additive synthesis with REAKTOR. For each partial, its frequency 
+ratio to the fundamental, its amplitude, and its phase can be specified at the “Rtio”, “AL” 
+and “AR”, and “Ph” input ports, respectively. Setting these parameters for each partial is 
+done serially and with the use of the “Idx” input port to specify to which partial the in­
+coming parameters should be sent. The fundamental pitch of the Sine Bank is specified at 
+the “P” input; it corresponds to the frequency in respect to which the frequencies of all 
+the partials are calculated. Also, the number of partials that the Sine Bank Module gener­
+ates has to be specified, either in the Function page of the Module's Properties or at the 
+“Num” input port. After sending all the parameters to the desired partials, an “apply” 
+Event has to be sent to the “App” input port to effectively apply these changes to the par­
+tials. The resulting stereo Audio signal is sent to the “L” and “R” output ports for the left 
+and right stereo channels, respectively. Also, in the Function page of the Module's Proper­
+ties, one can specify the smoothing time and smoothing quality. The smoothing quality 
+setting has an effect on the Module's CPU usage.
+Oscillators
+Sine Bank
+ 
+REAKTOR 5.5 - Module Reference - 346
+
+
+--- Page 347 ---
+
+The default parameters for the partials are such that the “L” output sends a pulse wave 
+with the pitch of the fundamental (set at the “P” input port) and the “R” output sends a 
+saw wave with the pitch one octave above the fundamental. By adding both signals togeth­
+er you get a saw wave at the pitch of the fundamental.
+Application
+The Sine Bank Module is meant for additive synthesis. In theory, it is possible to synthe­
+size anything using additive synthesis. In practice, this is often not possible because of 
+the sheer amount of data that would have to be sent to the partials of the Sine Bank Mod­
+ule. Nevertheless, with the right parameters, the synthesis of a very broad range of sounds 
+becomes available. Often a large number of partials are used; the maximum number of 
+partials is 10'000. Usually much less partials than this maximum number are used, main­
+ly because of CPU limitations. In a case where there are a lot of partials it is most effec­
+tive to make use of the Iterator Module (found in the Built-In Module > Event Processing sub­
+menu) to supply all partials with the necessary parameters between the processing of sub­
+sequent audio samples.
+Please refer to section 12.3 in the Application Reference for a short tutorial on creating a 
+simple modal synthesizer.
+6.18.2
+Ports
+ 
+Input Ports
+▪
+(Num) “Num” (number of partials) is the Event input port for setting the number of ac­
+tive partials in the Sine Bank Module. This value should be a positive integer in the 
+range [0 … Max] where “Max” corresponds to the number set in the Max. Number edit 
+field in the Function page of the Module's Properties. If this input port is left discon­
+nected, the Sine Bank Module automatically sets the number of partials to the value to 
+“Max”. A higher number of active partials requires more CPU resources. Often the CPU 
+load is increased for multiples of 4 partials.
+▪
+(Idx) “Idx” (index) is the Event input port for specifying the partial number to which 
+the subsequent parameters arriving at the “Rtio”, “AL”, “AR”, and “Ph” input ports 
+should be routed. This value should be a positive integer in the range [1 … Num] 
+where “Num” denotes the number of active partials (see “Num” input port).
+Oscillators
+Sine Bank
+ 
+REAKTOR 5.5 - Module Reference - 347
+
+
+--- Page 348 ---
+
+▪
+(P) “P” (pitch) is the Event input port for controlling the fundamental pitch of the Sine 
+Bank Module. The frequency corresponding to the fundamental pitch is the frequency 
+in respect to which the frequencies of all the partials are calculated. The values at this 
+input port are set in the logarithmic pitch scale and are usually in the range [0 … 
+127].
+▪
+(Rtio) “Rtio” (frequency ratio) is the Event input port for setting the ratio of the parti­
+al's frequency to the fundamental frequency determined at the “P” input port. If the 
+“Rtio” value of a partial is “1”, it means that the ratio between the partial's frequency 
+and the fundamental frequency is “1”, that is, the partial has the fundamental fre­
+quency. If the “Rtio” value of a partial is “2”, then the partial has double the frequen­
+cy of the fundamental. In general, the frequency of the partial (“f”) can be calculated 
+from the fundamental frequency (“F”) and the frequency ratio (“Rtio”) with the follow­
+ing formula: f = F * Rtio. As can be seen from the formula, negative “Rtio” values 
+cause negative frequencies for the partials. Negative frequencies cause the phase of 
+the oscillator to run backwards.
+▪
+(AL) “AL” (amplitude, left channel) is the Event input port for specifying the partial 
+amplitude in the left stereo channel. It is the value that the unit amplitude oscillator 
+waveform of the partial is multiplied by before being mixed together with the other par­
+tials and forwarded to the “L” output port. The typical range is [0 … 1], but negative 
+values are also allowed; they cause the oscillator waveform of the corresponding partial 
+to be inverted.
+▪
+(AR) “AR” (amplitude, right channel) is the Event input port for specifying the partial 
+amplitude in the right stereo channel. It is the value that the unit amplitude oscillator 
+waveform of the partial is multiplied by before being mixed together with the other par­
+tials and forwarded to the “R” output port. The typical range is [0 … 1], but negative 
+values are also allowed; they cause the oscillator waveform of the corresponding partial 
+to be inverted.
+▪
+(Ph) “Ph” (phase) is the Event input port for specifying the phase (position in the 
+waveform) to which the oscillator is reset when a positive “apply” Event arrives at the 
+“App” input port. The range for the “Ph” input port is [-1 … 1] where “-1” corre­
+sponds to a phase of -180 degrees and “1” corresponds to a phase 180 degrees.
+▪
+(App) “App” (apply) is the Event input port for applying the latest parameter values 
+that have arrived at the various input ports to the actual oscillators inside the Sine 
+Bank Module. The parameter values sent to the Sine Bank Module are stored in a tem­
+porary buffer and only applied to the partials once an Event arrives at the “App” input 
+Oscillators
+Sine Bank
+ 
+REAKTOR 5.5 - Module Reference - 348
+
+
+--- Page 349 ---
+
+port. If the value of the Event is greater than zero, the apply operation also applies the 
+latest values that have been sent to the “Ph” input port and forces the smoothers to 
+jump to the values of the corresponding partial amplitude parameters. Thus, a positive 
+valued Event at the “App” input port works like a “reset”. If the “apply” Event is less 
+or equal to zero, all new parameters except the phase are applied.
+Output Ports
+▪
+(L) “L” (left stereo channel) is the output port for the Audio signal that is a mix of all 
+the partials with amplitudes set by the “AL” parameter.
+▪
+(R) “R” (right stereo channel) is the output port for the Audio signal that is a mix of all 
+the partials with amplitudes set by the “AR” parameter.
+▪
+(Max) “Max” (maximum number of partials) is the Event output port for the value set in 
+the Max. Number edit field of the Module's Function page.
+6.18.3
+Properties: Function Page
+ 
+Setting the Maximum Number of Partials
+The maximum number of partials that the Sine Bank Module generates has to be specified 
+in the Max. Number edit field in the Module's Function page, shown in the figure below. The 
+actual number of active partials is specified at the “Num” input port. “Num” values larger 
+than the value set in the Max. Number edit field are clipped. If the “Num” input port is left 
+disconnected, the Sine Bank Module automatically sets the number of partials to the value 
+specified by the Max. Number edit field. The default value for this edit field is “128”. Also, 
+the value in the Max. Number edit field is sent to the “Max” output port. A higher number of 
+active partials requires more CPU resources.
+Due to internal optimization, for many computers the CPU load is increased when the num­
+ber of partials reaches a multiple of 4 partials.
+Fig. 6.54 The maximum number of partials and the smoothing time are set in the Partials area of the Sine Bank Module's 
+Function page.
+Oscillators
+Sine Bank
+ 
+REAKTOR 5.5 - Module Reference - 349
+
+
+--- Page 350 ---
+
+Setting the Smoothing Time
+The smoothing time defines the time-interval over which the partial amplitudes are faded 
+between different values. This parameter can be set in the Smoothing Time edit field. The 
+units for this edit field are milliseconds and the default value is 10 ms.
+Setting the Smoothing Quality
+You can specify the quality of the smoothing curves with the Smoothing Quality drop-down 
+menu (see screenshot below). Higher smoothing quality causes the Module to respond bet­
+ter to fast modulations of the partial amplitudes. However, increasing the smoothing quali­
+ty also increases the CPU load.
+Fig. 6.55 The Smoothing Quality drop-down menu lets you increase the quality of the Module's sound in response to fast 
+modulations of the partial amplitudes.‎
+6.19
+Pulse Oscillator
+ 
+Fig. 6.56 Pulse Module.
+6.19.1
+Overview
+ 
+The Pulse Module is an oscillator with a pulse waveform with variable pulse width. It fea­
+tures logarithmic pitch control at the "P" (pitch) input port, linear amplitude modulation at 
+the "A" input port, and pulse width modulation (PWM) at the "W" input port. With a width 
+value of "0", the pulse oscillator delivers a signal with a broad harmonic spectrum, consist­
+ing only of odd harmonics. This gives it a sound that has a "hollow" timbre, characteristic 
+of wind instruments. Changing the width value increases the amount of even harmonics in 
+the signal.
+Application
+Applications for the Pulse Module include:
+▪
+You can connect an audio signal such as the output of another oscillator to the "W" in­
+put of the Pulse Module. This creates the classic PWM-sound.
+Oscillators
+Pulse Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 350
+
+
+--- Page 351 ---
+
+▪
+The output signal can be used as a modulating oscillator in FM synthesis or ring modu­
+lation.
+▪
+The pulse wave is also a good starting point for subtractive synthesis because of its 
+broad spectrum.
+A nonzero value at the "W" input port results in an output signal with a maximum amplitude 
+greater than the value at the "A" input port, so make sure to choose your amplitude value 
+accordingly or to downscale the output signal before routing it to the Audio Out Module.
+6.19.2
+Ports
+ 
+Input Ports
+▪
+(P) "P" (pitch) is the Event input port for controlling the pitch (oscillator frequency) in 
+the logarithmic pitch scale. The pitch value is given in semitones in the range [0 … 
+127] where "69" corresponds to "Concert A" or 440 Hz.
+▪
+(A) "A" (amplitude) is the Audio input port for controlling the oscillator amplitude. In 
+other words, the output signal of the Module has a range within [-A … A], depending 
+on the pulse width setting.
+▪
+(W) "W" (width) is the Audio input port for controlling the pulse width (PWM) of the 
+waveform. The range of the values at this input port is [-0.98 … 0.98]. The ratio be­
+tween the low and high states of the pulse waveform in relation to the value at the "W" 
+input port is given as Low : High = ( 1 + W ) / ( 1 – W ). So, a "W" value of "0" yields a 
+symmetric pulse waveform (a Low : High ratio of 50 : 50) at the output port. A "W" 
+value of "-0.33" yields a Low : High ratio of 33 : 66, "-0.5" yields a Low : High ratio of 
+25 : 75, and "-0.98" already yields a waveform that can be considered an impulse 
+train. Changing the "W" value from "0" to another value effectively introduces even har­
+monics into the output signal.
+Output Ports
+▪
+(Out) "Out" is the output port for the audio signal carrying the pulse waveform.
+Oscillators
+Pulse Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 351
+
+
+--- Page 352 ---
+
+6.19.3
+Example: Rehearsing the Oscillator
+ 
+This example shows how to get a pulse waveform with constant unit amplitude and a pitch 
+set with the MIDI controller or the keyboard. The pitch information to the Pulse Module is 
+sent to the "P" (pitch) input port from the output port of the Note Pitch Module. The pulse 
+width is determined by a value sent to the "W" input port of the Pulse Module from the 
+Knob Module labeled "P-Width".
+Fig. 6.57 A simple implementation of the Pulse Module.
+The best way to get acquainted with the oscillators in REAKTOR is to hear them in action 
+while tweaking the different parameters. You can hear the sound of this oscillator and 
+compare it to the other oscillators in the Oscillator Rehearsal Ensemble. The Ensemble 
+consists of an easy to use interface to select and tweak your oscillator of choice while fol­
+lowing the change in its sound with your ears and the change in waveform on the scope. 
+Since each oscillator can have its own set of controls besides pitch and amplitude, 
+Stacked Macro Modules (↑1.19, Stacked Macro) have been used to make only the relevant 
+controls appear when an oscillator has been selected from the "Oscillators" list.
+Fig. 6.58 A pulse waveform.
+Oscillators
+Pulse Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 352
+
+
+--- Page 353 ---
+
+6.20
+Pulse FM Oscillator
+ 
+Fig. 6.59 Pulse FM Module
+6.20.1
+Overview
+ 
+The Pulse FM Module is an oscillator with a pulse waveform with variable pulse width. It 
+features logarithmic pitch control at the "P" (pitch) input port, linear frequency modulation 
+at the "F" input port, and linear amplitude modulation at the "A" input port. The "F" input 
+port accepts audio signals and is meant for FM synthesis. The Pulse FM Module also sup­
+ports pulse width modulation (PWM) at the "W" input port. With a width value of "0", the 
+pure (non frequency modulated) pulse oscillator delivers a signal with a broad harmonic 
+spectrum, consisting only of odd harmonics. This gives it a sound that has a "hollow" tim­
+bre, characteristic of wind instruments. Changing the width value increases the amount of 
+even harmonics in the signal.
+Application
+Applications for the Pulse FM Module include:
+▪
+You can connect an audio signal such as the output of another oscillator to the "W" in­
+put of the Pulse FM Module. This creates the classic PWM-sound.
+▪
+The output signal can be used as a modulating oscillator in FM synthesis or ring modu­
+lation.
+▪
+The pulse wave is also a good starting point for subtractive synthesis because of its 
+broad spectrum.
+▪
+Since there is an Audio input port for linear frequency control, the Pulse FM Module 
+can be used as a carrier oscillator in FM synthesis.
+A nonzero value at the "W" input port results in an output signal with a maximum amplitude 
+greater than the value at the "A" input port, so make sure to choose your amplitude value 
+accordingly or to downscale the output signal before routing it to the Audio Out Module.
+Oscillators
+Pulse FM Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 353
+
+
+--- Page 354 ---
+
+6.20.2
+Ports
+ 
+Input Ports
+▪
+(P) "P" (pitch) is the Event input port for controlling the pitch (oscillator frequency) in 
+the logarithmic pitch scale. The pitch value is given in semitones in the range [0 … 
+127] where "69" corresponds to "Concert A" or 440 Hz.
+▪
+(F) "F" (frequency) is the Audio input port for linear frequency modulation in Hz. The 
+value at the "F" (frequency) input port is added to the frequency determined by the "P" 
+(pitch) input port. The sum is then the final oscillator frequency.
+▪
+(A) "A" (amplitude) is the Audio input port for controlling the oscillator amplitude. In 
+other words, the output signal of the Module has a range within [-A … A], depending 
+on the pulse width setting.
+▪
+(W) "W" (width) is the Audio input port for controlling the pulse width (PWM) of the 
+waveform. The range of the values at this input port is [-0.98 … 0.98]. The ratio be­
+tween the low and high states of the pulse waveform in relation to the value at the "W" 
+input port is given as Low : High = ( 1 + W ) / ( 1 – W ). So, a "W" value of "0" yields a 
+symmetric pulse waveform (a Low : High ratio of 50 : 50) at the output port. A "W" 
+value of "-0.33" yields a Low : High ratio of 33 : 66, "-0.5" yields a Low : High ratio of 
+25 : 75, and "-0.98" already yields a waveform that can be considered an impulse 
+train. Changing the "W" value from "0" to another value effectively introduces even har­
+monics into the pure (non frequency modulated) pulse wave.
+Output Ports
+▪
+(Out) "Out" is the output port for the audio signal with the possibly frequency modulat­
+ed pulse waveform.
+6.20.3
+Example: Rehearsing the Oscillator
+ 
+This example shows how to get a pulse waveform with constant unit amplitude, a pitch set 
+with the MIDI controller or the keyboard, and frequency modulation by another sine wave. 
+The pitch information for the Pulse FM Module is sent to the "P" (pitch) input port from 
+the output port of the Note Pitch Module. The pulse width is determined by a value sent to 
+the "W" input port of the Pulse FM Module from the Knob Module labeled "P-Width". The 
+Oscillators
+Pulse FM Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 354
+
+
+--- Page 355 ---
+
+pitch of the frequency modulator (a Sine Module, see ↑6.14, Sine Oscillator) is deter­
+mined by the "Mod Pitch" Knob Module and the frequency modulation amount is deter­
+mined by the "FM" Knob Module.
+Fig. 6.60 A simple implementation of the Pulse FM Module.
+The best way to get acquainted with the oscillators in REAKTOR is to hear them in action 
+while tweaking the different parameters. You can hear the sound of this oscillator and 
+compare it to the other oscillators in the Oscillator Rehearsal Ensemble. The Ensemble 
+consists of an easy to use interface to select and tweak your oscillator of choice while fol­
+lowing the change in its sound with your ears and the change in waveform on the scope. 
+Since each oscillator can have its own set of controls besides pitch and amplitude, 
+Stacked Macro Modules (↑1.19, Stacked Macro) have been used to make only the relevant 
+controls appear when an oscillator has been selected from the "Oscillators" list.
+Fig. 6.61 An example of a frequency modulated pulse waveform.
+6.21
+Pulse Sync Oscillator
+ 
+Fig. 6.62 Pulse Sync Module
+Oscillators
+Pulse Sync Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 355
+
+
+--- Page 356 ---
+
+6.21.1
+Overview
+ 
+The Pulse Sync Module is an oscillator with a pulse waveform with variable pulse width. It 
+features logarithmic pitch control at the "P" (pitch) input port, linear amplitude modula­
+tion at the "A" input port, and pulse width modulation (PWM) at the "W" input port. With a 
+width value of "0", the pure (non frequency modulated) pulse oscillator delivers a signal 
+with a broad harmonic spectrum, consisting only of odd harmonics. This gives it a sound 
+that has "hollow" timbre, characteristic of wind instruments. Changing the width value in­
+creases the amount of even harmonics in the signal. In addition, this Module supports 
+phase synchronization (also known as hard sync): a positive zero crossing of the signal at 
+the "Snc" input port causes the phase of the pulse sync oscillator to be reset to the phase 
+specified at the "Ph" input port. A positive zero crossing of a signal happens when signal 
+values go from negative to positive. The signal at the "Snc" input port is usually another 
+oscillator. When the synchronizing oscillator has the same frequency as the synchronized 
+oscillator, there is no audible effect. The frequency of the pulse sync oscillator can be lin­
+early modulated by an audio signal at the "F" input port, making FM synthesis possible.
+Application
+Applications for the Pulse Module include:
+▪
+You can connect an audio signal such as the output of another oscillator to the "W" in­
+put of the Pulse Sync Module. This creates the classic PWM-sound.
+▪
+The output signal can be used as a modulating oscillator in FM synthesis or ring modu­
+lation.
+▪
+The pulse wave is also a good starting point for subtractive synthesis because of its 
+broad spectrum.
+▪
+Since there is an Audio input port for linear frequency control, the Pulse Sync Module 
+can be used as a carrier oscillator in FM synthesis.
+▪
+The pulse oscillator can be hard synced to another oscillator to create the classic oscil­
+lator sync sound.
+A nonzero value at the "W" input port results in an output signal with a maximum amplitude 
+greater than the value at the "A" input port, so make sure to choose your amplitude value 
+accordingly or to downscale the output signal before routing it to the Audio Out Module.
+Oscillators
+Pulse Sync Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 356
+
+
+--- Page 357 ---
+
+6.21.2
+Ports
+ 
+Input Ports
+▪
+(P) "P" (pitch) is the Event input port for controlling the pitch (oscillator frequency) in 
+the logarithmic pitch scale. The pitch value is given in semitones in the range [0 … 
+127] where "69" corresponds to "Concert A" or 440 Hz.
+▪
+(F) "F" (frequency) is the Audio input port for linear frequency modulation in Hz. The 
+value at the "F" (frequency) input port is added to the frequency determined by the "P" 
+(pitch) input port. The sum is then the final oscillator frequency.
+▪
+(A) "A" (amplitude) is the Audio input port for controlling the oscillator amplitude. In 
+other words, the output signal of the Module has a range within [-A … A], depending 
+on the pulse width and phase synchronization settings.
+▪
+(W) "W" (width) is the Audio input port for controlling the pulse width (PWM) of the 
+waveform. The range of the values at this input port is [-0.98 … 0.98]. The ratio be­
+tween the low and high states of the pulse waveform in relation to the value at the "W" 
+input port is given as Low : High = ( 1 + W ) / ( 1 – W ). So, a "W" value of "0" yields a 
+symmetric pulse waveform (a Low : High ratio of 50 : 50) at the output port. A "W" 
+value of "-0.33" yields a Low : High ratio of 33 : 66, "-0.5" yields a Low : High ratio of 
+25 : 75, and "-0.98" already yields a waveform that can be considered an impulse 
+train. Changing the "W" value from "0" to another value effectively introduces even har­
+monics into the pure (non frequency modulated or hard synced) pulse wave.
+▪
+(Snc) "Snc" (sync) is the Audio input port for controlling the synchronization of the 
+waveform. A positive crossing of the signal at this input port restarts the oscillator 
+phase from the phase specified at the "Ph" input port. A positive zero crossing of a sig­
+nal happens when signal values go from negative to positive.
+▪
+(Ph) "Ph" (phase) is the input port for specifying the phase (position in the waveform) 
+to which the oscillator is reset when synchronization occurs. The range for the "Ph" in­
+put port is [-1 … 1] where "-1" corresponds to a phase of -180 degrees and "1" corre­
+sponds to a phase 180 degrees.
+Output Ports
+▪
+(Out) "Out" is the output port for the audio signal with the possibly frequency modulat­
+ed and/or hard synchronized pulse waveform.
+Oscillators
+Pulse Sync Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 357
+
+
+--- Page 358 ---
+
+6.21.3
+Example: Rehearsing the Oscillator
+ 
+This example shows how to get a pulse waveform with constant unit amplitude, a pitch set 
+with the MIDI controller or the keyboard, and frequency modulation and hard synchroniza­
+tion by two separate sine waves. The pitch information for the Pulse Sync Module is sent 
+to the "P" (pitch) input port from the output port of the Note Pitch Module. The pulse 
+width is determined by a value sent to the "W" input port of the Pulse Module from the 
+Knob Module labeled "P-Width". The pitch of the frequency modulator (a Sine Module) is 
+determined by the "Mod Pitch" Knob Module and the frequency modulation amount is de­
+termined by the "FM" Knob Module. The Pulse Sync Module is hard synchronized to a sec­
+ond sine wave, the pitch of which is determined by the "Snc Pitch" Knob Module. The 
+phase to which the triangle wave is reset upon a positive zero-crossing at the "Snc" input 
+port is determined by the "SncPhase" Knob Module at the "Ph" input port.
+Fig. 6.63 A simple implementation of the Pulse Sync Module.
+The best way to get acquainted with the oscillators in REAKTOR is to hear them in action 
+while tweaking the different parameters. You can hear the sound of this oscillator and 
+compare it to the other oscillators in the Oscillator Rehearsal Ensemble. The Ensemble 
+consists of an easy to use interface to select and tweak your oscillator of choice while fol­
+lowing the change in its sound with your ears and the change in waveform on the scope. 
+Since each oscillator can have its own set of controls besides pitch and amplitude, 
+Stacked Macro Modules (↑1.19, Stacked Macro) have been used to make only the relevant 
+controls appear when an oscillator has been selected from the "Oscillators" list.
+Oscillators
+Pulse Sync Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 358
+
+
+--- Page 359 ---
+
+Fig. 6.64 An example of a hard synchronized pulse waveform.
+6.22
+Pulse 1-Ramp Oscillator
+ 
+Fig. 6.65 Pulse 1-Ramp Module
+6.22.1
+Overview
+ 
+The Pulse 1-Ramp Module is an oscillator with a variable trapezoidal waveform. Among 
+other waveforms it is possible to a sawtooth and a pulse wave. You can morph between the 
+different waveforms by changing the slope of the ramp and the pulse width with a signal at 
+the "Slp" and "W" input ports, respectively. The falling edge of the pulse waveform is al­
+ways vertical. The Pulse 1-Ramp Module features logarithmic pitch control at the "P" 
+(pitch) input port, linear frequency modulation at the "F" input port, and linear amplitude 
+modulation at the "A" input port. The "F" input port accepts audio signals and is meant for 
+FM synthesis.
+Application
+The Pulse 1-Ramp Module delivers a signal with variable harmonic distribution, which is a 
+good starting point for subtractive synthesis. Morphing the waveform from a sawtooth to 
+pulse waveform eliminates even harmonics in the signal spectrum, giving the sound a hol­
+low timbre characteristic to wind instruments.
+Oscillators
+Pulse 1-Ramp Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 359
+
+
+--- Page 360 ---
+
+6.22.2
+Ports
+ 
+Input Ports
+▪
+(P) "P" (pitch) is the Event input port for controlling the pitch (oscillator frequency) in 
+the logarithmic pitch scale. The pitch value is given in semitones in the range [0 … 
+127] where "69" corresponds to "Concert A" or 440 Hz.
+▪
+(F) "F" (frequency) is the Audio input port for linear frequency modulation in Hz. The 
+value at the "F" (frequency) input port is added to the frequency determined by the "P" 
+(pitch) input port. The sum is then the final oscillator frequency.
+▪
+(A) "A" (amplitude) is the Audio input port for controlling the oscillator amplitude. In 
+other words, the output signal of the Module is within the range [-A … A], depending 
+on the slope and pulse width settings.
+▪
+(W) "W" (width) is the Audio input port for controlling the pulse width (PWM) of the 
+waveform. The range of the values at this input port is [-0.98 … 0.98]. The ratio be­
+tween the low and high states of the waveform in relation to the value at the "W" input 
+port is given as Low : High = ( 1 + W ) / ( 1 – W ). So, a "W" value of "0" yields a Low : 
+High ratio of 50 : 50 at the output port. A "W" value of "-0.33" yields a Low : High 
+ratio of 33 : 66, "-0.5" yields a Low : High ratio of 25 : 75, and "-0.98" already yields 
+a waveform that can be considered an impulse train. The final waveform strongly de­
+pends on the slope setting. If, for example, the slope is not steep enough, then the sig­
+nal will not reach the maximum amplitude during the "high" state and the waveform 
+will not be symmetrical in respect to the zero level.
+▪
+(Slp) "Slp" (slope) is the Audio input port for controlling the slope of the rising edge of 
+the waveform. When the value sent to the "Slp" input is "0" (or when the input is not 
+connected) the waveform does not rise and the output is always zero, that is, there is 
+no audible signal at the output port. A "Slp" value of "1" (with W = 0) yields a sawtooth 
+signal, a "Slp" value of "20" yields a waveform very close to a pulse wave. The typical 
+range for the values at this input port is [1 … 20].
+Output Ports
+▪
+(Out) "Out" is the output port for the audio signal with the possibly frequency modulat­
+ed sawtooth/pulse waveform.
+Oscillators
+Pulse 1-Ramp Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 360
+
+
+--- Page 361 ---
+
+6.22.3
+Example: Rehearsing the Oscillator
+ 
+This example shows how to get a trapezoidal waveform with constant unit amplitude, a 
+pitch set with the MIDI controller or the keyboard, and frequency modulation by another 
+sine wave. The pitch information for the Pulse 1-Ramp Module is sent to the "P" (pitch) 
+input port from the output port of the Note Pitch Module. The pulse width and slope are 
+determined by values sent to the "W" and "Slp" input ports of the Pulse 1-Ramp Module 
+from Knob Modules labeled "P-Width" and "Slope", respectively. The pitch of the frequen­
+cy modulator (a Sine Module, see ↑6.14, Sine Oscillator) is determined by the "Mod Pitch" 
+Knob Module and the frequency modulation amount is determined by the "FM" Knob Mod­
+ule.
+Fig. 6.66 A simple implementation of the Pulse 1-Ramp Module.
+The best way to get acquainted with the oscillators in REAKTOR is to hear them in action 
+while tweaking the different parameters. You can hear the sound of this oscillator and 
+compare it to the other oscillators in the Oscillator Rehearsal Ensemble. The Ensemble 
+consists of an easy to use interface to select and tweak your oscillator of choice while fol­
+lowing the change in its sound with your ears and the change in waveform on the scope. 
+Since each oscillator can have its own set of controls besides pitch and amplitude, 
+Stacked Macro Modules (↑1.19, Stacked Macro) have been used to make only the relevant 
+controls appear when an oscillator has been selected from the "Oscillators" list.
+Fig. 6.67 An example of the output waveform of a frequency modulated Pulse 1-Ramp Module.
+Oscillators
+Pulse 1-Ramp Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 361
+
+
+--- Page 362 ---
+
+6.23
+Pulse 2-Ramp Oscillator
+ 
+Fig. 6.68 Pulse 2-Ramp Module
+6.23.1
+Overview
+ 
+The Pulse 2-Ramp Module is an oscillator with a variable trapezoidal waveform. Among 
+other waveforms, it is possible to create sawtooth, triangle, and pulse waves. You can 
+morph between the different waveforms by changing the slope of the rising edge of the 
+pulse, falling edge of the pulse, and the pulse width with a signal at the "Up", "Dn", and 
+"W" input ports, respectively. The Pulse 2-Ramp Module features logarithmic pitch control 
+at the "P" (pitch) input port, linear frequency modulation at the "F" input port, and linear 
+amplitude modulation at the "A" input port. The "F" input port accepts audio signals and is 
+meant for FM synthesis.
+Application
+The Pulse 2-Ramp Module delivers a signal with variable harmonic distribution, which is a 
+good starting point for subtractive synthesis. Morphing the waveform from a sawtooth to a 
+triangle or pulse waveform eliminates even harmonics in the signal spectrum, giving the 
+sound a hollow timbre characteristic to wind.
+Input Ports
+▪
+(P) "P" (pitch) is the Event input port for controlling the pitch (oscillator frequency) in 
+the logarithmic pitch scale. The pitch value is given in semitones in the range [0 … 
+127] where "69" corresponds to "Concert A" or 440 Hz.
+▪
+(F) "F" (frequency) is the Audio input port for linear frequency modulation in Hz. The 
+value at the "F" (frequency) input port is added to the frequency determined by the "P" 
+(pitch) input port. The sum is then the final oscillator frequency.
+Oscillators
+Pulse 2-Ramp Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 362
+
+
+--- Page 363 ---
+
+▪
+(A) "A" (amplitude) is the Audio input port for controlling the oscillator amplitude. In 
+other words, the output signal of the Module is within the range [-A … A], depending 
+on the slope and pulse width settings.
+▪
+(W) "W" (width) is the Audio input port for controlling the pulse width (PWM) of the 
+waveform. The range of the values at this input port is [-0.98 … 0.98]. The ratio be­
+tween the low and high states of the waveform in relation to the value at the "W" input 
+port is given as Low : High = ( 1 + W ) / ( 1 – W ). So, a "W" value of "0" yields a Low : 
+High ratio of 50 : 50 at the output port. A "W" value of "-0.33" yields a Low : High 
+ratio of 33 : 66, "-0.5" yields a Low : High ratio of 25 : 75, and "-0.98" already yields 
+a waveform that can be considered an impulse train. The final waveform strongly de­
+pends on the slope setting. If, for example, the slope is not steep enough, then the sig­
+nal will not reach the maximum amplitude during the "high" state and the waveform 
+will not be symmetrical in respect to the zero level.
+▪
+(Up) "Up" (upward slope) is the Audio input port for controlling the slope of the rising 
+edge of the waveform. When the value sent to the "Slp" input is "0" (or when the input 
+is not connected) the waveform does not rise and the output is always at the minimum 
+value, that is, there is no audible signal at the output port. An "Up" value of "1" (with 
+W = 0 and Dn = 20) yields a sawtooth signal, and an "Up" value of "20" would yield a 
+waveform very close to a pulse wave. The typical range for the values at this input port 
+is [1 … 20].
+▪
+(Dn) "Dn" (downward slope) is the Audio input port for controlling the slope of the fall­
+ing edge of the waveform. When the value sent to the "Dn" input is "0" (or when the 
+input is not connected) the waveform does not fall and the output is always at the max­
+imum value, that is, there is no audible signal at the output port. A "Slp" value of "1" 
+(with W = 0 and Up = 20) yields a sawtooth signal, and a "Dn" value of "20" would 
+yield a waveform very close to a pulse wave. The typical range for the values at this 
+input port is [1 … 20].
+Output Ports
+▪
+(Out) "Out" is the output port for the audio signal with the possibly frequency modulat­
+ed sawtooth/pulse waveform.
+Oscillators
+Pulse 2-Ramp Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 363
+
+
+--- Page 364 ---
+
+6.23.2
+Example: Rehearsing the Oscillator
+ 
+This example shows how to get a trapezoidal waveform with constant unit amplitude, a 
+pitch set with the MIDI controller or the keyboard, and frequency modulation by another 
+sine wave. The pitch information for the Pulse 2-Ramp Module is sent to the "P" (pitch) 
+input port from the output port of the Note Pitch Module. The pulse width and slope are 
+determined by values sent to the "W", "Up", and "Dn" input ports of the Pulse 2-Ramp 
+Module from Knob Modules labeled "P-Width", "Up", and "Dn", respectively. The pitch of 
+the frequency modulator (a Sine Module, see ↑6.14, Sine Oscillator) is determined by the 
+"Mod Pitch" Knob Module and the frequency modulation amount is determined by the 
+"FM" Knob Module.
+Fig. 6.69 A simple implementation of the Pulse 2-Ramp Module.
+The best way to get acquainted with the oscillators in REAKTOR is to hear them in action 
+while tweaking the different parameters. You can hear the sound of this oscillator and 
+compare it to the other oscillators in the Oscillator Rehearsal Ensemble. The Ensemble 
+consists of an easy to use interface to select and tweak your oscillator of choice while fol­
+lowing the change in its sound with your ears and the change in waveform on the scope. 
+Since each oscillator can have its own set of controls besides pitch and amplitude, 
+Stacked Macro Modules (↑1.19, Stacked Macro) have been used to make only the relevant 
+controls appear when an oscillator has been selected from the "Oscillators" list.
+Fig. 6.70 An example of the output waveform of a frequency modulated Pulse 2-Ramp Module.
+Oscillators
+Pulse 2-Ramp Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 364
+
+
+--- Page 365 ---
+
+6.24
+Bi-Pulse Oscillator
+ 
+Fig. 6.71 Bi-Pulse Module
+6.24.1
+Overview
+ 
+The Bi-Pulse Module is an oscillator with a bipolar pulse waveform with variable pulse 
+width. It features logarithmic pitch control at the "P" (pitch) input port, linear amplitude 
+modulation at the "A" input port, and pulse width modulation (PWM) at the "W" input port. 
+With a width value of "0", the bipolar pulse oscillator delivers a signal with a broad har­
+monic spectrum, consisting only of odd harmonics. This gives it a sound that has a "hol­
+low" timbre, characteristic of wind instruments. Changing the width value increases the 
+amount of even harmonics in the signal.
+Application
+Applications of the Bi-Pulse Module include:
+▪
+You can connect an audio signal such as the output of another oscillator to the "W" in­
+put of the Bi-Pulse Module. This creates the classic PWM-sound.
+▪
+The output signal can be used as a modulating oscillator in FM synthesis or ring modu­
+lation.
+▪
+The bipolar pulse wave is also a good starting point for subtractive synthesis because 
+of its broad spectrum.
+An amplitude value of "1" results in an output signal with a maximum value around "8", so 
+make sure to choose your amplitude value carefully before routing the signal to the Audio 
+Out Module.
+Oscillators
+Bi-Pulse Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 365
+
+
+--- Page 366 ---
+
+6.24.2
+Ports
+ 
+Input Ports
+▪
+(P) "P" (pitch) is the Event input port for controlling the pitch (oscillator frequency) in 
+the logarithmic pitch scale. The pitch value is given in semitones in the range [0 … 
+127] where "69" corresponds to "Concert A" or 440 Hz.
+▪
+(A) "A" (amplitude) is the Audio input port for controlling the oscillator amplitude. In 
+other words, the output signal of the Module has the range [-A … A].
+▪
+(W) "W" (width) is the Audio input port for controlling the pulse width (PWM) of the 
+waveform. The range of the values at this input port is [-0.98 … 0.98]. The ratio be­
+tween the low and high states of the pulse waveform in relation to the value at the "W" 
+input port is given as Low : High = ( 1 + W ) / ( 1 – W ). So, a "W" value of "0" yields a 
+symmetric pulse waveform (a Low : High ratio of 50 : 50) at the output port. A "W" 
+value of "-0.33" yields a Low : High ratio of 33 : 66, "-0.5" yields a Low : High ratio of 
+25 : 75, and "-0.98" already yields a waveform that can be considered an impulse 
+train. Changing the "W" value from "0" to another value effectively introduces even har­
+monics into the output signal.
+Output Ports
+▪
+(Out) "Out" is the output port for the audio signal carrying the bipolar pulse waveform.
+6.24.3
+Example: Rehearsing the Oscillator
+ 
+This example shows how to get a pulse waveform with constant unit amplitude and a pitch 
+set with the MIDI controller or the keyboard. The pitch information to the Bi-Pulse Module 
+is sent to the "P" (pitch) input port from the output port of the Note Pitch Module. The 
+pulse width is determined by a value sent to the "W" input port of the Bi-Pulse Module 
+from the Knob Module labeled "P-Width".
+Fig. 6.72 A simple implementation of the Bi-Pulse Module.
+Oscillators
+Bi-Pulse Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 366
+
+
+--- Page 367 ---
+
+The best way to get acquainted with the oscillators in REAKTOR is to hear them in action 
+while tweaking the different parameters. You can hear the sound of this oscillator and 
+compare it to the other oscillators in the Oscillator Rehearsal Ensemble. The Ensemble 
+consists of an easy to use interface to select and tweak your oscillator of choice while fol­
+lowing the change in its sound with your ears and the change in waveform on the scope. 
+Since each oscillator can have its own set of controls besides pitch and amplitude, 
+Stacked Macro Modules (↑1.19, Stacked Macro) have been used to make only the relevant 
+controls appear when an oscillator has been selected from the "Oscillators" list.
+Fig. 6.73 A possible bi-pulse waveform.
+6.25
+Impulse Oscillator
+ 
+Fig. 6.74 Impulse Module
+6.25.1
+Overview
+ 
+The Impulse Module is an oscillator with an impulse train signal. It features logarithmic 
+pitch control at the "P" (pitch) input port and linear amplitude modulation at the "A" input 
+port.
+Application
+The impulse oscillator delivers a signal with a spectrum that has all harmonics with ap­
+proximately equal amplitudes present. Because of its broad spectrum, the Impulse Module 
+can be a starting point for subtractive synthesis.
+Oscillators
+Impulse Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 367
+
+
+--- Page 368 ---
+
+An amplitude value of "1" causes an output signal with a maximum value around "8", so 
+make sure to choose your amplitude value carefully before routing the signal to the Audio 
+Out Module.
+6.25.2
+Ports
+ 
+Input Ports
+▪
+(P) "P" (pitch) is the Event input port for controlling the pitch (oscillator frequency) in 
+the logarithmic pitch scale. The pitch value is given in semitones in the range [0 … 
+127] where "69" corresponds to "Concert A" or 440 Hz.
+▪
+(A) "A" (amplitude) is the Audio input port for controlling the amplitude of the impulse.
+Output Ports
+▪
+(Out) "Out" is the output port for the audio signal with the impulse waveform.
+6.25.3
+Example: Rehearsing the Oscillator
+ 
+This example shows how to get an impulse waveform with constant unit amplitude and a 
+pitch set with the MIDI controller or the keyboard. The pitch information for the Impulse 
+Module is sent to the "P" (pitch) input port from the output port of the Note Pitch Module.
+Fig. 6.75 A simple implementation of the Impulse Module.
+The best way to get acquainted with the oscillators in REAKTOR is to hear them in action 
+while tweaking the different parameters. You can hear the sound of this oscillator and 
+compare it to the other oscillators in the Oscillator Rehearsal Ensemblej. The Ensemble 
+consists of an easy to use interface to select and tweak your oscillator of choice while fol­
+lowing the change in its sound with your ears and the change in waveform on the scope. 
+Since each oscillator can have its own set of controls besides pitch and amplitude, 
+Stacked Macro Modules (↑1.19, Stacked Macro) have been used to make only the relevant 
+controls appear when an oscillator has been selected from the "Oscillators" list.
+Oscillators
+Impulse Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 368
+
+
+--- Page 369 ---
+
+Fig. 6.76 The impulse waveform.
+6.26
+Impulse FM Oscillator
+ 
+Fig. 6.77 Impulse FM Module
+6.26.1
+Overview
+ 
+The Impulse FM Module is an oscillator with an impulse train signal. It features logarith­
+mic pitch control at the "P" (pitch) input port, linear frequency modulation at the "F" input 
+port, and linear amplitude modulation at the "A" input port. The "F" input port accepts au­
+dio signals and is meant for FM synthesis. It delivers a signal with a spectrum that has all 
+harmonics with approximately equal amplitudes present.
+Application
+Typical applications for the Impulse FM Module include:
+▪
+Using the output signal as a starting point for subtractive synthesis.
+▪
+Modulating another oscillator in FM synthesis or ring modulation.
+▪
+Since the Impulse FM Module has an Audio input port for linear frequency control, it 
+can be used as a carrier oscillator in FM synthesis.
+An amplitude value of "1" causes an output signal with a maximum value around "8", so 
+make sure to choose your amplitude value carefully before routing the signal to the Audio 
+Out Module.
+Oscillators
+Impulse FM Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 369
+
+
+--- Page 370 ---
+
+6.26.2
+Ports
+ 
+Input Ports
+▪
+(P) "P" (pitch) is the Event input port for controlling the pitch (oscillator frequency) in 
+the logarithmic pitch scale. The pitch value is given in semitones in the range [0 … 
+127] where "69" corresponds to "Concert A" or 440 Hz.
+▪
+(F) "F" (frequency) is the Audio input port for linear frequency modulation in Hz. The 
+value at the "F" (frequency) input port is added to the frequency determined by the "P" 
+(pitch) input port. The sum is then the final oscillator frequency.
+▪
+(A) "A" (amplitude) is the Audio input port for controlling the oscillator amplitude.
+Output Ports
+▪
+(Out) "Out" is the output port for the audio signal with the possibly frequency modulat­
+ed impulse waveform.
+6.26.3
+Example: Rehearsing the Oscillator
+ 
+This example shows how to get an impulse waveform with constant unit amplitude, a pitch 
+set with the MIDI controller or the keyboard, and frequency modulation by another sine 
+wave. The pitch information for the Impulse FM Module is sent to the "P" (pitch) input 
+port from the output port of the Note Pitch Module. The pitch of the frequency modulator 
+(a Sine Module, see ↑6.14, Sine Oscillator) is determined by the "Mod Pitch" Knob Mod­
+ule and the frequency modulation amount is determined by the "FM" Knob Module.
+Fig. 6.78 A simple implementation of the Impulse FM Module.
+The best way to get acquainted with the oscillators in REAKTOR is to hear them in action 
+while tweaking the different parameters. You can hear the sound of this oscillator and 
+compare it to the other oscillators in the Oscillator Rehearsal Ensemble. The Ensemble 
+consists of an easy to use interface to select and tweak your oscillator of choice while fol­
+lowing the change in its sound with your ears and the change in waveform on the scope. 
+Oscillators
+Impulse FM Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 370
+
+
+--- Page 371 ---
+
+Since each oscillator can have its own set of controls besides pitch and amplitude, 
+Stacked Macro Modules (↑1.19, Stacked Macro) have been used to make only the relevant 
+controls appear when an oscillator has been selected from the "Oscillators" list
+Fig. 6.79 An example of a frequency modulated impulse waveform.
+6.27
+Impulse Sync Oscillator
+ 
+Fig. 6.80 Imulse Sync Module
+6.27.1
+Overview
+ 
+The Impulse Sync Module is an oscillator with an impulse train signal. It features logarith­
+mic pitch control at the "P" (pitch) input port and linear amplitude modulation at the "A" 
+input port. In addition, this Module supports phase synchronization (also known as hard 
+sync): a positive zero crossing of the signal at the "Snc" input port causes the phase of the 
+impulse sync oscillator to be reset to the phase specified at the "Ph" input port. A positive 
+zero crossing of a signal happens when signal values go from negative to positive. The sig­
+nal at the "Snc" input port is usually another oscillator. When the synchronizing oscillator 
+has the same frequency as the synchronized oscillator, there is no audible effect. The fre­
+quency of the impulse sync oscillator can be linearly modulated by an audio signal at the 
+"F" input port, making FM synthesis possible. The pure (non-modulated) impulse wave has 
+a spectrum that has all harmonics with approximately equal amplitudes present.
+Oscillators
+Impulse Sync Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 371
+
+
+--- Page 372 ---
+
+Application
+Typical applications for the Impulse Sync Module include:
+▪
+Using the output signal as a starting point for subtractive synthesis.
+▪
+Modulating another oscillator in FM synthesis or ring modulation.
+▪
+The oscillator can be hard synced to another oscillator to create the classic oscillator 
+sync sound.
+▪
+Since the Impulse FM Module has an Audio input port for linear frequency control, it 
+can be used as a carrier oscillator in FM synthesis.
+An amplitude value of "1" causes an output signal with a maximum value around "8", so 
+make sure to choose your amplitude value carefully before routing the signal to the Audio 
+Out Module.
+6.27.2
+Ports
+ 
+Input Ports
+▪
+(P) "P" (pitch) is the Event input port for controlling the pitch (oscillator frequency) in 
+the logarithmic pitch scale. The pitch value is given in semitones in the range [0 … 
+127] where "69" corresponds to "Concert A" or 440 Hz.
+▪
+(F) "F" (frequency) is the Audio input port for linear frequency modulation in Hz. The 
+value at the "F" (frequency) input port is added to the frequency determined by the "P" 
+(pitch) input port. The sum is then the final oscillator frequency.
+▪
+(A) "A" (amplitude) is the Audio input port for controlling the amplitude of the impulse.
+▪
+(Snc) "Snc" (sync) is the Audio input port for controlling synchronization of the wave­
+form. A positive crossing of the signal at this input port restarts the oscillator phase 
+from the phase specified at the "Ph" input port. A positive zero crossing of a signal 
+happens when signal values go from negative to positive.
+▪
+(Ph) "Ph" (phase) is the input port for specifying the phase (position in the waveform) 
+to which the oscillator is reset when synchronization occurs. The range for the "Ph" in­
+put port is [-1 … 1] where "-1" corresponds to a phase of -180 degrees and "1" corre­
+sponds to a phase 180 degrees.
+Output Ports
+▪
+(Out) "Out" is the output port for the audio signal with the possibly frequency modulat­
+ed and/or hard synchronized impulse waveform.
+Oscillators
+Impulse Sync Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 372
+
+
+--- Page 373 ---
+
+6.27.3
+Example: Rehearsing the Oscillator
+ 
+This example shows how to get an impulse waveform with constant unit amplitude, a pitch 
+set with the MIDI controller or the keyboard, and frequency modulation and hard synchro­
+nization by two separate sine waves. The pitch information for the Impulse Sync Module is 
+sent to the "P" (pitch) input port from the output port of the Note Pitch Module. The pitch 
+of the frequency modulator (a Sine Module, see ↑6.14, Sine Oscillator) is determined by 
+the "Mod Pitch" Knob Module and the frequency modulation amount is determined by the 
+"FM" Knob Module. The Impulse Sync Module is hard synchronized to a second sine wave, 
+the pitch of which is determined by the "Snc Pitch" Knob Module. The phase to which the 
+triangle wave is reset upon a positive zero-crossing at the "Snc" input port is determined by 
+the "SncPhase" Knob Module at the "Ph" input port.
+Fig. 6.81 A simple implementation of the Impulse Sync Module.
+The best way to get acquainted with the oscillators in REAKTOR is to hear them in action 
+while tweaking the different parameters. You can hear the sound of this oscillator and 
+compare it to the other oscillators in the Oscillator Rehearsal Ensemble. The Ensemble 
+consists of an easy to use interface to select and tweak your oscillator of choice while fol­
+lowing the change in its sound with your ears and the change in waveform on the scope. 
+Since each oscillator can have its own set of controls besides pitch and amplitude, 
+Stacked Macro Modules (↑1.19, Stacked Macro) have been used to make only the relevant 
+controls appear when an oscillator has been selected from the "Oscillators" list.
+Oscillators
+Impulse Sync Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 373
+
+
+--- Page 374 ---
+
+Fig. 6.82 An example of a hard synchronized impulse waveform.
+6.28
+4-Step Oscillator
+ 
+Fig. 6.83 4-Step Module
+6.28.1
+Overview
+ 
+The 4-Step Module is an oscillator with a waveform consisting of four consequent steps. It 
+features logarithmic pitch control at the "P" (pitch) input port and linear amplitude modu­
+lation at the "A" input port. The amplitudes of all four steps can be set independent of the 
+others.
+Application
+The 4-Step Module can be used to create any variety of stepped waveforms including the 
+pulse and bi-pulse waveforms. By changing the strength of the transients between the 
+pulses you can vary the presence of high harmonic components in the oscillator's output 
+signal.
+Oscillators
+4-Step Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 374
+
+
+--- Page 375 ---
+
+6.28.2
+Ports
+ 
+Input Ports
+▪
+(P) "P" (pitch) is the Event input port for controlling the pitch (oscillator frequency) in 
+the logarithmic pitch scale. The pitch value is given in semitones in the range [0 … 
+127] where "69" corresponds to "Concert A" or 440 Hz.
+▪
+(A) "A" (amplitude) is the Audio input port for controlling the oscillator amplitude. In 
+other words, the output signal of the Module has the range [-A … A].
+▪
+(S1) "S1" (step 1) is the Audio input for controlling the level of the first step.
+▪
+(S2) "S1" (step 2) is the Audio input for controlling the level of the second step.
+▪
+(S3) "S3" (step 3) is the Audio input for controlling the level of the third step.
+▪
+(S4) "S4" (step 4) is the Audio input for controlling the level of the fourth step.
+Output Ports
+▪
+(Out) "Out" is the Audio signal output for the step waveform.
+6.28.3
+Example: Rehearsing the Oscillator
+ 
+This example shows how to get a stepped waveform with a pitch set with the MIDI control­
+ler or the keyboard. The pitch information is sent to the "P" (pitch) input port from the out­
+put port of the Note Pitch Module.
+Fig. 6.84 A simple implementation of the 4-Step Module.
+The best way to get acquainted with the oscillators in REAKTOR is to hear them in action 
+while tweaking the different parameters. You can hear the sound of this oscillator and 
+compare it to the other oscillators in the Oscillator Rehearsal Ensemble. The Ensemble 
+consists of an easy to use interface to select and tweak your oscillator of choice while fol­
+lowing the change in its sound with your ears and the change in waveform on the scope. 
+Oscillators
+4-Step Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 375
+
+
+--- Page 376 ---
+
+Since each oscillator can have its own set of controls besides pitch and amplitude, 
+Stacked Macro Modules (↑1.19, Stacked Macro) have been used to make only the relevant 
+controls appear when an oscillator has been selected from the "Oscillators" list.
+Fig. 6.85 A typical 4-step waveform.
+6.29
+5-Step Oscillator
+ 
+Fig. 6.86 5-Step Module
+6.29.1
+Overview
+ 
+The 5-Step Module is an oscillator with a waveform consisting of five consequent steps. It 
+features logarithmic pitch control at the "P" (pitch) input port and linear amplitude modu­
+lation at the "A" input port. The amplitudes of all five steps can be set independent of the 
+others.
+Application
+The 5-Step Module can be used to create any variety of stepped waveforms including the 
+pulse and bi-pulse waveforms. By changing the strength of the transients between the 
+pulses you can vary the presence of high harmonic components in the oscillator's output 
+signal.
+Oscillators
+5-Step Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 376
+
+
+--- Page 377 ---
+
+6.29.2
+Ports
+ 
+Input Ports
+▪
+(P) "P" (pitch) is the Event input port for controlling the pitch (oscillator frequency) in 
+the logarithmic pitch scale. The pitch value is given in semitones in the range [0 … 
+127] where "69" corresponds to "Concert A" or 440 Hz.
+▪
+(A) "A" (amplitude) is the Audio input port for controlling the oscillator amplitude. In 
+other words, the output signal of the Module has the range [-A … A].
+▪
+(S1) "S1" (step 1) is the Audio input for controlling the level of the first step.
+▪
+(S2) "S1" (step 2) is the Audio input for controlling the level of the second step.
+▪
+(S3) "S3" (step 3) is the Audio input for controlling the level of the third step.
+▪
+(S4) "S4" (step 4) is the Audio input for controlling the level of the fourth step.
+▪
+(S5) "S5" (step 5) is the Audio input for controlling the level of the fifth step.
+Output Ports
+▪
+(Out) "Out" is the Audio signal output for the step waveform.
+6.29.3
+Example: Rehearsing the Oscillator
+ 
+This example shows how to get a stepped waveform with a pitch set with the MIDI control­
+ler or the keyboard. The pitch information is sent to the "P" (pitch) input port from the out­
+put port of the Note Pitch Module.
+Fig. 6.87 A simple implementation of the 5-Step Module.
+The best way to get acquainted with the oscillators in REAKTOR is to hear them in action 
+while tweaking the different parameters. You can hear the sound of this oscillator and 
+compare it to the other oscillators in the Oscillator Rehearsal Ensemble. The Ensemble 
+consists of an easy to use interface to select and tweak your oscillator of choice while fol­
+Oscillators
+5-Step Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 377
+
+
+--- Page 378 ---
+
+lowing the change in its sound with your ears and the change in waveform on the scope. 
+Since each oscillator can have its own set of controls besides pitch and amplitude, 
+Stacked Macro Modules (↑1.19, Stacked Macro) have been used to make only the relevant 
+controls appear when an oscillator has been selected from the "Oscillators" list.
+Fig. 6.88 A typical 5-step waveform.
+6.30
+6-Step Oscillator
+ 
+Fig. 6.89 6-Step Module
+6.30.1
+Overview
+ 
+The 6-Step Module is an oscillator with a waveform consisting of six consequent steps. It 
+features logarithmic pitch control at the "P" (pitch) input port and linear amplitude modu­
+lation at the "A" input port. The amplitudes of all six steps can be set independent of the 
+others.
+Application
+The 6-Step Module can be used to create any variety of stepped waveforms including the 
+pulse and bi-pulse waveforms. By changing the strength of the transients between the 
+pulses you can vary the presence of high harmonic components in the oscillator's output 
+signal.
+Oscillators
+6-Step Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 378
+
+
+--- Page 379 ---
+
+6.30.2
+Ports
+ 
+Input Ports
+▪
+(P) "P" (pitch) is the Event input port for controlling the pitch (oscillator frequency) in 
+the logarithmic pitch scale. The pitch value is given in semitones in the range [0 … 
+127] where "69" corresponds to "Concert A" or 440 Hz.
+▪
+(A) "A" (amplitude) is the Audio input port for controlling the oscillator amplitude. In 
+other words, the output signal of the Module has the range [-A … A].
+▪
+(S1) "S1" (step 1) is the Audio input for controlling the level of the first step.
+▪
+(S2) "S1" (step 2) is the Audio input for controlling the level of the second step.
+▪
+(S3) "S3" (step 3) is the Audio input for controlling the level of the third step.
+▪
+(S4) "S4" (step 4) is the Audio input for controlling the level of the fourth step.
+▪
+(S5) "S5" (step 5) is the Audio input for controlling the level of the fifth step.
+▪
+(S6) "S6" (step 6) is the Audio input for controlling the level of the sixth step.
+Output Ports
+▪
+(Out) "Out" is the Audio signal output for the step waveform.
+6.30.3
+Example: Rehearsing the Oscillator
+ 
+This example shows how to get a stepped waveform with a pitch set with the MIDI control­
+ler or the keyboard. The pitch information is sent to the "P" (pitch) input port from the out­
+put port of the Note Pitch Module.
+Fig. 6.90 A simple implementation of the 6-Step Module.
+Oscillators
+6-Step Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 379
+
+
+--- Page 380 ---
+
+The best way to get acquainted with the oscillators in REAKTOR is to hear them in action 
+while tweaking the different parameters. You can hear the sound of this oscillator and 
+compare it to the other oscillators in the Oscillator Rehearsal Ensemble. The Ensemble 
+consists of an easy to use interface to select and tweak your oscillator of choice while fol­
+lowing the change in its sound with your ears and the change in waveform on the scope. 
+Since each oscillator can have its own set of controls besides pitch and amplitude, 
+Stacked Macro Modules (↑1.19, Stacked Macro) have been used to make only the relevant 
+controls appear when an oscillator has been selected from the "Oscillators" list.
+Fig. 6.91 A typical 6-step waveform.
+6.31
+8-Step Oscillator 
+ 
+Fig. 6.92 8-Step Module
+6.31.1
+Overview
+ 
+The 8-Step Module is an oscillator with a waveform consisting of eight consequent steps. 
+It features logarithmic pitch control at the "P" (pitch) input port and linear amplitude mod­
+ulation at the "A" input port. The amplitudes of all eight steps can be set independent of 
+the others.
+Oscillators
+8-Step Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 380
+
+
+--- Page 381 ---
+
+Application
+The 8-Step Module can be used to create any variety of stepped waveforms including the 
+pulse and bi-pulse waveforms. By changing the strength of the transients between the 
+pulses you can vary the presence of high harmonic components in the oscillator's output 
+signal.
+6.31.2
+Ports
+ 
+Input Ports
+▪
+(P) "P" (pitch) is the Event input port for controlling the pitch (oscillator frequency) in 
+the logarithmic pitch scale. The pitch value is given in semitones in the range [0 … 
+127] where "69" corresponds to "Concert A" or 440 Hz.
+▪
+(A) "A" (amplitude) is the Audio input port for controlling the oscillator amplitude. In 
+other words, the output signal of the Module has the range [-A … A].
+▪
+(S1) "S1" (step 1) is the Audio input for controlling the level of the first step.
+▪
+(S2) "S1" (step 2) is the Audio input for controlling the level of the second step.
+▪
+(S3) "S3" (step 3) is the Audio input for controlling the level of the third step.
+▪
+(S4) "S4" (step 4) is the Audio input for controlling the level of the fourth step.
+▪
+(S5) "S5" (step 5) is the Audio input for controlling the level of the fifth step.
+▪
+(S6) "S6" (step 6) is the Audio input for controlling the level of the sixth step.
+▪
+(S7) "S7" (step 7) is the Audio input for controlling the level of the seventh step.
+▪
+(S8) "S8" (step 8) is the Audio input for controlling the level of the eighth step.
+Output Ports
+▪
+(Out) "Out" is the Audio signal output for the step waveform.
+6.31.3
+Example: Rehearsing the Oscillator
+ 
+This example shows how to get a stepped waveform with a pitch set with the MIDI control­
+ler or the keyboard. The pitch information is sent to the "P" (pitch) input port from the out­
+put port of the Note Pitch Module.
+Oscillators
+8-Step Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 381
+
+
+--- Page 382 ---
+
+Fig. 6.93 A simple implementation of the 8-Step Module.
+The best way to get acquainted with the oscillators in REAKTOR is to hear them in action 
+while tweaking the different parameters. You can hear the sound of this oscillator and 
+compare it to the other oscillators in the Oscillator Rehearsal Ensemble. The Ensemble 
+consists of an easy to use interface to select and tweak your oscillator of choice while fol­
+lowing the change in its sound with your ears and the change in waveform on the scope. 
+Since each oscillator can have its own set of controls besides pitch and amplitude, 
+Stacked Macro Modules (↑1.19, Stacked Macro) have been used to make only the relevant 
+controls appear when an oscillator has been selected from the "Oscillators" list.
+Fig. 6.94 A typical 8-step waveform.
+Oscillators
+8-Step Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 382
+
+
+--- Page 383 ---
+
+6.32
+4-Ramp Oscillator
+ 
+Fig. 6.95 4-Ramp Module
+6.32.1
+Overview
+ 
+The 4-Ramp Module is an oscillator with a waveform consisting of four breakpoints which 
+are connected by ramps. The level of the start and end of the ramps can be varied by ad­
+justing the level of these breakpoints. The Module features logarithmic pitch control at the 
+"P" (pitch) input port and linear amplitude modulation at the "A" input port. The ampli­
+tudes of all four breakpoints can be set independent of the others.
+Application
+The 4-Ramp Module can be used to create any variety of ramped waveforms including the 
+triangle waveform. The spectrum of this oscillator type is less bright than the one pro­
+duced by the stepped oscillators. By changing the steepness of the ramps you can vary the 
+presence of high harmonic components in the oscillator's output signal.
+6.32.2
+Ports
+ 
+Input Ports
+▪
+(P) "P" (pitch) is the Event input port for controlling the pitch (oscillator frequency) in 
+the logarithmic pitch scale. The pitch value is given in semitones in the range [0 … 
+127] where "69" corresponds to "Concert A" or 440 Hz.
+▪
+(A) "A" (amplitude) is the Audio input port for controlling the oscillator amplitude. In 
+other words, the output signal of the Module has the range [-A … A].
+▪
+(S1) "S1" (step 1) is the Event input for controlling the level of the first breakpoint.
+▪
+(S2) "S2" (step 2) is the Event input for controlling the level of the second breakpoint.
+▪
+(S3) "S3" (step 3) is the Event input for controlling the level of the third breakpoint.
+▪
+(S4) "S4" (step 4) is the Event input for controlling the level of the fourth breakpoint.
+Oscillators
+4-Ramp Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 383
+
+
+--- Page 384 ---
+
+Output Ports
+▪
+(Out) "Out" is the Audio signal output for the ramp waveform.
+6.32.3
+Example: Rehearsing the Oscillator
+ 
+This example shows how to get a ramped waveform with a pitch set with the MIDI control­
+ler or the keyboard. The pitch information is sent to the "P" (pitch) input port from the out­
+put port of the Note Pitch Module.
+Fig. 6.96 A simple implementation of the 4-Ramp Module.
+The best way to get acquainted with the oscillators in REAKTOR is to hear them in action 
+while tweaking the different parameters. You can hear the sound of this oscillator and 
+compare it to the other oscillators in the Oscillator Rehearsal Ensemble. The Ensemble 
+consists of an easy to use interface to select and tweak your oscillator of choice while fol­
+lowing the change in its sound with your ears and the change in waveform on the scope. 
+Since each oscillator can have its own set of controls besides pitch and amplitude, 
+Stacked Macro Modules (↑1.19, Stacked Macro) have been used to make only the relevant 
+controls appear when an oscillator has been selected from the "Oscillators" list.
+Fig. 6.97 A typical 4-ramp waveform.
+Oscillators
+4-Ramp Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 384
+
+
+--- Page 385 ---
+
+6.33
+5-Ramp Oscillator
+ 
+Fig. 6.98 5-Ramp Module
+6.33.1
+Overview
+ 
+The 5-Ramp Module is an oscillator with a waveform consisting of five breakpoints which 
+are connected by ramps. The level of the start and end of the ramps can be varied by ad­
+justing the level of these breakpoints. The Module features logarithmic pitch control at the 
+"P" (pitch) input port and linear amplitude modulation at the "A" input port. The ampli­
+tudes of all five breakpoints can be set independent of the others.
+Application
+The 5-Ramp Module can be used to create any variety of ramped waveforms including the 
+triangle waveform. The spectrum of this oscillator type is less bright than the one pro­
+duced by the stepped oscillators. By changing the steepness of the ramps you can vary the 
+presence of high harmonic components in the oscillator's output signal.
+6.33.2
+Ports
+ 
+Input Ports
+▪
+(P) "P" (pitch) is the Event input port for controlling the pitch (oscillator frequency) in 
+the logarithmic pitch scale. The pitch value is given in semitones in the range [0 … 
+127] where "69" corresponds to "Concert A" or 440 Hz.
+▪
+(A) "A" (amplitude) is the Audio input port for controlling the oscillator amplitude. In 
+other words, the output signal of the Module has the range [-A … A].
+▪
+(S1) "S1" (step 1) is the Event input for controlling the level of the first breakpoint.
+▪
+(S2) "S2" (step 2) is the Event input for controlling the level of the second breakpoint.
+▪
+(S3) "S3" (step 3) is the Event input for controlling the level of the third breakpoint.
+▪
+(S4) "S4" (step 4) is the Event input for controlling the level of the fourth breakpoint.
+Oscillators
+5-Ramp Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 385
+
+
+--- Page 386 ---
+
+▪
+(S5) "S5" (step 5) is the Event input for controlling the level of the fifth breakpoint.
+Output Ports
+▪
+(Out) "Out" is the Audio signal output for the ramp waveform.
+6.33.3
+Example: Rehearsing the Oscillator
+ 
+This example shows how to get a ramped waveform with a pitch set with the MIDI control­
+ler or the keyboard. The pitch information is sent to the "P" (pitch) input port from the out­
+put port of the Note Pitch Module.
+Fig. 6.99 A simple implementation of the 5-Ramp Module.
+The best way to get acquainted with the oscillators in REAKTOR is to hear them in action 
+while tweaking the different parameters. You can hear the sound of this oscillator and 
+compare it to the other oscillators in the Oscillator Rehearsal Ensemble. The Ensemble 
+consists of an easy to use interface to select and tweak your oscillator of choice while fol­
+lowing the change in its sound with your ears and the change in waveform on the scope. 
+Since each oscillator can have its own set of controls besides pitch and amplitude, 
+Stacked Macro Modules (↑1.19, Stacked Macro) have been used to make only the relevant 
+controls appear when an oscillator has been selected from the "Oscillators" list.
+Fig. 6.100 A typical 5-ramp waveform.
+Oscillators
+5-Ramp Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 386
+
+
+--- Page 387 ---
+
+6.34
+6-Ramp Oscillator
+ 
+Fig. 6.101 6-Ramp Module
+6.34.1
+Overview
+ 
+The 6-Ramp Module is an oscillator with a waveform consisting of six breakpoints which 
+are connected by ramps. The level of the start and end of the ramps can be varied by ad­
+justing the level of these breakpoints. The Module features logarithmic pitch control at the 
+"P" (pitch) input port and linear amplitude modulation at the "A" input port. The ampli­
+tudes of all six breakpoints can be set independent of the others.
+Application
+The 6-Ramp Module can be used to create any variety of ramped waveforms including the 
+triangle waveform. The spectrum of this oscillator type is less bright than the one pro­
+duced by the stepped oscillators. By changing the steepness of the ramps you can vary the 
+presence of high harmonic components in the oscillator's output signal.
+6.34.2
+Ports
+ 
+Input Ports
+▪
+(P) "P" (pitch) is the Event input port for controlling the pitch (oscillator frequency) in 
+the logarithmic pitch scale. The pitch value is given in semitones in the range [0 … 
+127] where "69" corresponds to "Concert A" or 440 Hz.
+▪
+(A) "A" (amplitude) is the Audio input port for controlling the oscillator amplitude. In 
+other words, the output signal of the Module has the range [-A … A].
+▪
+(S1) "S1" (step 1) is the Event input for controlling the level of the first breakpoint.
+▪
+(S2) "S2" (step 2) is the Event input for controlling the level of the second breakpoint.
+▪
+(S3) "S3" (step 3) is the Event input for controlling the level of the third breakpoint.
+Oscillators
+6-Ramp Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 387
+
+
+--- Page 388 ---
+
+▪
+(S4) "S4" (step 4) is the Event input for controlling the level of the fourth breakpoint.
+▪
+(S5) "S5" (step 5) is the Event input for controlling the level of the fifth breakpoint.
+▪
+(S6) "S6" (step 6) is the Event input for controlling the level of the sixth breakpoint.
+Output Ports
+▪
+(Out) "Out" is the Audio signal output for the ramp waveform.
+6.34.3
+Example: Rehearsing the Oscillator
+ 
+This example shows how to get a ramped waveform with a pitch set with the MIDI control­
+ler or the keyboard. The pitch information is sent to the "P" (pitch) input port from the out­
+put port of the Note Pitch Module.
+Fig. 6.102 A simple implementation of the 6-Ramp Module.
+The best way to get acquainted with the oscillators in REAKTOR is to hear them in action 
+while tweaking the different parameters. You can hear the sound of this oscillator and 
+compare it to the other oscillators in the Oscillator Rehearsal Ensemble. The Ensemble 
+consists of an easy to use interface to select and tweak your oscillator of choice while fol­
+lowing the change in its sound with your ears and the change in waveform on the scope. 
+Since each oscillator can have its own set of controls besides pitch and amplitude, 
+Stacked Macro Modules (↑1.19, Stacked Macro) have been used to make only the relevant 
+controls appear when an oscillator has been selected from the "Oscillators" list.
+Oscillators
+6-Ramp Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 388
+
+
+--- Page 389 ---
+
+Fig. 6.103 A typical 6-ramp waveform.
+6.35
+8-Ramp Oscillator
+ 
+Fig. 6.104 8-Ramp Module
+6.35.1
+Overview
+ 
+The 8-Ramp Module is an oscillator with a waveform consisting of eight breakpoints which 
+are connected by ramps. The level of the start and end of the ramps can be varied by ad­
+justing the level of these breakpoints. The Module features logarithmic pitch control at the 
+"P" (pitch) input port and linear amplitude modulation at the "A" input port. The ampli­
+tudes of all eight breakpoints can be set independent of the others.
+Application
+The 8-Ramp Module can be used to create any variety of ramped waveforms including the 
+triangle waveform. The spectrum of this oscillator type is less bright than the one pro­
+duced by the stepped oscillators. By changing the steepness of the ramps you can vary the 
+presence of high harmonic components in the oscillator's output signal.
+Oscillators
+8-Ramp Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 389
+
+
+--- Page 390 ---
+
+6.35.2
+Ports
+ 
+Input Ports
+▪
+(P) "P" (pitch) is the Event input port for controlling the pitch (oscillator frequency) in 
+the logarithmic pitch scale. The pitch value is given in semitones in the range [0 … 
+127] where "69" corresponds to "Concert A" or 440 Hz.
+▪
+(A) "A" (amplitude) is the Audio input port for controlling the oscillator amplitude. In 
+other words, the output signal of the Module has the range [-A … A].
+▪
+(S1) "S1" (step 1) is the Event input for controlling the level of the first breakpoint.
+▪
+(S2) "S2" (step 2) is the Event input for controlling the level of the second breakpoint.
+▪
+(S3) "S3" (step 3) is the Event input for controlling the level of the third breakpoint.
+▪
+(S4) "S4" (step 4) is the Event input for controlling the level of the fourth breakpoint.
+▪
+(S5) "S5" (step 5) is the Event input for controlling the level of the fifth breakpoint.
+▪
+(S6) "S6" (step 6) is the Event input for controlling the level of the sixth breakpoint.
+▪
+(S7) "S7" (step 7) is the Event input for controlling the level of the seventh breakpoint.
+▪
+(S8) "S8" (step 8) is the Event input for controlling the level of the eigth breakpoint.
+Output Ports
+▪
+(Out) "Out" is the Audio signal output for the ramp waveform.
+6.35.3
+Example: Rehearsing the Oscillator
+ 
+This example shows how to get a ramped waveform with a pitch set with the MIDI control­
+ler or the keyboard. The pitch information is sent to the "P" (pitch) input port from the out­
+put port of the Note Pitch Module.
+Fig. 6.105 A simple implementation of the 8-Ramp Module.
+Oscillators
+8-Ramp Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 390
+
+
+--- Page 391 ---
+
+The best way to get acquainted with the oscillators in REAKTOR is to hear them in action 
+while tweaking the different parameters. You can hear the sound of this oscillator and 
+compare it to the other oscillators in the Oscillator Rehearsal Ensemble. The Ensemble 
+consists of an easy to use interface to select and tweak your oscillator of choice while fol­
+lowing the change in its sound with your ears and the change in waveform on the scope. 
+Since each oscillator can have its own set of controls besides pitch and amplitude, 
+Stacked Macro Modules (↑1.19, Stacked Macro) have been used to make only the relevant 
+controls appear when an oscillator has been selected from the "Oscillators" list.
+Fig. 6.106 A typical 8-ramp waveform.
+6.36
+Ramp Oscillator
+ 
+Fig. 6.107 Ramp Osc Module.
+6.36.1
+Overview
+ 
+The Ramp Osc Module is an oscillator with a ramp waveform. It features linear frequency 
+control at the "F" input port and linear amplitude control at the "A" input port. The ramp 
+waveform is a linear ramp from "0" to "A" which then instantly wraps around back to "0". In 
+the Function page you can choose from three available modes of operation, depending on 
+the precision required for the ramp. The Ramp Osc Module also features phase synchroni­
+zation (hard synch) at the "Snc" input port. A positive zero crossing of the signal at the 
+"Snc" input port causes the phase of the ramp oscillator to be reset to the phase specified 
+at the "Ph" input port.
+Oscillators
+Ramp Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 391
+
+
+--- Page 392 ---
+
+Application
+The Ramp Osc Module is typically used as a control signal, for example as a read or write 
+pointer for an Audio Table Module that functions as a waveform oscillator. Such an exam­
+ple is shown in chapter 11 of the Application Reference. You can also use the ramp as a 
+playback pointer for a sampler.
+6.36.2
+Properties: Function Page
+ 
+Setting the Oscillator Mode
+Depending on how the Ramp Osc Module is implemented in a Structure, different oscilla­
+tor modes are required. To choose the oscillator mode, use the Mode drop-down menu, as 
+shown in the picture below.
+Fig. 6.108 The three operation modes of the Ramp Osc Module can be selected using the Mode drop-down menu in its 
+Function page.
+There are three available operation modes:
+▪
+Standard: There is no anti-aliasing, enabling you to use the ramp as a read or write 
+pointer. However, in this mode for long samples there will be tempo/pitch inaccuracies 
+due to floating point accumulation errors.
+▪
+Anti-Aliased Sync: This mode causes the output signal to be anti-aliased which makes 
+the ramp oscillator usable as a source for an audible signal.
+▪
+Hi-Res: If the mode is set to Hi-Res te internal resolution is set to 48 bits and this ena­
+bles ramp oscillator to be used as a phase source for long samples.
+6.36.3
+Ports
+ 
+Input Ports
+▪
+(F) "F" (frequency) is the Audio input port to set the oscillator frequency in Hz.
+▪
+(A) "A" (amplitude) is the Audio input port for controlling the ramp amplitude. In other 
+words, the output signal of the Module is a ramp from "0" to "A"], depending on the 
+phase synchronization.
+Oscillators
+Ramp Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 392
+
+
+--- Page 393 ---
+
+▪
+(Snc) "Snc" (sync) is the Audio input port for controlling synchronization of the wave­
+form. A positive crossing of the signal at this input port restarts the oscillator phase 
+from the phase specified at the "Ph" input port. A positive zero crossing of a signal 
+happens when signal values go from negative to positive.
+▪
+(Ph) "Ph" (phase) is the input port for specifying the phase (position in the waveform) 
+to which the oscillator is reset when synchronization occurs. The range for the "Ph" in­
+put port is [-1 … 1] where "-1" corresponds to a phase of -180 degrees and "1" corre­
+sponds to a phase 180 degrees.
+Output Ports
+▪
+(Out) "Out" is the output port for the audio signal with the possibly frequency modulat­
+ed and/or hard synchronized ramp waveform.
+6.36.4
+Example
+ 
+For an example of the implementation of the Ramp Osc Module, please refer to chapter 
+11 of the Application Reference.
+6.37
+Clock Oscillator
+ 
+Fig. 6.109 Clock Osc Module
+6.37.1
+Overview
+ 
+The Clock Osc represents a free running monophonic clock source. By free running it is 
+meant that this clock source is inherently independent from REAKTOR's MIDI Clock. The 
+internal oscillator produces a regular stream of "On" and "Off" signal values in the form of 
+Events. The value of the "On" Events is specified at the "A" input port. With the "Snc" in­
+put port you can reset (synchronize) the oscillator and with the "W" input port you can con­
+trol the duration of the "On" value.
+Oscillators
+Ramp Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 393
+
+
+--- Page 394 ---
+
+Application
+A possible application of the Clock Osc is as a clock source for a sequencer. Another pos­
+sibility is to create a timer, as shown in the example below. Note that with the appropriate 
+Structure you can easily synchronize the Clock Osc Module to the MIDI Clock.
+6.37.2
+Ports
+ 
+Input Ports
+▪
+(F) "F" (frequency) is the Event input port to set the frequency of the "On" Events in Hz. 
+If you think in BPM and would like to convert a BPM value to its corresponding fre­
+quency in Hertz, use the following formula: Events-per-beat / 60 BPM. So, for 16th 
+note Events at 4 beats to the bar (that is four 16ths per beat), you get F = 4 / 60 BPM 
+= 0.0667 BPM.
+▪
+(W) "W" (width) is the Audio input port for the duration of the "On" Event. The range of 
+the values at this input port is [-0.98 … 0.98]. The ratio between the "On" and "Off" 
+states of the output signal in relation to the value at the "W" input port is given as On : 
+Off = ( 1 + W ) / ( 1 – W ). So, a "W" value of "0" yields a symmetric pulse waveform (a 
+On : Off ratio of 50 : 50) at the output port. A "W" value of "-0.33" yields an On : Off 
+ratio of 33 : 66, "-0.5" yields an On : Off ratio of 25 : 75, and "-0.98" already yields a 
+waveform that can be considered an impulse train.
+▪
+(Snc) "Snc" (sync) is the Event input port for controlling synchronization of the clock. A 
+positive Event at this input port resets the oscillator.
+▪
+(A) "A" (amplitude) is the Audio input port for controlling the value of the "On" Event. 
+In other words, the output signal of the Module is series of values being either "0" or 
+"A".
+▪
+(Snc) "Snc" Event input for synchronization of the waveform. A positive Event synchro­
+nizes the clock source.
+Output Ports
+▪
+(Out) "Out" is the Event output for the clock signal, alternating between "On" value and 
+zero.
+Oscillators
+Clock Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 394
+
+
+--- Page 395 ---
+
+6.37.3
+Example: Simple Timer
+ 
+The idea to use the Clock Osc Module to build a timer is not very farfetched. The Structure 
+in the first picture below shows an implementation of a very simple timer. The Structure 
+consists of three parts: the Clock Osc Module as the source of clock Events, the Counter 
+Module as a counting mechanism, and the Numeric Module as a means of displaying the 
+result.
+In a nutshell, the Clock Osc Module sends Events with the value A = 1 at a frequency de­
+termined by the "Freq" knob to the "Up" input port of the Counter Module. The counter 
+Module counts the number of positive Events at its "Up" input port (the zero-valued Events 
+are ignored) and forwards the total number of Events to its output port. The Numeric Mod­
+ule is used to display that number on the Panel.
+Additionally, a button labeled "Snc" has been created to reset the timer. In the resetting 
+mechanism, first the clock needs to be reset by sending a positive Event to the "Snc' input 
+port and second an Event with the value "0" needs to be sent to the "Set" input port of the 
+Counter. The latter will cause the Counter state to be set to zero. The Order Module has 
+been used to cause the Clock Osc Module to be reset before the Counter Module (please 
+refer to subsection 9.2 in the Application Reference for more information on the order of 
+Events). The Value Module is used to use the Event from the "Snc" button which carries 
+the value "1" to trigger an Event with the value "0" to be sent to the "Set" input port.
+Fig. 6.110 This Structure is an implementation of a simple timer.
+Fig. 6.111 The Panel representation of the timer.
+Oscillators
+Clock Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 395
+
+
+--- Page 396 ---
+
+6.38
+Noise Oscillator
+ 
+Fig. 6.112 Noise Module
+6.38.1
+Overview
+ 
+The Noise Module is a white noise generator. It produces a random signal containing equal 
+amounts of all possible frequency components. The signal consists of only two values, "A/
+2" and "–A/2" which appear in a random sequence.
+Application
+Since white noise contains equal amounts of all possible frequency components, it is an 
+ideal starting point for subtractive synthesis. You can use the Noise Module to also pro­
+duce pink noise and brown noise (also known as brownian noise). The amplitude reduction 
+for pink noise is 3 dB per octave whereas the same parameter for brown noise is 6 dB per 
+octave. You can connect the output of the Noise Module to filters to produce these types 
+of noise. It should be noted, that pink noise is the type of noise perceived as most pleas­
+ing to the human ear and not coincidentally it is a type of statistical behavior that pops up 
+in all kinds natural phenomena.
+6.38.2
+Ports
+ 
+Input Ports
+▪
+(A) "A" (amplitude) is the Audio input for controlling the amplitude of the white noise 
+signal. The output signal consists of two values "A/2" and "-A/2".
+Output Ports
+▪
+(Out) "Out" is the output port for the Audio signal with a noise spectrum.
+6.38.3
+Example: Rehearsing the Oscillator
+ 
+This example shows how to get a white noise signal with constant amplitude.
+Oscillators
+Noise Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 396
+
+
+--- Page 397 ---
+
+Fig. 6.113 Noise with an amplitude of "0.5"
+The best way to get acquainted with the oscillators in REAKTOR is to hear them in action 
+while tweaking the different parameters. You can hear the sound of this oscillator and 
+compare it to the other oscillators in the Oscillator Rehearsal Ensemble. The Ensemble 
+consists of an easy to use interface to select and tweak your oscillator of choice while fol­
+lowing the change in its sound with your ears and the change in waveform on the scope. 
+Since each oscillator can have its own set of controls besides pitch and amplitude, 
+Stacked Macro Modules (↑1.19, Stacked Macro) have been used to make only the relevant 
+controls appear when an oscillator has been selected from the "Oscillators" list
+Fig. 6.114 The waveform corresponding to white noise.
+6.39
+Random Oscillator
+ 
+Fig. 6.115 Random Module
+6.39.1
+Overview
+ 
+The Random Module is a pseudorandom value generator. The output signal is a stepped 
+waveform where the level of each step is pseudorandom in the amplitude interval. Each 
+"level" has an equal probability of appearing. We say pseudorandom because the algorithm 
+for generating the number is well-defined and therefore will always behave in a predictable 
+Oscillators
+Random Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 397
+
+
+--- Page 398 ---
+
+manner. However, if you don’t know that the sequence of numbers is generated by an al­
+gorithm, they appear to be perfectly random. The seed for creating different pseudoran­
+dom sequences is set using the Set Random Module (↑14.24, Set Random). The Random 
+Module works like a noise generator with uniform distribution followed by a sample & hold 
+circuit clocked at a regular frequency.
+Application
+The Random Module can be used to generate a "lo-fi", broken circuit audio signal. You can 
+also add it in small doses to your oscillators to add more grit to them if you are into that 
+type of sound. Since the audible signal generated by the Random Module has strong high 
+harmonic components it is also a good starting point for subtractive synthesis.
+To add a random value to control signals such as envelopes, LFOs, or sequencer Event tim­
+ing and velocity values, it is more efficient to use the Slow Random Module in the LFO, En­
+velope section!
+6.39.2
+Ports
+ 
+Input Ports
+▪
+(P) "P" (pitch) is the Event input port for controlling the step rate (sample and hold fre‐
+quency) in the logarithmic pitch scale. The pitch value is given in semitones in the 
+range [0 … 127] where "69" corresponds to "Concert A" or 440 Hz.
+▪
+(A) "A" (amplitude) is the Audio input port for controlling the oscillator amplitude. In 
+other words, the output signal of the Module is a pseudorandom value in the range [-A 
+… A].
+Output Ports
+▪
+(Out) "Out" Audio signal output for the pseudorandom step waveform.
+6.39.3
+Example: Rehearsing the Oscillator
+ 
+This example shows how to get a pseudorandom waveform within the bounds of unit am­
+plitude and a pitch set with the MIDI controller or the keyboard. The pitch information is 
+sent to the "P" (pitch) input port from the output port of the Note Pitch Module.
+Oscillators
+Random Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 398
+
+
+--- Page 399 ---
+
+Fig. 6.116 A Structure for a pseudorandom signal with unit amplitude.
+The best way to get acquainted with the oscillators in REAKTOR is to hear them in action 
+while tweaking the different parameters. You can hear the sound of this oscillator and 
+compare it to the other oscillators in the Oscillator Rehearsal Ensemble. The Ensemble 
+consists of an easy to use interface to select and tweak your oscillator of choice while fol­
+lowing the change in its sound with your ears and the change in waveform on the scope. 
+Since each oscillator can have its own set of controls besides pitch and amplitude, 
+Stacked Macro Modules (↑1.19, Stacked Macro) have been used to make only the relevant 
+controls appear when an oscillator has been selected from the "Oscillators" list.
+Fig. 6.117 The Random Module is used to generate a pseudorandom signal.
+6.40
+Geiger Oscillator
+ 
+Fig. 6.118 Geiger Module
+6.40.1
+Overview
+ 
+The Geiger Module generates an impulse train at random time intervals, much like a Gei­
+ger Counter radiation particle detector. The average rate of impulses can be controlled at 
+the "P" (pitch) input port. The value at the "Rnd" input port controls the randomness of the 
+Oscillators
+Geiger Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 399
+
+
+--- Page 400 ---
+
+Event timing. The seed for creating different pseudorandom sequences for the Geiger 
+Module is set using the Set Random Module (↑14.24, Set Random). This Module features 
+both an Audio and an Event output port.
+Application
+The Geiger Module can be used in two distinct ways, depending on which output port you 
+use. With the "Out" Event output port you can randomly trigger processes such as enve­
+lopes or sequencer patterns. Connect the "Out" Event output port to a "G" (gate) input port 
+of an Envelope Module to have the impulses trigger an Envelope. At low pitch values you 
+can use the signal from the "Clk" Audio output port for sound effects mimicking the well-
+known Geiger Counter, a popular motive in film productions. At higher pitches the sound 
+resembles a zipper noise. A Geiger impulse train too has strong high harmonic compo­
+nents. This means that you can use the signal from the "Clk" output port as a starting 
+point for subtractive synthesis.
+6.40.2
+Ports
+ 
+Input Ports
+▪
+(P) "P" (pitch) is the Event input port for controlling the average rate or density of the 
+randomly occurring impulses in the logarithmic pitch scale. The typical range for the 
+incoming pitch values at this input port is [-50 ... 50].
+▪
+(Rnd) "Rnd" (random) is the Event input port for controlling the randomness of the 
+Event distribution. "0" corresponds to a completely random distribution, "1" corre­
+sponds to a completely regular impulse train. The typical range for incoming values at 
+this input port is [0 ... 1].
+Output Ports
+▪
+(Clk) "Clk" is the Audio output port for the Geiger impulse train.
+▪
+(Out) "Out" is the output port for the (randomly timed) Events.
+6.40.3
+Example: Rehearsing the Oscillator
+ 
+This example shows how to get a Geiger impulse train with a pitch set by the MIDI control­
+ler or the keyboard. The pitch information is sent to the "P" (pitch) input port from the out­
+put port of the Note Pitch Module. Use a knob connected to the "Rnd" input port to con­
+trol the randomness of the Geiger impulse train.
+Oscillators
+Geiger Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 400
+
+
+--- Page 401 ---
+
+Fig. 6.119 Geiger impulse train
+The best way to get acquainted with the oscillators in REAKTOR is to hear them in action 
+while tweaking the different parameters. You can hear the sound of this oscillator from the 
+"Clk" output port and compare it to the other oscillators in the Oscillator Rehearsal Ensem­
+ble. The Ensemble consists of an easy to use interface to select and tweak your oscillator 
+of choice while following the change in its sound with your ears and the change in wave­
+form on the scope. Since each oscillator can have its own set of controls besides pitch and 
+amplitude, Stacked Macro Modules (↑1.19, Stacked Macro) have been used to make only 
+the relevant controls appear when an oscillator has been selected from the "Oscillators" 
+list.
+Fig. 6.120 The geiger waveform
+Oscillators
+Geiger Oscillator
+ 
+REAKTOR 5.5 - Module Reference - 401
+

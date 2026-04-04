@@ -1,0 +1,2671 @@
+--- Page 526 ---
+
+10
+Filter
+ 
+Filters make up REAKTOR’s largest collection of signal processors. You’ll find 22 of them 
+here covering everything from standard low-, high-, and band-pass filters, to emulations of 
+classic synth filters from Sequential and Moog. There’s also an all-pass filter for reverb 
+and dispersion circuits as well as integrating and differentiating filters.
+All of REAKTOR’s filters can operate at any frequency, from 0 Hz (constant signal) through 
+the entire audio range right up to the limit set by the Sample Rate. This means they are all 
+equally suited for audio processing or for smoothing control signals (e.g. portamento). 
+When using a filter to process the input signal to an input port that only accepts Events 
+(e.g. "P" as opposed to "F") you need to insert an A to E (perm) Module for conversion.
+Please refer to the example of the Unit Delay Module (↑11.6, Unit Delay) for a brief discus­
+sion on filters (and how to build them, in principle, using the Unit Delay Module).
+10.1
+HP/LP 1-Pole
+ 
+Fig. 10.1 1-Pole Module
+10.1.1
+Overview
+ 
+The 1-Pole Module is a 1-pole filter with Audio output ports for the high-pass characteris­
+tic ("HP") and the low-pass characteristic ("LP"). A 1-pole filter corresponds to a signal at­
+tenuation of 6 dB per octave starting from the cutoff frequency. The cutoff frequency is 
+determined in the logarithmic scale at the "P" (pitch) input port.
+Application
+One specific application for the 1-Pole Module is to create a brown noise source by apply­
+ing the low-pass filter at 0 Hz cutoff frequency (a "P" value of "-60" suffices) to the output 
+of a Noise Module (white noise). The 1-Pole Filter is not only useful for an audible effect. 
+The 1-pole low-pass filter is also useful for smoothing Audio signals, as seen in the "enve­
+lope follower" example in this section. For a second example Structure, please refer to the 
+1-Pole FM Module's example.
+Filter
+HP/LP 1-Pole
+ 
+REAKTOR 5.5 - Module Reference - 526
+
+
+--- Page 527 ---
+
+10.1.2
+Ports
+ 
+Input Ports
+▪
+(P) "P" (cutoff pitch) is the Event input port for controlling the cutoff frequency in the 
+logarithmic scale. The cutoff pitch is given in semitones, usually In the range [20 … 
+120] which roughly corresponds to a frequency range of [26 Hz … 8370 Hz]. The 
+pitch value "69" corresponds to "Concert A" or 440 Hz. If left disconnected, the default 
+value of "0" is used for this input port. This default value corresponds to 8 Hz in the 
+frequency scale.
+▪
+(In) "In" is the Audio input port for the signal to be filtered.
+Output Ports
+▪
+(HP) "HP" (high-pass) is the Audio output port for the high-pass filtered signal.
+▪
+(LP) "LP" (low-pass) Audio output port for the low-pass filtered signal.
+10.1.3
+Example: Envelope Follower
+ 
+A good way to modulate your effects, filters, envelopes, and oscillators, is using envelope 
+followers. An envelope follower takes an input signal and uses its peaks to trigger an enve­
+lope whose amplitude matches that of the peak. The Structure in the figure below illus­
+trates such an envelope follower Structure, utilizing the Peak Detector (↑12.14, Peak De­
+tector), Differentiator (↑12.14, Peak Detector), Sample and Hold (↑12.15, Sample & 
+Hold), HR Envelope (↑9.4, HR - Env), and a 1-Pole Filter (↑10.2, HP/LP 1-Pole FM).
+The incoming signal that is to trigger the envelope is first fed into the Peak Detector Mod­
+ule (↑12.14, Peak Detector) (↑12.14, Peak Detector). Depending on the frequency of 
+peaks, the release time of the peaks in the Peak Detector's output signal is set with the 
+"PkRel" knob at the "Rel" input port. Next, the Peak Detector Module's output is fed to the 
+Sample and Hold Module (↑12.15, Sample & Hold). This signal is only sampled and held 
+when a negative value at the Sample and Hold Module's "Trig" (trigger) input port goes 
+from a negative value to a positive value. At the same time, the Differentiator Module 
+(↑10.22, Differentiator) records if the Peak Detector Module's output is rising or falling. 
+Therefore, if the Peak Detector signal goes from a falling state to a rising state, its output 
+is sampled and forwarded to the "A" (amplitude) input port of the HR Envelope Module 
+(↑9.4, HR - Env). At the same time, the HR Envelope Module is triggered (with this new 
+Filter
+HP/LP 1-Pole
+ 
+REAKTOR 5.5 - Module Reference - 527
+
+
+--- Page 528 ---
+
+amplitude, ultimately received from the Peak Detector Module). The envelope's output sig­
+nal is then smoothed by a 1-Pole Filter (low-pass) where the value at its "P" (pitch) input 
+port determines the amount of smoothing.
+Fig. 10.2 The Structure for an envelope follower effect.
+10.2
+HP/LP 1-Pole FM
+ 
+Fig. 10.3 1-Pole FM Module
+10.2.1
+Overview
+ 
+The 1-Pole FM Module is a 1-pole filter with Audio output ports for the high-pass charac­
+teristic ("HP") and the low-pass characteristic ("LP"). A 1-pole filter corresponds to a signal 
+attenuation of 6 dB per octave starting from the cutoff frequency. The cutoff frequency is 
+determined in the logarithmic scale at the "P" (cutoff pitch) input port and can be modu­
+lated in the linear frequency scale using the "F" (cutoff frequency) input port. Only the 
+graphic display stemming from the "P" (cutoff pitch) value is shown in the Panel represen­
+tation.
+Application
+One specific application for the 1-Pole Module is to create a brown noise source by apply­
+ing the low-pass filter at 0 Hz cutoff frequency to the output of a Noise Module (white 
+noise). With the 1-Pole FM Module you can use both the "P" (cutoff pitch) and "F" (fre­
+quency) input ports to get an exact cutoff frequency of 0 Hz. For more exact (Audio Rate) 
+modulations, use the "F" (cutoff frequency) input port. The 1-Pole Filter is not only useful 
+for an audible effect. The 1-pole low-pass filter is also useful for smoothing Audio signals.
+Filter
+HP/LP 1-Pole FM
+ 
+REAKTOR 5.5 - Module Reference - 528
+
+
+--- Page 529 ---
+
+10.2.2
+Ports
+ 
+Input Ports
+▪
+(P) "P" (cutoff pitch) is the Event input port for controlling the cutoff frequency in the 
+logarithmic scale. The cutoff pitch is given in semitones, usually in the range [20 … 
+120] which roughly corresponds to a frequency range of [26 Hz … 8370 Hz]. The 
+pitch value "69" corresponds to "Concert A" or 440 Hz. If left disconnected, the default 
+value of "0" is used for this input port. This default value corresponds to 8 Hz in the 
+frequency scale.
+▪
+(F) "F" (cutoff frequency) is the Audio input port for linear modulation of the cutoff fre­
+quency in Hz. The value at the "F" (frequency) input port is added to the frequency de­
+termined by the "P" (cutoff pitch) input port. The sum is then the final cutoff frequen­
+cy.
+▪
+(In) "In" is the Audio input port for the signal to be filtered.
+Output Ports
+▪
+(HP) "HP" (high-pass) is the Audio output port for the 1-pole high-pass filtered signal.
+▪
+(LP) "LP" (low-pass) Audio output port for the 1-pole low-pass filtered signal.
+10.2.3
+Properties: View Page
+ 
+Making the Frequency Response Graph Visible on the Panel
+One way to graphically characterize a filter is to plot its frequency response. On the hori­
+zontal axis you have the frequencies of the signal, in the logarithmic scale. On the vertical 
+axis you have the corresponding frequency component's magnitude in respect to the in­
+coming magnitude (also in the logarithmic, decibel scale). All of REAKTOR's filters (ex­
+cept the all-pass filter, which has a flat frequency (magnitude) response, and the Integra­
+tor and Differentiator) have this characteristic plot as a Panel representation. The frequen­
+cy range of this plot in REAKTOR is 10 Hz to 20 kHz. This can be a very useful compo­
+nent in your Instrument since you get direct visual feedback on how the cutoff frequency 
+parameter affects the overall frequency response curve. Note that only one filter character­
+istic, the low-pass curve, is shown.
+Filter
+HP/LP 1-Pole FM
+ 
+REAKTOR 5.5 - Module Reference - 529
+
+
+--- Page 530 ---
+
+► To turn on the graphic display of your filter's frequency response in the Instrument Pan­
+el, go to the Module's View page and engage the On checkbox, shown in the figure below.
+Changing the Size of the Filter's Panel Representation
+Depending on your Panel layout, you want a small or large graph of the frequency response 
+on your Instrument Panel.
+► To change the width and height of the filter's Panel representation, go to the Module's 
+View page and enter the desired values into the Width and Height edit fields, as shown in the 
+figure below.
+10.2.4
+Example: 1-Pole Filter
+ 
+This example shows how to filter an incoming signal, such as an oscillator output signal, 
+with a 1-pole filter. The corresponding Structure is shown in the figure below. The signal 
+which is to be filtered is incoming at the "In" input port of the Filter Module. The cutoff 
+pitch is specified with the Knob Module labeled "P Cutoff" at the "P" (pitch) input port. 
+Simple frequency modulation of the filter's cutoff frequency is achieved by connecting the 
+output of a sine oscillator to the "F" (frequency) input port of the Module. Since the 1-Pole 
+FM Module comprises both a 1-pole low-pass and 1-pole high-pass filter, a List Module in 
+combination with a Selector Module lets you select from the Instrument Panel which fil­
+tered signal is sent to the output.
+Fig. 10.4 A simple implementation of a 1-pole filter.
+Filter
+HP/LP 1-Pole FM
+ 
+REAKTOR 5.5 - Module Reference - 530
+
+
+--- Page 531 ---
+
+In the Rehearsal Ensemble you can get acquainted with the various filters in REAKTOR. 
+The Ensemble consists of an easy to use interface to select and tweak your filter of choice. 
+Since each filter has its own set of controls for the signal levels and transition times, 
+Stacked Macro Modules (↑1.19, Stacked Macro) have been used to make only the relevant 
+controls appear when a filter has been selected from the "Filters" list. Also, the On check­
+box in the View page has been engaged such that the graphic Panel representation of the 
+frequency response is visible.
+10.3
+1-Pole All-Pass
+ 
+Fig. 10.5 1-Pole All-Pass Module
+10.3.1
+Overview
+ 
+The 1-Pole All-Pass Module is a first order all-pass filter. This type of filter has a flat am­
+plitude response, but the phase shift between input and output grows from 0 degrees at 
+low frequencies to -180 degrees at high frequencies. At the cutoff frequency, controlled 
+by the "P" (cutoff pitch) input port, the phase is shifted by -90 degrees.
+Application
+Common applications for all-pass filters include delay-based effects that "mix-up" the 
+phases — reverbs and diffuser delays. All-pass filters have an approximately linear disper­
+sion relation. This means that you can effectively delay a signal by fractions of a sample. 
+Applications for this include the generation of plucked string sounds. This can be achieved 
+by building a comb filter Structure but combining the Delay Module and the 1-Pole All-
+Pass Module to create a feedback path that can have delays of an arbitrary (not just inte­
+ger) number of samples.
+10.3.2
+Ports
+ 
+Input Ports
+▪
+(P) "P" (cutoff pitch) is the Event input port for controlling the cutoff frequency, where 
+the phase shift is - 90 degrees, in the logarithmic scale. The cutoff pitch is given in 
+semitones, usually in the range [20 … 120] which roughly corresponds to a frequency 
+Filter
+1-Pole All-Pass
+ 
+REAKTOR 5.5 - Module Reference - 531
+
+
+--- Page 532 ---
+
+range of [26 Hz … 8370 Hz]. The pitch value "69" corresponds to "Concert A" or 440 
+Hz. If left disconnected, the default value of "0" is used for this input port. This default 
+value corresponds to 8 Hz in the frequency scale.
+▪
+(In) "In" is the Audio input port for the signal to be all-pass filtered (phase-shifted).
+Output Ports
+▪
+(Out) "Out" is the Audio output port for the all-pass filtered (phased-shifted) signal.
+10.3.3
+Example: 1-Pole Allpass Filter
+ 
+This example shows how to filter an incoming signal, such as an oscillator output signal, 
+with a 1-pole allpass filter. The corresponding Structure is shown in the figure below. The 
+signal which is to be filtered is incoming at the "In" input port of the Filter Module. The 
+filter's phase response is controlled by the Knob Module labeled "Allpass P ", at the "P" 
+(pitch) input port.
+Fig. 10.6 A simple implementation of a 1-pole allpass filter.
+In the Rehearsal Ensemble you can get acquainted with the various filters in REAKTOR. 
+The Ensemble consists of an easy to use interface to select and tweak your filter of choice. 
+Since each filter has its own set of controls for the signal levels and transition times, 
+Stacked Macro Modules (↑1.19, Stacked Macro) have been used to make only the relevant 
+controls appear when a filter has been selected from the "Filters" list. Also, the On check­
+box in the View page has been engaged such that the graphic Panel representation of the 
+frequency response is visible.
+10.4
+Multi 2-Pole
+ 
+Fig. 10.7 Multi 2-Pole Module
+Filter
+1-Pole All-Pass
+ 
+REAKTOR 5.5 - Module Reference - 532
+
+
+--- Page 533 ---
+
+10.4.1
+Overview
+ 
+The Multi 2-Pole Module is a 2-pole filter with Audio output ports for the high-pass char­
+acteristic ("HP"), the band-pass characteristic ("BP"), and the low-pass characteristic 
+("LP"). For the high-pass and low-pass characteristics, a 2-pole filter corresponds to a sig­
+nal attenuation of 12 dB per octave starting from the cutoff frequency. For a band-pass 
+characteristic a 2-pole filter corresponds to a signal attenuation of 6 db per octave both 
+above and below the cutoff frequency. The cutoff frequency is determined in the logarith­
+mic scale at the "P" (cutoff pitch) input port.
+The Multi 2-Pole Module also enables you to vary the filter resonance. Resonance corre­
+sponds to a peak in the frequency response at the cutoff frequency and the resonance pa­
+rameter lets you control the width / height of this peak. The pass band gain is always "1" 
+(corresponding to 0 dB), whereas the gain at the cutoff frequency increases as the "Res" 
+(resonance) parameter approaches "1". At high resonance settings the filter output exhibits 
+a strong frequency component (nearly in the form of a sine tone) at the cutoff frequency.
+Very large amplitudes are generated when the "Res" parameter approaches "1".
+Application
+Filters are used to variably change the magnitude (and phase) of the frequency compo­
+nents in a signal. This is the key aspect to subtractive synthesis where one starts out with 
+a signal that has many harmonic components (such as a saw wave or white noise) and 
+then starts removing or reducing unwanted frequency components, finally ending up with 
+the desired sound. This is not unlike the work of a sculptor who chisels away "unwanted" 
+components of a piece of rock to (hopefully) end up with the envisioned shape.
+Of course, filters can also be applied to Audio signals stemming from samplers and to ex­
+ternal Audio signals. With the resonance parameter you can enhance certain components. 
+For example, you can enhance a bass kick sound by applying a high-pass filter to it with 
+moderate resonance. The cutoff frequency should be set at the main fundamental frequen­
+cy component of the kick sound.
+You could also use filters to split a signal up into different frequency components (low, 
+middle, and high) which then receive different treatment by effects (such as in a multi-
+band compressor) and then later combine the signals again in the output signal. Learning 
+Filter
+Multi 2-Pole
+ 
+REAKTOR 5.5 - Module Reference - 533
+
+
+--- Page 534 ---
+
+how the different filters affect your Audio signal and using filters creatively is important to 
+mastering signal processing for audio instruments and effects. For an example Structure, 
+please refer to the Multi 2-Pole FM Module's example.
+10.4.2
+Ports
+ 
+Input Ports
+▪
+(P) "P" (cutoff pitch) is the Event input port for controlling the cutoff frequency in the 
+logarithmic scale. The cutoff pitch is given in semitones, usually in the range [20 … 
+120] which roughly corresponds to a frequency range of [26 Hz … 8370 Hz]. The 
+pitch value "69" corresponds to "Concert A" or 440 Hz. If left disconnected, the default 
+value of "0" is used for this input port. This default value corresponds to 8 Hz in the 
+frequency scale.
+▪
+(Res) "Res" (resonance) is the Event input port for controlling the filter’s resonance / 
+damping parameter. The range of values at this input port is [0 … 1] where "0" corre­
+sponds to maximal damping, no resonance, and "1" to no damping, maximal reso­
+nance. At Res = 1 the filter begins to self-oscillate at the cutoff frequency, resulting in 
+a sine tone at that frequency. For high resonance values the filter’s Q-factor = frequen­
+cy[Hz] / bandwidth [Hz] ≅ 1 / (2 – 2*Res).
+▪
+(In) "In" is the Audio input port for the signal to be filtered.
+Output Ports
+▪
+(HP) "HP" (high-pass) is the Audio output port for the 2-pole high-pass filtered signal.
+▪
+(BP) "BP" (band-pass) is the Audio output port for the 2-pole band-pass filtered signal.
+▪
+(LP) "LP" (low-pass) is the Audio output port for the 2-pole low-pass filtered signal.
+10.4.3
+Properties: View Page
+ 
+Making the Frequency Response Graph Visible on the Panel
+One way to graphically characterize a filter is to plot its frequency response. On the hori­
+zontal axis you have the frequencies of the signal, in the logarithmic scale. On the vertical 
+axis you have the corresponding frequency component's magnitude in respect to the in­
+coming magnitude (also in the logarithmic, decibel scale). All of REAKTOR's filters (ex­
+cept the all-pass filter, which has a flat frequency (magnitude) response, and the Integra­
+tor and Differentiator) have this characteristic plot as a Panel representation. The frequen­
+Filter
+Multi 2-Pole
+ 
+REAKTOR 5.5 - Module Reference - 534
+
+
+--- Page 535 ---
+
+cy range of this plot in REAKTOR is 10 Hz to 20 kHz. This can be a very useful compo­
+nent in your Instrument since you get direct visual feedback on how the cutoff frequency 
+and resonance parameters affect the overall frequency response curve. Note that only one 
+filter characteristic, the low-pass curve, is shown.
+► To turn on the graphic display of your filter's frequency response in the Instrument Pan­
+el, go to the Module's View page and engage the On checkbox, shown in the figure below.
+Changing the Size of the Filter's Panel Representation
+Depending on your Panel layout, you want a small or large graph of the frequency response 
+on your Instrument Panel.
+► To change the width and height of the filter's Panel representation, go to the Module's 
+View page and enter the desired values into the Width and Height edit fields, as shown in the 
+figure below.
+10.5
+Multi 2-Pole FM
+ 
+Fig. 10.8 Multi 2-Pole FM Module
+10.5.1
+Overview
+ 
+The Multi 2-Pole FM Module is a 2-pole filter with Audio output ports for the high-pass 
+characteristic ("HP"), the band-pass characteristic ("BP"), and the low-pass characteristic 
+("LP"). For the high-pass and low-pass characteristics, a 2-pole filter corresponds to a sig­
+nal attenuation of 12 dB per octave starting from the cutoff frequency. For a band-pass 
+Filter
+Multi 2-Pole FM
+ 
+REAKTOR 5.5 - Module Reference - 535
+
+
+--- Page 536 ---
+
+characteristic a 2-pole filter corresponds to a signal attenuation of 6 db per octave both 
+above and below the cutoff frequency. The cutoff frequency is determined in the logarith­
+mic scale at the "P" (cutoff pitch) input port and can be modulated in the linear frequency 
+scale using the "F" (cutoff frequency) input port. Only the graphic display stemming from 
+the "P" (cutoff pitch) value is shown in the Panel representation.
+The Multi 2-Pole FM Module also enables you to vary the filter resonance. Resonance cor­
+responds to a peak in the frequency response at the cutoff frequency and the resonance 
+parameter lets you control the width / height of this peak. The pass band gain is always "1" 
+(corresponding to 0 dB), whereas the gain at the cutoff frequency increases as the "Res" 
+(resonance) parameter approaches "1". At high resonance settings the filter output exhibits 
+a strong frequency component (nearly in the form of a sine tone) at the cutoff frequency.
+Very large amplitudes are generated when the "Res" parameter approaches "1".
+Application
+Filters are used to variably change the magnitude (and phase) of the frequency compo­
+nents in a signal. This is the key aspect to subtractive synthesis where one starts out with 
+a signal that has many harmonic components (such as a saw wave or white noise) and 
+then starts removing or reducing unwanted frequency components, finally ending up with 
+the desired sound. This is not unlike the work of a sculptor who chisels away "unwanted" 
+components of a piece of rock to (hopefully) end up with the envisioned shape. Additional­
+ly, you can use the "F" (cutoff frequency) input port for frequency modulation of the cutoff 
+frequency. Modulating this input port at Audio Rate yields an FM'ish sound.
+Of course, filters can also be applied to Audio signals stemming from samplers and to ex­
+ternal Audio signals. With the resonance parameter you can enhance certain components. 
+For example, you can enhance a bass kick sound by applying a high-pass filter to it with 
+moderate resonance. The cutoff frequency should be set at the main fundamental frequen­
+cy component of the kick sound.
+You could also use filters to split a signal up into different frequency components (low, 
+middle, and high) which then receive different treatment by effects (such as in a multi-
+band compressor) and then later combine the signals again in the output signal. Learning 
+how the different filters affect your Audio signal and using filters creatively is important to 
+mastering signal processing for audio instruments and effects.
+Filter
+Multi 2-Pole FM
+ 
+REAKTOR 5.5 - Module Reference - 536
+
+
+--- Page 537 ---
+
+10.5.2
+Ports
+ 
+Input Ports
+▪
+(P) "P" (cutoff pitch) is the Event input port for controlling the cutoff frequency in the 
+logarithmic scale. The cutoff pitch is given in semitones, usually in the range [20 … 
+120] which roughly corresponds to a frequency range of [26 Hz … 8370 Hz]. The 
+pitch value "69" corresponds to "Concert A" or 440 Hz. If left disconnected, the default 
+value of "0" is used for this input port. This default value corresponds to 8 Hz in the 
+frequency scale.
+▪
+(F) "F" (cutoff frequency) is the Audio input port for linear modulation of the cutoff fre­
+quency in Hz. The value at the "F" (frequency) input port is added to the frequency de­
+termined by the "P" (cutoff pitch) input port. The sum is then the final cutoff frequen­
+cy.
+▪
+(Res) "Res" (resonance) is the Event input port for controlling the filter’s resonance / 
+damping parameter. The range of values at this input port is [0 … 1] where "0" corre­
+sponds to maximal damping, no resonance, and "1" to no damping, maximal reso­
+nance. At Res = 1 the filter begins to self-oscillate at the cutoff frequency, resulting in 
+a sine tone at that frequency. For high resonance values the filter’s Q-factor = frequen­
+cy [Hz] / bandwidth [Hz] ≅ 1 / (2 – 2*Res).
+▪
+(In) "In" is the Audio input port for the signal to be filtered.
+Output Ports
+▪
+(HP) "HP" (high-pass) is the Audio output port for the 2-pole high-pass filtered signal.
+▪
+(BP) "BP" (band-pass) is the Audio output port for the 2-pole band-pass filtered signal.
+▪
+(LP) "LP" (low-pass) is the Audio output port for the 2-pole low-pass filtered signal.
+10.5.3
+Properties: View Page
+ 
+Making the Frequency Response Graph Visible on the Panel
+One way to graphically characterize a filter is to plot its frequency response. On the hori­
+zontal axis you have the frequencies of the signal, in the logarithmic scale. On the vertical 
+axis you have the corresponding frequency component's magnitude in respect to the in­
+coming magnitude (also in the logarithmic, decibel scale). All of REAKTOR's filters (ex­
+cept the all-pass filter, which has a flat frequency (magnitude) response, and the Integra­
+Filter
+Multi 2-Pole FM
+ 
+REAKTOR 5.5 - Module Reference - 537
+
+
+--- Page 538 ---
+
+tor and Differentiator) have this characteristic plot as a Panel representation. The frequen­
+cy range of this plot in REAKTOR is 10 Hz to 20 kHz. This can be a very useful compo­
+nent in your Instrument since you get direct visual feedback on how the cutoff frequency 
+and resonance parameters affect the overall frequency response curve. Note that only one 
+filter characteristic, the low-pass curve, is shown.
+► To turn on the graphic display of your filter's frequency response in the Instrument Pan­
+el, go to the Module's View page and engage the On checkbox, shown in the figure below.
+Changing the Size of the Filter's Panel Representation
+Depending on your Panel layout, you want a small or large graph of the frequency response 
+on your Instrument Panel.
+► To change the width and height of the filter's Panel representation, go to the Module's 
+View page and enter the desired values into the Width and Height edit fields, as shown in the 
+figure below.
+10.5.4
+Example: 2-Pole Filter
+ 
+This example shows how to filter an incoming signal, such as an oscillator output signal, 
+with a 2-pole filter. The corresponding Structure is shown in the figure below. The signal 
+which is to be filtered is incoming at the "In" input port of the Filter Module. The cutoff 
+pitch is specified with the Knob Module labeled "P Cutoff" at the "P" (pitch) input port and 
+the resonance parameter is specified with the Knob Module labeled "Reson" at the "Res" 
+input port. Simple frequency modulation of the filter's cutoff frequency is achieved by 
+connecting the output of a sine oscillator to the "F" (frequency) input port of the Module. 
+Since the 2-Pole FM Module comprises a 2-pole high-pass, 2-pole band-pass, and 2-pole 
+low-pass filter, a List Module in combination with a Selector Module lets you select from 
+the Instrument Panel which filtered signal is sent to the output.
+Filter
+Multi 2-Pole FM
+ 
+REAKTOR 5.5 - Module Reference - 538
+
+
+--- Page 539 ---
+
+Fig. 10.9 A simple implementation of a 2-pole filter.
+In the Rehearsal Ensemble you can get acquainted with the various filters in REAKTOR. 
+The Ensemble consists of an easy to use interface to select and tweak your filter of choice. 
+Since each filter has its own set of controls for the signal levels and transition times, 
+Stacked Macro Modules (↑1.19, Stacked Macro) have been used to make only the relevant 
+controls appear when a filter has been selected from the "Filters" list. Also, the On check­
+box in the View page has been engaged such that the graphic Panel representation of the 
+frequency response is visible.
+10.6
+2-Pole Notch
+ 
+Fig. 10.10 2-Pole Notch
+10.6.1
+Overview
+ 
+The 2-Pole Notch Module is a 2-pole filter with Audio output ports for the band -reject 
+(notch) characteristic ("N"), the high-pass characteristic ("HP"), the band-pass characteris­
+tic ("BP"), and the low-pass characteristic ("LP"). If you are using the band-reject charac­
+teristic filter, then the frequency components at the cutoff frequency (set at the "P" (cutoff 
+pitch) port) are completely removed. For the high-pass and low-pass characteristics, a 2-
+pole filter corresponds to a signal attenuation of 12 dB per octave starting from the cutoff 
+frequency. For a band-pass characteristic a 2-pole filter corresponds to a signal attenua­
+tion of 6 db per octave both above and below the cutoff frequency. The cutoff frequency is 
+determined in the logarithmic scale at the "P" (cutoff pitch) input port.
+Filter
+2-Pole Notch
+ 
+REAKTOR 5.5 - Module Reference - 539
+
+
+--- Page 540 ---
+
+The 2-Pole Notch Module also enables you to vary the filter resonance. Resonance corre­
+sponds to a peak in the frequency response at the cutoff frequency and the resonance pa­
+rameter lets you control the width / height of this peak. The pass band gain is always "1" 
+(corresponding to 0 dB), whereas the gain at the cutoff frequency increases as the "Res" 
+(resonance) parameter approaches "1". At high resonance settings the filter output exhibits 
+a strong frequency component (nearly in the form of a sine tone) at the cutoff frequency.
+Very large amplitudes are generated for all characteristics except the notch characteristic 
+when the "Res" parameter approaches "1".
+Application
+Sometimes you wish to remove unwanted frequency components (such as resonances from 
+bad recordings) from a signal. The surest way to remove one frequency component is by 
+using the notch filter in the Multi/Notch 2-Pole Module.
+In general, filters are used to variably change the magnitude (and phase) of the frequency 
+components in a signal. This is the key aspect to subtractive synthesis where one starts 
+out with a signal that has many harmonic components (such as a saw wave or white noise) 
+and then starts removing or reducing unwanted frequency components, finally ending up 
+with the desired sound. This is not unlike the work of a sculptor who chisels away "un­
+wanted" components of a piece of rock to (hopefully) end up with the envisioned shape.
+Of course, filters can also be applied to Audio signals stemming from samplers and to ex­
+ternal Audio signals. With the resonance parameter you can enhance certain components. 
+For example, you can enhance a bass kick sound by applying a high-pass filter to it with 
+moderate resonance. The cutoff frequency should be set at the main fundamental frequen­
+cy component of the kick sound.
+You could also use filters to split a signal up into different frequency components (low, 
+middle, and high) which then receive different treatment by effects (such as in a multi-
+band compressor) and then later combine the signals again in the output signal. Learning 
+how the different filters affect your Audio signal and using filters creatively is important to 
+mastering signal processing for audio instruments and effects. For an example Structure, 
+please refer to the 2-Pole Notch FM Module's example.
+Filter
+2-Pole Notch
+ 
+REAKTOR 5.5 - Module Reference - 540
+
+
+--- Page 541 ---
+
+10.6.2
+Ports
+ 
+Input Ports
+▪
+(P) "P" (cutoff pitch) is the Event input port for controlling the cutoff frequency in the 
+logarithmic scale. The cutoff pitch is given in semitones, usually in the range [20 … 
+120] which roughly corresponds to a frequency range of [26 Hz … 8370 Hz]. The 
+pitch value "69" corresponds to "Concert A" or 440 Hz. If left disconnected, the default 
+value of "0" is used for this input port. This default value corresponds to 8 Hz in the 
+frequency scale.
+▪
+(Res) "Res" (resonance) is the Event input port for controlling the filter’s resonance / 
+damping parameter. The range of values at this input port is [0 … 1] where "0" corre­
+sponds to maximal damping, no resonance, and "1" to no damping, maximal reso­
+nance. At Res = 1 the filter begins to self-oscillate at the cutoff frequency, resulting in 
+a sine tone at that frequency. For high resonance values the filter’s Q-factor = frequen­
+cy [Hz] / bandwidth [Hz] ≅ 1 / (2 – 2*Res).
+▪
+(In) "In" is the Audio input port for the signal to be filtered.
+Output Ports
+▪
+(HP) "HP" (high-pass) is the Audio output port for the 2-pole high-pass filtered signal.
+▪
+(BP) "BP" (band-pass) is the Audio output port for the 2-pole band-pass filtered signal.
+▪
+(LP) "LP" (low-pass) is the Audio output port for the 2-pole low-pass filtered signal.
+▪
+(N) "N" (notch) is the Audio output port for the band-reject (notch) filtered signal.
+10.6.3
+Properties: View Page
+ 
+Making the Frequency Response Graph Visible on the Panel
+One way to graphically characterize a filter is to plot its frequency response. On the hori­
+zontal axis you have the frequencies of the signal, in the logarithmic scale. On the vertical 
+axis you have the corresponding frequency component's magnitude in respect to the in­
+coming magnitude (also in the logarithmic, decibel scale). All of REAKTOR's filters (ex­
+cept the all-pass filter, which has a flat frequency (magnitude) response, and the Integra­
+tor and Differentiator) have this characteristic plot as a Panel representation. The frequen­
+cy range of this plot in REAKTOR is 10 Hz to 20 kHz. This can be a very useful compo­
+Filter
+2-Pole Notch
+ 
+REAKTOR 5.5 - Module Reference - 541
+
+
+--- Page 542 ---
+
+nent in your Instrument since you get direct visual feedback on how the cutoff frequency 
+and resonance parameters affect the overall frequency response curve. Note that only one 
+filter characteristic, the low-pass curve, is shown.
+► To turn on the graphic display of your filter's frequency response in the Instrument Pan­
+el, go to the Module's View page and engage the On checkbox, shown in the figure below.
+Changing the Size of the Filter's Panel Representation
+Depending on your Panel layout, you want a small or large graph of the frequency response 
+on your Instrument Panel.
+► To change the width and height of the filter's Panel representation, go to the Module's 
+View page and enter the desired values into the Width and Height edit fields, as shown in the 
+figure below.
+10.7
+2-Pole Notch FM
+ 
+Fig. 10.11 2-Pole Notch Module
+10.7.1
+Overview
+ 
+The 2-Pole Notch Module is a 2-pole filter with Audio output ports for the band -reject 
+(notch) characteristic ("N"), the high-pass characteristic ("HP"), the band-pass characteris­
+tic ("BP"), and the low-pass characteristic ("LP"). If you are using the band-reject charac­
+teristic filter, then the frequency components at the cutoff frequency (set at the "P" (cutoff 
+pitch) port) are completely removed. For the high-pass and low-pass characteristics, a 2-
+Filter
+2-Pole Notch FM
+ 
+REAKTOR 5.5 - Module Reference - 542
+
+
+--- Page 543 ---
+
+pole filter corresponds to a signal attenuation of 12 dB per octave starting from the cutoff 
+frequency. For a band-pass characteristic a 2-pole filter corresponds to a signal attenua­
+tion of 6 db per octave both above and below the cutoff frequency. The cutoff frequency is 
+determined in the logarithmic scale at the "P" (cutoff pitch) input port and can be modu­
+lated in the linear frequency scale using the "F" (cutoff frequency) input port. Only the 
+graphic display stemming from the "P" (cutoff pitch) value is shown in the Panel represen­
+tation.
+The 2-Pole Notch Module also enables you to vary the filter resonance. Resonance corre­
+sponds to a peak in the frequency response at the cutoff frequency and the resonance pa­
+rameter lets you control the width / height of this peak. The pass band gain is always "1" 
+(corresponding to 0 dB), whereas the gain at the cutoff frequency increases as the "Res" 
+(resonance) parameter approaches "1". At high resonance settings the filter output exhibits 
+a strong frequency component (nearly in the form of a sine tone) at the cutoff frequency. 
+Additionally, you can use the "F" (cutoff frequency) input port for frequency modulation of 
+the cutoff frequency. Modulating this input port at Audio Rate yields an FM'ish sound.
+Very large amplitudes are generated for all characteristics except the notch characteristic 
+when the "Res" parameter approaches "1".
+Application
+Sometimes you wish to remove unwanted frequency components (such as resonances from 
+bad recordings) from a signal. The surest way to remove one frequency component is by 
+using the notch filter in the Multi/Notch 2-Pole Module.
+In general, filters are used to variably change the magnitude (and phase) of the frequency 
+components in a signal. This is the key aspect to subtractive synthesis where one starts 
+out with a signal that has many harmonic components (such as a saw wave or white noise) 
+and then starts removing or reducing unwanted frequency components, finally ending up 
+with the desired sound. This is not unlike the work of a sculptor who chisels away "un­
+wanted" components of a piece of rock to (hopefully) end up with the envisioned shape.
+Of course, filters can also be applied to Audio signals stemming from samplers and to ex­
+ternal Audio signals. With the resonance parameter you can enhance certain components. 
+For example, you can enhance a bass kick sound by applying a high-pass filter to it with 
+moderate resonance. The cutoff frequency should be set at the main fundamental frequen­
+cy component of the kick sound.
+Filter
+2-Pole Notch FM
+ 
+REAKTOR 5.5 - Module Reference - 543
+
+
+--- Page 544 ---
+
+You could also use filters to split a signal up into different frequency components (low, 
+middle, and high) which then receive different treatment by effects (such as in a multi-
+band compressor) and then later combine the signals again in the output signal. Learning 
+how the different filters affect your Audio signal and using filters creatively is important to 
+mastering signal processing for audio instruments and effects.
+10.7.2
+Ports
+ 
+Input Ports
+▪
+(P) "P" (cutoff pitch) is the Event input port for controlling the cutoff frequency in the 
+logarithmic scale. The cutoff pitch is given in semitones, usually in the range [20 … 
+120] which roughly corresponds to a frequency range of [26 Hz … 8370 Hz]. The 
+pitch value "69" corresponds to "Concert A" or 440 Hz. If left disconnected, the default 
+value of "0" is used for this input port. This default value corresponds to 8 Hz in the 
+frequency scale.
+▪
+(F) "F" (cutoff frequency) is the Audio input port for linear modulation of the cutoff fre­
+quency in Hz. The value at the "F" (frequency) input port is added to the frequency de­
+termined by the "P" (cutoff pitch) input port. The sum is then the final cutoff frequen­
+cy.
+▪
+(Res) "Res" (resonance) is the Event input port for controlling the filter’s resonance / 
+damping parameter. The range of values at this input port is [0 … 1] where "0" corre­
+sponds to maximal damping, no resonance, and "1" to no damping, maximal reso­
+nance. At Res = 1 the filter begins to self-oscillate at the cutoff frequency, resulting in 
+a sine tone at that frequency. For high resonance values the filter’s Q-factor = frequen­
+cy [Hz] / bandwidth [Hz] ≅ 1 / (2 – 2*Res).
+▪
+(In) "In" is the Audio input port for the signal to be filtered.
+Output Ports
+▪
+(HP) "HP" (high-pass) is the Audio output port for the 2-pole high-pass filtered signal.
+▪
+(BP) "BP" (band-pass) is the Audio output port for the 2-pole band-pass filtered signal.
+▪
+(LP) "LP" (low-pass) is the Audio output port for the 2-pole low-pass filtered signal.
+▪
+(N) "N" (notch) is the Audio output port for the band-reject (notch) filtered signal.
+Filter
+2-Pole Notch FM
+ 
+REAKTOR 5.5 - Module Reference - 544
+
+
+--- Page 545 ---
+
+10.7.3
+Properties: View Page
+ 
+Making the Frequency Response Graph Visible on the Panel
+One way to graphically characterize a filter is to plot its frequency response. On the hori­
+zontal axis you have the frequencies of the signal, in the logarithmic scale. On the vertical 
+axis you have the corresponding frequency component's magnitude in respect to the in­
+coming magnitude (also in the logarithmic, decibel scale). All of REAKTOR's filters (ex­
+cept the all-pass filter, which has a flat frequency (magnitude) response, and the Integra­
+tor and Differentiator) have this characteristic plot as a Panel representation. The frequen­
+cy range of this plot in REAKTOR is 10 Hz to 20 kHz. This can be a very useful compo­
+nent in your Instrument since you get direct visual feedback on how the cutoff frequency 
+and resonance parameters affect the overall frequency response curve. Note that only one 
+filter characteristic, the low-pass curve, is shown.
+► To turn on the graphic display of your filter's frequency response in the Instrument Pan­
+el, go to the Module's View page and engage the On checkbox, shown in the figure below.
+Changing the Size of the Filter's Panel Representation
+Depending on your Panel layout, you want a small or large graph of the frequency response 
+on your Instrument Panel.
+► To change the width and height of the filter's Panel representation, go to the Module's 
+View page and enter the desired values into the Width and Height edit fields, as shown in the 
+figure below.
+Filter
+2-Pole Notch FM
+ 
+REAKTOR 5.5 - Module Reference - 545
+
+
+--- Page 546 ---
+
+10.7.4
+Example: 2-Pole Notch Filter
+ 
+This example shows how to filter an incoming signal, such as an oscillator output signal, 
+with a 2-pole notch filter. The corresponding Structure is shown in the figure below. The 
+signal which is to be filtered is incoming at the "In" input port of the Filter Module. The 
+cutoff pitch is specified with the Knob Module labeled "P Cutoff" at the "P" (pitch) input 
+port and the resonance parameter is specified with the Knob Module labeled "Reson" at 
+the "Res" input port. Simple frequency modulation of the filter's cutoff frequency is ach­
+ieved by connecting the output of a sine oscillator to the "F" (frequency) input port of the 
+Module. Since the 2-Pole Notch FM Module comprises a 2-pole high-pass, 2-pole band-
+pass, 2-pole low-pass, and 2-pole notch filter, a List Module in combination with a Selec­
+tor Module lets you select from the Instrument Panel which filtered signal is sent to the 
+output.
+Fig. 10.12 A simple implementation of a 2-pole notch filter.
+In the Rehearsal Ensemble you can get acquainted with the various filters in REAKTOR. 
+The Ensemble consists of an easy to use interface to select and tweak your filter of choice. 
+Since each filter has its own set of controls for the signal levels and transition times, 
+Stacked Macro Modules (↑1.19, Stacked Macro) have been used to make only the relevant 
+controls appear when a filter has been selected from the "Filters" list. Also, the On check­
+box in the View page has been engaged such that the graphic Panel representation of the 
+frequency response is visible.
+Filter
+2-Pole Notch FM
+ 
+REAKTOR 5.5 - Module Reference - 546
+
+
+--- Page 547 ---
+
+10.8
+Multi/LP 4-Pole
+ 
+Fig. 10.13 Multi/LP 4-Pole Module
+10.8.1
+Overview
+ 
+The Multi/LP 4-Pole Module comprises a 4-pole and a 2-pole filter with Audio output ports 
+for the high-pass characteristic ("HP2"), the band-pass characteristic ("BP2" and "BP4"), 
+the low-pass characteristic ("LP2" and "LP4"), and band/low-pass characteristic ("BL4"). 
+For the high-pass and low-pass characteristics, a 4-pole filter (2-pole filter) corresponds to 
+a signal attenuation of 24 dB per octave (12 db per octave) starting from the cutoff fre­
+quency. For a band-pass characteristic a 4-pole filter (2-pole filter) corresponds to a signal 
+attenuation of 12 db per octave (6 db per octave) both above and below the cutoff fre­
+quency. For the band/low-pass characteristic, a 2-pole band pass filter is connected serial­
+ly to a 2-pole low-pass filter. This corresponds to a 6 db per octave attenuation below the 
+cutoff frequency and an 18 db per octave attenuation above the cutoff frequency. The cut­
+off frequency is determined in the logarithmic scale at the "P" (cutoff pitch) input port.
+The Multi/LP 4-Pole Module also enables you to vary the filter resonance. Resonance cor­
+responds to a peak in the frequency response at the cutoff frequency and the resonance 
+parameter lets you control the width / height of this peak. The pass band gain is always "1" 
+(corresponding to 0 dB), whereas the gain at the cutoff frequency increases as the "Res" 
+(resonance) parameter approaches "1". At high resonance settings the filter output exhibits 
+a strong frequency component (nearly in the form of a sine tone) at the cutoff frequency.
+Very large amplitudes are generated when the "Res" parameter approaches "1".
+Application
+Filters are used to variably change the magnitude (and phase) of the frequency compo­
+nents in a signal. This is the key aspect to subtractive synthesis where one starts out with 
+a signal that has many harmonic components (such as a saw wave or white noise) and 
+Filter
+Multi/LP 4-Pole
+ 
+REAKTOR 5.5 - Module Reference - 547
+
+
+--- Page 548 ---
+
+then starts removing or reducing unwanted frequency components, finally ending up with 
+the desired sound. This is not unlike the work of a sculptor who chisels away "unwanted" 
+components of a piece of rock to (hopefully) end up with the envisioned shape.
+Of course, filters can also be applied to Audio signals stemming from samplers and to ex­
+ternal Audio signals. With the resonance parameter you can enhance certain components. 
+For example, you can enhance a bass kick sound by applying a high-pass filter to it with 
+moderate resonance. The cutoff frequency should be set at the main fundamental frequen­
+cy component of the kick sound.
+You could also use filters to split a signal up into different frequency components (low, 
+middle, and high) which then receive different treatment by effects (such as in a multi-
+band compressor) and then later combine the signals again in the output signal. Learning 
+how the different filters affect your Audio signal and using filters creatively is important to 
+mastering signal processing for audio instruments and effects. For an example Structure, 
+please refer to the Multi/LP 4-Pole FM Module's example.
+10.8.2
+Ports
+ 
+Input Ports
+▪
+(P) "P" (cutoff pitch) is the Event input port for controlling the cutoff frequency in the 
+logarithmic scale. The cutoff pitch is given in semitones, usually in the range [20 … 
+120] which roughly corresponds to a frequency range of [26 Hz … 8370 Hz]. The 
+pitch value "69" corresponds to "Concert A" or 440 Hz. If left disconnected, the default 
+value of "0" is used for this input port. This default value corresponds to 8 Hz in the 
+frequency scale.
+▪
+(Res) "Res" (resonance) is the Event input port for controlling the filter’s resonance / 
+damping parameter. The range of values at this input port is [0 … 1] where "0" corre­
+sponds to maximal damping, no resonance, and "1" to no damping, maximal reso­
+nance. At Res = 1 the filter begins to self-oscillate at the cutoff frequency, resulting in 
+a sine tone at that frequency. For high resonance values the filter’s Q-factor = frequen­
+cy [Hz] / bandwidth [Hz] ≅ 1 / (2 – 2*Res).
+▪
+(In) "In" is the Audio input port for the signal to be filtered.
+Output Ports
+▪
+(HP2) "HP2" (2-pole high-pass) is the Audio output port for the 2-pole high-pass fil­
+tered signal.
+Filter
+Multi/LP 4-Pole
+ 
+REAKTOR 5.5 - Module Reference - 548
+
+
+--- Page 549 ---
+
+▪
+(BP2) "BP2" (2-pole band-pass) is the Audio output port for the 2-pole band-pass fil­
+tered signal.
+▪
+(LP2) "LP2" (2-pole low-pass) is the Audio output port for the 2-pole low-pass filtered 
+signal.
+▪
+(BP4) "BP4" (4-pole band-pass) is the Audio output port for the 4-pole band-pass fil­
+tered signal.
+▪
+(BL4) "BL4" (4-pole band/low-pass) is the Audio output port for the 4-pole band/low-
+pass filtered signal.
+▪
+(LP4) "LP4" (4-pole low-pass) is the Audio output port for the 4-pole low-pass filtered 
+signal.
+10.8.3
+Properties: View Page
+ 
+Making the Frequency Response Graph Visible on the Panel
+One way to graphically characterize a filter is to plot its frequency response. On the hori­
+zontal axis you have the frequencies of the signal, in the logarithmic scale. On the vertical 
+axis you have the corresponding frequency component's magnitude in respect to the in­
+coming magnitude (also in the logarithmic, decibel scale). All of REAKTOR's filters (ex­
+cept the all-pass filter, which has a flat frequency (magnitude) response, and the Integra­
+tor and Differentiator) have this characteristic plot as a Panel representation. The frequen­
+cy range of this plot in REAKTOR is 10 Hz to 20 kHz. This can be a very useful compo­
+nent in your Instrument since you get direct visual feedback on how the cutoff frequency 
+and resonance parameters affect the overall frequency response curve. Note that only one 
+filter characteristic, the low-pass curve, is shown.
+► To turn on the graphic display of your filter's frequency response in the Instrument Pan­
+el, go to the Module's View page and engage the On checkbox, shown in the figure below.
+Changing the Size of the Filter's Panel Representation
+Depending on your Panel layout, you want a small or large graph of the frequency response 
+on your Instrument Panel.
+Filter
+Multi/LP 4-Pole
+ 
+REAKTOR 5.5 - Module Reference - 549
+
+
+--- Page 550 ---
+
+► To change the width and height of the filter's Panel representation, go to the Module's 
+View page and enter the desired values into the Width and Height edit fields, as shown in the 
+figure below.
+10.9
+Multi/LP 4-Pole FM
+ 
+Fig. 10.14 Multi/LP 4-Pole Fm Module
+10.9.1
+Overview
+ 
+The Multi/LP 4-Pole FM Module comprises a 4-pole and a 2-pole filter with Audio output 
+ports for the high-pass characteristic ("HP2"), the band-pass characteristic ("BP2" and 
+"BP4"), the low-pass characteristic ("LP2" and "LP4"), and band/low-pass characteristic 
+("BL4"). For the high-pass and low-pass characteristics, a 4-pole filter (2-pole filter) corre­
+sponds to a signal attenuation of 24 dB per octave (12 db per octave) starting from the 
+cutoff frequency. For a band-pass characteristic a 4-pole filter (2-pole filter) corresponds 
+to a signal attenuation of 12 db per octave (6 db per octave) both above and below the 
+cutoff frequency. For the band/low-pass characteristic, a 2-pole band pass filter is con­
+nected serially to a 2-pole low-pass filter. This corresponds to a 6 db per octave attenua­
+tion below the cutoff frequency and an 18 db per octave attenuation above the cutoff fre­
+quency. The cutoff frequency is determined in the logarithmic scale at the "P" (cutoff 
+pitch) input port and can be modulated in the linear frequency scale using the "F" (cutoff 
+frequency) input port. Only the graphic display stemming from the "P" (cutoff pitch) value 
+is shown in the Panel representation.
+The Multi/LP 4-Pole FM Module also enables you to vary the filter resonance. Resonance 
+corresponds to a peak in the frequency response at the cutoff frequency and the resonance 
+parameter lets you control the width / height of this peak. The pass band gain is always "1" 
+Filter
+Multi/LP 4-Pole FM
+ 
+REAKTOR 5.5 - Module Reference - 550
+
+
+--- Page 551 ---
+
+(corresponding to 0 dB), whereas the gain at the cutoff frequency increases as the "Res" 
+(resonance) parameter approaches "1". At high resonance settings the filter output exhibits 
+a strong frequency component (nearly in the form of a sine tone) at the cutoff frequency. 
+Additionally, you can use the "F" (cutoff frequency) input port for frequency modulation of 
+the cutoff frequency. Modulating this input port at Audio Rate yields an FM'ish sound.
+Very large amplitudes are generated when the "Res" parameter approaches "1".
+Application
+Filters are used to variably change the magnitude (and phase) of the frequency compo­
+nents in a signal. This is the key aspect to subtractive synthesis where one starts out with 
+a signal that has many harmonic components (such as a saw wave or white noise) and 
+then starts removing or reducing unwanted frequency components, finally ending up with 
+the desired sound. This is not unlike the work of a sculptor who chisels away "unwanted" 
+components of a piece of rock to (hopefully) end up with the envisioned shape.
+Of course, filters can also be applied to Audio signals stemming from samplers and to ex­
+ternal Audio signals. With the resonance parameter you can enhance certain components. 
+For example, you can enhance a bass kick sound by applying a high-pass filter to it with 
+moderate resonance. The cutoff frequency should be set at the main fundamental frequen­
+cy component of the kick sound.
+You could also use filters to split a signal up into different frequency components (low, 
+middle, and high) which then receive different treatment by effects (such as in a multi-
+band compressor) and then later combine the signals again in the output signal. Learning 
+how the different filters affect your Audio signal and using filters creatively is important to 
+mastering signal processing for audio instruments and effects.
+10.9.2
+Ports
+ 
+Input Ports
+▪
+(P) "P" (cutoff pitch) is the Event input port for controlling the cutoff frequency in the 
+logarithmic scale. The cutoff pitch is given in semitones, usually in the range [20 … 
+120] which roughly corresponds to a frequency range of [26 Hz … 8370 Hz]. The 
+pitch value "69" corresponds to "Concert A" or 440 Hz. If left disconnected, the default 
+value of "0" is used for this input port. This default value corresponds to 8 Hz in the 
+frequency scale.
+Filter
+Multi/LP 4-Pole FM
+ 
+REAKTOR 5.5 - Module Reference - 551
+
+
+--- Page 552 ---
+
+▪
+(F) "F" (cutoff frequency) is the Audio input port for linear modulation of the cutoff fre­
+quency in Hz. The value at the "F" (frequency) input port is added to the frequency de­
+termined by the "P" (cutoff pitch) input port. The sum is then the final cutoff frequen­
+cy.
+▪
+(Res) "Res" (resonance) is the Event input port for controlling the filter’s resonance / 
+damping parameter. The range of values at this input port is [0 … 1] where "0" corre­
+sponds to maximal damping, no resonance, and "1" to no damping, maximal reso­
+nance. At Res = 1 the filter begins to self-oscillate at the cutoff frequency, resulting in 
+a sine tone at that frequency. For high resonance values the filter’s Q-factor = frequen­
+cy [Hz] / bandwidth [Hz] ≅ 1 / (2 – 2*Res).
+▪
+(In) "In" is the Audio input port for the signal to be filtered.
+Output Ports
+▪
+(HP2) "HP2" (2-pole high-pass) is the Audio output port for the 2-pole high-pass fil­
+tered signal.
+▪
+(BP2) "BP2" (2-pole band-pass) is the Audio output port for the 2-pole band-pass fil­
+tered signal.
+▪
+(LP2) "LP2" (2-pole low-pass) is the Audio output port for the 2-pole low-pass filtered 
+signal.
+▪
+(BP4) "BP4" (4-pole band-pass) is the Audio output port for the 4-pole band-pass fil­
+tered signal.
+▪
+(BL4) "BL4" (4-pole band/low-pass) is the Audio output port for the 4-pole band/low-
+pass filtered signal.
+▪
+(LP4) "LP4" (4-pole low-pass) is the Audio output port for the 4-pole low-pass filtered 
+signal.
+10.9.3
+Properties: View Page
+ 
+Making the Frequency Response Graph Visible on the Panel
+One way to graphically characterize a filter is to plot its frequency response. On the hori­
+zontal axis you have the frequencies of the signal, in the logarithmic scale. On the vertical 
+axis you have the corresponding frequency component's magnitude in respect to the in­
+coming magnitude (also in the logarithmic, decibel scale). All of REAKTOR's filters (ex­
+cept the all-pass filter, which has a flat frequency (magnitude) response, and the Integra­
+tor and Differentiator) have this characteristic plot as a Panel representation. The frequen­
+Filter
+Multi/LP 4-Pole FM
+ 
+REAKTOR 5.5 - Module Reference - 552
+
+
+--- Page 553 ---
+
+cy range of this plot in REAKTOR is 10 Hz to 20 kHz. This can be a very useful compo­
+nent in your Instrument since you get direct visual feedback on how the cutoff frequency 
+and resonance parameters affect the overall frequency response curve. Note that only one 
+filter characteristic, the low-pass curve, is shown.
+► To turn on the graphic display of your filter's frequency response in the Instrument Pan­
+el, go to the Module's View page and engage the On checkbox, shown in the figure below.
+Changing the Size of the Filter's Panel Representation
+Depending on your Panel layout, you want a small or large graph of the frequency response 
+on your Instrument Panel.
+► To change the width and height of the filter's Panel representation, go to the Module's 
+View page and enter the desired values into the Width and Height edit fields, as shown in the 
+figure below.
+10.9.4
+Example: 4-Pole Filter
+ 
+This example shows how to filter an incoming signal, such as an oscillator output signal, 
+with a 4-pole filter. The corresponding Structure is shown in the figure below. The signal 
+which is to be filtered is incoming at the "In" input port of the Filter Module. The cutoff 
+pitch is specified with the Knob Module labeled "P Cutoff" at the "P" (pitch) input port and 
+the resonance parameter is specified with the Knob Module labeled "Reson" at the "Res" 
+input port. Simple frequency modulation of the filter's cutoff frequency is achieved by 
+connecting the output of a sine oscillator to the "F" (frequency) input port of the Module. 
+Since the Multi/LP 4-Pole FM Module comprises a 2-pole high-pass, 2-pole band-pass, 2-
+pole low-pass, 4-pole band-pass, 4-pole band- and low-pass, and 4-pole low-pass filter, a 
+List Module in combination with a Selector Module lets you select from the Instrument 
+Panel which filtered signal is sent to the output.
+Filter
+Multi/LP 4-Pole FM
+ 
+REAKTOR 5.5 - Module Reference - 553
+
+
+--- Page 554 ---
+
+Fig. 10.15 A simple implementation of a 4-pole filter.
+In the Rehearsal Ensemble you can get acquainted with the various filters in REAKTOR. 
+The Ensemble consists of an easy to use interface to select and tweak your filter of choice. 
+Since each filter has its own set of controls for the signal levels and transition times, 
+Stacked Macro Modules (↑1.19, Stacked Macro) have been used to make only the relevant 
+controls appear when a filter has been selected from the "Filters" list. Also, the On check­
+box in the View page has been engaged such that the graphic Panel representation of the 
+frequency response is visible.
+10.10 Multi/HP 4-Pole
+ 
+Fig. 10.16 Multi/HP 4-Pole Module
+10.10.1 Overview
+ 
+The Multi/HP 4-Pole Module comprises a 4-pole and a 2-pole filter with Audio output 
+ports for the high-pass characteristic ("HP2" and "HP4"), the band-pass characteristic 
+("BP2" and "BP4"), the low-pass characteristic ("LP2"), and band/high-pass characteristic 
+("BH4"). For the high-pass and low-pass characteristics, a 4-pole filter (2-pole filter) corre­
+sponds to a signal attenuation of 24 dB per octave (12 db per octave) starting from the 
+cutoff frequency. For a band-pass characteristic a 4-pole filter (2-pole filter) corresponds 
+to a signal attenuation of 12 db per octave (6 db per octave) both above and below the 
+cutoff frequency. For the band/high-pass characteristic, a 2-pole band pass filter is con­
+nected serially to a 2-pole high-pass filter. This corresponds to an 18 db per octave at­
+Filter
+Multi/HP 4-Pole
+ 
+REAKTOR 5.5 - Module Reference - 554
+
+
+--- Page 555 ---
+
+tenuation below the cutoff frequency and a 6 db per octave attenuation above the cutoff 
+frequency. The cutoff frequency is determined in the logarithmic scale at the "P" (cutoff 
+pitch) input port.
+The Multi/HP 4-Pole Module also enables you to vary the filter resonance. Resonance cor­
+responds to a peak in the frequency response at the cutoff frequency and the resonance 
+parameter lets you control the width / height of this peak. The pass band gain is always "1" 
+(corresponding to 0 dB), whereas the gain at the cutoff frequency increases as the "Res" 
+(resonance) parameter approaches "1". At high resonance settings the filter output exhibits 
+a strong frequency component (nearly in the form of a sine tone) at the cutoff frequency.
+Very large amplitudes are generated when the "Res" parameter approaches "1".
+Application
+Filters are used to variably change the magnitude (and phase) of the frequency compo­
+nents in a signal. This is the key aspect to subtractive synthesis where one starts out with 
+a signal that has many harmonic components (such as a saw wave or white noise) and 
+then starts removing or reducing unwanted frequency components, finally ending up with 
+the desired sound. This is not unlike the work of a sculptor who chisels away "unwanted" 
+components of a piece of rock to (hopefully) end up with the envisioned shape.
+Of course, filters can also be applied to Audio signals stemming from samplers and to ex­
+ternal Audio signals. With the resonance parameter you can enhance certain components. 
+For example, you can enhance a bass kick sound by applying a high-pass filter to it with 
+moderate resonance. The cutoff frequency should be set at the main fundamental frequen­
+cy component of the kick sound.
+You could also use filters to split a signal up into different frequency components (low, 
+middle, and high) which then receive different treatment by effects (such as in a multi-
+band compressor) and then later combine the signals again in the output signal. Learning 
+how the different filters affect your Audio signal and using filters creatively is important to 
+mastering signal processing for audio instruments and effects. For an example Structure, 
+please refer to the Multi/HP 4-Pole FM Module's example.
+Filter
+Multi/HP 4-Pole
+ 
+REAKTOR 5.5 - Module Reference - 555
+
+
+--- Page 556 ---
+
+10.10.2 Ports
+ 
+Input Ports
+▪
+(P) "P" (cutoff pitch) is the Event input port for controlling the cutoff frequency in the 
+logarithmic scale. The cutoff pitch is given in semitones, usually in the range [20 … 
+120] which roughly corresponds to a frequency range of [26 Hz … 8370 Hz]. The 
+pitch value "69" corresponds to "Concert A" or 440 Hz. If left disconnected, the default 
+value of "0" is used for this input port. This default value corresponds to 8 Hz in the 
+frequency scale.
+▪
+(Res) "Res" (resonance) is the Event input port for controlling the filter’s resonance / 
+damping parameter. The range of values at this input port is [0 … 1] where "0" corre­
+sponds to maximal damping, no resonance, and "1" to no damping, maximal reso­
+nance. At Res = 1 the filter begins to self-oscillate at the cutoff frequency, resulting in 
+a sine tone at that frequency. For high resonance values the filter’s Q-factor = frequen­
+cy [Hz] / bandwidth [Hz] ≅ 1 / (2 – 2*Res).
+▪
+(In) "In" is the Audio input port for the signal to be filtered.
+Output Ports
+▪
+(HP2) "HP2" (2-pole high-pass) is the Audio output port for the 2-pole high-pass fil­
+tered signal.
+▪
+(BP2) "BP2" (2-pole band-pass) is the Audio output port for the 2-pole band-pass fil­
+tered signal.
+▪
+(LP2) "LP2" (2-pole low-pass) is the Audio output port for the 2-pole low-pass filtered 
+signal.
+▪
+(HP4) "HP4" (4-pole high-pass) is the Audio output port for the 4-pole high-pass fil­
+tered signal.
+▪
+(BH4) "BP4" (4-pole band/high-pass) is the Audio output port for the 4-pole band/high-
+pass filtered signal.
+▪
+(BP4) "BP4" (4-pole band-pass) is the Audio output port for the 4-pole band-pass fil­
+tered signal.
+Filter
+Multi/HP 4-Pole
+ 
+REAKTOR 5.5 - Module Reference - 556
+
+
+--- Page 557 ---
+
+10.10.3 Properties: View Page
+ 
+Making the Frequency Response Graph Visible on the Panel
+One way to graphically characterize a filter is to plot its frequency response. On the hori­
+zontal axis you have the frequencies of the signal, in the logarithmic scale. On the vertical 
+axis you have the corresponding frequency component's magnitude in respect to the in­
+coming magnitude (also in the logarithmic, decibel scale). All of REAKTOR's filters (ex­
+cept the all-pass filter, which has a flat frequency (magnitude) response, and the Integra­
+tor and Differentiator) have this characteristic plot as a Panel representation. The frequen­
+cy range of this plot in REAKTOR is 10 Hz to 20 kHz. This can be a very useful compo­
+nent in your Instrument since you get direct visual feedback on how the cutoff frequency 
+and resonance parameters affect the overall frequency response curve. Note that only one 
+filter characteristic, the high-pass curve, is shown.
+► To turn on the graphic display of your filter's frequency response in the Instrument Pan­
+el, go to the Module's View page and engage the On checkbox, shown in the figure below.
+Changing the Size of the Filter's Panel Representation
+Depending on your Panel layout, you want a small or large graph of the frequency response 
+on your Instrument Panel.
+► To change the width and height of the filter's Panel representation, go to the Module's 
+View page and enter the desired values into the Width and Height edit fields, as shown in the 
+figure below.
+Filter
+Multi/HP 4-Pole
+ 
+REAKTOR 5.5 - Module Reference - 557
+
+
+--- Page 558 ---
+
+10.11 Multi/HP 4-Pole FM
+ 
+Fig. 10.17 Multi/HP 4-Pole FM Module
+10.11.1 Overview
+ 
+The Multi/HP 4-Pole FM Module comprises a 4-pole and a 2-pole filter with Audio output 
+ports for the high-pass characteristic ("HP2" and "HP4"), the band-pass characteristic 
+("BP2" and "BP4"), the low-pass characteristic ("LP2"), and band/high-pass characteristic 
+("BH4"). For the high-pass and low-pass characteristics, a 4-pole filter (2-pole filter) corre­
+sponds to a signal attenuation of 24 dB per octave (12 db per octave) starting from the 
+cutoff frequency. For a band-pass characteristic a 4-pole filter (2-pole filter) corresponds 
+to a signal attenuation of 12 db per octave (6 db per octave) both above and below the 
+cutoff frequency. For the band/high-pass characteristic, a 2-pole band pass filter is con­
+nected serially to a 2-pole high-pass filter. This corresponds to an 18 db per octave at­
+tenuation below the cutoff frequency and a 6 db per octave attenuation above the cutoff 
+frequency. The cutoff frequency is determined in the logarithmic scale at the "P" (cutoff 
+pitch) input port and can be modulated in the linear frequency scale using the "F" (cutoff 
+frequency) input port. Only the graphic display stemming from the "P" (cutoff pitch) value 
+is shown in the Panel representation.
+The Multi/HP 4-Pole FM Module also enables you to vary the filter resonance. Resonance 
+corresponds to a peak in the frequency response at the cutoff frequency and the resonance 
+parameter lets you control the width / height of this peak. The pass band gain is always "1" 
+(corresponding to 0 dB), whereas the gain at the cutoff frequency increases as the "Res" 
+(resonance) parameter approaches "1". At high resonance settings the filter output exhibits 
+a strong frequency component (nearly in the form of a sine tone) at the cutoff frequency. 
+Additionally, you can use the "F" (cutoff frequency) input port for frequency modulation of 
+the cutoff frequency. Modulating this input port at Audio Rate yields an FM'ish sound.
+Filter
+Multi/HP 4-Pole FM
+ 
+REAKTOR 5.5 - Module Reference - 558
+
+
+--- Page 559 ---
+
+Very large amplitudes are generated when the "Res" parameter approaches "1".
+Application
+Filters are used to variably change the magnitude (and phase) of the frequency compo­
+nents in a signal. This is the key aspect to subtractive synthesis where one starts out with 
+a signal that has many harmonic components (such as a saw wave or white noise) and 
+then starts removing or reducing unwanted frequency components, finally ending up with 
+the desired sound. This is not unlike the work of a sculptor who chisels away "unwanted" 
+components of a piece of rock to (hopefully) end up with the envisioned shape.
+Of course, filters can also be applied to Audio signals stemming from samplers and to ex­
+ternal Audio signals. With the resonance parameter you can enhance certain components. 
+For example, you can enhance a bass kick sound by applying a high-pass filter to it with 
+moderate resonance. The cutoff frequency should be set at the main fundamental frequen­
+cy component of the kick sound.
+You could also use filters to split a signal up into different frequency components (low, 
+middle, and high) which then receive different treatment by effects (such as in a multi-
+band compressor) and then later combine the signals again in the output signal. Learning 
+how the different filters affect your Audio signal and using filters creatively is important to 
+mastering signal processing for audio instruments and effects.
+10.11.2 Ports
+ 
+Input Ports
+▪
+(P) "P" (cutoff pitch) is the Event input port for controlling the cutoff frequency in the 
+logarithmic scale. The cutoff pitch is given in semitones, usually in the range [20 … 
+120] which roughly corresponds to a frequency range of [26 Hz … 8370 Hz]. The 
+pitch value "69" corresponds to "Concert A" or 440 Hz. If left disconnected, the default 
+value of "0" is used for this input port. This default value corresponds to 8 Hz in the 
+frequency scale.
+▪
+(F) "F" (cutoff frequency) is the Audio input port for linear modulation of the cutoff fre­
+quency in Hz. The value at the "F" (frequency) input port is added to the frequency de­
+termined by the "P" (cutoff pitch) input port. The sum is then the final cutoff frequen­
+cy.
+Filter
+Multi/HP 4-Pole FM
+ 
+REAKTOR 5.5 - Module Reference - 559
+
+
+--- Page 560 ---
+
+▪
+(Res) "Res" (resonance) is the Event input port for controlling the filter’s resonance / 
+damping parameter. The range of values at this input port is [0 … 1] where "0" corre­
+sponds to maximal damping, no resonance, and "1" to no damping, maximal reso­
+nance. At Res = 1 the filter begins to self-oscillate at the cutoff frequency, resulting in 
+a sine tone at that frequency. For high resonance values the filter’s Q-factor = frequen­
+cy [Hz] / bandwidth [Hz] ≅ 1 / (2 – 2*Res).
+▪
+(In) "In" is the Audio input port for the signal to be filtered.
+Output Ports
+▪
+(HP2) "HP2" (2-pole high-pass) is the Audio output port for the 2-pole high-pass fil­
+tered signal.
+▪
+(BP2) "BP2" (2-pole band-pass) is the Audio output port for the 2-pole band-pass fil­
+tered signal.
+▪
+(LP2) "LP2" (2-pole low-pass) is the Audio output port for the 2-pole low-pass filtered 
+signal.
+▪
+(HP4) "HP4" (4-pole high-pass) is the Audio output port for the 4-pole high-pass fil­
+tered signal.
+▪
+(BH4) "BP4" (4-pole band/high-pass) is the Audio output port for the 4-pole band/high-
+pass filtered signal.
+▪
+(BP4) "BP4" (4-pole band-pass) is the Audio output port for the 4-pole band-pass fil­
+tered signal.
+10.11.3 Properties: View Page
+ 
+Making the Frequency Response Graph Visible on the Panel
+One way to graphically characterize a filter is to plot its frequency response. On the hori­
+zontal axis you have the frequencies of the signal, in the logarithmic scale. On the vertical 
+axis you have the corresponding frequency component's magnitude in respect to the in­
+coming magnitude (also in the logarithmic, decibel scale). All of REAKTOR's filters (ex­
+cept the all-pass filter, which has a flat frequency (magnitude) response, and the Integra­
+tor and Differentiator) have this characteristic plot as a Panel representation. The frequen­
+cy range of this plot in REAKTOR is 10 Hz to 20 kHz. This can be a very useful compo­
+nent in your Instrument since you get direct visual feedback on how the cutoff frequency 
+and resonance parameters affect the overall frequency response curve. Note that only one 
+filter characteristic, the high-pass curve, is shown.
+Filter
+Multi/HP 4-Pole FM
+ 
+REAKTOR 5.5 - Module Reference - 560
+
+
+--- Page 561 ---
+
+► To turn on the graphic display of your filter's frequency response in the Instrument Pan­
+el, go to the Module's View page and engage the On checkbox, shown in the figure below.
+Changing the Size of the Filter's Panel Representation
+Depending on your Panel layout, you want a small or large graph of the frequency response 
+on your Instrument Panel.
+► To change the width and height of the filter's Panel representation, go to the Module's 
+View page and enter the desired values into the Width and Height edit fields, as shown in the 
+figure below.
+10.11.4 Example: 4-Pole Filter
+ 
+This example shows how to filter an incoming signal, such as an oscillator output signal, 
+with a 4-pole filter. The corresponding Structure is shown in the figure below. The signal 
+which is to be filtered is incoming at the "In" input port of the Filter Module. The cutoff 
+pitch is specified with the Knob Module labeled "P Cutoff" at the "P" (pitch) input port and 
+the resonance parameter is specified with the Knob Module labeled "Reson" at the "Res" 
+input port. Simple frequency modulation of the filter's cutoff frequency is achieved by 
+connecting the output of a sine oscillator to the "F" (frequency) input port of the Module. 
+Since the Multi/HP 4-Pole FM Module comprises a 2-pole high-pass, 2-pole band-pass, 2-
+pole low-pass, 4-pole high-pass, 4-pole band- and high-pass, and 4-pole band-pass filter, 
+a List Module in combination with a Selector Module lets you select from the Instrument 
+Panel which filtered signal is sent to the output.
+Filter
+Multi/HP 4-Pole FM
+ 
+REAKTOR 5.5 - Module Reference - 561
+
+
+--- Page 562 ---
+
+Fig. 10.18 A simple implementation of a 4-pole filter.
+In the Rehearsal Ensemble you can get acquainted with the various filters in REAKTOR. 
+The Ensemble consists of an easy to use interface to select and tweak your filter of choice. 
+Since each filter has its own set of controls for the signal levels and transition times, 
+Stacked Macro Modules (↑1.19, Stacked Macro) have been used to make only the relevant 
+controls appear when a filter has been selected from the "Filters" list. Also, the On check­
+box in the View page has been engaged such that the graphic Panel representation of the 
+frequency response is visible.
+10.12 Pro-52 Filter
+ 
+Fig. 10.19 Pro-52 Module
+10.12.1 Overview
+ 
+The Pro-52 Module embodies the filter taken from the Pro-52 virtual analog synthesizer. It 
+is a 4-pole low-pass filter corresponding to a 24 dB per octave attenuation above the cut­
+off frequency. The cutoff frequency is determined in the logarithmic scale at the "P" (cut­
+off pitch) input port and can be modulated in the linear frequency scale using the "F" (cut­
+off frequency) input port. Only the graphic display stemming from the "P" (cutoff pitch) 
+value is shown in the Panel representation.
+The Pro-52 Module also enables you to vary the filter resonance. Resonance corresponds 
+to a peak in the frequency response at the cutoff frequency and the resonance parameter 
+lets you control the width / height of this peak in respect to the pass band. At high reso­
+nance settings the filter output exhibits a strong frequency component (nearly in the form 
+Filter
+Pro-52 Filter
+ 
+REAKTOR 5.5 - Module Reference - 562
+
+
+--- Page 563 ---
+
+of a sine tone) at the cutoff frequency. The filter goes into self-oscillation when "Res" (res­
+onance) approaches the value "1". The amplitude of the self-oscillation is approximately 
+"1".
+Application
+The distinct sound of a subtractive synthesizer is in large part due to the type of filters 
+used. The Pro-52 Module helps you reproduce the sound of the Pro-52 virtual analog syn­
+thesizer by emulating the filter component used in that synthesizer. Additionally, you can 
+use the "F" (cutoff frequency) input port for frequency modulation of the cutoff frequency. 
+Modulating this input port at Audio Rate yields an FM'ish sound.
+10.12.2 Ports
+ 
+Input Ports
+▪
+(P) "P" (cutoff pitch) is the Event input port for controlling the cutoff frequency in the 
+logarithmic scale. The cutoff pitch is given in semitones, usually in the range [20 … 
+120] which roughly corresponds to a frequency range of [26 Hz … 8370 Hz]. The 
+pitch value "69" corresponds to "Concert A" or 440 Hz. If left disconnected, the default 
+value of "0" is used for this input port. This default value corresponds to 8 Hz in the 
+frequency scale.
+▪
+(F) "F" (cutoff frequency) is the Audio input port for linear modulation of the cutoff fre­
+quency in Hz. The value at the "F" (frequency) input port is added to the frequency de­
+termined by the "P" (cutoff pitch) input port. The sum is then the final cutoff frequen­
+cy.
+▪
+(Res) "Res" (resonance) is the Event input port for controlling the filter’s resonance / 
+damping parameter. The range of values at this input port is [0 … 1] where "0" corre­
+sponds to maximal damping, no resonance, and "1" to no damping, maximal reso­
+nance. At Res = 1 the filter begins to self-oscillate at the cutoff frequency, resulting in 
+a sine tone at that frequency. For high resonance values the filter’s Q-factor = frequen­
+cy [Hz] / bandwidth [Hz] ≅ 1 / (2 – 2*Res).
+▪
+(In) "In" is the Audio input port for the signal to be filtered.
+Output Ports
+▪
+(Out) "Out" is the Audio output port for the 4-pole low-pass filtered signal.
+Filter
+Pro-52 Filter
+ 
+REAKTOR 5.5 - Module Reference - 563
+
+
+--- Page 564 ---
+
+10.12.3 Properties: View Page
+ 
+Making the Frequency Response Graph Visible on the Panel
+One way to graphically characterize a filter is to plot its frequency response. On the hori­
+zontal axis you have the frequencies of the signal, in the logarithmic scale. On the vertical 
+axis you have the corresponding frequency component's magnitude in respect to the in­
+coming magnitude (also in the logarithmic, decibel scale). All of REAKTOR's filters (ex­
+cept the all-pass filter, which has a flat frequency (magnitude) response, and the Integra­
+tor and Differentiator) have this characteristic plot as a Panel representation. The frequen­
+cy range of this plot in REAKTOR is 10 Hz to 20 kHz. This can be a very useful compo­
+nent in your Instrument since you get direct visual feedback on how the cutoff frequency 
+and resonance parameters affect the overall frequency response curve.
+► To turn on the graphic display of your filter's frequency response in the Instrument Pan­
+el, go to the Module's View page and engage the On checkbox, shown in the figure below.
+Changing the Size of the Filter's Panel Representation
+Depending on your Panel layout, you want a small or large graph of the frequency response 
+on your Instrument Panel.
+► To change the width and height of the filter's Panel representation, go to the Module's 
+View page and enter the desired values into the Width and Height edit fields, as shown in the 
+figure below.
+10.12.4 Example: Pro-52 4-Pole Low-Pass Filter
+ 
+This example shows how to filter an incoming signal, such as an oscillator output signal, 
+with a Pro-52 4-pole low-pass filter. The corresponding Structure is shown in the figure 
+below. The signal which is to be filtered is incoming at the "In" input port of the Filter 
+Filter
+Pro-52 Filter
+ 
+REAKTOR 5.5 - Module Reference - 564
+
+
+--- Page 565 ---
+
+Module. The cutoff pitch is specified with the Knob Module labeled "P Cutoff" at the "P" 
+(pitch) input port and the resonance parameter is specified with the Knob Module labeled 
+"Reson" at the "Res" input port. Simple frequency modulation of the filter's cutoff frequen­
+cy is achieved by connecting the output of a sine oscillator to the "F" (frequency) input 
+port of the Module.
+Fig. 10.20 A simple implementation of a Pro-52 4-pole low-pass filter.
+In the Rehearsal Ensemble you can get acquainted with the various filters in REAKTOR. 
+The Ensemble consists of an easy to use interface to select and tweak your filter of choice. 
+Since each filter has its own set of controls for the signal levels and transition times, 
+Stacked Macro Modules (↑1.19, Stacked Macro) have been used to make only the relevant 
+controls appear when a filter has been selected from the "Filters" list. Also, the On check­
+box in the View page has been engaged such that the graphic Panel representation of the 
+frequency response is visible.
+10.13 Ladder Filter
+ 
+Fig. 10.21 Ladder Filter Module
+10.13.1 Overview
+ 
+The Ladder Filter Module embodies the filter modeled after the classic ladder circuit pa­
+tented by Bob Moog. It is a 4-pole filter with low-pass outputs for the 1-pole, 2-pole, 3-
+pole, and 4-pole characteristic. Each additional pole in the filter contributes to an addi­
+tional attenuation of 6 dB per octave above the cutoff frequency. The saturation character­
+istic of the analog circuit can optionally be simulated by activating the Distortion feature 
+in the Module's Function page. When the Distortion is enabled, the filter goes into self-
+Filter
+Ladder Filter
+ 
+REAKTOR 5.5 - Module Reference - 565
+
+
+--- Page 566 ---
+
+oscillation when the value of "Res" (resonance) is "1" or more. The amplitude of the self-
+oscillation is approximately "1" when "Res" (resonance) is just above "1", but can be much 
+larger when driving "Res" (resonance) even higher. The filter also has options in the Mod­
+ule's Function page for selecting the quality of the simulation. The cutoff frequency for 
+this Module is determined in the logarithmic scale at the "P" (cutoff pitch) input.
+Application
+The distinct sound of a synthesizer is in large part due to the type of filters used. The Lad­
+der Filter Module helps you reproduce the sound of the Moog analog synthesizer by emu­
+lating the filter component used in that synthesizer. For an example Structure, please refer 
+to the Ladder Filter FM Module's example.
+10.13.2 Ports
+ 
+Input Ports
+▪
+(P) "P" (cutoff pitch) is the Event input port for controlling the cutoff frequency in the 
+logarithmic scale. The cutoff pitch is given in semitones, usually in the range [20 … 
+120] which roughly corresponds to a frequency range of [26 Hz … 8370 Hz]. The 
+pitch value "69" corresponds to "Concert A" or 440 Hz. If left disconnected, the default 
+value of "0" is used for this input port. This default value corresponds to 8 Hz in the 
+frequency scale.
+▪
+(F) "F" (cutoff frequency) is the Audio input port for linear modulation of the cutoff fre­
+quency in Hz. The value at the "F" (frequency) input port is added to the frequency de­
+termined by the "P" (cutoff pitch) input port. The sum is then the final cutoff frequen­
+cy.
+▪
+(Res) "Res" (resonance) is the Event input port for controlling the filter’s resonance / 
+damping parameter. The range of values at this input port is [0 … 1] where "0" corre­
+sponds to maximal damping, no resonance, and "1" to no damping, maximal reso­
+nance. At Res = 1 the filter begins to self-oscillate at the cutoff frequency, resulting in 
+a sine tone at that frequency. For high resonance values the filter’s Q-factor = frequen­
+cy [Hz] / bandwidth [Hz] ≅ 1 / (2 – 2*Res).
+▪
+(In) "In" is the Audio input port for the signal to be filtered.
+Filter
+Ladder Filter
+ 
+REAKTOR 5.5 - Module Reference - 566
+
+
+--- Page 567 ---
+
+Output Ports
+▪
+(LP1) "LP1"(1-pole low-pass) is the Audio output port for the 1-pole low-pass filtered 
+signal.
+▪
+(LP2) "LP2"(2-pole low-pass) is the Audio output port for the 2-pole low-pass filtered 
+signal.
+▪
+(LP3) "LP3"(3-pole low-pass) is the Audio output port for the 3-pole low-pass filtered 
+signal.
+▪
+(LP4) "LP4"(4-pole low-pass) is the Audio output port for the 4-pole low-pass filtered 
+signal.
+10.13.3 Properties: View Page
+ 
+Making the Frequency Response Graph Visible on the Panel
+One way to graphically characterize a filter is to plot its frequency response. On the hori­
+zontal axis you have the frequencies of the signal, in the logarithmic scale. On the vertical 
+axis you have the corresponding frequency component's magnitude in respect to the in­
+coming magnitude (also in the logarithmic, decibel scale). All of REAKTOR's filters (ex­
+cept the all-pass filter, which has a flat frequency (magnitude) response, and the Integra­
+tor and Differentiator) have this characteristic plot as a Panel representation. The frequen­
+cy range of this plot in REAKTOR is 10 Hz to 20 kHz. This can be a very useful compo­
+nent in your Instrument since you get direct visual feedback on how the cutoff frequency 
+and resonance parameters affect the overall frequency response curve.
+► To turn on the graphic display of your filter's frequency response in the Instrument Pan­
+el, go to the Module's View page and engage the On checkbox, shown in the figure below.
+Changing the Size of the Filter's Panel Representation
+Depending on your Panel layout, you want a small or large graph of the frequency response 
+on your Instrument Panel.
+Filter
+Ladder Filter
+ 
+REAKTOR 5.5 - Module Reference - 567
+
+
+--- Page 568 ---
+
+► To change the width and height of the filter's Panel representation, go to the Module's 
+View page and enter the desired values into the Width and Height edit fields, as shown in the 
+figure below.
+Setting the Simulation Quality
+The filter also has options in the Module's Function page for selecting the quality of the 
+simulation: Standard, High and Excellent. The effect is particularly noticeable when distor‐
+tion is turned on. Of course, the higher quality settings come at the price of increased 
+CPU usage.
+► To set the quality of filter simulation, go to the Module's Function page and choose the 
+desired quality from the Quality drop-down menu, shown in the picture below.
+Enabling the Distortion Feature
+The saturation characteristic of the analog circuit can be simulated by activating the Dis­
+tortion feature in the Module's Function page.
+► To activate the Distortion feature, go to the Module's Function page and engage the 
+Distortion and Self-Oscillation checkbox, shown in the figure above.
+10.14 Ladder Filter FM
+ 
+Fig. 10.22 Ladder Filter FM Module
+Filter
+Ladder Filter FM
+ 
+REAKTOR 5.5 - Module Reference - 568
+
+
+--- Page 569 ---
+
+10.14.1 Overview
+ 
+The Ladder Filter FM Module embodies the filter modeled after the classic ladder circuit 
+patented by Bob Moog. It is a 4-pole filter with low-pass outputs for the 1-pole, 2-pole, 3-
+pole, and 4-pole characteristic. Each additional pole in the filter contributes to an addi­
+tional attenuation of 6 dB per octave above the cutoff frequency. The saturation character­
+istic of the analog circuit can optionally be simulated by activating the Distortion feature 
+in the Module's Function page. When the Distortion is enabled, the filter goes into self-
+oscillation when the value of "Res" (resonance) is "1" or more. The amplitude of the self-
+oscillation is approximately "1" when "Res" (resonance) is just above "1", but can be much 
+larger when driving "Res" (resonance) even higher. The filter also has options in the Mod­
+ule's Function page for selecting the quality of the simulation. The cutoff frequency for 
+this Module is determined in the logarithmic scale at the "P" (cutoff pitch) input port and 
+can be modulated in the linear frequency scale using the "F" (cutoff frequency) input port. 
+Only the graphic display stemming from the "P" (cutoff pitch) value is shown in the Panel 
+representation.
+Application
+The distinct sound of a synthesizer is in large part due to the type of filters used. The Lad­
+der Filter FM Module helps you reproduce the sound of the Moog analog synthesizer by 
+emulating the filter component used in that synthesizer. Additionally, you can use the "F" 
+(cutoff frequency) input port for frequency modulation of the cutoff frequency. Modulating 
+this input port at Audio Rate yields an FM'ish sound.
+10.14.2 Ports
+ 
+Input Ports
+▪
+(P) "P" (cutoff pitch) is the Event input port for controlling the cutoff frequency in the 
+logarithmic scale. The cutoff pitch is given in semitones, usually in the range [20 … 
+120] which roughly corresponds to a frequency range of [26 Hz … 8370 Hz]. The 
+pitch value "69" corresponds to "Concert A" or 440 Hz. If left disconnected, the default 
+value of "0" is used for this input port. This default value corresponds to 8 Hz in the 
+frequency scale.
+Filter
+Ladder Filter FM
+ 
+REAKTOR 5.5 - Module Reference - 569
+
+
+--- Page 570 ---
+
+▪
+(F) "F" (cutoff frequency) is the Audio input port for linear modulation of the cutoff fre­
+quency in Hz. The value at the "F" (frequency) input port is added to the frequency de­
+termined by the "P" (cutoff pitch) input port. The sum is then the final cutoff frequen­
+cy.
+▪
+(Res) "Res" (resonance) is the Event input port for controlling the filter’s resonance / 
+damping parameter. The range of values at this input port is [0 … 1] where "0" corre­
+sponds to maximal damping, no resonance, and "1" to no damping, maximal reso­
+nance. At Res = 1 the filter begins to self-oscillate at the cutoff frequency, resulting in 
+a sine tone at that frequency. For high resonance values the filter’s Q-factor = frequen­
+cy [Hz] / bandwidth [Hz] ≅ 1 / (2 – 2*Res).
+▪
+(In) "In" is the Audio input port for the signal to be filtered.
+Output Ports
+▪
+(LP1) "LP1"(1-pole low-pass) is the Audio output port for the 1-pole low-pass filtered 
+signal.
+▪
+(LP2) "LP2"(2-pole low-pass) is the Audio output port for the 2-pole low-pass filtered 
+signal.
+▪
+(LP3) "LP3"(3-pole low-pass) is the Audio output port for the 3-pole low-pass filtered 
+signal.
+▪
+(LP4) "LP4"(4-pole low-pass) is the Audio output port for the 4-pole low-pass filtered 
+signal.
+10.14.3 Properties: View Page
+ 
+Making the Frequency Response Graph Visible on the Panel
+One way to graphically characterize a filter is to plot its frequency response. On the hori­
+zontal axis you have the frequencies of the signal, in the logarithmic scale. On the vertical 
+axis you have the corresponding frequency component's magnitude in respect to the in­
+coming magnitude (also in the logarithmic, decibel scale). All of REAKTOR's filters (ex­
+cept the all-pass filter, which has a flat frequency (magnitude) response, and the Integra­
+tor and Differentiator) have this characteristic plot as a Panel representation. The frequen­
+cy range of this plot in REAKTOR is 10 Hz to 20 kHz. This can be a very useful compo­
+nent in your Instrument since you get direct visual feedback on how the cutoff frequency 
+and resonance parameters affect the overall frequency response curve.
+Filter
+Ladder Filter FM
+ 
+REAKTOR 5.5 - Module Reference - 570
+
+
+--- Page 571 ---
+
+► To turn on the graphic display of your filter's frequency response in the Instrument Pan­
+el, go to the Module's View page and engage the On checkbox, shown in the figure below.
+Changing the Size of the Filter's Panel Representation
+Depending on your Panel layout, you want a small or large graph of the frequency response 
+on your Instrument Panel.
+► To change the width and height of the filter's Panel representation, go to the Module's 
+View page and enter the desired values into the Width and Height edit fields, as shown in the 
+figure below.
+Setting the Simulation Quality
+The filter also has options in the Module's Function page for selecting the quality of the 
+simulation: Standard, High and Excellent. The effect is particularly noticeable when distor‐
+tion is turned on. Of course, the higher quality settings come at the price of increased 
+CPU usage.
+► To set the quality of filter simulation, go to the Module's Function page and choose the 
+desired quality from the Quality drop-down menu, shown in the picture below.
+Enabling the Distortion Feature
+The saturation characteristic of the analog circuit can be simulated by activating the Dis­
+tortion feature in the Module's Function page.
+► To activate the Distortion feature, go to the Module's Function page and engage the 
+Distortion and Self-Oscillation checkbox, shown in the figure above.
+Filter
+Ladder Filter FM
+ 
+REAKTOR 5.5 - Module Reference - 571
+
+
+--- Page 572 ---
+
+10.14.4 Example: Ladder Filter
+ 
+This example shows how to filter an incoming signal, such as an oscillator output signal, 
+with a ladder filter that can be "tapped" at the output of each pole with low-pass charac­
+teristic. The corresponding Structure is shown in the figure below. The signal which is to 
+be filtered is incoming at the "In" input port of the Filter Module. The cutoff pitch is speci­
+fied with the Knob Module labeled "P Cutoff" at the "P" (pitch) input port and the reso­
+nance parameter is specified with the Knob Module labeled "Reson" at the "Res" input 
+port. Simple frequency modulation of the filter's cutoff frequency is achieved by connect­
+ing the output of a sine oscillator to the "F" (frequency) input port of the Module. Since 
+the Ladder Filter Module comprises four 1-pole low-pass "stages", there are outputs for 1-
+pole, 2-pole, 3-pole, and 4-pole low-pass filter characteristics. A List Module in combina­
+tion with a Selector Module lets you select from the Instrument Panel which filtered signal 
+is sent to the output.
+Fig. 10.23 A simple implementation of a ladder filter.
+In the Rehearsal Ensemble you can get acquainted with the various filters in REAKTOR. 
+The Ensemble consists of an easy to use interface to select and tweak your filter of choice. 
+Since each filter has its own set of controls for the signal levels and transition times, 
+Stacked Macro Modules (↑1.19, Stacked Macro) have been used to make only the relevant 
+controls appear when a filter has been selected from the "Filters" list. Also, the On check­
+box in the View page has been engaged such that the graphic Panel representation of the 
+frequency response is visible.
+Filter
+Ladder Filter FM
+ 
+REAKTOR 5.5 - Module Reference - 572
+
+
+--- Page 573 ---
+
+10.15 Modal Bank
+ 
+Fig. 10.24 Modal Bank Module
+10.15.1 Overview
+ 
+The Modal Bank Module is a bank of parallel resonant filters, called partials. This Module 
+enables you to perform modal synthesis with REAKTOR. For each partial, its frequency ra­
+tio to the fundamental, its input and output amplitudes, and its decay time can be speci­
+fied at the “Rtio”, “GIn”, “AL” and “AR”, and “Dec” input ports, respectively. Setting 
+these parameters for each partial is done serially and with the use of the “Idx” input port 
+to specify to which partial the incoming parameters should be sent. The fundamental pitch 
+of the Modal Bank is specified at the “P” input; it corresponds to the frequency in respect 
+to which the frequencies of all the partials are calculated. Also, the number of partials 
+that the Modal Bank Module generates has to be specified, either in the Function page of 
+the Module's Properties or at the “Num” input port. The “Dmp” input port is used for the 
+damping value which represents a global value that is subtracted from the decay times of 
+all partials. After sending all the parameters to the corresponding input ports, an “apply” 
+Event has to be sent to the “App” input port to effectively apply these changes to the par­
+tials. Before the exciter signal reaches a partial, it is multiplied by the “GIn” factor speci­
+fied at that partials index. After the exciter signal has passed through the filter of the cor­
+responding partial, the resulting stereo Audio signal is sent to the “L” and “R” output 
+ports for the left and right stereo channels, respectively. Also, in the Function page of the 
+Module's Properties, one can specify the smoothing time and smoothing quality. The 
+smoothing quality setting has an effect on the Module's CPU usage.
+Filter
+Modal Bank
+ 
+REAKTOR 5.5 - Module Reference - 573
+
+
+--- Page 574 ---
+
+The default parameters for the partials are such that the “L” output sends a pulse wave 
+with the pitch of the fundamental (set at the “P” input port) and the “R” output sends a 
+saw wave with the pitch one octave above the fundamental. By adding both signals togeth­
+er you get a saw wave at the pitch of the fundamental.
+Application
+The Modal Bank Module is meant for modal synthesis which is a synthesis method that 
+basically consists of an exciter signal and a resonator. This system can be great for synthe­
+sizing percussive sounds ranging from mallets to vibraphones, but also for sustain sounds 
+like woodwinds. The Modal Bank Module can also be used in a feedback circuit, extending 
+its sonic possibilities even further. As with the Sine Bank Module, some sounds require a 
+lot of data to be sent to the partials of the Modal Bank Module. However, this is not the 
+case for all sounds. The strength of the Modal Module lies in the fact that depending on 
+the exciter signal, it is possible to create complex output signals with limited use of real-
+time modulation of the partial parameters. Often a large number of partials are used; the 
+maximum number of partials is 10'000. Usually much less partials than this maximum 
+number are used, mainly because of CPU limitations. In a case where there are a lot of 
+partials it is most effective to make use of the Iterator Module (found in the Built-In Module 
+> Event Processing submenu) to supply all partials with the necessary parameters between 
+the processing of subsequent audio samples.
+Please refer to section 12.3 in the Application Reference for a short tutorial on creating a 
+simple modal synthesizer.
+10.15.2 Ports
+ 
+Input Ports
+▪
+(Num) “Num” (number of partials) is the Event input port for setting the number of ac­
+tive partials in the Modal Bank Module. This value should be a positive integer in the 
+range [0 … Max] where “Max” corresponds to the number set in the Max. Number edit 
+field in the Function page of the Module's Properties. If this input port is left discon­
+nected, the Modal Bank Module automatically sets the number of partials to the value 
+to “Max”. A higher number of active partials requires more CPU resources. Often the 
+CPU load is increased for multiples of 4 partials.
+Filter
+Modal Bank
+ 
+REAKTOR 5.5 - Module Reference - 574
+
+
+--- Page 575 ---
+
+▪
+(Idx) “Idx” (index) is the Event input port for specifying the partial number to which 
+the subsequent parameters arriving at the “Rtio”, “AL”, “AR”, and “Ph” input ports 
+should be routed. This value should be a positive integer in the range [1 … Num] 
+where “Num” denotes the number of active partials (see “Num” input port).
+▪
+(P) “P” (pitch) is the Event input port for controlling the fundamental pitch of the Mo­
+dal Bank Module. The frequency corresponding to the fundamental pitch is the fre­
+quency in respect to which the frequencies of all the partials are calculated. The val­
+ues at this input port are set in the logarithmic pitch scale and are usually in the range 
+[0 … 127].
+▪
+(Rtio) “Rtio” (frequency ratio) is the Event input port for setting the ratio of the parti­
+al's frequency to the fundamental frequency determined at the “P” input port. If the 
+“Rtio” value of a partial is “1”, it means that the ratio between the partial's frequency 
+and the fundamental frequency is “1”, that is, the partial has the fundamental fre­
+quency. If the “Rtio” value of a partial is “2”, then the partial has double the frequen­
+cy of the fundamental. In general, the frequency of the partial (“f”) can be calculated 
+from the fundamental frequency (“F”) and the frequency ratio (“Rtio”) with the follow­
+ing formula: f = F * Rtio.
+▪
+(GIn) “GIn” (gain in) is the Event input port for specifying the gain factor with which 
+the exciter signal (at the “In” or “InP” input ports) is multiplied before it is sent to the 
+corresponding partial's filter. This means that each partial has its own “GIn” value as­
+sociated with it. Using “GIn” values you can consecutively excite different partials 
+without suppressing the output signals of the already excited partials.
+▪
+(AL) “AL” (amplitude, left channel) is the Event input port for specifying the partial 
+amplitude in the left stereo channel. It is the value that the unit amplitude oscillator 
+waveform of the partial is multiplied by before being mixed together with the other par­
+tials and forwarded to the “L” output port. The typical range is [0 … 1], but negative 
+values are also allowed; they cause the waveform of the corresponding partial to be in­
+verted.
+▪
+(AR) “AR” (amplitude, right channel) is the Event input port for specifying the partial 
+amplitude in the right stereo channel. It is the value that the unit amplitude oscillator 
+waveform of the partial is multiplied by before being mixed together with the other par­
+tials and forwarded to the “R” output port. The typical range is [0 … 1], but negative 
+values are also allowed; they cause the waveform of the corresponding partial to be in­
+verted.
+Filter
+Modal Bank
+ 
+REAKTOR 5.5 - Module Reference - 575
+
+
+--- Page 576 ---
+
+▪
+(Dec) “Dec” (decay) is the Event input port for specifying the decay time (resonance) 
+of the filter associated with the addressed partial. The decay time is specified in the 
+logarithmic scale, just like the envelope time inputs of the envelope Modules in the 
+Primary Level. It is the time (in milliseconds) that the decay curve requires to reach 
+the factor “1 / e” in respect to its initial (maximum) value. Here “e” denotes the math­
+ematical constant known as Euler's number. It is approximately “2.72”. The typical 
+range for the “Dec” input of the Modal Bank Module is [0 … 100] where a value of 
+“0” corresponds to a decay time of 1 ms, a value of “20” corresponds to a decay time 
+of 10 ms, a value of “200” corresponds to a decay time of 100 ms, and so on. The 
+formula for calculating the decay time (“T”) from the value at the “Dec” input port is T 
+= 10 ^ (Dec / 20) ms.
+▪
+(Dmp) “Dmp” (damping) is the Event input port for specifying the global damping pa­
+rameter. The damping value is subtracted from the “Dec” values of all partials. Posi­
+tive damping values reduce the decay times. Usually the damping parameter is zero at 
+the beginning of the attack of the exciter signal and then is set to a positive value to 
+“damp” the envelopes of the outgoing signal at some later point. Of course, after send­
+ing the new value to the “Dmp” input port, an “apply” Event needs to be sent to the 
+“App” input port in order for the damping value to take effect in the behavior of the 
+Module.
+▪
+(App) “App” (apply) is the Event input port for applying the latest parameter values 
+that have arrived at the various input ports to the actual filters inside the Modal Bank 
+Module. The parameter values sent to the Modal Bank Module are stored in a tempora­
+ry buffer and only applied to the partials once an Event arrives at the “App” input port. 
+If the value of the Event is greater than zero, the apply operation sets the state varia­
+bles of all the filters to zero, thus working like a “reset”. If the “apply” Event is less or 
+equal to zero, all new parameters are applied but the filters retain their state variable.
+▪
+(InP) “InP” (amplitude compensated audio input) is the Audio input port that is usually 
+used for sustained exciter signals that would be too loud when passed through partial 
+filters with low decay times (resonance). The amplitude compensation was calibrated 
+with a white noise signal of constant amplitude which has equal power at all frequen­
+cies. Feeding oscillator signals (like a saw wave) into this input port will not necessarily 
+yield good amplitude compensation since the spectrum of such an oscillator is very dif­
+ferent from that of white noise.
+Filter
+Modal Bank
+ 
+REAKTOR 5.5 - Module Reference - 576
+
+
+--- Page 577 ---
+
+▪
+(In) “In” (audio input) is the Audio input port for that is usually used for impulse-like 
+exciter signals. This input was calibrated using one cycle of a sine wave as an impulse 
+signal.
+Output Ports
+▪
+(L) “L” (left stereo channel) is the output port for the Audio signal that is a mix of all 
+the partials with amplitudes set by the “AL” parameter.
+▪
+(R) “R” (right stereo channel) is the output port for the Audio signal that is a mix of all 
+the partials with amplitudes set by the “AR” parameter.
+▪
+(Max) “Max” (maximum number of partials) is the Event output port for the value set in 
+the Max. Number edit field of the Module's Function page.
+10.15.3 Properties: Function Page
+ 
+Setting the Maximum Number of Partials
+The maximum number of partials that the Modal Bank Module generates has to be speci­
+fied in the Max. Number edit field in the Module's Function page, shown below. The actual 
+number of active partials is specified at the “Num” input port. “Num” values larger than 
+the value set in the Max. Number edit field are clipped. If the “Num” input port is left dis­
+connected, the Modal Bank Module automatically sets the number of partials to the value 
+specified by the Max. Number edit field. The default value for this edit field is “128”. Also, 
+the value in the Max. Number edit field is sent to the “Max” output port. A higher number of 
+active partials requires more CPU resources.
+Due to internal optimization, for many computers the CPU load is increased when the num­
+ber of partials reaches a multiple of 4 partials.
+Fig. 10.25 The maximum number of partials and the smoothing time are set in the Partials area of the Modal Bank Module's 
+Function page.
+Filter
+Modal Bank
+ 
+REAKTOR 5.5 - Module Reference - 577
+
+
+--- Page 578 ---
+
+Setting the Smoothing Time
+The smoothing time defines the time-interval over which the partial amplitudes are faded 
+between different values. This parameter can be set in the Smoothing Time edit field. The 
+units for this edit field are milliseconds and the default value is 10 ms.
+Setting the Smoothing Quality
+You can specify the quality of the smoothing curves with the Smoothing Quality drop-down 
+menu. Higher smoothing quality causes the Module to respond better to fast modulations 
+of the partial amplitudes. However, increasing the smoothing quality also increases the 
+CPU load.
+Fig. 10.26 The Smoothing Quality drop-down menu lets you increase the quality of the Module's sound in response to fast 
+modulations of the partial amplitudes.
+10.16 Peak EQ
+ 
+Fig. 10.27 Peak EQ Module
+10.16.1 Overview
+ 
+The Peak EQ Module is a parametric equalizer with adjustable boost and band width (reso­
+nance) parameters. The cutoff frequency for this Module is determined in the logarithmic 
+scale at the "P" (cutoff pitch) input port and can be modulated in the linear frequency 
+scale using the "F" (cutoff frequency) input port. Only the graphic display stemming from 
+the "P" (cutoff pitch) value is shown in the Panel representation.
+Application
+With the Peak EQ Module, a specific frequency in the signal and a narrow or wide band of 
+frequencies around it can be amplified or attenuated. More distant frequencies are not af­
+fected. For negative "B" (boost) values, the Peak EQ Module acts similar to a notch filter. 
+Since the "B" (boost) value can be varied (and even made positive), along with the "Res" 
+Filter
+Peak EQ
+ 
+REAKTOR 5.5 - Module Reference - 578
+
+
+--- Page 579 ---
+
+(resonance) parameter, the Peak EQ Module gives more flexibility in attenuating or ampli­
+fying certain frequency components in an incoming signal. For an example Structure, 
+please refer to the Peak EQ FM Module's example.
+10.16.2 Ports
+ 
+Input Ports
+▪
+(P) "P" (cutoff pitch) is the Event input port for controlling the cutoff frequency in the 
+logarithmic scale. The cutoff pitch is given in semitones, usually in the range [20 … 
+120] which roughly corresponds to a frequency range of [26 Hz … 8370 Hz]. The 
+pitch value "69" corresponds to "Concert A" or 440 Hz. If left disconnected, the default 
+value of "0" is used for this input port. This default value corresponds to 8 Hz in the 
+frequency scale.
+▪
+(Res) "Res" (resonance) is the Event input port for controlling the filter’s resonance / 
+damping parameter. The range of values at this input port is [0 … 1] where "0" corre­
+sponds to maximal damping, no resonance, and "1" to no damping, maximal reso­
+nance. At Res = 1 the filter begins to self-oscillate at the cutoff frequency, resulting in 
+a sine tone at that frequency. For high resonance values the filter’s Q-factor = frequen­
+cy [Hz] / bandwidth [Hz] ≅ 1 / (2 – 2*Res).
+▪
+(B) "B" (boost) is the Event input port for controlling boost / attenuation of the peak, in 
+dB. At the (default) value B = 0 the signal remains unchanged. The typical range for 
+values at the "B" (boost) input port is [-20 … 20].
+▪
+(In) "In" is the Audio input port for the signal to be equalized.
+Output Ports
+▪
+(Out) "Out" is the Audio output port for the equalized signal.
+10.16.3 Properties: View Page
+ 
+Making the Frequency Response Graph Visible on the Panel
+One way to graphically characterize a filter is to plot its frequency response. On the hori­
+zontal axis you have the frequencies of the signal, in the logarithmic scale. On the vertical 
+axis you have the corresponding frequency component's magnitude in respect to the in­
+coming magnitude (also in the logarithmic, decibel scale). All of REAKTOR's filters (ex­
+cept the all-pass filter, which has a flat frequency (magnitude) response, and the Integra­
+Filter
+Peak EQ
+ 
+REAKTOR 5.5 - Module Reference - 579
+
+
+--- Page 580 ---
+
+tor and Differentiator) have this characteristic plot as a Panel representation. The frequen­
+cy range of this plot in REAKTOR is 10 Hz to 20 kHz. This can be a very useful compo­
+nent in your Instrument since you get direct visual feedback on how the cutoff frequency, 
+resonance, and boost parameters affect the overall frequency response curve.
+► To turn on the graphic display of your filter's frequency response in the Instrument Pan­
+el, go to the Module's View page and engage the On checkbox, shown in the figure below.
+Changing the Size of the Filter's Panel Representation
+Depending on your Panel layout, you want a small or large graph of the frequency response 
+on your Instrument Panel.
+► To change the width and height of the filter's Panel representation, go to the Module's 
+View page and enter the desired values into the Width and Height edit fields, as shown in the 
+figure below.
+10.17 Peak EQ FM
+ 
+Fig. 10.28 Peak EQ FM Module
+10.17.1 Overview
+ 
+The Peak EQ Module is a parametric equalizer with adjustable boost and band width (reso­
+nance) parameters. The cutoff frequency for this Module is determined in the logarithmic 
+scale at the "P" (cutoff pitch) input.
+Filter
+Peak EQ FM
+ 
+REAKTOR 5.5 - Module Reference - 580
+
+
+--- Page 581 ---
+
+Application
+With the Peak EQ Module, a specific frequency in the signal and a narrow or wide band of 
+frequencies around it can be amplified or attenuated. More distant frequencies are not af­
+fected. For negative "B" (boost) values, the Peak EQ Module acts similar to a notch filter. 
+Since the "B" (boost) value can be varied (and even made positive), along with the "Res" 
+(resonance) parameter, the Peak EQ Module gives more flexibility in attenuating or ampli­
+fying certain frequency components in an incoming signal.
+10.17.2 Ports
+ 
+Input Ports
+▪
+(P) "P" (cutoff pitch) is the Event input port for controlling the cutoff frequency in the 
+logarithmic scale. The cutoff pitch is given in semitones, usually in the range [20 … 
+120] which roughly corresponds to a frequency range of [26 Hz … 8370 Hz]. The 
+pitch value "69" corresponds to "Concert A" or 440 Hz. If left disconnected, the default 
+value of "0" is used for this input port. This default value corresponds to 8 Hz in the 
+frequency scale.
+▪
+(F) "F" (cutoff frequency) is the Audio input port for linear modulation of the cutoff fre­
+quency in Hz. The value at the "F" (frequency) input port is added to the frequency de­
+termined by the "P" (cutoff pitch) input port. The sum is then the final cutoff frequen­
+cy.
+▪
+(Res) "Res" (resonance) is the Event input port for controlling the filter’s resonance / 
+damping parameter. The range of values at this input port is [0 … 1] where "0" corre­
+sponds to maximal damping, no resonance, and "1" to no damping, maximal reso­
+nance. At Res = 1 the filter begins to self-oscillate at the cutoff frequency, resulting in 
+a sine tone at that frequency. For high resonance values the filter’s Q-factor = frequen­
+cy [Hz] / bandwidth [Hz] ≅ 1 / (2 – 2*Res).
+▪
+(B) "B" (boost) is the Event input port for controlling boost / attenuation of the peak, in 
+dB. At the (default) value B = 0 the signal remains unchanged. The typical range for 
+values at the "B" (boost) input port is [-20 … 20].
+▪
+(In) "In" is the Audio input port for the signal to be equalized.
+Output Ports
+▪
+(Out) "Out" is the Audio output port for the equalized signal.
+Filter
+Peak EQ FM
+ 
+REAKTOR 5.5 - Module Reference - 581
+
+
+--- Page 582 ---
+
+10.17.3 Properties: View Page
+ 
+Making the Frequency Response Graph Visible on the Panel
+One way to graphically characterize a filter is to plot its frequency response. On the hori­
+zontal axis you have the frequencies of the signal, in the logarithmic scale. On the vertical 
+axis you have the corresponding frequency component's magnitude in respect to the in­
+coming magnitude (also in the logarithmic, decibel scale). All of REAKTOR's filters (ex­
+cept the all-pass filter, which has a flat frequency (magnitude) response, and the Integra­
+tor and Differentiator) have this characteristic plot as a Panel representation. The frequen­
+cy range of this plot in REAKTOR is 10 Hz to 20 kHz. This can be a very useful compo­
+nent in your Instrument since you get direct visual feedback on how the cutoff frequency, 
+resonance, and boost parameters affect the overall frequency response curve.
+► To turn on the graphic display of your filter's frequency response in the Instrument Pan­
+el, go to the Module's View page and engage the On checkbox, shown in the figure below.
+Changing the Size of the Filter's Panel Representation
+Depending on your Panel layout, you want a small or large graph of the frequency response 
+on your Instrument Panel.
+► To change the width and height of the filter's Panel representation, go to the Module's 
+View page and enter the desired values into the Width and Height edit fields, as shown in the 
+figure below.
+10.17.4 Example: Peak Equalizer
+ 
+This example shows how to filter an incoming signal, such as an oscillator output signal, 
+with a peak equalizer. The corresponding Structure is shown in the figure below. The sig­
+nal which is to be filtered is incoming at the "In" input port of the Filter Module. The cen­
+Filter
+Peak EQ FM
+ 
+REAKTOR 5.5 - Module Reference - 582
+
+
+--- Page 583 ---
+
+ter frequency of the peak is specified with the Knob Module labeled "P Cutoff" at the "P" 
+(pitch) input port, the resonance parameter (peak width) is specified with the Knob Mod­
+ule labeled "Reson" at the "Res" input port, and the amplification or attenuation at the 
+peak frequency is set with the "Boost" Knob Module, at the "B" (boost) input port. Simple 
+frequency modulation of the filter's peak frequency is achieved by connecting the output 
+of a sine oscillator to the "F" (frequency) input port of the Module.
+Fig. 10.29 A simple implementation of a peak equalizer.
+In the Rehearsal Ensemble you can get acquainted with the various filters in REAKTOR. 
+The Ensemble consists of an easy to use interface to select and tweak your filter of choice. 
+Since each filter has its own set of controls for the signal levels and transition times, 
+Stacked Macro Modules (↑1.19, Stacked Macro) have been used to make only the relevant 
+controls appear when a filter has been selected from the "Filters" list. Also, the On check­
+box in the View page has been engaged such that the graphic Panel representation of the 
+frequency response is visible, shown in the figure below.
+Fig. 10.30 The Peak EQ FM Module's Panel representation with a positive "Boost" value exhibits a positive peak.
+10.18 High Shelf EQ
+ 
+Fig. 10.31 Hi Shelf EQ Module
+Filter
+High Shelf EQ
+ 
+REAKTOR 5.5 - Module Reference - 583
+
+
+--- Page 584 ---
+
+10.18.1 Overview
+ 
+The Hi Shelf EQ Module is a parametric equalizer with a high shelving characteristic. The 
+"B" (boost) parameter determines the amplification or attenuation of the frequencies above 
+the cutoff frequency. Frequencies below the cutoff frequency are not affected. The cutoff 
+frequency for this Module is determined in the logarithmic scale at the "P" (cutoff pitch) 
+input port.
+Application
+With the Hi Shelf EQ Module you can amplify or attenuate high frequency components 
+without affecting the lower frequencies. This Module is generally useful in making a signal 
+"brighter" or "duller". For an example Structure, please refer to the High Shelf EQ FM Mod­
+ule's example.
+10.18.2 Ports
+ 
+Input Ports
+▪
+(P) "P" (cutoff pitch) is the Event input port for controlling the cutoff frequency in the 
+logarithmic scale. The cutoff pitch is given in semitones, usually in the range [20 … 
+120] which roughly corresponds to a frequency range of [26 Hz … 8370 Hz]. The 
+pitch value "69" corresponds to "Concert A" or 440 Hz. If left disconnected, the default 
+value of "0" is used for this input port. This default value corresponds to 8 Hz in the 
+frequency scale.
+▪
+(B) "B" (boost) is the Event input port for controlling boost / attenuation of the "shelf", 
+in dB. At the (default) value B = 0 the signal remains unchanged. The typical range for 
+values at the "B" (boost) input port is [-20 … 20].
+▪
+(In) "In" is the Audio input port for the signal to be equalized.
+Output Ports
+▪
+(Out) "Out" is the Audio output port for the equalized signal.
+Filter
+High Shelf EQ
+ 
+REAKTOR 5.5 - Module Reference - 584
+
+
+--- Page 585 ---
+
+10.18.3 Properties: View Page
+ 
+Making the Frequency Response Graph Visible on the Panel
+One way to graphically characterize a filter is to plot its frequency response. On the hori­
+zontal axis you have the frequencies of the signal, in the logarithmic scale. On the vertical 
+axis you have the corresponding frequency component's magnitude in respect to the in­
+coming magnitude (also in the logarithmic, decibel scale). All of REAKTOR's filters (ex­
+cept the all-pass filter, which has a flat frequency (magnitude) response, and the Integra­
+tor and Differentiator) have this characteristic plot as a Panel representation. The frequen­
+cy range of this plot in REAKTOR is 10 Hz to 20 kHz. This can be a very useful compo­
+nent in your Instrument since you get direct visual feedback on how the cutoff frequency, 
+resonance, and boost parameters affect the overall frequency response curve.
+► To turn on the graphic display of your filter's frequency response in the Instrument Pan­
+el, go to the Module's View page and engage the On checkbox, shown in the figure below.
+Changing the Size of the Filter's Panel Representation
+Depending on your Panel layout, you want a small or large graph of the frequency response 
+on your Instrument Panel.
+► To change the width and height of the filter's Panel representation, go to the Module's 
+View page and enter the desired values into the Width and Height edit fields, as shown in the 
+figure below.
+Filter
+High Shelf EQ
+ 
+REAKTOR 5.5 - Module Reference - 585
+
+
+--- Page 586 ---
+
+10.19 High Shelf EQ FM
+ 
+Fig. 10.32 Hi Shelf EQ FM Module
+10.19.1 Overview
+ 
+The Hi Shelf EQ FM Module is a parametric equalizer with a high shelving characteristic. 
+The "B" (boost) parameter determines the amplification or attenuation of the frequencies 
+above the cutoff frequency. Frequencies below the cutoff frequency are not affected. The 
+cutoff frequency for this Module is determined in the logarithmic scale at the "P" (cutoff 
+pitch) input port and can be modulated in the linear frequency scale using the "F" (cutoff 
+frequency) input port. Only the graphic display stemming from the "P" (cutoff pitch) value 
+is shown in the Panel representation.
+Application
+With the Hi Shelf EQ FM Module you can amplify or attenuate high frequency components 
+without affecting the lower frequencies. This Module is generally useful in making a signal 
+"brighter" or "duller".
+10.19.2 Ports
+ 
+Input Ports
+▪
+(P) "P" (cutoff pitch) is the Event input port for controlling the cutoff frequency in the 
+logarithmic scale. The cutoff pitch is given in semitones, usually in the range [20 … 
+120] which roughly corresponds to a frequency range of [26 Hz … 8370 Hz]. The 
+pitch value "69" corresponds to "Concert A" or 440 Hz. If left disconnected, the default 
+value of "0" is used for this input port. This default value corresponds to 8 Hz in the 
+frequency scale.
+Filter
+High Shelf EQ FM
+ 
+REAKTOR 5.5 - Module Reference - 586
+
+
+--- Page 587 ---
+
+▪
+(F) "F" (cutoff frequency) is the Audio input port for linear modulation of the cutoff fre­
+quency in Hz. The value at the "F" (frequency) input port is added to the frequency de­
+termined by the "P" (cutoff pitch) input port. The sum is then the final cutoff frequen­
+cy.
+▪
+(B) "B" (boost) is the Event input port for controlling boost / attenuation of the "shelf", 
+in dB. At the (default) value B = 0 the signal remains unchanged. The typical range for 
+values at the "B" (boost) input port is [-20 … 20].
+▪
+(In) "In" is the Audio input port for the signal to be equalized.
+Output Ports
+▪
+(Out) "Out" is the Audio output port for the equalized signal.
+10.19.3 Properties: View Page
+ 
+Making the Frequency Response Graph Visible on the Panel
+One way to graphically characterize a filter is to plot its frequency response. On the hori­
+zontal axis you have the frequencies of the signal, in the logarithmic scale. On the vertical 
+axis you have the corresponding frequency component's magnitude in respect to the in­
+coming magnitude (also in the logarithmic, decibel scale). All of REAKTOR's filters (ex­
+cept the all-pass filter, which has a flat frequency (magnitude) response, and the Integra­
+tor and Differentiator) have this characteristic plot as a Panel representation. The frequen­
+cy range of this plot in REAKTOR is 10 Hz to 20 kHz. This can be a very useful compo­
+nent in your Instrument since you get direct visual feedback on how the cutoff frequency, 
+resonance, and boost parameters affect the overall frequency response curve.
+► To turn on the graphic display of your filter's frequency response in the Instrument Pan­
+el, go to the Module's View page and engage the On checkbox, shown in the figure below.
+Changing the Size of the Filter's Panel Representation
+Depending on your Panel layout, you want a small or large graph of the frequency response 
+on your Instrument Panel.
+Filter
+High Shelf EQ FM
+ 
+REAKTOR 5.5 - Module Reference - 587
+
+
+--- Page 588 ---
+
+► To change the width and height of the filter's Panel representation, go to the Module's 
+View page and enter the desired values into the Width and Height edit fields, as shown in the 
+figure below.
+10.19.4 Example: High Shelf Equalizer
+ 
+This example shows how to filter an incoming signal, such as an oscillator output signal, 
+with a high shelf equalizer. The corresponding Structure is shown in the figure below. The 
+signal which is to be filtered is incoming at the "In" input port of the Filter Module. The 
+"starting" (cutoff) frequency of the high shelf is specified with the Knob Module labeled "P 
+Cutoff" at the "P" (pitch) input port, and the amplification or attenuation at the shelf is set 
+with the "Boost" Knob Module, at the "B" (boost) input port. Simple frequency modulation 
+of the filter's cutoff frequency is achieved by connecting the output of a sine oscillator to 
+the "F" (frequency) input port of the Module.
+Fig. 10.33 A simple implementation of a high shelving filter.
+In the Rehearsal Ensemble you can get acquainted with the various filters in REAKTOR. 
+The Ensemble consists of an easy to use interface to select and tweak your filter of choice. 
+Since each filter has its own set of controls for the signal levels and transition times, 
+Stacked Macro Modules (↑1.19, Stacked Macro) have been used to make only the relevant 
+controls appear when a filter has been selected from the "Filters" list. Also, the On check­
+box in the View page has been engaged such that the graphic Panel representation of the 
+frequency response is visible, shown in the figure below.
+Filter
+High Shelf EQ FM
+ 
+REAKTOR 5.5 - Module Reference - 588
+
+
+--- Page 589 ---
+
+Fig. 10.34 The High Shelf EQ FM Module's Panel representation with a positive "Boost" value.
+10.20 Low Shelf EQ
+ 
+Fig. 10.35 Low Shelf EQ Module
+10.20.1 Overview
+ 
+The Lo Shelf EQ Module is a parametric equalizer with a low shelving characteristic. The 
+"B" (boost) parameter determines the amplification or attenuation of the frequencies below 
+the cutoff frequency. Frequencies above the cutoff frequency are not affected. The cutoff 
+frequency for this Module is determined in the logarithmic scale at the "P" (cutoff pitch) 
+input.
+Application
+With the Lo Shelf EQ Module you can amplify or attenuate low frequency components 
+without affecting the higher frequencies. This Module is generally useful in reducing low 
+frequencies in or adding a "bass boost" to an incoming signal. For an example Structure, 
+please refer to the Low Shelf EQ FM Module's example.
+10.20.2 Ports
+ 
+Input Ports
+▪
+(P) "P" (cutoff pitch) is the Event input port for controlling the cutoff frequency in the 
+logarithmic scale. The cutoff pitch is given in semitones, usually in the range [20 … 
+120] which roughly corresponds to a frequency range of [26 Hz … 8370 Hz]. The 
+Filter
+Low Shelf EQ
+ 
+REAKTOR 5.5 - Module Reference - 589
+
+
+--- Page 590 ---
+
+pitch value "69" corresponds to "Concert A" or 440 Hz. If left disconnected, the default 
+value of "0" is used for this input port. This default value corresponds to 8 Hz in the 
+frequency scale.
+▪
+(B) "B" (boost) is the Event input port for controlling boost / attenuation of the "shelf", 
+in dB. At the (default) value B = 0 the signal remains unchanged. The typical range for 
+values at the "B" (boost) input port is [-20 … 20].
+▪
+(In) "In" is the Audio input port for the signal to be equalizer.
+Output Ports
+▪
+(Out) "Out" is the Audio output port for the equalized signal.
+10.20.3 Properties: View Page
+ 
+Making the Frequency Response Graph Visible on the Panel
+One way to graphically characterize a filter is to plot its frequency response. On the hori­
+zontal axis you have the frequencies of the signal, in the logarithmic scale. On the vertical 
+axis you have the corresponding frequency component's magnitude in respect to the in­
+coming magnitude (also in the logarithmic, decibel scale). All of REAKTOR's filters (ex­
+cept the all-pass filter, which has a flat frequency (magnitude) response, and the Integra­
+tor and Differentiator) have this characteristic plot as a Panel representation. The frequen­
+cy range of this plot in REAKTOR is 10 Hz to 20 kHz. This can be a very useful compo­
+nent in your Instrument since you get direct visual feedback on how the cutoff frequency, 
+resonance, and boost parameters affect the overall frequency response curve.
+► To turn on the graphic display of your filter's frequency response in the Instrument Pan­
+el, go to the Module's View page and engage the On checkbox, shown in the figure below.
+Changing the Size of the Filter's Panel Representation
+Depending on your Panel layout, you want a small or large graph of the frequency response 
+on your Instrument Panel.
+Filter
+Low Shelf EQ
+ 
+REAKTOR 5.5 - Module Reference - 590
+
+
+--- Page 591 ---
+
+► To change the width and height of the filter's Panel representation, go to the Module's 
+View page and enter the desired values into the Width and Height edit fields, as shown in the 
+figure below.
+10.21 Low Shelf EQ FM
+ 
+Fig. 10.36 Lo Shelf EQ FM Module
+10.21.1 Overview
+ 
+The Lo Shelf EQ FM Module is a parametric equalizer with a low shelving characteristic. 
+The "B" (boost) parameter determines the amplification or attenuation of the frequencies 
+below the cutoff frequency. Frequencies above the cutoff frequency are not affected. The 
+cutoff frequency for this Module is determined in the logarithmic scale at the "P" (cutoff 
+pitch) input port and can be modulated in the linear frequency scale using the "F" (cutoff 
+frequency) input port. Only the graphic display stemming from the "P" (cutoff pitch) value 
+is shown in the Panel representation.
+Application
+With the Lo Shelf EQ FM Module you can amplify or attenuate low frequency components 
+without affecting the higher frequencies. This Module is generally useful in reducing low 
+frequencies in or adding a "bass boost" to an incoming signal.
+Filter
+Low Shelf EQ FM
+ 
+REAKTOR 5.5 - Module Reference - 591
+
+
+--- Page 592 ---
+
+10.21.2 Ports
+ 
+Input Ports
+▪
+(P) "P" (cutoff pitch) is the Event input port for controlling the cutoff frequency in the 
+logarithmic scale. The cutoff pitch is given in semitones, usually in the range [20 … 
+120] which roughly corresponds to a frequency range of [26 Hz … 8370 Hz]. The 
+pitch value "69" corresponds to "Concert A" or 440 Hz. If left disconnected, the default 
+value of "0" is used for this input port. This default value corresponds to 8 Hz in the 
+frequency scale.
+▪
+(F) "F" (cutoff frequency) is the Audio input port for linear modulation of the cutoff fre­
+quency in Hz. The value at the "F" (frequency) input port is added to the frequency de­
+termined by the "P" (cutoff pitch) input port. The sum is then the final cutoff frequen­
+cy.
+▪
+(B) "B" (boost) is the Event input port for controlling boost / attenuation of the "shelf", 
+in dB. At the (default) value B = 0 the signal remains unchanged. The typical range for 
+values at the "B" (boost) input port is [-20 … 20].
+▪
+(In) "In" is the Audio input port for the signal to be equalized.
+Output Ports
+▪
+(Out) "Out" is the Audio output port for the equalized signal.
+10.21.3 Properties: View Page
+ 
+Making the Frequency Response Graph Visible on the Panel
+One way to graphically characterize a filter is to plot its frequency response. On the hori­
+zontal axis you have the frequencies of the signal, in the logarithmic scale. On the vertical 
+axis you have the corresponding frequency component's magnitude in respect to the in­
+coming magnitude (also in the logarithmic, decibel scale). All of REAKTOR's filters (ex­
+cept the all-pass filter, which has a flat frequency (magnitude) response, and the Integra­
+tor and Differentiator) have this characteristic plot as a Panel representation. The frequen­
+cy range of this plot in REAKTOR is 10 Hz to 20 kHz. This can be a very useful compo­
+nent in your Instrument since you get direct visual feedback on how the cutoff frequency, 
+resonance, and boost parameters affect the overall frequency response curve.
+Filter
+Low Shelf EQ FM
+ 
+REAKTOR 5.5 - Module Reference - 592
+
+
+--- Page 593 ---
+
+► To turn on the graphic display of your filter's frequency response in the Instrument Pan­
+el, go to the Module's View page and engage the On checkbox, shown in the figure below.
+Changing the Size of the Filter's Panel Representation
+Depending on your Panel layout, you want a small or large graph of the frequency response 
+on your Instrument Panel.
+► To change the width and height of the filter's Panel representation, go to the Module's 
+View page and enter the desired values into the Width and Height edit fields, as shown in the 
+figure below.
+10.21.4 Example: Low Shelf Equalizer
+ 
+This example shows how to filter an incoming signal, such as an oscillator output signal, 
+with a low shelf equalizer. The corresponding Structure is shown in the figure below. The 
+signal which is to be filtered is incoming at the "In" input port of the Filter Module. The 
+"upper" (cutoff) frequency of the low shelf is specified with the Knob Module labeled "P 
+Cutoff" at the "P" (pitch) input port, and the amplification or attenuation at the shelf is set 
+with the "Boost" Knob Module, at the "B" (boost) input port. Simple frequency modulation 
+of the filter's cutoff frequency is achieved by connecting the output of a sine oscillator to 
+the "F" (frequency) input port of the Module.
+Fig. 10.37 A simple implementation of a low shelving filter.
+Filter
+Low Shelf EQ FM
+ 
+REAKTOR 5.5 - Module Reference - 593
+
+
+--- Page 594 ---
+
+In the Rehearsal Ensemble you can get acquainted with the various filters in REAKTOR. 
+The Ensemble consists of an easy to use interface to select and tweak your filter of choice. 
+Since each filter has its own set of controls for the signal levels and transition times, 
+Stacked Macro Modules (↑1.19, Stacked Macro) have been used to make only the relevant 
+controls appear when a filter has been selected from the "Filters" list. Also, the On check­
+box in the View page has been engaged such that the graphic Panel representation of the 
+frequency response is visible, shown in the figure below.
+Fig. 10.38 The Low Shelf EQ FM Module's Panel representation with a positive "Boost" value.
+10.22 Differentiator
+ 
+Fig. 10.39 Differentiator Module
+10.22.1 Overview
+ 
+The Differentiator Module gives the slope of the input signal in change units per millisec­
+ond.
+Application
+The effect of the Differentiator Module is like a high-pass filter where the amplification is 
+proportional to the frequency. Unity gain (no amplification or attenuation) happens at the 
+frequency 159 Hz. It is usually used to determine if the incoming signal is rising or fall­
+ing.
+Filter
+Differentiator
+ 
+REAKTOR 5.5 - Module Reference - 594
+
+
+--- Page 595 ---
+
+10.22.2 Ports
+ 
+Input Ports
+▪
+(In) "In" is the Audio input port for the signal to be differentiated.
+Output Ports
+▪
+(Out) "Out" is the Audio output port for the differentiated signal.
+10.22.3 Example 1: Differentiator Audio Filter
+ 
+This example shows how to filter an incoming signal, such as an oscillator output signal, 
+with a differentiator. The corresponding Structure is shown in the figure below. The signal 
+which is to be filtered is incoming at the "In" input port of the Filter Module. A Mixer Mod­
+ule has been placed between after Differentiator output to safeguard from abrupt jumps in 
+the output signal by attenuating the signal.
+Fig. 10.40 A simple implementation of a Differentiator Module as a high-pass filter.
+In the Rehearsal Ensemble you can get acquainted with the various filters in REAKTOR. 
+The Ensemble consists of an easy to use interface to select and tweak your filter of choice. 
+Since each filter has its own set of controls for the signal levels and transition times, 
+Stacked Macro Modules (↑1.19, Stacked Macro) have been used to make only the relevant 
+controls appear when a filter has been selected from the "Filters" list.
+10.22.4 Example 2: Envelope Follower
+ 
+A good way to modulate your effects, filters, envelopes, and oscillators, is using envelope 
+followers. An envelope follower takes an input signal and uses its peaks to trigger an enve­
+lope whose amplitude matches that of the peak. The Structure in the figure below illus­
+trates such an envelope follower Structure, utilizing the Peak Detector (↑12.14, Peak De­
+tector), Differentiator (↑12.14, Peak Detector), Sample and Hold (↑12.15, Sample & 
+Hold), HR Envelope (↑9.4, HR - Env), and a 1-Pole Filter (↑10.2, HP/LP 1-Pole FM).
+Filter
+Differentiator
+ 
+REAKTOR 5.5 - Module Reference - 595
+
+
+--- Page 596 ---
+
+The incoming signal that is to trigger the envelope is first fed into the Peak Detector Mod­
+ule (↑12.14, Peak Detector). Depending on the frequency of peaks, the release time of the 
+peaks in the Peak Detector's output signal is set with the "PkRel" knob at the "Rel" input 
+port. Next, the Peak Detector Module's output is fed to the Sample and Hold Module 
+(↑12.15, Sample & Hold). This signal is only sampled and held when a negative value at 
+the Sample and Hold Module's "Trig" (trigger) input port goes from a negative value to a 
+positive value. At the same time, the Differentiator Module records if the Peak Detector 
+Module's output is rising or falling. Therefore, if the Peak Detector signal goes from a fall­
+ing state to a rising state, its output is sampled and forwarded to the "A" (amplitude) input 
+port of the HR Envelope Module (↑9.4, HR - Env). At the same time, the HR Envelope 
+Module is triggered (with this new amplitude, ultimately received from the Peak Detector 
+Module). The envelope's output signal is then smoothed by a 1-Pole Filter (low-pass) 
+where the value at its "P" (pitch) input port determines the amount of smoothing.
+Fig. 10.41 The Structure for an envelope follower effect.
+10.23 Integrator
+ 
+Fig. 10.42 Integrator Module
+10.23.1 Overview
+ 
+The Integrator Module embodies an integration function, including an input port to reset 
+the state of the function ("Set"). The outgoing signal is the sum of the values at the "In" 
+Audio input port, sampled at every millisecond.
+Filter
+Integrator
+ 
+REAKTOR 5.5 - Module Reference - 596
+
+
+--- Page 597 ---
+
+Amplification
+Integrator circuits are common components in analog circuits. The effect of an integrator 
+on an incoming signal is like a low-pass filter where amplification is proportional to 1 / fre­
+quency. Unity gain (no amplification or attenuation) happens at 159 Hz. It is usually used 
+when the values of subsequent Audio signal values continuously need to be summed.
+Note that this Module outputs the sum of the incoming values. This means that if only posi­
+tive or only negative values are present at the input port, the output signal of the Integrator 
+Module "explodes"!
+10.23.2 Ports
+ 
+Input Pors
+▪
+(Set) "Set" is the Event input for the reset action. When an Event is received, the inter­
+nal state and output signal of the Module is set to the value of the Event.
+▪
+(In) "In" is the Audio input port for the signal to be integrated.
+Output Ports
+▪
+(Out) "Out" is the Audio output port for the integrated signal.
+10.23.3 Example: Integrator Audio Filter
+ 
+This example shows how to filter an incoming signal, such as an oscillator output signal, 
+with an integrator. The corresponding Structure is shown in the figure below. The signal 
+which is to be filtered is incoming at the "In" input port of the Filter Module. A Mixer Mod­
+ule has been placed between after Integrator output to safeguard from an "exploding" out­
+put signal by attenuating that signal.
+Fig. 10.43 A simple implementation of an Integrator Module as a low-pass filter.
+Filter
+Integrator
+ 
+REAKTOR 5.5 - Module Reference - 597
+
+
+--- Page 598 ---
+
+In the Rehearsal Ensemble you can get acquainted with the various filters in REAKTOR. 
+The Ensemble consists of an easy to use interface to select and tweak your filter of choice. 
+Since each filter has its own set of controls for the signal levels and transition times, 
+Stacked Macro Modules (↑1.19, Stacked Macro) have been used to make only the relevant 
+controls appear when a filter has been selected from the "Filters" list.
+Filter
+Integrator
+ 
+REAKTOR 5.5 - Module Reference - 598
+

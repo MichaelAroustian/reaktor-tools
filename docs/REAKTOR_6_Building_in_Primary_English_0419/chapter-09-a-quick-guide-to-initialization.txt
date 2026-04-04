@@ -1,0 +1,62 @@
+--- Page 140 ---
+
+9
+A Quick Guide to Initialization
+ 
+Initialization was mentioned briefly in section ↑2.5.4, Event Initialization Order ↑2.5.4, Event
+Initialization Order. It is the process that occurs immediately after you load an Ensemble.
+Initialization is particularly important for Events signals and Event Modules, especially in com-
+plex structures. It is important to be mindful of the initialization process - an Ensemble that
+works fine while it is being built, may experience odd behavior when it is closed and re-loaded.
+As an example, in normal circumstances the Add Module sends an Event when an Event ar-
+rives at either input port. Even in the example shown below, the Add Module will output two
+Events when the Knob sends one, although they will happen almost simultaneously.
+However, during initialization, the Add Module will preemptively look at all the values at its in-
+puts and send a single Event from its output port.
+Initialization of the Order Module
+The Order Module exhibits special behavior during initialization.
+You may have already used the Order Module in the earlier tutorials, but they did not
+explain initialization.
+The Order Module only sends an Event from its 1 output port during the actual initialization
+procedure. The Events from the 2 and 3 output ports come later.
+It is also important to note that this affects Modules that come before the Order Module.
+With the Show Event Init Order option active, you can see this in effect:
+A Quick Guide to Initialization
+ 
+REAKTOR 6 - Building In Primary - 140
+
+
+--- Page 141 ---
+
+Initialization of the Merge Module
+Another Module that has special behavior at initialization is the Merge Module. As with the
+Add Module example, it sends only one Event during initialization. As a result, the Merge Mod-
+ule cannot behave like it does during normal operation, that is, to forward all Events to its out-
+put. It only forwards the Event from the bottommost input port to its output port.
+In the Structure shown below, the Merge Module sends the value “3” to its output during initi-
+alization.
+Another special property of the Merge Module is that its ports determine the initialization order
+of the Modules connected to them.
+The rule is that the Modules are always initialized from top to bottom. So if you look at the
+example Structure again with the Show Event Init Order option active, you will see this illus-
+trated:
+Even though the Merge Module will only let the Event from the bottommost input port through,
+the initialization order can affect other parts of the Structure as well if the Modules lying up-
+stream of the Merge Module have other connections as well.
+A Quick Guide to Initialization
+ 
+REAKTOR 6 - Building In Primary - 141
+
+
+--- Page 142 ---
+
+In the following structure, the Merge Module is highlighted and Show Event Init Order is ac-
+tive.
+It shows that everything connected to the top port of the Merge Module gets initialized first,
+and then the Modules connected to the lower port are initialized.
+For simple structures, this behavior should not cause any problems, but should issues arise
+with the timing of Events during initialization, this is something to look out for.
+A Quick Guide to Initialization
+ 
+REAKTOR 6 - Building In Primary - 142
+

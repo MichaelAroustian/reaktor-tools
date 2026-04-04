@@ -1,0 +1,40 @@
+--- Page 207 ---
+
+15
+An Introduction to Core
+ 
+Core Cells are in some ways like a hybrid between a Module and a Macro.
+A Core Cell
+Core Cells can be identified by the icon of a cube made of dots.
+The Primary level of REAKTOR treats Core Cells like Modules, but you can enter the Structure
+of a Core Cell like a Macro.
+Although Primary and Core share the basic REAKTOR building paradigm of connecting blocks
+with wires to create new things, Core uses different signal types and has its own set of Modules
+that make it more optimized for creating low level DSP functions.
+Another way to think about it is like this:
+•
+The Primary level of REAKTOR is where you can connect an oscillator Module to a filter
+Module.
+•
+The Core level is a programming environment where you would create your own oscillator
+and filter algorithms.
+An Introduction to Core
+ 
+REAKTOR 6 - Building In Primary - 207
+
+
+--- Page 208 ---
+
+The Structure of a Core Cell
+Even though Core is a deeper programming environment, Primary is still necessary for building
+user interfaces and receiving MIDI signals. In other words, Core requires the Primary level in
+order to communicate with the "outside world".
+To learn how to program in Core, read the REAKTOR 6 Building in Core document.
+Learning Core is not mandatory for building in REAKTOR, there are a number of Core Cells and
+Core Macros in the Factory Library for you to use. However, if you want to dive deeper into
+building and customizing REAKTOR instruments and effects, learning Core can be a very use-
+ful tool.
+An Introduction to Core
+ 
+REAKTOR 6 - Building In Primary - 208
+

@@ -1,0 +1,329 @@
+--- Page 128 ---
+
+8
+Drag and Drop Sampler
+ 
+8.1
+Overview
+ 
+Table References are a signal type that facilitates flexible and efficient sharing of data in the
+structure. Modules and Macros that make use of Table References are part of the Table Frame-
+work.
+Reference information about the Table Framework can be found in section ↑16, Table
+Framework.
+In the following tutorial, you will use Macros that are part of the Table Framework to create a
+drag and drop sampler with a waveform display. You will also look at the structure of these
+Macros to learn how Table References can be used.
+This tutorial will also introduce Core Cells and how they interact with the Primary level of RE-
+AKTOR.
+8.1.1
+Previous Knowledge
+ 
+This tutorial assumes you have read the tutorials up until this point. You should already know
+how to navigate the Structure View and should be familiar with Event processes.
+8.1.2
+Theory
+ 
+A table is a two-dimensional array of data, and Table References allow you to access this data
+anywhere in the structure. These properties make the Table Framework ideal for working with
+samples.
+Table References exist in the Primary level of REAKTOR, but are utilized by Core Cells.
+In this tutorial, the Table Reference will be an audio sample. The Ensemble you create will use
+the Primary structure to load the sample, which will then have its data sent to Core Cells for
+playback and to calculate the display.
+Drag and Drop Sampler
+Overview
+ 
+REAKTOR 6 - Building In Primary - 128
+
+
+--- Page 129 ---
+
+8.2
+Tutorial
+ 
+8.2.1
+The Drag and Drop Area
+ 
+To start, you will need a blank canvas:
+1.
+Create a new Ensemble.
+All of the Library Macros that make use of the Table Framework can be found in the 03 - Sam-
+pler section of the Library. In this section is a sub-section called TF-macros that contains a
+number of building-blocks for creating your own samplers.
+As a first step, you will create the Drag and Drop Area:
+1.
+Open the Library Browser in the Side Pane.
+2.
+Open the Primary folder, followed by the 03 - Sampler folder.
+Drag and Drop Sampler
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 129
+
+
+--- Page 130 ---
+
+3.
+Click on the TF macros folder to display its contents in the lower half of the Side Pane.
+4.
+Drag the TF 1Sample Drop Macro into the Structure.
+The TF 1Sample drop Macro
+Looking at the Macro you have just loaded, you will notice a new port type. This kind of port is
+a Table Reference port and is used to send Table References (in this case audio sample data)
+around the Structure.
+Table References do not send signals with single values in the same manner as Audio or Event
+ports, but rather send a reference to a table of data.
+Drag and Drop Sampler
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 130
+
+
+--- Page 131 ---
+
+If you think of a sample as a table of data that is store in RAM, the Table Reference is a point-
+er to that data.
+1.
+Enter the TF 1Sample drop Macro by double-clicking on it.
+The Structure of the TF 1Sample drop Macro
+In the Structure of the Macro you will notice a number of Modules called info. These Modules
+contain information regarding the Modules to which they are closest.
+To view the information in these Modules:
+1.
+Click on the Module to select it.
+2.
+Open the Properties View in the Sidepane.
+3.
+Click on the Info tab.
+⇨The information in the Module will be displayed in the Properties.
+While the Info tab is open, you can click on other Modules and the information will up-
+date accordingly.
+As a brief overview of the Macro there are three important Modules:
+The Mouse Area
+The Mouse Area Module (renamed here to drop zone) is used to define the area where the user
+can drop an audio file.
+Drag and Drop Sampler
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 131
+
+
+--- Page 132 ---
+
+•
+The 1 at the DpA input tells the Module that it should accept audio files for drag and
+drop.
+•
+The *Dp (Drop) output sends the Table Reference whenever an audio file is dragged over
+the Mouse Area and whenever it is dropped.
+•
+The DpG (Drop Gate) output is used to send the drag and drop state of the audio file.
+The values from the Mouse Area are then sent to the next important Module…
+The Router 1->M
+Since the *Dp output sends Table References when an audio file is dragged over the Mouse
+Area, as well as when it is Dropped, the Router 1->M Module is used to control which *Dp Ta-
+ble Reference is sent to the rest of the Structure.
+1.
+The Router only allows a *Dp Reference through when the value of the DpG is at 1.
+2.
+The DpG outputs a 0 value generally, a 2 when an audio file is dragged over it, and a 1
+when it is dropped.
+3.
+Thus, the Router blocks the *Dp References until the file is definitely dropped on the
+Mouse Area by the user.
+The Table List
+The Table List is the Module that holds the Table data.
+As the name suggests, it can hold several Tables in a list. The different Tables are selected
+using indices. But in this instance, it only holds a single Table, so the indices are left blank.
+•
+The Table Reference is sent from the Router into the Table List, which stores it.
+•
+A Core Cell (named dropped?) is used to trigger the output of the Table Reference from
+the Table List by sending a value to the Sel input of the Table List.
+•
+The Table Reference is then sent out of the Macro and into the rest of the Structure.
+•
+Note that an Event will also be sent to the Sel input during initialization because of the
+Constant attached to the Merge Module. This will ensure that the Table Reference will be
+sent to the Structure during initialization.
+Drag and Drop Sampler
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 132
+
+
+--- Page 133 ---
+
+8.2.2
+The Waveform Display
+ 
+For the purposes of layering, you need to place the Waveform Display Macro inside the drop
+Macro.
+1.
+Insert the TF Waveform Display Macro into the Structure of the TF 1Sample drop Macro.
+The TF Waveform Display has an input for Table References. It then uses the Table data to
+draw a waveform using a Multi Display.
+1.
+Connect the Table Reference output of the Table List to the Table Reference input of the
+Waveform Display Macro.
+The Structure of the Waveform Display is more complicated than the 1Sample drop, but the
+basic theory is that when a Table Reference is sent to its input, an iteration process is trig-
+gered. This process reads the data in the Table which is then converted it into signals that can
+be used by a Multi Display Module.
+This is the same basic principal behind the Step Sequencer from section ↑6, Advanced Step
+Sequencer.
+Next, you need to align these Macros on the Panel.
+You do not need the delete button or the Table List on the Panel, so they should be hidden.
+1.
+Select the Table List Module.
+2.
+Open the View tab of its Properties.
+Drag and Drop Sampler
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 133
+
+
+--- Page 134 ---
+
+3.
+Deactivate the On option in the VISIBLE section.
+4.
+Repeat this process with the delete Button.
+Resizing the Mouse Area
+Next, you will enlarge the Mouse Area so that it covers the whole Waveform Display.
+1.
+Select the Mouse Area Module.
+2.
+Open the View tab of its Properties.
+3.
+Set the Width (Pixels) parameter to 368.
+4.
+Set the Height (Pixels) parameter to 54.
+⇨The Mouse Area is now the same size as the Waveform Display.
+1.
+Unlock the Panel to see the Mouse Area as a grey shadow.
+Drag and Drop Sampler
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 134
+
+
+--- Page 135 ---
+
+2.
+Move the Mouse Area until it covers the Waveform Display.
+3.
+Lock the Panel.
+The Panel elements of the Drag and Drop Sampler are complete.
+1.
+Drag and drop an audio file (wav or aiff) onto the Mouse Area.
+⇨The Waveform of the audio file will be displayed on the Panel.
+Changing the Waveform Color
+It is possible to change the color of the display by opening some hidden controls.
+1.
+Enter the Waveform Display Macro Structure.
+2.
+Select the Color control Macro.
+3.
+Open the View tab of its Properties.
+4.
+Activate the On option in the VISIBLE section.
+Drag and Drop Sampler
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 135
+
+
+--- Page 136 ---
+
+⇨Color controls will appear on the Panel.
+1.
+Edit the color of the waveform using these controls.
+2.
+When you are finished, return to the View tab of its Properties and deactivate the On op-
+tion in the VISIBLE section.
+8.2.3
+Playback
+ 
+The Sampler can load samples and it can display their waveforms, but it cannot yet play the
+samples. You will need one final Macro for that.
+1.
+Navigate to the top level of the Ensemble.
+2.
+In the TF macros sub-section of the Library, load the TF basic Player Macro.
+The TF basic Player Macro
+The Basic Player plays the audio data from a Table when it receives a gate signal.
+1.
+Connect the TF basic Player Macro as shown below.
+⇨The Table Reference from the Table List in the TF 1Sample drop Macro will feed into the
+TF basic Player Macro.
+Next, you need to connect a gate to the TF basic Player Macro so that the user can trigger
+playback of the sample.
+Drag and Drop Sampler
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 136
+
+
+--- Page 137 ---
+
+1.
+Create a Gate (MIDI In) Module.
+2.
+Connect it to the G input of the TF basic Player Macro.
+⇨Play a MIDI key to trigger the sampler.
+1.
+In the Panel View, move the basic play Macro so that it is not obscuring the Waveform
+Display.
+Basic Player Structure
+Now is a good time to take a look into the Structure of the basic Player Macro.
+1.
+Double-click on the basic Player Macro to enter its Structure.
+The Structure of the basic Player Macro
+There are two Core Cells in this Structure, one called Loop and one called 1 shot, each one
+handling a different mode of sample playback.
+Drag and Drop Sampler
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 137
+
+
+--- Page 138 ---
+
+This tutorial will not cover the contents of the Core Cells, their contents would be close to
+meaningless without some understanding of Core (read the REAKTOR 6 Building in Core docu-
+ment to learn about building Core Cells).
+The Module that will be explored is the Table Info Module (renamed in this Structure to SR).
+The Table Info Module reads meta-data from a Table and exports that data as an Event value.
+In this Structure, the Table Info Module is retrieving the sample rate (SR) of the audio file and
+sending that information to the Core Cells.
+1.
+The meta-data that the Table Info Module retrieves is set in its Properties.
+Drag and Drop Sampler
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 138
+
+
+--- Page 139 ---
+
+8.3
+Going Further
+ 
+The Table Framework allows you to manipulate audio samples in your own custom structures,
+but it requires Core Cells for this, and so now is a good time to jump into the Core level of
+REAKTOR (see section ↑15, An Introduction to Core).
+You can also read section ↑16, Table Framework for more detailed information about the Table
+Framework.
+Related Factory Content
+Everything in the 03 - Sampler section of the Library uses the Table Framework. You can load
+in any of the Samplers and check out their Structures.
+As a starting point, however, it is advised that you begin by looking into the other TF macros.
+These Macros are annotated with info Modules and are much easier to navigate and read.
+Drag and Drop Sampler
+Going Further
+ 
+REAKTOR 6 - Building In Primary - 139
+

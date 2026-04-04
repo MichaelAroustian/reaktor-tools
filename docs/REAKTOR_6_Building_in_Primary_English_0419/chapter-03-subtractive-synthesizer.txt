@@ -1,0 +1,442 @@
+--- Page 34 ---
+
+3
+Subtractive Synthesizer
+ 
+3.1
+Overview
+ 
+REAKTOR is a visual programming environment, allowing you to build musical tools specific to
+your own needs. This tutorial will introduce the basic skills needed to build your own Ensem-
+bles from the components in the Macro Library using a subtractive synthesizer as an example.
+3.1.1
+Previous Knowledge
+ 
+This tutorial assumes you have read all of the documentation up to this point and that you are
+familiar with REAKTOR's interface and basic functionality, including how to navigate in the
+Structure View.
+The tutorial also assumes that you have set up your Audio and MIDI devices and are able to
+play REAKTOR Ensembles from the Factory Library.
+3.1.2
+The Theory
+ 
+In its most basic form, a subtractive synthesizer is an oscillator routed through a filter. A har-
+monically rich waveform, like a saw wave, has its harmonics subtracted by the filter, hence the
+term subtractive synthesis.
+However, even early synthesizer designers knew that a single oscillator and a single filter were
+not enough on their own and that modulation was required to change the sound over time. Am-
+plifiers, LFOs (Low Frequency Oscillators) and Envelopes were added to give sound designers
+and musicians more flexibility.
+In this tutorial, you will use the Macro Library to build a subtractive synthesizer, learning the
+basics of building in REAKTOR along the way.
+Subtractive Synthesizer
+Overview
+ 
+REAKTOR 6 - Building In Primary - 34
+
+
+--- Page 35 ---
+
+3.2
+Tutorial
+ 
+3.2.1
+Setting Up
+ 
+Before you begin building, you need to have REAKTOR running in Edit Mode.
+1.
+If Edit Mode is not already enabled, activate it by clicking on the EDIT button in the tool-
+bar.
+Next, you need to create a new empty Ensemble.
+1.
+Create a new empty Ensemble by entering the File menu and selecting New Ensemble.
+2.
+Alternatively, you can use the shortcut [Ctrl] + [N] ([Cmd] + [N] on OSX)
+When you create a new Ensemble in Edit Mode, it loads with the screen already split horizon-
+tally, with the Panel View on top and the Structure View below.
+Subtractive Synthesizer
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 35
+
+
+--- Page 36 ---
+
+The New Ensemble, as it appears when first loaded.
+This kind of split-screen setup is useful when building something like a synthesizer, as
+you can view the Panel and the Structure at the same time, allowing you to edit them
+both without navigating back and forth.
+Subtractive Synthesizer
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 36
+
+
+--- Page 37 ---
+
+3.2.2
+Building a MIDI Controlled Oscillator
+ 
+For this synthesizer, there will be one oscillator, the amplitude of which will be controlled with
+an AHDSR envelope. So the first step towards building this will be to create these elements.
+1.
+In the Structure View, right-click on an empty space to open the Context Menu.
+2.
+Navigate to the Library entry to view the Macro Library.
+3.
+In the 02 - Oscillator sub-menu, select OSC Sync.
+Subtractive Synthesizer
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 37
+
+
+--- Page 38 ---
+
+⇨The OSC Sync Macro will be inserted into the Structure and will also appear on the Ensem-
+ble Panel.
+Subtractive Synthesizer
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 38
+
+
+--- Page 39 ---
+
+1.
+To create an AHDSR Envelope, repeat the above process, only this time select the AHDSR
+entry in the 04 - LFO, Envelope sub-menu.
+With the two elements created, the next step is to wire them together.
+1.
+Click and drag with the mouse to create a wire from the Out Port of the OSC Sync Macro
+to the In Port of the AHDSR Macro.
+The AHDSR Macro has its own internal amplifier, so connecting the oscillator to the envelope in
+this way means that the envelope will control the output volume of the oscillator.
+Subtractive Synthesizer
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 39
+
+
+--- Page 40 ---
+
+The output of the AHDSR Macro will be the final output of the synthesizer for now, so the next
+step will be to connect it to the Ensemble outputs. However, there are two Ensemble Out
+Ports, one for each of the stereo channels (left and right). To produce a sound from both
+speakers, the output of the AHDSR should be connected to both ports. Fortunately, REAKTOR
+allows you to make multiple connections from one output port to multiple input ports.
+1.
+Create connections from the Out Port of the AHDSR Macro and to the input ports of both
+of the Ensemble Out Ports.
+With the two Macros created and connected, it is a good time to arrange the controls on the
+Ensemble Panel.
+Looking at the Panel view, you can see that the AHDSR Macro was created on top of the OSC
+Sync Macro.
+The Panel View
+In order to make the Ensemble usable, you should re-arrange the Macros so that they are not
+obscuring each other in this way.
+1.
+Unlock the Ensemble Panel by clicking on the padlock icon.
+Subtractive Synthesizer
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 40
+
+
+--- Page 41 ---
+
+2.
+Click on the title of the AHDSR Macro to select the whole Macro and all of the controls
+contained within it.
+3.
+Move the Macro so that it is no longer overlapping with the OSC Sync Macro.
+4.
+When you are finished, lock the Panel by clicking on the padlock again.
+Whichever Macro was last selected in the Structure View will be the Macro that is on the
+top layer on the Panel. This means that the OSC Sync Macro could be on top of the
+AHDSR Macro, but the principal of moving the Macros remains the same.
+With the Macros connected and the Panel arranged, the next step is to make the instrument
+playable. To do this you will need to connect MIDI Pitch and Gate messages to the Ensemble
+Structure. The MIDI Pitch will control the pitch of the oscillator and the Gate will be used to
+trigger the envelope.
+The Macro Library includes a Pitch and Gate Macro that you can use for this. To speed up the
+process, you can use the Searchbox to load this Macro.
+1.
+In the Structure View, press [Enter] to open the Searchbox.
+2.
+Type "Pitch and Gate" into the Searchbox.
+3.
+Press [Enter] to insert the Pitch and Gate Macro into the Structure.
+Subtractive Synthesizer
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 41
+
+
+--- Page 42 ---
+
+REAKTOR's Modules and Macro Library use a number of standard abbreviations for Port
+names. A port named P is always for pitch, and a G Port is always for gate signals.
+1.
+Since the MIDI Pitch will control the pitch of the oscillator, connecting the two Macros to
+accomplish this is a case of connecting the two P ports to each other.
+2.
+The same logic applies to the G Ports of the Pitch and Gate Macro and the AHDSR Macro.
+⇨With the Pitch and Gate connections made, play the MIDI keyboard to hear a sound.
+As a final step, you will need to re-arrange the Ensemble Panel to accommodate the Pitch and
+Gate Macro.
+1.
+Unlock the Ensemble Panel.
+Subtractive Synthesizer
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 42
+
+
+--- Page 43 ---
+
+2.
+Move the Pitch and Gate Macro so that it is not overlapping with the other Macros.
+3.
+When you are finished, lock the Panel.
+You have just created a basic synthesizer that you can play with a MIDI Keyboard.
+3.2.3
+Adding the Filter
+ 
+The synthesizer you have created is only the first part of a subtractive synthesizer: the oscilla-
+tor. The next step is to add the second part: a filter.
+For this part of the tutorial, you will use the Library tab in the Side Pane to load the filter Mac-
+ro.
+1.
+If the Side Pane is not already open, open it now by clicking on the magnifying glass icon
+in the toolbar.
+2.
+With the Side Pane open, click on the magnifying glass tab to open the browser.
+Subtractive Synthesizer
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 43
+
+
+--- Page 44 ---
+
+3.
+Click on the Library tab to display the Builder Library content.
+4.
+Open the Primary folder by clicking on the folder icon.
+5.
+Click on the 05 - Filters folder to display its contents in the lower half of the Side Pane.
+Subtractive Synthesizer
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 44
+
+
+--- Page 45 ---
+
+6.
+Click and drag the State Variable Filter into the Ensemble Structure.
+7.
+Release the mouse to insert the State Variable Filter Macro into the Structure.
+⇨The State Variable Filter Macro will be added wherever you dropped it.
+The State Variable Filter should be connected to the end of the Ensemble Structure, in order
+for it to process the audio coming from the oscillator.
+1.
+Remove the wires connecting the AHDSR Macro to the Ensemble Outputs by selecting
+them and pressing the [Delete] key.
+2.
+Connect the State Variable Filter as illustrated below.
+3.
+Return to the Panel View and Unlock the Panel.
+Subtractive Synthesizer
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 45
+
+
+--- Page 46 ---
+
+4.
+Move the State Variable Filter so that it is not obscuring any other Macros.
+5.
+Lock the Panel.
+⇨Congratulations! You have built a playable subtractive synthesizer in REAKTOR.
+3.2.4
+Modulating the Filter
+ 
+A static filter, like the one that is currently in your synthesizer, does not sound very interesting.
+However, with REAKTOR you can always build more! By connecting the envelope to the filter,
+you will be able to modulate the filter to alter the timbre of the synthesizer over time.
+Subtractive Synthesizer
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 46
+
+
+--- Page 47 ---
+
+1.
+The most simple way of doing this is to connect the Env output of the AHDSR Macro to
+the mC (modulate Cutoff) input of the State Variable Filter.
+However, this doesn't allow you to control the modulation amount.
+To add control for the modulation amount, you will need to start using Modules, which are the
+basic building blocks in REAKTOR.
+The basic skills required to use Modules are not much different from those you have developed
+already.
+To control the modulation amount, there needs to be a multiplier between the envelope and
+the filter, and a knob to control the multiplication amount.
+1.
+In the Structure View, open the Searchbox by pressing [Enter]
+2.
+Type "Multiply" and press [Enter] to create a Multiply Module.
+3.
+Open the Searchbox again and type "Knob" to create a Knob Module.
+4.
+Connect the Knob to the Multiply Module.
+Subtractive Synthesizer
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 47
+
+
+--- Page 48 ---
+
+5.
+Connect the Multiply Module to the Ensemble Structure between the AHDSR Macro and
+the State Variable Filter Macro, as illustrated below.
+6.
+Double-click on the Knob to re-name it.
+7.
+Re-name the Knob "Env -> Filt"
+Subtractive Synthesizer
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 48
+
+
+--- Page 49 ---
+
+8.
+In the Panel View, move the new Env -> Filt knob so that it is not obscuring any other
+controls.
+⇨Turn the Env -> Filt knob to control the intensity of the modulation from the envelope to
+the filter.
+3.2.5
+Adding Polyphony
+ 
+The synthesizer you have created is monophonic; it can only play one note at a time, making it
+impossible to play chords.
+By increasing the number of Voices in the Ensemble, you can make the synthesizer polyphon-
+ic, i.e. capable of producing several notes at once. The number of Voices directly affects the
+number of notes you can play at once, so an Ensemble with 3-Voice polyphony can play up to
+three notes at any one time.
+Before you change the number of voices, you will need to create an Audio Voice Combiner.
+The importance of Voice Combiners, as well as their use in this scenario, is described in section
+↑2.4.4, Voice Combiners ↑2.4.4, Voice Combiners.
+Subtractive Synthesizer
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 49
+
+
+--- Page 50 ---
+
+1.
+In the Structure View, open the Searchbox by pressing [Enter]
+2.
+Type "Audio Voice" into the Searchbox and the Audio Voice Combiner Module will appear
+in the results.
+3.
+Press [Enter] to insert the Audio Voice Combiner into the Structure. It will appear as a
+Module labeled with the } symbol.
+4.
+Connect the Audio Voice Combiner between the State Variable Filter Macro and the En-
+semble Out Ports.
+⇨With the Audio Voice Combiner connected, changing the number of voices will not cause
+any errors.
+The next step to add polyphony to the synthesizer is to increase the number of Voices in the
+Ensemble. This can be done in the Ensemble Properties.
+1.
+Select the Ensemble by either clicking on an empty space in the Structure View, or by
+clicking on the Ensemble Header.
+2.
+Click on the Properties tab (the checkbox icon) in the Side Pane.
+Subtractive Synthesizer
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 50
+
+
+--- Page 51 ---
+
+3.
+The Properties should open on the Function tab, but if it does not, click on the Function
+tab.
+4.
+In the Function tab, locate the section called VOICES.
+5.
+The Voices parameter in this section is currently set to 1, making the Ensemble mono-
+phonic.
+6.
+Change the Voices parameter in this section either by clicking on the value and dragging
+to a new value, or by double-clicking on the value and entering a new value with the key-
+board.
+7.
+Set the Voices parameter to 8.
+⇨You can now play up 8 notes at once.
+Playing several notes at once may cause REAKTOR's output to overload, so you should
+reduce the master output level in the Toolbar to avoid this.
+Congratulations! You have created a polyphonic subtractive synthesizer in REAKTOR.
+Subtractive Synthesizer
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 51
+
+
+--- Page 52 ---
+
+3.3
+Going Further
+ 
+By connecting more Macros to your synthesizer, you will be able to expand it in any number of
+ways. For example, you could connect an LFO to also modulate the filter cutoff.
+Adding LFO Modulation
+You could add a second oscillator for Frequency Modulation (FM)
+An FM Structure
+Subtractive Synthesizer
+Going Further
+ 
+REAKTOR 6 - Building In Primary - 52
+
+
+--- Page 53 ---
+
+You can even add some effects after the Audio Voice Combiner.
+Adding Chorus and Delay Effects
+By experimenting with different Macros and signal routing, you can create any number of dif-
+ferent sound tools.
+3.3.1
+Related Factory Content
+ 
+2-Osc is a relatively simple subtractive synthesizer Ensemble that can be found in the Factory
+Library in the Synthesizers folder.
+Its structure is organized into Macros like the synthesizer you have built, and these Macros are
+well labeled, making it easy to navigate.
+The 2-Osc Structure
+Subtractive Synthesizer
+Going Further
+ 
+REAKTOR 6 - Building In Primary - 53
+
+
+--- Page 54 ---
+
+This not only makes it a good example for learning REAKTOR, but also makes it an easy En-
+semble to customize.
+Junatik is another simple subtractive synthesizer with a Structure that is also easy to read.
+The Junatik Structure
+Subtractive Synthesizer
+Going Further
+ 
+REAKTOR 6 - Building In Primary - 54
+

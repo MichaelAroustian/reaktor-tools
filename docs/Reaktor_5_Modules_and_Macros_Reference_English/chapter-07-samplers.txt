@@ -1,0 +1,1321 @@
+--- Page 402 ---
+
+7
+Samplers
+ 
+If the source of your Audio signal in REAKTOR is not an oscillator or an external Audio 
+input signal, then it must be a Sampler Module. REAKTOR’s Sampler Modules include ba­
+sic sample players as well as sophisticated sample processors for granular synthesis, pitch 
+and time shifting, and beat slicing. There’s even one for picking out individual samples by 
+number. For an overview of the different kinds of Sampler Modules and their Function and 
+Appearance pages, please refer to chapter 10 in the Application Reference.
+7.1
+Sampler
+ 
+Fig. 7.1 Sampler Module
+7.1.1
+Overview
+ 
+The Sampler Module is a "conventional" sampler, as described in subsection 10.2.1 in the 
+Application Reference. The playback speed of the sample is coupled to the playback 
+pitch. If you send a higher pitch value to the "P" (pitch) input port of the Module and trig­
+ger a playback, then the playback speed is increased. The spectral components of the 
+sample are transposed uniformly, that is, all components are transposed by the same 
+amount. This means that by transposing a sample too much, the perceived timbre of the 
+sample is strongly altered. For example, an adult human voice that is transposed upwards 
+an octave will sound like a chipmunk. Sample management is carried out in the Sample 
+Map Editor.
+Please refer to chapter 6 in the Application Reference for more information on the Sample 
+Map Editor.
+Application
+The Sampler Module is used for real-time polyphonic and transposed playback of samples 
+in Sample Maps. You can build samplers that are triggered for a "one-shot" playback with 
+the trigger signal coming from a button on the Instrument Panel or as an Event from a se­
+quencer. You can also use edit the sample playback settings in the Sample Map Editor 
+Samplers
+Sampler
+ 
+REAKTOR 5.5 - Module Reference - 402
+
+
+--- Page 403 ---
+
+and have the sample playback as a loop. This is useful when you wish to playback beat 
+loops or long atmospheric samplers. Another application is to use the Sampler Module as 
+an oscillator where the oscillator waveform is given by the loaded sample. For this you 
+must have the Oscillator Mode checkbox in the Module's Function page engaged. The play­
+back rate of the sample will then be adjusted to produce the correct pitch.
+7.1.2
+Ports
+ 
+Input Ports
+▪
+(P) "P" (pitch) is the Event input port for controlling the playback rate (pitch) at which 
+the sample is played back and for selecting a sample from the loaded Sample Map. 
+The "P" (pitch) value is given in the logarithmic pitch scale, in semitones belonging to 
+the range [0 … 127] where "69" corresponds to "Concert A" or 440 Hz. If the pitch 
+value is equal to the Root Key of the current sample, the sample will be played back at 
+its original pitch.
+▪
+(Trig) "Trig" (trigger) is the Event input port for triggering a sample playback from the 
+beginning of the sample. A positive Event at this input is considered a trigger.
+▪
+(A) "A" (amplitude) is the Audio input port for controlling the playback amplitude and 
+the selection of a sample from the Sample Map by velocity mapping. Values in the 
+range [0 … 1] are mapped to the velocity range [0 … 127] in the Sample Map.. Since 
+this is an Audio input port, it can be used for ring modulation.
+Output Ports
+▪
+(Out) "Out" is the Audio output port delivering the sample player's output signal.
+7.1.3
+Example: Sampler with Trigger Button
+ 
+The simplest sampler Instrument can be built using the Sampler Module (↑7.1, Sampler) 
+which receives its pitch input from the Note Pitch Module (↑2.1, Note Pitch) and its trig­
+ger signal from a Button Module (↑1.2, Button). Its amplitude can be controlled from the 
+Instrument Panel using a Knob Module (↑1.1, Fader/Knob) labeled "Ampl", as shown in 
+the Structure below. Note that you can create a Knob Module (or sometimes a Button or 
+Fader Module) for an input port with the right range and resolution simply by right-clicking 
+the input port and choosing the Create Control menu entry. Make sure that the Button at 
+the "Trig" (trigger) input port has been set to Trigger Mode in its Function page.
+Samplers
+Sampler
+ 
+REAKTOR 5.5 - Module Reference - 403
+
+
+--- Page 404 ---
+
+Please refer to subsection 6.2.1 in the Application Reference for more information on load­
+ing samples into the Sampler Module's Sample Map.
+Fig. 7.2 The Structure for a simple sampler Instrument.
+7.2
+Sampler FM
+ 
+Fig. 7.3 Sampler FM Module
+7.2.1
+Overview
+ 
+The Sampler FM Module is a "conventional" sampler, as described in subsection 10.2.1 in 
+the Application Reference. The playback speed of the sample is coupled to the playback 
+pitch. If you send a higher pitch value to the "P" (pitch) input port of the Module and trig­
+ger a playback, then the playback speed is increased. The spectral components of the 
+sample are transposed uniformly, that is, all components are transposed by the same 
+amount. This means that by transposing a sample too much, the perceived timbre of the 
+sample is strongly altered. For example, an adult human voice that is transposed upwards 
+an octave will sound like a chipmunk. Sample management is carried out in the Sample 
+Map Editor. The "F" input port allows you to add frequency modulation to the sample play­
+back. Additionally, use the "St" input port to control the starting point of the sample play­
+back.
+Please refer to chapter 6 in the Application Reference for more information on the Sample 
+Map Editor.
+Samplers
+Sampler FM
+ 
+REAKTOR 5.5 - Module Reference - 404
+
+
+--- Page 405 ---
+
+Application
+The Sampler FM Module is used for real-time polyphonic and transposed playback of sam­
+ples in Sample Maps. You can build samplers that are triggered for a "one-shot" playback 
+with the trigger signal coming from a button on the Instrument Panel or as an Event from a 
+sequencer. You can also use edit the sample playback settings in the Sample Map Editor 
+and have the sample playback as a loop. This is useful when you wish to playback beat 
+loops or long atmospheric samplers. Another application is to use the Sampler FM Module 
+as an oscillator where the oscillator waveform is given by the loaded sample. For this you 
+must have the Oscillator Mode checkbox in the Module's Function page engaged. The play­
+back rate of the sample will then be adjusted to produce the correct pitch. In addition to 
+the usual sound you get from sample playback at different speeds, you get the added ben­
+efit of being able to produce an FM'ish sound by using the Sampler FM Module instead of 
+simply using the Sampler Module.
+7.2.2
+Ports
+ 
+Input Ports
+▪
+(P) "P" (pitch) is the Event input port for controlling the playback rate (pitch) at which 
+the sample is played back and for selecting a sample from the loaded Sample Map. 
+The "P" (pitch) value is given in the logarithmic pitch scale, in semitones belonging to 
+the range [0 … 127] where "69" corresponds to "Concert A" or 440 Hz. If the pitch 
+value is equal to the Root Key of the current sample, the sample will be played back at 
+its original pitch.
+▪
+(F) "F" (frequency) is the linear Audio input port for modulating the sample playback 
+rate in the linear frequency scale. When this input port is connected to another oscilla­
+tor, the frequency modulation effect is achieved — the same as for the oscillator mod­
+ules in REAKTOR. If a large negative value is present, the sample is played backwards.
+▪
+(St) "St" (start position) is the Audio input port for controlling the starting point of the 
+sample playback. The position is set in milliseconds from the start of the sample. The 
+length of the loaded sample in milliseconds is delivered by the "Len" output port. This 
+means that although the samples in your Sample Map might have different lengths, 
+you can use the value from the "Len" output port and multiply it by a parameter in the 
+range [0 … 1]. The result will yield you values in the full range of the current sample, 
+in milliseconds, which you then feed to the "St" input port. If this input port is left un­
+connected, then the default value "0" is used.
+Samplers
+Sampler FM
+ 
+REAKTOR 5.5 - Module Reference - 405
+
+
+--- Page 406 ---
+
+▪
+(Trig) "Trig" (trigger) is the Event input port for triggering a sample playback from the 
+beginning of the sample. A positive Event at this input is considered a trigger.
+▪
+(A) "A" (amplitude) is the Audio input port for controlling the playback amplitude and 
+the selection of a sample from the Sample Map by velocity mapping. Values in the 
+range [0 … 1] are mapped to the velocity range [0 … 127] in the Sample Map. Since 
+this is an Audio input port, it can be used for ring modulation.
+Output Ports
+▪
+(Out) "Out" is the Audio output port delivering the sample player's output signal.
+▪
+(Len) "Len" (length) is the polyphonic Event output port for the length of the current 
+sample in milliseconds. Use this value to calculate parameters which depend on the 
+sample length. The sample starting point (specified at the "St" input port), for exam­
+ple, is a parameter that should have a range from "0" to the length of the sample in 
+milliseconds. The latter value is exactly what is supplied by the "Len" output port.
+7.2.3
+Example: FM Sampler
+ 
+This example illustrates a sampler Instrument with frequency modulation and variable 
+starting position. As can be seen in the figure below, the Sampler FM Module (↑7.2, Sam­
+pler FM) has been used. It receives its pitch input from the Note Pitch Module (↑2.1, Note 
+Pitch) and its trigger signal from the Gate Module (↑2.3, Gate). Its amplitude can be con­
+trolled from the Instrument Panel using a Knob Module (↑1.1, Fader/Knob) labeled 
+"Ampl", as shown in the Structure below. Note that you can create a Knob Module (or 
+sometimes a Button or Fader Module) for an input port with the right range and resolution 
+simply by right-clicking the input port and choosing the Create Control menu entry.
+A sine oscillator has been used as the frequency modulation signal. The pitch and ampli­
+tude of this signal can be controlled at the corresponding input ports of its source, the 
+Sine Module (↑6.14, Sine Oscillator). The starting position of sample playback can also be 
+controlled using the Knob Module labeled "Start", which has its range set to [0 … 1]. This 
+range is multiplied by the length of the currently loaded sample, retrieved from the "Len" 
+(length) output port and is then forwarded to the "St" (start) input port.
+Please refer to subsection 6.2.1 in the Application Reference for more information on load­
+ing samples into a Sampler Module's Sample Map.
+Samplers
+Sampler FM
+ 
+REAKTOR 5.5 - Module Reference - 406
+
+
+--- Page 407 ---
+
+Fig. 7.4 The Structure for a frequency modulated sampler Instrument.
+7.3
+Sampler Loop
+ 
+Fig. 7.5 Sampler Loop Module
+7.3.1
+Overview
+ 
+The Sampler Loop Module is a "conventional" sampler, as described in subsection 10.2.1 
+in the Application Reference. The playback speed of the sample is coupled to the play­
+back pitch. If you send a higher pitch value to the "P" (pitch) input port of the Module and 
+trigger a playback, then the playback speed is increased. The spectral components of the 
+sample are transposed uniformly, that is, all components are transposed by the same 
+amount. This means that by transposing a sample too much, the perceived timbre of the 
+sample is strongly altered. For example, an adult human voice that is transposed upwards 
+an octave will sound like a chipmunk. Sample management is carried out in the Sample 
+Map Editor. The "F" input port allows you to add frequency modulation to the sample play­
+back.
+With the Sampler Loop Module you can directly access the sample loop playback settings 
+with the "St", "LS", and "LL" input ports to control the starting point of the sample play­
+back, loop starting point and loop length, respectively. If the Loop checkbox in the Sampler 
+Map editor is activated for a given sample, the sample will be continuously repeated with­
+Samplers
+Sampler Loop
+ 
+REAKTOR 5.5 - Module Reference - 407
+
+
+--- Page 408 ---
+
+in the loop range as soon as playback enters this range. The loop range is preset using da­
+ta from the sound file from which the sample was loaded. If the sound file does not con­
+tain any loop data, the beginning of the sample is taken to be the beginning of the loop 
+and the sample length is taken as the loop length. The loop data from the sound file are 
+the default settings. These defaults are always used if the "LS" (loop start) and "LL" (loop 
+length) input ports are not connected to other Modules. If the Loop in Release feature is 
+deactivated, loop playback will fade out upon a Gate Off Event occurring; depending on 
+the direction set, the sample will run to its beginning or end and will then fade out. If the 
+Loop in Release feature is activated or if loop playback is switched off, the Gate Events 
+will only have a slight effect or none at all.
+Application
+The Sampler Loop Module is used for real-time polyphonic and transposed playback of 
+mono or stereo samples in Sample Maps or Wavetables. You can build samplers that are 
+triggered for a "one-shot" playback with the trigger signal coming from a button on the In­
+strument Panel or as an Event from a sequencer. Since the loop playback settings are ac­
+cessible from input ports, you can use the Sampler Loop Module to build a sampler that 
+lets you manipulate loop settings from the Instrument Panel.
+Another application is to use the Sampler Loop Module as an oscillator where the oscilla­
+tor waveform is given by the loaded sample. For this you must have the Oscillator Mode 
+checkbox in the Module's Function page engaged. In Oscillator Mode the Sampler Loop 
+Module interprets the "LL" (loop length) value as the length of one waveform cycle. The 
+loop length is read from the sound file, but can be changed at the "LL" input of the Mod­
+ule. Therefore a sample can contain numerous waveforms. Such a sample is known as a 
+Wavetable. Assuming a waveform contains 100 sample points, then 100 such waveforms 
+fit into a sample comprising 10,000 sample points. The first waveform covers the sample 
+points 0-99, the second 100-199 etc. If the "LL" (loop length) value sets the length of a 
+waveform, then the "LS" (loop start) value logically sets the waveform to be played from 
+the Wavetable. In Oscillator Mode the values at this input are quantized, so that glitch free 
+playback between waveforms is achieved. The position in a Wavetable can be easily con­
+trolled by velocity, etc. Obviously such Wavetable samples need to be either created or 
+generated from a sample. The REAKTOR Library contains many Ensembles that serve as 
+examples for a Wavetable synthesizer. The Sampler Loop Module integrates Wavetable 
+Synthesis with REAKTOR’s existing synthesis capabilities. In this way, Wavetable Synthe­
+sis is available in combination with FM synthesis.
+Samplers
+Sampler Loop
+ 
+REAKTOR 5.5 - Module Reference - 408
+
+
+--- Page 409 ---
+
+7.3.2
+Ports
+ 
+Input Ports
+▪
+(G) "G" (gate) is the Event input port for a Gate signal. A positive Event at this input 
+starts the sample playback from the position that is set at the "St" input port. If a neg­
+ative value is present at the "G" input port, the loop playback is interrupted unless the 
+Loop in Release feature has been activated in the Sample Map Editor (see subsection 
+6.4.2 in the Application Reference for more information on this).
+▪
+(P) "P" (pitch) is the Event input port for controlling the playback rate (pitch) at which 
+the sample is played. The "P" (pitch) value is given in the logarithmic pitch scale, in 
+semitones belonging to the range [0 … 127], where "69" corresponds to "Concert A" or 
+440 Hz. If the pitch value is equal to the Root Key of the current sample, the sample 
+will be played back at its original pitch. Furthermore, if the "Sel" input port is not con­
+nected, "P" determines the selection of samples from the Sample Map. In Oscillator 
+Mode, the Sampler Loop functions as a digital oscillator. In the same way as in the Os­
+cillator Modules in REAKTOR, "P" determines the fundamental pitch of the generated 
+oscillation.
+▪
+(Sel) "Sel" (select) is the Audio input port for selecting a sample from the Sample Map. 
+If this input is not connected, the values present at the "P" (pitch) input port are used 
+instead.
+▪
+(F) "F" (frequency) is the linear Audio input port for modulating the sample playback 
+rate in the linear frequency scale. When this input port is connected to another oscilla­
+tor, the frequency modulation effect is achieved — the same as for the oscillator mod­
+ules in REAKTOR. If a large negative value is present, the sample is played backwards.
+▪
+(St) "St" (start) is the Audio input port for the starting point to be used when the next 
+positive Gate Event occurs. The position is set in milliseconds and counted from the 
+start of the sample. The length of the loaded sample in milliseconds is delivered by the 
+"Len" output port. This means that although the samples in your Sample Map might 
+have different lengths, you can use the value from the "Len" output port and multiply it 
+by a parameter in the range [0 … 1]. The result will yield you values in the full range 
+of the current sample, in milliseconds, which you then feed to the "St" input port. If 
+this input port is left unconnected, then the default value "0" is used.
+Samplers
+Sampler Loop
+ 
+REAKTOR 5.5 - Module Reference - 409
+
+
+--- Page 410 ---
+
+▪
+(LS) "LS" (loop start) is the Audio input port for the loop starting point in milliseconds, 
+counted from the start of the sample. If this input is not connected, the loop data stor­
+ed in the sound file will be used. If no loop data is stored in the sound file, the default 
+is used: LS = 0. The values at this input port fall in the range [0 … <length of sample 
+in millisecons>]. Changes at this input take effect when samples are retriggered and 
+when a loop limit is reached.
+▪
+(LL) "LL" (loop length) is the Audio input port for the loop length in milliseconds. If this 
+input is not connected, the loop data stored in the sound file will be used. If no loop 
+data are stored in the sound file, the default is used: LL = length of the whole sample. 
+If LL = 0, the movement within the sample stops when the loop starting point is 
+reached; the sound is frozen at this point. The typical range for the values at this input 
+port range from "0" to the length of the sample in milliseconds. Changes at this input 
+take effect when samples are retriggered and when a loop limit is reached.
+▪
+(A) "A" (amplitude) is the Audio input port for controlling the playback amplitude. 
+Since this is an Audio input port, it can be used for ring modulation. If this input port 
+is disconnected, the default value is "0", that is, no audible output signal is generated.
+Output Ports
+▪
+(L) "L" (left) is the Audio output port for the left stereo channel of the sample player. 
+When mono samples are being processed or if the No Stereo checkbox in the Module's 
+Function page has been engaged, the same signal is present here as at the "R" output 
+port.
+▪
+(R) "R" (right) is the Audio output port for the right stereo channel of the sample player. 
+When mono samples are being processed or if the No Stereo checkbox in the Module's 
+Function page has been engaged, the same signal is present here as at the "L" output 
+port.
+▪
+(Len) "Len" (length) is the polyphonic Event output port for the length of the current 
+sample in milliseconds. Use this value to calculate parameters which depend on the 
+sample length. The sample starting point (specified at the "St" input port), for exam­
+ple, is a parameter that should have a range from "0" to the length of the sample in 
+milliseconds. The latter value is exactly what is supplied by the "Len" output port.
+Samplers
+Sampler Loop
+ 
+REAKTOR 5.5 - Module Reference - 410
+
+
+--- Page 411 ---
+
+7.3.3
+Example: Loop Sampler
+ 
+This example illustrates a sampler Instrument with frequency modulation and variable 
+(loop) starting position and loop length. As can be seen in the figure below, the Sampler 
+Loop Module (↑7.3, Sampler Loop) has been used. It receives its pitch input from the 
+Note Pitch Module (↑2.1, Note Pitch) and its Gate signal from the Gate Module (↑2.3, 
+Gate). When a key on your computer or MIDI keyboard is pressed, a Gate On signal is sent 
+from the Gate Module, carried by the Polyphonic Voice assigned to the key. As a result 
+sample playback is started for this Voice until the key is released. When the key is re­
+leased, a Gate Off signal is sent from the Gate Module (↑2.3, Gate) and stops the sample 
+playback (at the "G" (gate) input port. Its amplitude can be controlled from the Instrument 
+Panel using a Knob Module (↑1.1, Fader/Knob) labeled "Ampl", as shown in the Structure 
+below. Note that you can create a Knob Module (↑1.1, Fader/Knob) (or sometimes a But­
+ton or Fader Module) for an input port with the right range and resolution simply by right-
+clicking the input port and choosing the Create Control menu entry. Also, because the "Sel" 
+input port is disconnected, the value at the "P" (pitch) input port also determines which 
+sample is loaded from the Sample Map.
+A sine oscillator has been used as the frequency modulation signal. The pitch and ampli­
+tude of this signal can be controlled at the corresponding input ports of its source, the 
+Sine Module (↑6.14, Sine Oscillator). The starting position of sample playback, starting 
+position of the loop and loop length can also be controlled using Knob Modules (↑1.1, 
+Fader/Knob) labeled "St", "LS", and "LL", respectively. All three knobs have the range [0 … 
+1]. This range is multiplied by the length of the currently loaded sample, retrieved from 
+the "Len" (length) output port, and is then forwarded to the corresponding input port. This 
+way the three parameters at the input ports are always in the range of the currently loaded 
+sample.
+Please refer to subsection 6.2.1 in the Application Reference for more information on load­
+ing samples into a Sampler Module's Sample Map.
+Samplers
+Sampler Loop
+ 
+REAKTOR 5.5 - Module Reference - 411
+
+
+--- Page 412 ---
+
+Fig. 7.6 The Structure for a frequency modulated loop sampler Instrument.
+7.4
+Grain Resynth
+ 
+Fig. 7.7 Resynth Module
+7.4.1
+Overview
+ 
+The Resynth Module is a "Grain Resynthesis" Module, as described in subsection 10.2.2 
+in the Application Reference. The playback speed of the sample is decoupled from the 
+playback pitch. Sample management is carried out in the Sample Map Editor. In essence, 
+the Resynth Module is a real-time resynthesizer for polyphonic, transposed playback of 
+mono or stereo samples. In the same way as the "conventional" Sampler Modules, the Re­
+synth Module uses a pointer at the current sample position. However, the signal at its Au­
+dio output ports is not simply the sample amplitude occurring at the pointer position. 
+What actually happens is that the output signal is generated by a synthesizer inside the 
+Module. This synthesizer resynthesizes the signal at the pointer position. The pitch of the 
+Samplers
+Grain Resynth
+ 
+REAKTOR 5.5 - Module Reference - 412
+
+
+--- Page 413 ---
+
+signal generated by this synthesizer is independent of the pointer’s speed. Even if the 
+pointer is not moving at all, the synthesizer continues to produce a sound. While the pitch 
+of the output signal is determined, as is usual, over the "P" (pitch) input port, the value at 
+the "Sp" (speed) input port determines the pointer speed.
+With the Resynth Module you can directly access the sample loop playback settings with 
+the "St", "LS", and "LL" input ports to control the starting point of the sample playback, 
+loop starting point and loop length, respectively. If the Loop checkbox in the Sampler Map 
+editor is activated for a given sample, the sample will be continuously repeated within the 
+loop range as soon as playback enters this range. The loop range is preset using data from 
+the sound file from which the sample was loaded. If the sound file does not contain any 
+loop data, the beginning of the sample is taken to be the beginning of the loop and the 
+sample length is taken as the loop length. The loop data from the sound file are the de­
+fault settings. These defaults are always used if the "LS" (loop start) and "LL" (loop length) 
+input ports are not connected to other Modules. If the Loop in Release feature is deacti­
+vated, loop playback will fade out upon a Gate Off Event occurring; depending on the di­
+rection set, the sample will run to its beginning or end and will then fade out. If the Loop 
+in Release feature is activated or if loop playback is switched off, the Gate Events will only 
+have a slight effect or none at all.
+All of the Resynth’s input ports, except "G" (gate), are designed as Audio input ports. The 
+values at these inputs are applied when samples are (re-triggered (i.e. upon positive Gate 
+On Events). Changes to values during sample playback take effect in the Granularity inter­
+val which is configured at the "Gr" input.
+Application
+The Resynth Module allows you to control pitch and playback speed independently and in 
+real-time, and also lets you extensively manipulate samples. Of course, the slowed down or 
+“frozen” signal does not always correspond to what you might have imagined it to be. 
+What does a hammer hitting a nail sound like if it is slowed down to infinity? The resyn­
+thesis algorithm used by the Resynth Module is designed in such a way that a broad range 
+of sounds can be processed in a (musically-speaking) sensible, subtle or drastic manner. 
+The algorithm can be adjusted by configuring the "Gr" (granularity) and "Sm" (smoothness) 
+parameters with the corresponding input ports. This means that you can manually adjust it 
+to suit the sample and to produce drastic, strange sound effects. Use the Resynth Module 
+to build Ensembles that let you get squeeze new and unheard sounds out of your existing 
+samples!
+Samplers
+Grain Resynth
+ 
+REAKTOR 5.5 - Module Reference - 413
+
+
+--- Page 414 ---
+
+7.4.2
+Ports
+ 
+Input Ports
+▪
+(G) "G" (gate) is the Event input port for a Gate signal. A positive Event at this input 
+starts the sample playback from the position that is set at the "St" input port. If a neg­
+ative value is present at the "G" input port, the loop playback is interrupted unless the 
+Loop in Release feature has been activated in the Sample Map Editor (see subsection 
+6.4.2 in the Application Reference for more information on this).
+▪
+(P) "P" (pitch) is the Audio input port for controlling the playback rate (pitch) at which 
+the sample is playe. The "P" (pitch) value is given in the logarithmic pitch scale, in 
+semitones belonging to the range [0 … 127], where "69" corresponds to "Concert A" or 
+440 Hz. If the pitch value is equal to the Root Key of the current sample, the sample 
+will be played back at its original pitch. Furthermore, if the "Sel" input port is not con­
+nected, "P" also determines the selection of samples from the Sample Map.
+▪
+(Sel) "Sel" (select) is the Audio input port for selecting a sample from the Sample Map. 
+If this input is not connected, the values present at the "P" (pitch) input port are used 
+instead.
+▪
+(St) "St" (start) is the Audio input port for the starting point to be used when the next 
+positive Gate Event occurs. The position is set in milliseconds and counted from the 
+start of the sample. The length of the loaded sample in milliseconds is delivered by the 
+"Len" output port. This means that although the samples in your Sample Map might 
+have different lengths, you can use the value from the "Len" output port and multiply it 
+by a parameter in the range [0 … 1]. The result will yield you values in the full range 
+of the current sample, in milliseconds, which you then feed to the "St" input port. If 
+this input port is left unconnected, then the default value "0" is used.
+▪
+(LS) "LS" (loop start) is the Audio input port for the loop starting point in milliseconds, 
+counted from the start of the sample. If this input is not connected, the loop data stor­
+ed in the sound file will be used. If no loop data is stored in the sound file, the default 
+is used: LS = 0. The values at this input port fall in the range [0 … <length of sample 
+in millisecons>]. Changes at this input take effect when samples are retriggered and 
+when a loop limit is reached.
+▪
+(LL) "LL" (loop length) is the Audio input port for the loop length in milliseconds. If this 
+input is not connected, the loop data stored in the sound file will be used. If no loop 
+data are stored in the sound file, the default is used: LL = length of the whole sample. 
+Samplers
+Grain Resynth
+ 
+REAKTOR 5.5 - Module Reference - 414
+
+
+--- Page 415 ---
+
+If LL = 0, the movement within the sample stops when the loop starting point is 
+reached; the sound is frozen at this point. The typical range for the values at this input 
+port range from "0" to the length of the sample in milliseconds. Changes at this input 
+take effect when samples are retriggered and when a loop limit is reached.
+▪
+(Sp) "Sp" (speed) is the Audio input port to control the pitch-independent playback 
+speed. Values that are present at the input port are interpreted as factors: when Sp = 
+1, playback occurs at the original speed; Sp = 2 corresponds to double the playback 
+speed; Sp = 0 means stop (no playback). If this input is not connected, the transposed 
+original speed is taken as the default so that – as in conventional samplers – the speed 
+reduces as pitch decreases. The typical range of the values at this input port is [0 … 
+2].
+▪
+(Gr) "Gr" (granularity) is the Audio input port for the granularity of the resynthesis proc­
+ess, set in milliseconds. This parameter determines the size of the sound particles 
+used for resynthesis. The typical range of the values at this input port is [10 … 100]. 
+If this input port is left unconnected, the default value, 20 milliseconds, is used.
+▪
+(SO) "SO" (sample offset) is the Audio input port for modulation of the sample position 
+(sample offset) in milliseconds. This input is used to modulate the position in the sam­
+ple independent of pitch, for instance, via a noise generator.
+▪
+(Sm) "Sm (smoothing) is the Audio input port to control the Smoothness parameter of 
+the resynthesis process. The sound particles are adjusted using this. Very small values 
+generally lead to a rougher sound.
+▪
+(Pan) "Pan" is the Audio input port to control the position of the output signal in the 
+stereo field (-1 = Left, 0 = Center, 1 = Right).
+▪
+(A) "A" (amplitude) is the Audio input port for controlling the playback amplitude. 
+Since this is an Audio input port, it can be used for ring modulation.
+Output Ports
+▪
+(L) "L" (left) is the Audio output port for the left stereo channel of the sample player. 
+When mono samples are being processed or if the No Stereo checkbox in the Module's 
+Function page has been engaged, the same signal is present here as at the "R" output 
+port.
+▪
+(R) "R" (right) is the Audio output port for the right stereo channel of the sample player. 
+When mono samples are being processed or if the No Stereo checkbox in the Module's 
+Function page has been engaged, the same signal is present here as at the "L" output 
+port.
+Samplers
+Grain Resynth
+ 
+REAKTOR 5.5 - Module Reference - 415
+
+
+--- Page 416 ---
+
+▪
+(Len) "Len" (length) is the polyphonic Event output port for the length of the current 
+sample in milliseconds. Use this value to calculate parameters which depend on the 
+sample length. The sample starting point (specified at the "St" input port), for exam­
+ple, is a parameter that should have a range from "0" to the length of the sample in 
+milliseconds. The latter value is exactly what is supplied by the "Len" output port.
+▪
+(Pos) "Pos" (position) is the polyphonic Event output for the current sample position in 
+milliseconds. Events at this output port are generated at time intervals corresponding 
+to the "Gr" (granularity) parameter.
+7.4.3
+Example: Grain Resynth Resampler
+ 
+The Structure in the figure below shows how to achieve synchronization between playback 
+of a Resynth Module and recording of a Tapedeck Module (↑14.2, Tapedeck 2 Channel). 
+Controls have been created for the most relevant parameters of the Resynth Module by 
+right-clicking the corresponding input port and choosing the Create Control menu entry. The 
+"Rec" Button Module is set to Toggle Mode and sends a Gate On and Gate Off signal to the 
+"G", "Rec", and "Play" input ports. This way recording and sample playback are synchron­
+ized. Additionally, since a Gate On signal also arrives at the "Play" input port, what is be­
+ing recorded by the Tapedeck can be heard at its "L" and "R" output ports. Note that a 
+Merge Module (↑13.16, Merge) has been used at the "Play" input port such that the re­
+corded signal can be played back independently from the playback of the Resynth Module.
+Fig. 7.8 The Structure for resampling the output of a Resynth Module with a Tapedeck 2 Channel Module.
+Samplers
+Grain Resynth
+ 
+REAKTOR 5.5 - Module Reference - 416
+
+
+--- Page 417 ---
+
+7.5
+Grain Pitch Former
+ 
+Fig. 7.9 Pitch Former Module
+7.5.1
+Overview
+ 
+The Pitch Former Module is a "Grain Resynthesis" Module, as described in subsection 
+10.2.2 in the Application Reference. The playback speed of the sample is decoupled from 
+the playback pitch. Sample management is carried out in the Sample Map Editor. The 
+Pitch Former Module is a real-time resynthesizer for polyphonic, transposed playback of 
+mono or stereo samples. In particular, it is a Wavetable synthesizer in which not only 
+Wavetables can be loaded but also any samples you like. The Pitch Former Module re­
+moves the pitch development from a sample and gives the sample any new pitch you wish. 
+Besides independent real-time control over the playback speed, the Pitch Former Module 
+also allows you to carry out a spectral transposition, that is, a pitch-independent transposi­
+tion of the timbre.
+While "conventional" Sampler Modules and the Resynth Module in REAKTOR achieve a 
+relative pitch change by transposing a sample, the Pitch Former Module forces any abso­
+lute and definite pitch that you wish onto a sample. The Pitch Former Module can there­
+fore be used like a REAKTOR oscillator. Depending on the type of processed sound materi­
+al and the settings used, the result can sound “electronically” altered to a greater or lesser 
+degree. The Pitch Former Module will also generate signals with a certain pitch if the proc­
+essed sample has no unique pitch of its own (e.g. recordings of cymbals or gongs). The 
+Pitch Former Module produces fewer sound alterations the more restricted the fundamen­
+tal pitch of the processed material is to be defined, and the less the original pitch deviates 
+from the generated pitch.
+Samplers
+Grain Pitch Former
+ 
+REAKTOR 5.5 - Module Reference - 417
+
+
+--- Page 418 ---
+
+In conventional "conventional" Sampler Modules and the Resynth Module in REAKTOR, 
+the transposing of the fundamental pitch goes hand in hand with the transposing of all the 
+spectral components. This is often considered a limitation since the transposition also af­
+fects certain spectral components which the listener would not expect to hear changed. 
+The “Mickey Mouse effect” that occurs when speech recordings are detuned can be traced 
+back to the transposition of the formants whose position for a “real” human speaker would 
+be largely independent of the fundamental pitch. Within certain limits, the Pitch Former 
+Module decouples pitch and formant position from one another. The formant position can 
+be shifted independent of pitch via the "FS" (formant shift) input port. Since the human 
+ear uses all the spectral components to identify the fundamental pitch, you can manipu­
+late this parameter to create interesting substitutions of fundamental pitch and timbre, es­
+pecially at very low pitches. Similar sound effects are often created by synthesizer experts 
+using oscillator synchronization.
+In the same way as the "conventional" Sampler Modules, the Pitch Former Module uses a 
+pointer at the current sample position. However, the signal at its Audio output ports is not 
+simply the sample amplitude occurring at the pointer position. What actually happens is 
+that the output signal is generated by a synthesizer inside the Module. This synthesizer re­
+synthesizes the signal at the pointer position. The pitch of the signal generated by this 
+synthesizer is independent of the pointer’s speed. Even if the pointer is not moving at all, 
+the synthesizer continues to produce a sound. While the pitch of the output signal is de­
+termined, as is usual, over the "P" (pitch) input port, the value at the "Sp" (speed) input 
+port determines the pointer speed.
+With the Pitch Former Module you can directly access the sample loop playback settings 
+with the "St", "LS", and "LL" input ports to control the starting point of the sample play­
+back, loop starting point and loop length, respectively. If the Loop checkbox in the Sampler 
+Map editor is activated for a given sample, the sample will be continuously repeated with­
+in the loop range as soon as playback enters this range. The loop range is preset using da­
+ta from the sound file from which the sample was loaded. If the sound file does not con­
+tain any loop data, the beginning of the sample is taken to be the beginning of the loop 
+and the sample length is taken as the loop length. The loop data from the sound file are 
+the default settings. These defaults are always used if the "LS" (loop start) and "LL" (loop 
+length) input ports are not connected to other Modules. If the Loop in Release feature is 
+deactivated, loop playback will fade out upon a Gate Off Event occurring; depending on 
+Samplers
+Grain Pitch Former
+ 
+REAKTOR 5.5 - Module Reference - 418
+
+
+--- Page 419 ---
+
+the direction set, the sample will run to its beginning or end and will then fade out. If the 
+Loop in Release feature is activated or if loop playback is switched off, the Gate Events 
+will only have a slight effect or none at all.
+All of the Pitch Former Module's input ports except "G" (gate) are designed as Audio input 
+ports. The values at these inputs are applied when samples are (re-triggered (i.e. upon 
+positive Gate On Events). Changes to values during sample playback take effect at inter­
+vals of the fundamental pitch period (which is set via the "P" (pitch) input port.
+Application
+With both the sample's playback speed and its spectral form decoupled from the pitch, 
+the Pitch Former Module gives you maximum freedom in manipulating your samples. Use 
+the Pitch Former Module to build Ensembles that let you get squeeze new and unheard 
+sounds out of your existing samples!
+7.5.2
+Ports
+ 
+Input Ports
+▪
+(G) "G" (gate) is the Event input port for a Gate signal. A positive Event at this input 
+starts the sample playback from the position that is set at the "St" input port. If a neg­
+ative value is present at the "G" input port, the loop playback is interrupted unless the 
+Loop in Release feature has been activated in the Sample Map Editor (see subsection 
+6.4.2 in the Application Reference for more information on this).
+▪
+(P) "P" (pitch) is the Audio input port for controlling the playback rate (pitch) at which 
+the sample is played back. The "P" (pitch) value is given in the logarithmic pitch scale, 
+in semitones belonging to the range [0 … 127], where "69" corresponds to "Concert A" 
+or 440 Hz. If the pitch value is equal to the Root Key of the current sample, the sam­
+ple will be played back at its original pitch. Furthermore, if the "Sel" input port is not 
+connected, "P" also determines the selection of samples from the Sample Map.
+▪
+(Sel) "Sel" (select) is the Audio input port for selecting a sample from the Sample Map. 
+If this input is not connected, the values present at the "P" (pitch) input port are used 
+instead.
+▪
+(St) "St" (start) is the Audio input port for the starting point to be used when the next 
+positive Gate Event occurs. The position is set in milliseconds and counted from the 
+start of the sample. The length of the loaded sample in milliseconds is delivered by the 
+"Len" output port. This means that although the samples in your Sample Map might 
+Samplers
+Grain Pitch Former
+ 
+REAKTOR 5.5 - Module Reference - 419
+
+
+--- Page 420 ---
+
+have different lengths, you can use the value from the "Len" output port and multiply it 
+by a parameter in the range [0 … 1]. The result will yield you values in the full range 
+of the current sample, in milliseconds, which you then feed to the "St" input port. If 
+this input port is left unconnected, then the default value "0" is used.
+▪
+(LS) "LS" (loop start) is the Audio input port for the loop starting point in milliseconds, 
+counted from the start of the sample. If this input is not connected, the loop data stor­
+ed in the sound file will be used. If no loop data is stored in the sound file, the default 
+is used: LS = 0. The values at this input port fall in the range [0 … <length of sample 
+in millisecons>]. Changes at this input take effect when samples are retriggered and 
+when a loop limit is reached.
+▪
+(LL) "LL" (loop length) is the Audio input port for the loop length in milliseconds. If this 
+input is not connected, the loop data stored in the sound file will be used. If no loop 
+data are stored in the sound file, the default is used: LL = length of the whole sample. 
+If LL = 0, the movement within the sample stops when the loop starting point is 
+reached; the sound is frozen at this point. The typical range for the values at this input 
+port range from "0" to the length of the sample in milliseconds. Changes at this input 
+take effect when samples are retriggered and when a loop limit is reached.
+▪
+(Sp) "Sp" (speed) is the Audio input port to control the pitch-independent playback 
+speed. Values that are present at the input port are interpreted as factors: when Sp = 
+1, playback occurs at the original speed; Sp = 2 corresponds to double the playback 
+speed; Sp = 0 means stop (no playback). If this input is not connected, the value "1" is 
+taken as the default. The typical range of the values at this input port is [0 … 2].
+▪
+(FS) "FS" (formant shift) is the Audio input port for pitch-independent transposition of 
+the formant position. The units for the values at this input port are semitones. The typ­
+ical range for the values at this input port is [-24 … 24]. When this input port is dis­
+connected, the default value, "0" is used.
+▪
+(SO) "SO" (sample offset) is the Audio input port for modulation of the sample position 
+(sample offset) in milliseconds. This input is used to modulate the position in the sam­
+ple independent of pitch, for instance, via a noise generator.
+▪
+(Sm) "Sm (smoothing) is the Audio input port to control the Smoothness parameter of 
+the resynthesis process. The sound particles are adjusted using this. Very small values 
+generally lead to a rougher sound. The range for the values at this input port is [0 … 
+1]. The default value to be used when this input port is disconnected is "0.8".
+▪
+(Pan) "Pan" is the Audio input port to control the position of the output signal in the 
+stereo field (-1 = Left, 0 = Center, 1 = Right).
+Samplers
+Grain Pitch Former
+ 
+REAKTOR 5.5 - Module Reference - 420
+
+
+--- Page 421 ---
+
+▪
+(A) "A" (amplitude) is the Audio input port for controlling the playback amplitude. 
+Since this is an Audio input port, it can be used for ring modulation. The default value 
+to be used when this input port is disconnected is "1".
+Output Ports
+▪
+(L) "L" (left) is the Audio output port for the left stereo channel of the sample player. 
+When mono samples are being processed or if the No Stereo checkbox in the Module's 
+Function page has been engaged, the same signal is present here as at the "R" output 
+port.
+▪
+(R) "R" (right) is the Audio output port for the right stereo channel of the sample player. 
+When mono samples are being processed or if the No Stereo checkbox in the Module's 
+Function page has been engaged, the same signal is present here as at the "L" output 
+port.
+▪
+(Len) "Len" (length) is the polyphonic Event output port for the length of the current 
+sample in milliseconds. Use this value to calculate parameters which depend on the 
+sample length. The sample starting point (specified at the "St" input port), for exam­
+ple, is a parameter that should have a range from "0" to the length of the sample in 
+milliseconds. The latter value is exactly what is supplied by the "Len" output port.
+▪
+(Pos) "Pos" (position) is the polyphonic Event output for the current sample position in 
+milliseconds. Events at this output port are generated at time intervals corresponding 
+to the current fundamental pitch period.
+7.5.3
+Example: Grain Pitch Former
+ 
+This example illustrates how to connect a Pitch Former Module to create a sampler Instru­
+ment with independent traversal speed, formant position, and variable (loop) starting posi­
+tion and loop length. As can be seen in the figure below, the Pitch Former Module receives 
+its pitch input from the Note Pitch Module (↑2.1, Note Pitch) and its Gate signal from the 
+Gate Module (↑2.3, Gate). When a key on your computer or MIDI keyboard is pressed, a 
+Gate On signal is sent from the Gate Module, carried by the Polyphonic Voice assigned to 
+the key. As a result sample playback is started for this Voice until the key is released. 
+When the key is released, a Gate Off signal is sent from the Gate Module (↑2.3, Gate) and 
+stops the sample playback (at the "G" (gate) input port. The playback amplitude can be 
+controlled from the Instrument Panel using a Knob Module (↑1.1, Fader/Knob) labeled 
+Samplers
+Grain Pitch Former
+ 
+REAKTOR 5.5 - Module Reference - 421
+
+
+--- Page 422 ---
+
+"Ampl", as shown in the Structure below. Also, because the "Sel" input port is disconnect­
+ed, the value at the "P" (pitch) input port also determines which sample is loaded from the 
+Sample Map.
+The starting position of sample playback, starting position of the loop and loop length can 
+also be controlled using Knob Modules labeled "St", "LS", and "LL", respectively. All three 
+knobs have the range [0 … 1]. This range is multiplied by the length of the currently load­
+ed sample, retrieved from the "Len" (length) output port, and is then forwarded to the cor­
+responding input port. This way the three parameters at the input ports are always in the 
+range of the currently loaded sample.
+Knobs have been created for the traversal speed, formant shift, and grain smoothness pa­
+rameters at the "Sp", "FS", and "Sm" input ports, respectively. Note that you can create 
+controls for an input port with the right range and resolution simply by right-clicking the 
+input port and choosing the Create Control menu entry.
+Please refer to subsection 6.2.1 in the Application Reference for more information on load­
+ing samples into a Sampler Module's Sample Map.
+Fig. 7.10 The Structure for a grain pitch former Instrument.
+Samplers
+Grain Pitch Former
+ 
+REAKTOR 5.5 - Module Reference - 422
+
+
+--- Page 423 ---
+
+7.6
+Grain Cloud Sampler
+ 
+Fig. 7.11 Grain Cloud Module
+7.6.1
+Overview
+ 
+The Grain Cloud Module is a "Grain Resynthesis" Module, as described in subsection 
+10.2.2 in the Application Reference. The playback speed of the sample is decoupled from 
+the playback pitch. Sample management is carried out in the Sample Map Editor. The 
+Grain Cloud Module is a stereo multi-sample granular synthesizer with independent control 
+over pitch, pitch shift, and sample selection. The envelope of each grain can be controlled 
+at the "Att" (attack) and "Dec" (decay) input ports. Additionally, for each grain the time in­
+terval to the start of the next grain can be set at the "Dist" (distance) input port. The maxi­
+mum number of simultaneous grains can be set in the Module's Function page. There are 
+several "jitter" input ports which set the jitter amount for the respective parameter.
+In the same way as the "conventional" Sampler Modules, the Grain Cloud Module uses a 
+pointer at the current sample position. However, the signal at its Audio output ports is not 
+simply the sample amplitude occurring at the pointer position. What actually happens is 
+that the output signal is generated by a synthesizer inside the Module. This synthesizer re­
+synthesizes the signal at the pointer position. The pitch of the signal generated by this 
+synthesizer is independent of the pointer’s speed. Even if the pointer is not moving at all, 
+the synthesizer continues to produce a sound. While the pitch of the output signal is de­
+termined, as is usual, over the "P" (pitch) input port, the value at the "Pos" (position) input 
+port determines the pointer location.
+Samplers
+Grain Cloud Sampler
+ 
+REAKTOR 5.5 - Module Reference - 423
+
+
+--- Page 424 ---
+
+Application
+The Grain Cloud Module opens up a myriad of possibilities in the realm of granular synthe­
+sis. Typical applications for the Grain Cloud Module include granular synthesizers such as 
+the Travelizer and Grainstates Ensembles from the REAKTOR Library.
+7.6.2
+Ports
+ 
+Input Ports
+▪
+(G) "G" (gate) is the Event input port for a Gate signal. A positive Event at this input 
+starts the sample playback from the position that is set at the "St" input port. If a neg­
+ative value is present at the "G" input port, the loop playback is interrupted unless the 
+Loop in Release feature has been activated in the Sample Map Editor (see subsection 
+6.4.2 in the Application Reference for more information on this).
+▪
+(P) "P" (pitch) is the Audio input port for controlling the pitch at which the sample is 
+played back. The "P" (pitch) value is given in the logarithmic pitch scale, in semitones 
+belonging to the range [0 … 127], where "69" corresponds to "Concert A" or 440 Hz. If 
+the pitch value is equal to the Root Key of the current sample, the sample will be 
+played back at its original pitch. Furthermore, if the "Sel" input port is not connected, 
+"P" also determines the selection of samples from the Sample Map. For the Grain 
+Cloud Module the pitch is independent of the playback speed.
+▪
+(D/F) "D/F" (direction/frequency) is the Audio input port for direction control if the "P" 
+(pitch) input port is connected. Otherwise this input port control the frequency. The 
+sample plays back in the forward direction and at the original pitch when F = 1. Play­
+back in reverse direction (and at original pitch) occurs when F = -1. The typical range 
+for this input port is [-4 ... 4]. With the input port disconnected, the default value that 
+is used is "1".
+▪
+(PJ) "PJ" (pitch jitter) is the Audio input port to control the amount of pitch jitter (in 
+semitones). Typical values at this input port are in the range [0 ... 3].
+▪
+(PS) "PS" (pitch shift) is the Audio input port to control the pitch shift of the current 
+grain. The values at this input port are given in the logarithmic pitch scale, in semi­
+tones, and typically fall in the range [-3 ... 3].
+▪
+(Sel) "Sel" (select) is the Audio input port for selecting a sample from the Sample Map. 
+If this input is not connected, the values present at the "P" (pitch) input port are used 
+instead.
+Samplers
+Grain Cloud Sampler
+ 
+REAKTOR 5.5 - Module Reference - 424
+
+
+--- Page 425 ---
+
+▪
+(Pos) "Pos" (position) is the Audio input port for setting the position in the sample from 
+which the current grain is generated. The units for this input port are milliseconds and 
+naturally fall in the range [0...<length of sample in ms>].
+▪
+(PsJ) "PsJ" (position jitter) is the Audio input port to control the jitter in the "Pos" (posi­
+tion) parameter. The units of this input port are milliseconds and the typical range is 
+[0...<length of sample in ms>].
+▪
+(Len) "Len" (length) is the Audio input port for setting the grain length in milliseconds. 
+The typical range for this parameter is [10 ... 100]. The default value that is used in 
+the case of a disconnected "Len" input port is 20 milliseconds.
+▪
+(LnJ) "LnJ" (length jitter) is the Audio input port for the amount of jitter in the grain 
+length parameter. The units of this input port are in milliseconds and these values typi­
+cally fall in the range [10 ... 100]. The default value in the case of a disconnected 
+"LnJ" input port is 0 milliseconds.
+▪
+(Att) "Att" (attack) is the Audio input port for setting the attack time of the grain enve­
+lope. The range of this input port is [0 ... 1]. The default value in the case that this 
+input port is disconnected is "0.2".
+▪
+(Dec) "Dec" (decay) is the Audio input port for setting the decay time of the grain enve­
+lope. The range for this input port is [0 ... 1]. The default value in the case that this 
+input port is disconnected is "0.2".
+▪
+(Dist) "Dist" (distance) is the Audio input port for setting the time duration before the 
+next grain is started. The values at this input port are given in milliseconds and typical­
+ly fall in the range [5 … 100]. If this input port is disconnected, the default value that 
+is used is "20".
+▪
+(DisJ) "DisJ" (distance jitter) is the Audio input port for the amount of jitter in the dis­
+tance parameter. The units of the values at this input port are milliseconds and typical­
+ly fall in the range [10 … 100]. If this input port is disconnected, the default value 
+that is used is 20 milliseconds.
+▪
+(Pan) "Pan" is the Audio input port to control the position of the output signal in the 
+stereo field (-1 = Left, 0 = Center, 1 = Right).
+▪
+(PnJ) "PnJ" (pan jitter) is the Audio input port for the amount of jitter in the pan param­
+eter. The range of the values at this input port is [0 ... 1]. The default value used in 
+case of this input port being disconnected is "0".
+▪
+(A) "A" (amplitude) is the Audio input port for controlling the playback amplitude. 
+Since this is an Audio input port, it can be used for ring modulation. The default value 
+to be used when this input port is disconnected is "1".
+Samplers
+Grain Cloud Sampler
+ 
+REAKTOR 5.5 - Module Reference - 425
+
+
+--- Page 426 ---
+
+Output Ports
+▪
+(L) "L" (left) is the Audio output port for the left stereo channel of the sample player. 
+When mono samples are being processed or if the No Stereo checkbox in the Module's 
+Function page has been engaged, the same signal is present here as at the "R" output 
+port.
+▪
+(R) "R" (right) is the Audio output port for the right stereo channel of the sample player. 
+When mono samples are being processed or if the No Stereo checkbox in the Module's 
+Function page has been engaged, the same signal is present here as at the "L" output 
+port.
+▪
+(Len) "Len" (length) is the polyphonic Event output port for the length of the current 
+sample in milliseconds. Use this value to calculate parameters which depend on the 
+sample length. The sample starting point (specified at the "St" input port), for exam­
+ple, is a parameter that should have a range from "0" to the length of the sample in 
+milliseconds. The latter value is exactly what is supplied by the "Len" output port.
+▪
+(GTr) "GTr" (grain trigger) is the Event output port for grain trigger signals. An Event 
+with the value "1" is sent when a new grain starts, an Event with the value "0" is sent 
+when the grain stops.
+7.6.3
+Example: Simple Grain Cloud Sampler
+ 
+This example illustrates how to connect a Grain Cloud Module using the Ramp Module as 
+a pointer to create a sampler Instrument with grain parameters which are independent 
+from the traversal speed and position. As can be seen in the figure below, the Grain Cloud 
+Module receives its pitch input from the Note Pitch Module (↑2.1, Note Pitch) and the 
+Gate signal from the Gate Module (↑2.3, Gate). When a key on your computer or MIDI key­
+board is pressed, a Gate On signal is sent from the Gate Module, carried by the Polyphonic 
+Voice assigned to the key. As a result sample playback is started for this Voice until the 
+key is released. When the key is released, a Gate Off signal is sent from the Gate Module 
+(↑2.3, Gate) and stops the sample playback (at the "G" (gate) input port. The playback am­
+plitude can be controlled from the Instrument Panel using a Knob Module (↑1.1, Fader/
+Knob) labeled "Amplitude", as shown in the Structure below. Also, because the "Sel" input 
+port is disconnected, the value at the "P" (pitch) input port also determines which sample 
+is loaded from the Sample Map.
+The pointer position in the loaded sample at which the played-back grain is synthesized, is 
+determined by the value at the "Pos" input port. To have a pointer that linearly loops from 
+the beginning of the sample to the end, you need a linear ramp signal in with the range [0 
+Samplers
+Grain Cloud Sampler
+ 
+REAKTOR 5.5 - Module Reference - 426
+
+
+--- Page 427 ---
+
+… <length of current sample in ms>]. The sample length is provided by the "Len" (length) 
+output port and can therefore be used as the amplitude for the ramp generator, the Ramp 
+Module (↑6.36, Ramp Oscillator) (see the Structure below).
+Fig. 7.12 The Structure for a simple grain cloud sampler Instrument.
+Knobs have been created for the pitch slide, grain length, grain attack, grain decay, and 
+grain distance parameters at the "PS", "Len", "Att", "Dec", and "Dist" input ports, respec­
+tively. Note that you can create controls for an input port with the right range and resolu­
+tion simply by right-clicking the input port and choosing the Create Control menu entry.
+Please refer to subsection 6.2.1 in the Application Reference for more information on load­
+ing samples into a Sampler Module's Sample Map.
+7.7
+Beat Loop 
+ 
+Fig. 7.13 Beat Loop Module
+Samplers
+Beat Loop
+ 
+REAKTOR 5.5 - Module Reference - 427
+
+
+--- Page 428 ---
+
+7.7.1
+Overview
+ 
+The Beat Loop Module is a "Grain Resynthesis" Module, as described in subsection 10.2.2 
+in the Application Reference. The transposing of beat-loops can be set via the "P" (pitch) 
+input port independent of playback speed. Sample management is carried out in the Sam­
+ple Map Editor. The Beat Loop Module is a real-time resynthesizer for the synchronized 
+playback of beat-loop samples. Beat Loop synchronizes itself to a 96th note clock source 
+(24 ppq) that is connected to the "Clk" (clock) input port or, if the "Clk" input port is not 
+connected, it can sync with the global REAKTOR clock. Therefore, by default all Beat 
+Loops in REAKTOR run in sync with one another independent of the sample’s internal 
+speed. Furthermore, Beat Loop also allows you to easily link internal REAKTOR sequencer 
+modules and MIDI clocks to rhythmic sample material.
+The Beat Loop Module requires samples that have been cut exactly and which contain an 
+integer number beats. The speed of the beat loops used should be between 87 and 174 
+BPM. If the samples being used fulfill these conditions, the Beat Loop Module can output 
+them in good quality even if the playback speed is changed.
+With the Beat Loop Module you can directly configure the loop range of the sample with 
+the "St", "LS", and "LL" input ports. These input ports control the starting point of play­
+back, loop starting point and loop length, respectively. Sending a positive valued Event to 
+the "Rst" input port causes the sample playback to be continued from the starting point 
+(set at the "St" input port).
+If the Loop checkbox in the Sampler Map editor is activated for a given sample, the sample 
+will be continuously repeated within the loop range as soon as playback enters this range. 
+The loop range is preset using data from the sound file from which the sample was loaded. 
+If the sound file does not contain any loop data, the beginning of the sample is taken to 
+be the beginning of the loop and the sample length is taken as the loop length. The loop 
+data from the sound file are the default settings. These defaults are always used if the 
+"LS" (loop start) and "LL" (loop length) input ports are not connected to other Modules. If 
+the Loop in Release feature is deactivated, loop playback will fade out upon a Gate Off 
+Event occurring; depending on the direction set, the sample will run to its beginning or 
+end and will then fade out. If the Loop in Release feature is activated or if loop playback 
+is switched off, the Gate Events will only have a slight effect or none at all.
+All of the Beat Loop Module's input port, except "Clk" and "Rst", are designed as Audio 
+input ports. During sample playback, changes to values take effect at intervals of six­
+teenths of a note value.
+Samplers
+Beat Loop
+ 
+REAKTOR 5.5 - Module Reference - 428
+
+
+--- Page 429 ---
+
+Application
+As the name implies, the Beat Loop Module is ideal to playback rhythmic loop samples 
+that are quantized to a grid. With this Module you could, for example, build a simple En­
+semble that slices a drum loop and lets you play back these slices in a mixed-up order, in 
+sync with the REAKTOR Clock.
+7.7.2
+Ports
+ 
+Input Ports
+▪
+(Clk) "Clk" (clock) is the Event input port for clock signals. A clock signal is considered 
+to be a positive Event at this input port. One such positive Event advances the Beat 
+Loop Module's playback position by one 96th note value. If this input is not connect­
+ed, the Module synchronizes itself with the global REAKTOR clock.
+▪
+(Rst) "Rst" (reset) is the Event input port for reset signals. A reset signal is considered 
+to be a positive Event at this input port. One such positive Event resets playback to the 
+position set at the "St" (start) input port.
+▪
+(P) "P" (pitch) is the Audio input port for controlling the playback rate (pitch) at which 
+the sample is played back. The "P" (pitch) value is given in the logarithmic pitch scale, 
+in semitones belonging to the range [0 … 127] where "69" corresponds to "Concert A" 
+or 440 Hz. If the pitch value is equal to the Root Key of the current sample, the sam­
+ple will be played back at its original pitch. Furthermore, if the "Sel" input port is not 
+connected, "P" also determines the selection of samples from the Sample Map.
+▪
+(Sel) "Sel" (select) is the Audio input port for selecting a sample from the Sample Map. 
+If this input is not connected, the values present at the "P" (pitch) input port are used 
+instead.
+▪
+(St) "St" (start) is the Audio input port for the starting point to be used when the next 
+clock signal is received (either at the "Clk" input port of from the REAKTOR Clock). 
+The position is set in sixteenths of a note value from the start of the sample. . The 
+length of the loaded sample in sixteenth notes is delivered by the "L16" output port. 
+This means that although the samples in your Sample Map might have different 
+lengths, you can use the value from the "L16" output port and multiply it by a parame­
+ter in the range [0 … 1]. The result will yield you values in the full range of the current 
+sample, in sixteenth notes, which you then feed to the "St" input port. If this input port 
+is left unconnected, then the default value "0" is used.
+Samplers
+Beat Loop
+ 
+REAKTOR 5.5 - Module Reference - 429
+
+
+--- Page 430 ---
+
+▪
+(LS) "LS" (loop start) is the Audio input port for the loop starting point in sixteenths of 
+a note value, counted from the start of the sample. If this input port is not connected, 
+the default value that is used is LS = 0.
+▪
+(LL) "LL" (loop length) is the Audio input port for the loop length in sixteenths of a note 
+value. If this input is not connected, the default value that is used is LL = length of 
+the whole sample.
+▪
+(SO) "SO" (sample offset) is the Audio input port for modulation of the sample position 
+(sample offset) in sixteenths of a note value. This input is used to reach steps in the 
+sample deviating from the progression of clock signals. This input port, for instance, 
+can be controlled by a sequencer module (↑8.1, 6-Step Sequencer).
+▪
+(Sm) "Sm" (smoothing) is the Audio input port to control the Smoothing parameter of 
+the resynthesis process. The sound particles are adjusted using this. Very small values 
+generally lead to a “crackling” sound at every sixteenth note interval. The range for the 
+values at this input port is [0 … 1]. The default value to be used when this input port 
+is disconnected is "0.1".
+▪
+(Pan) "Pan" is the Audio input port to control the position of the output signal in the 
+stereo field (-1 = Left, 0 = Center, 1 = Right).
+▪
+(A) "A" (amplitude) is the Audio input port for controlling the playback amplitude. 
+Since this is an Audio input port, it can be used for ring modulation. The default value 
+to be used when this input port is disconnected is "1".
+Output ports
+▪
+(L) "L" (left) is the Audio output port for the left stereo channel of the sample player. 
+When mono samples are being processed or if the No Stereo checkbox in the Module's 
+Function page has been engaged, the same signal is present here as at the "R" output 
+port.
+▪
+(R) "R" (right) is the Audio output port for the right stereo channel of the sample player. 
+When mono samples are being processed or if the No Stereo checkbox in the Module's 
+Function page has been engaged, the same signal is present here as at the "L" output 
+port.
+▪
+(Len) "Len" (length) is the polyphonic Event output port for the length of the current 
+sample in milliseconds. Use this value to calculate parameters which depend on the 
+sample length. The sample starting point (specified at the "St" input port), for exam­
+ple, is a parameter that should have a range from "0" to the length of the sample in 
+milliseconds. The latter value is exactly what is supplied by the "Len" output port.
+Samplers
+Beat Loop
+ 
+REAKTOR 5.5 - Module Reference - 430
+
+
+--- Page 431 ---
+
+▪
+(L16) "L16" (length, sixteenths) is the polyphonic Event output port for the length of 
+the current sample counted in sixteenths notes.
+▪
+(P16) "P16" (position, sixteenths) is the polyphonic Event output port for the current 
+position in the sample counted in sixteenths notes.
+▪
+(Ct16) "Ct16" is the polyphonic Event output port for counting the sixteenths of a note 
+value that have passed since the last start / reset Event.
+7.7.3
+Example: Simple Beat Loop Sampler
+ 
+This example illustrates how to connect a Beat Loop Module to create a beat loop sampler 
+Instrument with pitch-independent playback speed, and variable (loop) starting position 
+and loop length. As can be seen in the figure below, the Beat Loop Module receives its 
+pitch input from the Note Pitch Module (↑2.1, Note Pitch) and its playback is advanced 
+by Events received from the Clock Module (↑2.14, Clock).
+The MIDI Clock needs to be running in order for the Clock Module to send Events. Use the 
+Router Module and a toggle button labeled "Run" to turn the playback of the Beat Loop 
+Module on and off. Additionally, use a knob labeled "Amplitude" to control the playback 
+amplitude. Because the "Sel" input port is disconnected, the value at the "P" (pitch) input 
+port also determines which sample is loaded from the Sample Map. The knob at the "Sm" 
+input port, labeled "Smooth", controls the granularity of the signal outgoing from the Beat 
+Loop Module.
+The starting position of sample playback, starting position of the loop and loop length can 
+be controlled using Knob Modules (↑1.1, Fader/Knob) labeled "St", "LS", and "LL", respec­
+tively. All three knobs have the range [0 … 1]. This range is multiplied by the length of 
+the currently loaded sample, retrieved from the "Len" (length) output port, and is then for­
+warded to the corresponding input port. This way the three parameters at the input ports 
+are always in the range of the currently loaded sample.
+Please refer to subsection 6.2.1 in the Application Reference for more information on load­
+ing samples into a Sampler Module's Sample Map.
+Samplers
+Beat Loop
+ 
+REAKTOR 5.5 - Module Reference - 431
+
+
+--- Page 432 ---
+
+Fig. 7.14 The Structure for a beat loop sampler Instrument.
+7.8
+Sample Lookup
+ 
+Fig. 7.15 Lookup Module
+7.8.1
+Overview
+ 
+The Lookup Module makes samples available as function value look-up tables. A position 
+within the sample in milliseconds is set via the "Pos" (position) input port. The value of 
+the sample at this point is then sent to the output ports.
+You can load sound files from the Instrument Panel by right-clicking the Module's Panel 
+representation and choosing the Load Sound... menu entry. Sample management is carried 
+out in the Sample Map Editor.
+Application
+Use the Sample Lookup Module as a replacement for a traditional oscillator. In that case 
+you could connect the "Pos" input port to the output of a Ramp Module and use the "Len" 
+(length) output port to normalize the amplitude (and its offset) of the Ramp Module.
+Samplers
+Sample Lookup
+ 
+REAKTOR 5.5 - Module Reference - 432
+
+
+--- Page 433 ---
+
+7.8.2
+Ports
+ 
+Input Ports
+▪
+(Pos) is the Audio input port for controlling the playback position in the sample, in mil­
+liseconds. This input is usually connected to a Ramp Module, creating a Sample Look­
+up oscillator. Use the value from the "Len" (length) output port to calculate the desired 
+position in the sample in milliseconds.
+▪
+(A) "A" (amplitude) is the Audio input port for controlling the playback amplitude. 
+Since this is an Audio input port, it can be used for ring modulation.
+Output Ports
+▪
+(L) "L" (left) is the Audio output port for the left stereo channel of the sample player. 
+When mono samples are being processed the same signal is present here as at the "R" 
+output port.
+▪
+(R) "R" (right) is the Audio output port for the right stereo channel of the sample player. 
+When mono samples are being processed the same signal is present here as at the "L" 
+output port.
+▪
+(Len) "Len" (length) is the polyphonic Event output port for the length of the current 
+sample in milliseconds. Use this value to calculate parameters which depend on the 
+sample length.
+7.8.3
+Example: Sample Lookup Oscillator
+ 
+This example shows how to build a Structure for a sample lookup oscillator. First, add a 
+Lookup Module into the Structure and load the desired sample from the Lookup Module's 
+Function page by clicking on the folder icon (shown in the figure below).
+Fig. 7.16 Click on the folder icon the Lookup Module's Function page to load a sample.
+Let's use the Sine Module (↑6.14, Sine Oscillator) as the pointer signal for the sample 
+lookup position. Since we are using an oscillator for the lookup position, the outgoing sig­
+nal will in effect also be an oscillator, but its waveform will in part be determined by the 
+sample loaded into the Lookup Module. To choose the position in the sample around 
+Samplers
+Sample Lookup
+ 
+REAKTOR 5.5 - Module Reference - 433
+
+
+--- Page 434 ---
+
+which the pointer signal (stemming from the Sine Module) oscillates, add an "offset" value 
+to the Sine Module's (↑6.14, Sine Oscillator) output signal. This "offset" value should be 
+within the sample's range. Therefore the "offset" value is derived by multiplying the "Len" 
+output port with a knob (with range [0 … 1]) and then added to the Sine Module's output 
+signal.
+The oscillator pitch is received from the Note Pitch Module (↑2.1, Note Pitch) and an en­
+velope signal is applied to the "A" (amplitude) input port of the Lookup Module to have the 
+Structure react to incoming MIDI Notes much like the oscillator-envelope combination of a 
+conventional synthesizer. For the envelope, the ADSR Module (↑9.13, ADSR - Env) has 
+been used. The Gate signal is received from the Gate Module (↑2.3, Gate).
+Fig. 7.17 The Structure for a simple sample lookup oscillator.
+Samplers
+Sample Lookup
+ 
+REAKTOR 5.5 - Module Reference - 434
+

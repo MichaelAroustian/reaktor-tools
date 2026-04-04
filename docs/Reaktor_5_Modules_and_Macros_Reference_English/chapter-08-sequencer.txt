@@ -1,0 +1,682 @@
+--- Page 435 ---
+
+8
+Sequencer
+ 
+REAKTOR’s sequencers include gated step-sequencers in four sizes as well as a selecta­
+ble-position sequencer. You’ll also find clocks to drive them here.
+Sequencer Sequencer
+8.1
+6-Step Sequencer
+ 
+Fig. 8.1 6-Step Sequencer
+8.1.1
+Overview
+ 
+The 6-Step Sequencer Module (↑8.1, 6-Step Sequencer) embodies a sequencer with 6 
+steps. The signal at the "Out" output port cycles through the sequencer step values which 
+are set at the input ports labeled "S1", "S2", etc. These step values can be set independ­
+ently for each step. When the sequencer is running, a Gate signal Event is output at the 
+time the step advances. This Event is sent from the "G" (gate) output port with its value 
+being specified at the "GA" (gate amplitude) input port.
+Application
+The sequencer is a key element in many Ensembles. It allows you to create repeating 
+rhythmic and melodic patterns. For example, you could create a 6-step drum pattern using 
+the 6-Step Sequencer Module by using it as a trigger for a Sampler Module that carries 
+the desired sample. The step values you could use to carry note velocity information. Alter­
+natively you could connect the 6-Step sequencer to the "P" (pitch) input port of an oscilla­
+tor to have the oscillator playback a melodic sequence determined by the values at the in­
+put ports "S1", "S2", etc.
+Sequencer
+6-Step Sequencer
+ 
+REAKTOR 5.5 - Module Reference - 435
+
+
+--- Page 436 ---
+
+8.1.2
+Ports
+ 
+Input Ports
+▪
+(Clk) "Clk" (clock) is the Audio input port for the clock signal. A positive zero crossing 
+causes the Module to advance to the next step. Typically you would connect a Pulse 
+Oscillator or Sync Pulse Module (↑2.15, Sync Pulse) here.
+▪
+(Rst) "Rst" (reset) is the Audio input for port a reset signal. A positive zero crossing 
+switches the sequencer back to the first step. Typically you would connect a Button or 
+MIDI Start Module here.
+▪
+(GA) "GA" (gate amplitude) is the Audio input port for controlling the amplitude of the 
+"G" (gate) output Events. When the value is zero or the input is not connected, no sig­
+nal appears on the "G" (gate) output.
+▪
+(S1) "S1" (step 1) is the Audio input port for controlling the value of the first sequencer 
+step.
+▪
+(S2) "S2" (step 2) is the Audio input port for controlling the value of the second se­
+quencer step.
+▪
+(S3) "S3" (step 3) is the Audio input port for controlling the value of the third sequenc­
+er step.
+▪
+(S4) "S4" (step 4) is the Audio input for port controlling the value of the fourth se­
+quencer step.
+▪
+(S5) "S5" (step 5) is the Audio input port for controlling the value of the fifth sequenc­
+er step.
+▪
+(S6) "S6" (step 6) is the Audio input port for controlling the value of the sixth sequenc­
+er step.
+Output Ports
+▪
+(Out) "Out" is the Event output for the sequencer step signal. Its range is determined by 
+the values at the input ports "S1", "S2", etc.
+▪
+(G) "G" (gate) is the Event output port for the Gate signal. Every time the sequencer 
+advances one step, an Event with the value specified at the "GA" (gate amplitude) in­
+put port is sent from this output port. Therefore the range of this output port is deter­
+mined by the values at the "GA" (gate amplitude) input port.
+▪
+(St) "St" (step) is the Event output port for the current step number. The range of this 
+output port is [1 … 6].
+Sequencer
+6-Step Sequencer
+ 
+REAKTOR 5.5 - Module Reference - 436
+
+
+--- Page 437 ---
+
+8.1.3
+Example: 6-Step Pitch Sequencer
+ 
+This example shows how to use a 6-Step Sequencer Module to create a sequencer of pitch 
+values along with a Gate signal of uniform velocity. To start, insert a 6-Step Sequencer 
+Module and a Sync Clock Module (↑2.15, Sync Pulse) into the Structure, as shown in the 
+figure below. For the Sequencer Module's input ports from "S1" to "S6", create controls 
+simply by right-clicking the input ports and choosing the Create Control menu entry. Knobs 
+with the standard MIDI range and resolution are created, perfectly suitable for sequencing 
+pitch values to an oscillator, for example. Next, use the Create Control menu entry to create 
+a Button Module (↑1.2, Button) at the "Rst" (reset) input port. This enables you to reset 
+the sequencer position. Insert an On Velocity Module (↑2.6, On Velocity), set it to Mono­
+phonic Mode, and connect it to the "GA" (gate amplitude) input port. This lets you set the 
+velocity of Gate On signals (outgoing at the "G" output port) to the velocity with which the 
+last MIDI or computer keyboard key was pressed.
+Fig. 8.2 The Structure for a 6-step pitch value sequencer.
+Next, connect the Sync Pulse Module (↑2.15, Sync Pulse) to the "Clk" (clock) input port of 
+the Sequencer Module (↑8.1, 6-Step Sequencer). Go to the Sync Pulse Module's Function 
+page and choose the rate at which the sequencer runs from the Rate drop-down menu, 
+shown in the figure below. The duration in this case does not make a difference. The rate 
+will be synchronized to the MIDI Clock and clock Events will only be output to the Se­
+quencer Module if the MIDI Clock is running. The setup shown in this example has the 
+following functionality. When the MIDI Clock is running, the Sequencer Module will go 
+through each step at the rate determined by the Sync Pulse Module (↑2.15, Sync Pulse). 
+Sequencer
+6-Step Sequencer
+ 
+REAKTOR 5.5 - Module Reference - 437
+
+
+--- Page 438 ---
+
+At each step, the "Out" output port will send an Event carrying the value as determined by 
+the knob connected to the input port of the corresponding step, as well as a Gate On sig­
+nal that carries the velocity value of the last pressed MIDI or computer keyboard key.
+Note that you could also use the Clock Module (↑2.14, Clock) and to get the desired rate 
+using the Event Frequency Divider Module (↑13.4, Event Frequency Divider). The advantage 
+of that method is that you can choose the frequency from the Instrument Panel.
+Fig. 8.3 Use the Rate drop-down menu in the Sync Pulse Module's Function page to choose the rate of clock Events sent to 
+the Sequencer Module.
+8.2
+8-Step Sequencer
+ 
+Fig. 8.4 8-Step Sequencer Module
+The 8-Step Sequencer Module embodies a sequencer with 8 steps. The signal at the "Out" 
+output port cycles through the sequencer step values which are set at the input ports la­
+beled "S1", "S2", etc. These step values can be set independently for each step. When the 
+sequencer is running, a Gate signal Event is output at the time the step advances. This 
+Event is sent from the "G" (gate) output port with its value being specified at the "GA" 
+(gate amplitude) input port.
+Application
+The sequencer is a key element in many Ensembles. It allows you to create repeating 
+rhythmic and melodic patterns. For example, you could create an 8-step drum pattern us­
+ing the 8-Step Sequencer Module by using it as a trigger for a Sampler Module that carries 
+Sequencer
+8-Step Sequencer
+ 
+REAKTOR 5.5 - Module Reference - 438
+
+
+--- Page 439 ---
+
+the desired sample. The step values you could use to carry note velocity information. Alter­
+natively you could connect the 8-Step sequencer to the "P" (pitch) input port of an oscilla­
+tor to have the oscillator playback a melodic sequence determined by the values at the in­
+put ports "S1", "S2", etc.
+8.2.1
+Ports
+ 
+Input Ports
+▪
+(Clk) "Clk" (clock) is the Audio input port for the clock signal. A positive zero crossing 
+causes the Module to advance to the next step. Typically you would connect a Pulse 
+Oscillator or Sync Pulse Module (↑2.15, Sync Pulse) here.
+▪
+(Rst) "Rst" (reset) is the Audio input for port a reset signal. A positive zero crossing 
+switches the sequencer back to the first step. Typically you would connect a Button or 
+MIDI Start Module here.
+▪
+(GA) "GA" (gate amplitude) is the Audio input port for controlling the amplitude of the 
+"G" (gate) output Events. When the value is zero or the input is not connected, no sig­
+nal appears on the "G" (gate) output.
+▪
+(S1) "S1" (step 1) is the Audio input port for controlling the value of the first sequencer 
+step.
+▪
+(S2) "S2" (step 2) is the Audio input port for controlling the value of the second se­
+quencer step.
+▪
+(S3) "S3" (step 3) is the Audio input port for controlling the value of the third sequenc­
+er step.
+▪
+(S4) "S4" (step 4) is the Audio input for port controlling the value of the fourth se­
+quencer step.
+▪
+(S5) "S5" (step 5) is the Audio input port for controlling the value of the fifth sequenc­
+er step.
+▪
+(S6) "S6" (step 6) is the Audio input port for controlling the value of the sixth sequenc­
+er step.
+▪
+(S7) "S7" (step 7) is the Audio input port for controlling the value of the seventh se­
+quencer step.
+▪
+(S8) "S8" (step 8) is the Audio input port for controlling the value of the eight sequenc­
+er step.
+Sequencer
+8-Step Sequencer
+ 
+REAKTOR 5.5 - Module Reference - 439
+
+
+--- Page 440 ---
+
+Output Ports
+▪
+(Out) "Out" is the Event output for the sequencer step signal. Its range is determined by 
+the values at the input ports "S1", "S2", etc.
+▪
+(G) "G" (gate) is the Event output port for the Gate signal. Every time the sequencer 
+advances one step, an Event with the value specified at the "GA" (gate amplitude) in­
+put port is sent from this output port. Therefore the range of this output port is deter­
+mined by the values at the "GA" (gate amplitude) input port.
+▪
+(St) "St" (step) is the Event output port for the current step number. The range of this 
+output port is [1 … 8].
+8.2.2
+Example: 8-Step Pitch Sequencer
+ 
+This example shows how to use a 8-Step Sequencer Module to create a sequencer of pitch 
+values along with a Gate signal of uniform velocity. To start, insert a 8-Step Sequencer 
+Module and a Sync Clock Module (↑2.15, Sync Pulse) into the Structure, as shown in the 
+figure below. For the Sequencer Module's input ports from "S1" to "S8", create controls 
+simply by right-clicking the input ports and choosing the Create Control menu entry. Knobs 
+with the standard MIDI range and resolution are created, perfectly suitable for sequencing 
+pitch values to an oscillator, for example. Next, use the Create Control menu entry to create 
+a Knob Module (↑1.1, Fader/Knob) at the "GA" (gate amplitude) input port and a Button 
+Module at the "Rst" (reset) input port. The former control lets you set the velocity of the 
+outgoing Gate signals at the "G" (gate) output port and the latter enables you to reset the 
+sequencer position.
+Fig. 8.5 The Structure for a 8-step pitch value sequencer.
+Sequencer
+8-Step Sequencer
+ 
+REAKTOR 5.5 - Module Reference - 440
+
+
+--- Page 441 ---
+
+Next, connect the Sync Pulse Module (↑2.15, Sync Pulse) to the "Clk" (clock) input port of 
+the Sequencer Module. Go to the Sync Pulse Module's Function page and choose the rate 
+at which the sequencer runs from the Rate drop-down menu, shown in the figure below. 
+The duration in this case does not make a difference. The rate will be synchronized to the 
+MIDI Clock and clock Events will only be output to the Sequencer Module if the MIDI 
+Clock is running. The setup shown in this example has the following functionality. When 
+the MIDI Clock is running, the Sequencer Module will go through each step at the rate de­
+termined by the Sync Pulse Module (↑2.15, Sync Pulse). At each step, the "Out" output 
+port will send an Event carrying the value as determined by the knob connected to the in­
+put port of the corresponding step, as well as a Gate On signal that carries the velocity val­
+ue set by the "Velocity" knob at the "GA" (gate amplitude) input port.
+Note that you could also use the Clock Module (↑2.14, Clock) and to get the desired rate 
+using the Event Frequency Divider Module (↑13.4, Event Frequency Divider). The advantage 
+of that method is that you can choose the frequency from the Instrument Panel.
+Fig. 8.6 Use the Rate drop-down menu in the Sync Pulse Module's Function page to choose the rate of clock Events sent to 
+the Sequencer Module.
+8.3
+12-Step Sequencer
+ 
+Fig. 8.7 12-Step Sequencer Module
+Sequencer
+12-Step Sequencer
+ 
+REAKTOR 5.5 - Module Reference - 441
+
+
+--- Page 442 ---
+
+The 12-Step Sequencer Module embodies a sequencer with 12 steps. The signal at the 
+"Out" output port cycles through the sequencer step values which are set at the input ports 
+labeled "S1", "S2", etc. These step values can be set independently for each step. When 
+the sequencer is running, a Gate signal Event is output at the time the step advances. This 
+Event is sent from the "G" (gate) output port with its value being specified at the "GA" 
+(gate amplitude) input port.
+Application
+The sequencer is a key element in many Ensembles. It allows you to create repeating 
+rhythmic and melodic patterns. For example, you could create a 12-step drum pattern us­
+ing the 12-Step Sequencer Module by using it as a trigger for a Sampler Module that car­
+ries the desired sample. The step values you could use to carry note velocity information. 
+Alternatively you could connect the 12-Step sequencer to the "P" (pitch) input port of an 
+oscillator to have the oscillator playback a melodic sequence determined by the values at 
+the input ports "S1", "S2", etc.
+8.3.1
+Ports
+ 
+Input Ports
+▪
+(Clk) "Clk" (clock) is the Audio input port for the clock signal. A positive zero crossing 
+causes the Module to advance to the next step. Typically you would connect a Pulse 
+Oscillator or Sync Pulse Module (↑2.15, Sync Pulse) here.
+▪
+(Rst) "Rst" (reset) is the Audio input for port a reset signal. A positive zero crossing 
+switches the sequencer back to the first step. Typically you would connect a Button or 
+MIDI Start Module here.
+▪
+(GA) "GA" (gate amplitude) is the Audio input port for controlling the amplitude of the 
+"G" (gate) output Events. When the value is zero or the input is not connected, no sig­
+nal appears on the "G" (gate) output.
+▪
+(S1) "S1" (step 1) is the Audio input port for controlling the value of the first sequencer 
+step.
+▪
+(S2) "S2" (step 2) is the Audio input port for controlling the value of the second se­
+quencer step.
+▪
+(S3) "S3" (step 3) is the Audio input port for controlling the value of the third sequenc­
+er step.
+Sequencer
+12-Step Sequencer
+ 
+REAKTOR 5.5 - Module Reference - 442
+
+
+--- Page 443 ---
+
+▪
+(S4) "S4" (step 4) is the Audio input for port controlling the value of the fourth se­
+quencer step.
+▪
+(S5) "S5" (step 5) is the Audio input port for controlling the value of the fifth sequenc­
+er step.
+▪
+(S6) "S6" (step 6) is the Audio input port for controlling the value of the sixth sequenc­
+er step.
+▪
+(S7) "S7" (step 7) is the Audio input port for controlling the value of the seventh se­
+quencer step.
+▪
+(S8) "S8" (step 8) is the Audio input port for controlling the value of the eight sequenc­
+er step.
+▪
+(S9) "S9" (step 9) is the Audio input port for controlling the value of the ninth se­
+quencer step, and so on…
+Output Ports
+▪
+(Out) "Out" is the Event output for the sequencer step signal. Its range is determined by 
+the values at the input ports "S1", "S2", etc.
+▪
+(G) "G" (gate) is the Event output port for the Gate signal. Every time the sequencer 
+advances one step, an Event with the value specified at the "GA" (gate amplitude) in­
+put port is sent from this output port. Therefore the range of this output port is deter­
+mined by the values at the "GA" (gate amplitude) input port.
+▪
+(St) "St" (step) is the Event output port for the current step number. The range of this 
+output port is [1 … 12].
+8.3.2
+Example: 12-Step Pitch Sequencer
+ 
+This example shows how to use a 6-Step Sequencer Module to create a sequencer of pitch 
+values along with a Gate signal of uniform velocity. To start, insert a 12-Step Sequencer 
+Module and a Sync Clock Module (↑2.15, Sync Pulse) into the Structure, as shown in the 
+figure below. For the Sequencer Module's input ports from "S1" to "S12", create controls 
+simply by right-clicking the input ports and choosing the Create Control menu entry. Knobs 
+with the standard MIDI range and resolution are created, perfectly suitable for sequencing 
+pitch values to an oscillator, for example. Next, use the Create Control menu entry to create 
+a Knob Module (↑1.1, Fader/Knob) at the "GA" (gate amplitude) input port and a Button 
+Module at the "Rst" (reset) input port. The former control lets you set the velocity of the 
+outgoing Gate signals at the "G" (gate) output port and the latter enables you to reset the 
+sequencer position.
+Sequencer
+12-Step Sequencer
+ 
+REAKTOR 5.5 - Module Reference - 443
+
+
+--- Page 444 ---
+
+Fig. 8.8 The Structure for a 12-step pitch value sequencer.
+Next, connect the Sync Pulse Module (↑2.15, Sync Pulse) to the "Clk" (clock) input port of 
+the Sequencer Module. Go to the Sync Pulse Module's Function page and choose the rate 
+at which the sequencer runs from the Rate drop-down menu, shown in the figure below. 
+The duration in this case does not make a difference. The rate will be synchronized to the 
+MIDI Clock and clock Events will only be output to the Sequencer Module if the MIDI 
+Clock is running. The setup shown in this example has the following functionality. When 
+the MIDI Clock is running, the Sequencer Module will go through each step at the rate de­
+termined by the Sync Pulse Module (↑2.15, Sync Pulse). At each step, the "Out" output 
+port will send an Event carrying the value as determined by the knob connected to the in­
+put port of the corresponding step, as well as a Gate On signal that carries the velocity val­
+ue set by the "Velocity" knob at the "GA" (gate amplitude) input port.
+Note that you could also use the Clock Module (↑2.14, Clock) and to get the desired rate 
+using the Event Frequency Divider Module (↑13.4, Event Frequency Divider). The advantage 
+of that method is that you can choose the frequency from the Instrument Panel.
+Fig. 8.9 Use the Rate drop-down menu in the Sync Pulse Module's Function page to choose the rate of clock Events sent to 
+the Sequencer Module.
+Sequencer
+12-Step Sequencer
+ 
+REAKTOR 5.5 - Module Reference - 444
+
+
+--- Page 445 ---
+
+8.4
+16-Step Sequencer
+ 
+Fig. 8.10 16-Step Sequencer
+The 16-Step Sequencer Module embodies a sequencer with 16 steps. The signal at the 
+"Out" output port cycles through the sequencer step values which are set at the input ports 
+labeled "S1", "S2", etc. These step values can be set independently for each step. When 
+the sequencer is running, a Gate signal Event is output at the time the step advances. This 
+Event is sent from the "G" (gate) output port with its value being specified at the "GA" 
+(gate amplitude) input port.
+Application
+The sequencer is a key element in many Ensembles. It allows you to create repeating 
+rhythmic and melodic patterns. For example, you could create a 16-step drum pattern us­
+ing the 16-Step Sequencer Module by using it as a trigger for a Sampler Module that car­
+ries the desired sample. The step values you could use to carry note velocity information. 
+Alternatively you could connect the 16-Step sequencer to the "P" (pitch) input port of an 
+oscillator to have the oscillator playback a melodic sequence determined by the values at 
+the input ports "S1", "S2", etc.
+Sequencer
+16-Step Sequencer
+ 
+REAKTOR 5.5 - Module Reference - 445
+
+
+--- Page 446 ---
+
+8.4.1
+Ports
+ 
+Input Ports
+▪
+(Clk) "Clk" (clock) is the Audio input port for the clock signal. A positive zero crossing 
+causes the Module to advance to the next step. Typically you would connect a Pulse 
+Oscillator or Sync Pulse Module (↑2.15, Sync Pulse) here.
+▪
+(Rst) "Rst" (reset) is the Audio input for port a reset signal. A positive zero crossing 
+switches the sequencer back to the first step. Typically you would connect a Button or 
+MIDI Start Module here.
+▪
+(GA) "GA" (gate amplitude) is the Audio input port for controlling the amplitude of the 
+"G" (gate) output Events. When the value is zero or the input is not connected, no sig­
+nal appears on the "G" (gate) output.
+▪
+(S1) "S1" (step 1) is the Audio input port for controlling the value of the first sequencer 
+step.
+▪
+(S2) "S2" (step 2) is the Audio input port for controlling the value of the second se­
+quencer step.
+▪
+(S3) "S3" (step 3) is the Audio input port for controlling the value of the third sequenc­
+er step.
+▪
+(S4) "S4" (step 4) is the Audio input for port controlling the value of the fourth se­
+quencer step.
+▪
+(S5) "S5" (step 5) is the Audio input port for controlling the value of the fifth sequenc­
+er step.
+▪
+(S6) "S6" (step 6) is the Audio input port for controlling the value of the sixth sequenc­
+er step.
+▪
+(S7) "S7" (step 7) is the Audio input port for controlling the value of the seventh se­
+quencer step.
+▪
+(S8) "S8" (step 8) is the Audio input port for controlling the value of the eight sequenc­
+er step.
+▪
+(S9) "S9" (step 9) is the Audio input port for controlling the value of the ninth se­
+quencer step, and so on…
+Output Ports
+▪
+(Out) "Out" is the Event output for the sequencer step signal. Its range is determined by 
+the values at the input ports "S1", "S2", etc.
+Sequencer
+16-Step Sequencer
+ 
+REAKTOR 5.5 - Module Reference - 446
+
+
+--- Page 447 ---
+
+▪
+(G) "G" (gate) is the Event output port for the Gate signal. Every time the sequencer 
+advances one step, an Event with the value specified at the "GA" (gate amplitude) in­
+put port is sent from this output port. Therefore the range of this output port is deter­
+mined by the values at the "GA" (gate amplitude) input port.
+▪
+(St) "St" (step) is the Event output port for the current step number. The range of this 
+output port is [1 … 16].
+8.4.2
+Example: 16-Step Pitch Sequencer
+ 
+This example shows how to use a 16-Step Sequencer Module to create a sequencer of 
+pitch values along with a Gate signal of uniform velocity. To start, insert a 16-Step Se­
+quencer Module and a Sync Clock Module (↑2.15, Sync Pulse) into the Structure, as 
+shown in the figure below. For the Sequencer Module's input ports from "S1" to "S16", 
+create controls simply by right-clicking the input ports and choosing the Create Control 
+menu entry. Knobs with the standard MIDI range and resolution are created, perfectly suit­
+able for sequencing pitch values to an oscillator, for example. Next, use the Create Control 
+menu entry to create a Knob Module (↑1.1, Fader/Knob) at the "GA" (gate amplitude) in­
+put port and a Button Module at the "Rst" (reset) input port. The former control lets you 
+set the velocity of the outgoing Gate signals at the "G" (gate) output port and the latter en­
+ables you to reset the sequencer position.
+Fig. 8.11 The Structure for a 16-step pitch value sequencer.
+Sequencer
+16-Step Sequencer
+ 
+REAKTOR 5.5 - Module Reference - 447
+
+
+--- Page 448 ---
+
+Next, connect the Sync Pulse Module (↑2.15, Sync Pulse) to the "Clk" (clock) input port of 
+the Sequencer Module. Go to the Sync Pulse Module's Function page and choose the rate 
+at which the sequencer runs from the Rate drop-down menu, shown in the figure below. 
+The duration in this case does not make a difference. The rate will be synchronized to the 
+MIDI Clock and clock Events will only be output to the Sequencer Module if the MIDI 
+Clock is running. The setup shown in this example has the following functionality. When 
+the MIDI Clock is running, the Sequencer Module will go through each step at the rate de­
+termined by the Sync Pulse Module (↑2.15, Sync Pulse). At each step, the "Out" output 
+port will send an Event carrying the value as determined by the knob connected to the in­
+put port of the corresponding step, as well as a Gate On signal that carries the velocity val­
+ue set by the "Velocity" knob at the "GA" (gate amplitude) input port.
+Note that you could also use the Clock Module (↑2.14, Clock) and to get the desired rate 
+using the Event Frequency Divider Module (↑13.4, Event Frequency Divider). The advantage 
+of that method is that you can choose the frequency from the Instrument Panel.
+Fig. 8.12 Use the Rate drop-down menu in the Sync Pulse Module's Function page to choose the rate of clock Events sent 
+to the Sequencer Module.
+Sequencer
+16-Step Sequencer
+ 
+REAKTOR 5.5 - Module Reference - 448
+
+
+--- Page 449 ---
+
+8.5
+Multiplex 16 Sequencer
+ 
+Fig. 8.13 Multiplex 16 Module
+8.5.1
+Overview
+ 
+The Multiplex 16 Module is in essence a value selector that can also be used as a se­
+quencer. The value at the "Pos" (position) input port addresses one of the 16 input ports 
+and the current value at this input port is then forwarded to the "Out" output port. The val­
+ues at the "Pos" input port are wrapped into the number range [0 ... (Len - 1)] to allow a 
+variable sequence length, specified with the "Len" (length) input port.
+Application
+If the "Pos" (position) input port is driven by a signal which is incremented stepwise, the 
+"Out" output port provides a sequence of the values at the inputs "0" to "1 - Len". The 
+"Pos" input port can also be driven by a control element, a Beat Loop module, a random 
+Event source, or by the REAKTOR Clock.
+Sequencer
+Multiplex 16 Sequencer
+ 
+REAKTOR 5.5 - Module Reference - 449
+
+
+--- Page 450 ---
+
+8.5.2
+Ports
+ 
+Input Ports
+▪
+(Pos) "Pos" (position) is the Event input port for addressing the input port whose value 
+is forwarded to the "Out" output port. Each Event at this input results in an Event at all 
+output ports. When running the Multiplex 16 Module as a sequencer, the "Pos" (posi‐
+tion) value is set to the number of steps (for example, sixteenth notes) that have 
+passed since the start or last reset Event.
+▪
+(Len) "Len" (length) Input to set the sequence length. Values at the "Pos" (position) in­
+put port will then be wrapped at "Len - 1". The range for the values at the "Len" 
+(length) input port is [1 ... 16].
+▪
+(0) "0" is the Audio input port for controlling the value of the zeroth step. It is forward­
+ed to the "Out" output port if Pos = 0 or a corresponding "wrapped" value.
+▪
+(1) "1" is the Audio input port for controlling the value of the first step. It is forwarded 
+to the "Out" output port if Pos = 1 or a corresponding "wrapped" value.
+▪
+(2) "2" is the Audio input port for controlling the value of the second step, and so on…
+Output Ports
+▪
+(Stp) "Stp" (step) is the Event output port for the current sequence step number. The 
+number at this output is calculated as Pos modulo Len (Pos % Len). The range of val­
+ues at this output port is [0 ... <sequence length>].
+▪
+(Bar) "Bar" is the Event output port for the current bar number. The number at this out­
+put is calculated as Bar = Pos / Len and rounded down to the closest integer.
+▪
+(Out) "Out" is the Event output port for the current sequence step value.
+8.5.3
+Example: Multiplex Sequencer
+ 
+This example shows how to build a sequencer with variable length, but with a maximum of 
+16 steps. The first part of the Structure is shown in the figure below. There you see that 
+the core of the sequencer is a Multiplex 16 Module and the values of the steps are re­
+ceived from Knob Modules (↑1.1, Fader/Knob) at the input ports "0" to "15". The se­
+quence length of the step at which the sequencer "folds back" to the first step, is set with 
+the knob labeled "Length" at the "Len" input port. The actual position of the sequencer is 
+Sequencer
+Multiplex 16 Sequencer
+ 
+REAKTOR 5.5 - Module Reference - 450
+
+
+--- Page 451 ---
+
+received at the "Pos" (position) input port in the form of a regular Events with incremental 
+values. The value of the Event determines the sequencer position where values greater 
+than "Len" are "folded back" to the set sequencer range.
+Fig. 8.14 Building a Multiplex Sequencer
+In this example, the "Pos" values are ultimately received from the Sync Clock Module 
+(↑2.15, Sync Pulse) which sends clock Events at regular time intervals, synchronized to 
+the MIDI Clock. The rate of outgoing Events can be set at the Sync Clock Module's (↑2.15, 
+Sync Pulse) Function page, with the Rate drop-down menu. In order to get regular Events 
+carrying incremental values, the Counter Module (↑13.2, Counter) has been used. Each 
+Event from the Sync Clock Module (↑2.15, Sync Pulse) increments the output of the 
+Counter Module (↑13.2, Counter) by one, which then ends up being used as the "Pos" val­
+ue for the Multiplex 16 Module. At the Counter Module's (↑13.2, Counter) "Set" input port 
+you should have a Button Module (↑1.2, Button). In its Function page, set the Button 
+Module (↑1.2, Button) to Trigger Mode and its "Max" value to zero. This enables you to re­
+set the sequencer to its first position from the Instrument Panel.
+As an additional feature, the XY Module (↑1.14, XY) has been used to graphically track the 
+current sequencer position. The final Structure with this implemented is shown in the first 
+figure at the end of the example and the final Panel representation of the sequencer is 
+shown at the last figure at the end of the example. Please look at that figure to see where 
+we are headed with the XY Module. The XY Module should be configured to draw a rectan­
+gle from the coordinates (Step, 0) to (Step + 1, 1). This corresponds to going to its View 
+Sequencer
+Multiplex 16 Sequencer
+ 
+REAKTOR 5.5 - Module Reference - 451
+
+
+--- Page 452 ---
+
+page and choosing the Rectangle menu entry from the Object Type drop-down menu (shown 
+in the figure below). Also, you don't need a cursor and therefore choose the None menu 
+entry from the Cursor Type drop-down menu (also shown in the figure below). While you are 
+already in the XY Module's View page, disengage the Show Label and Show Value checkboxes 
+and set the Height and Width edit fields so that the XY Module's Panel representation looks 
+similar to what is depicted in the last figure of this example.
+Fig. 8.15 To draw a rectangle from (X1, Y1) to (X2, Y2), choose the Rectangle menu entry from the Object Type drop-down 
+menu.
+The rectangle object type causes the XY Module's Panel representation to draw a rectangle 
+from the coordinates (X1, Y1) to the coordinates (X2, Y2). We want to turn the XY Module 
+(↑1.14, XY) into a row of 16 "imaginary" rectangles, each corresponding to one of the 16 
+steps in the sequencer. This is done the easiest when each box has the dimensions 1 by 
+1. For this reason, it is necessary to set the range of displayed values correctly in the XY 
+Module's Function page. Set the "Min" and "Max" values for the X coordinate to "0" and 
+"16", respectively. "Min" and "Max" for the Y coordinate should be "0" and "1", respective­
+ly. This is shown in the figure below.
+Fig. 8.16 Use the Min and Max edit fields to set the range for the X and Y coordinates to [0 … 16] and [0 … 1], respective­
+ly.
+Now that you have configured the XY Module (↑1.14, XY), you just need to feed the cor­
+rect values from the Multiplex 16 Module to the input ports for the corresponding coordi­
+nates. Remember you wish to draw a rectangle from the coordinates (Step, 0) to (Step + 
+1, 1). As shown in the Structure depicted below, connect the "Stp" (step) output port off 
+the Multiplex 16 Module to the "X1" input port of the XY Module (↑1.14, XY), and the val­
+ue Step + 1 (using an Add Module, see ↑4.2, Add, +) to the "X2" input port. Furthermore, 
+connect the constant value "1" to the "Y2" input port. Your resulting Structure should look 
+like the first figure below and its Instrument Panel counterpart should look similar to what 
+Sequencer
+Multiplex 16 Sequencer
+ 
+REAKTOR 5.5 - Module Reference - 452
+
+
+--- Page 453 ---
+
+is shown in the second figure. Numeric Display Modules (↑1.8, Meter) have been added at 
+the "Stp" and "Bar" output ports to give you quantitative visual access to the step and bar 
+positions of the sequencer.
+Fig. 8.17 The Structure for a simple sequencer with variable length and a simple step position display.
+An additional feature to add would be that resetting the MIDI Clock also causes the se­
+quencer position to be reset as well. Let's use the Start/Stop Module (↑2.13, Start/Stop) as 
+that source of "reset" Events. For this, a reset operation should send the value "0" to the 
+Counter Module's (↑13.2, Counter) "Set" input port. Since the "Rst" output port sends an 
+Event with value "1", use a Value Module (↑13.15, Value) to change the Event's value to 
+"0" and the a Merge Module to merge this reset signal with that received from the "Reset" 
+button.
+Fig. 8.18 The Instrument Panel of the simple sequencer.
+Sequencer
+Multiplex 16 Sequencer
+ 
+REAKTOR 5.5 - Module Reference - 453
+

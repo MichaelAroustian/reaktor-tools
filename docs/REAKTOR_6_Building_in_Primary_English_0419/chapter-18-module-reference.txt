@@ -1,0 +1,2053 @@
+--- Page 221 ---
+
+18
+Module Reference
+ 
+The following is a reference of all of the Primary level Modules; it will give you an overview of
+everything available.
+•
+For more information on each individual Module, you can reference the Module informa-
+tion from the Info tab of the Module Properties.
+•
+You can also access this information by activating Info Hints and hovering your mouse
+over the Module.
+Module Reference
+ 
+REAKTOR 6 - Building In Primary - 221
+
+
+--- Page 222 ---
+
+•
+You can also get information on the Module Ports by placing the mouse over the Port.
+18.1
+Math
+ 
+18.1.1
+Constant
+ 
+The Constant module holds a single value, which it outputs at initialization.
+The value of the Constant module can be set in the module properties or in the structure by
+double clicking on the module.
+18.1.2
+Basic Modules
+ 
+The basic math Modules cover the fundamental mathematical functions:
+•
+Add
+Module Reference
+Math
+ 
+REAKTOR 6 - Building In Primary - 222
+
+
+--- Page 223 ---
+
+•
+Multiply
+•
+Subtract
+•
+Divide, x/y
+These Modules all accept two inputs to produce a single result based on their functions. This
+result will be output whenever an event enters either the top or bottom input.
+The top input will be the first number of the function and the bottom input will be the second.
+So, in REAKTOR format, the following formula:
+(a / b) - c
+Would be created like this:
+18.1.3
+Modifiers
+ 
+These Modules all take a single input and perform a function to produce a modified value.
+•
+Invert, -x: Inverts the input (the equivalent of multiplying it by -1).
+•
+Reciprocal, 1/x: The output of this module is the result of dividing 1 by the input value.
+•
+Rectify, |x|: Can also be referred to as an 'absolute' function. The input has its sign re-
+moved, so that it is always a positive number.
+•
+Rectify/Sign: The same process as the Rectify module, but with an additional output port
+which outputs a value (-1 or 1) depending on whether or not the input value is negative.
+Module Reference
+Math
+ 
+REAKTOR 6 - Building In Primary - 223
+
+
+--- Page 224 ---
+
+18.1.4
+Mult/Add, a*b+c
+ 
+Outputs the result of the formula:
+(a * b) + c
+The inputs from top to bottom correspond with the variables in the formula from left to right.
+So the top input is a and the bottom is c.
+18.1.5
+Modulo
+ 
+This Module takes two input values and outputs two values:
+•
+The Div port outputs the truncated division of the inputs, so input values of A=5 and B=2
+would produce an output of 2.
+•
+The Mod port outputs the remainder of the division, so the input values of A=5 and B=2
+would produce 1.
+18.1.6
+Quantize
+ 
+Takes the input value and quantizes it according to the settings.
+Module Reference
+Math
+ 
+REAKTOR 6 - Building In Primary - 224
+
+
+--- Page 225 ---
+
+The module outputs the quantized value to the Out port, and outputs the difference between
+the original input value and the output value from the Err (error) port.
+The settings can be set from the St and Ofs inputs:
+•
+St (step size): sets the size of the steps to which the input should be quantized. So with
+an input of 3.2 and a St setting of 1, the Out value would be 3.
+•
+Ofs (offset): applies an offset to the quantized value. So if the quantized value is 3, and
+the Ofs is set to 0.1, the Out value will change to 3.1.
+This module can be used to create a simple bit-crusher effect.
+18.1.7
+Comparison
+ 
+There are two comparison Modules that apply logic operations to two numeric inputs. If the op-
+eration is true, the output port sends a value of 1, if it is false it outputs a 0.
+The modules are:
+•
+Compare: Outputs two integer values based on testing the > (greater than) and <= (less
+than or equal) logic operations.
+•
+Compare Equal: Outputs the results of 4 logic operations:
+◦> (greater than)
+◦< (less than)
+◦= (equal to)
+Module Reference
+Math
+ 
+REAKTOR 6 - Building In Primary - 225
+
+
+--- Page 226 ---
+
+◦!= (not equal to)
+As with all the mathematical modules, the top input is placed to the left of the logic operation,
+and the bottom input is placed to the right. Thus input A is always compared against input B
+in the following manner:
+A > B; A<=B; etc…
+18.1.8
+Logarithms (Converters)
+ 
+The logarithmic Modules in REAKTOR are primarily used to convert from one unit to another.
+There are 4 different modules for performing different conversions:
+•
+Expon. (A): Converts level values in decibels (dB) to amplitude factor values. An input of
+-6 will produce an output of 0.5
+•
+Expon. (F): Converts MIDI pitch values to frequency values in hertz (Hz). An input of 69
+(A3) will produce an output around 440Hz.
+•
+Log. (A): Converts amplitude factors to dB. An input of 1 will produce an output of 0.
+•
+Log. (F): Converts frequency values (in Hz) to a MIDI pitch number. An input of 220 will
+produce an output of 57 (A2)
+18.1.9
+Power and Roots
+ 
+There are three mathematical Modules relating to powers and square roots.
+•
+Power: Outputs the result of the formula X^Y.
+Module Reference
+Math
+ 
+REAKTOR 6 - Building In Primary - 226
+
+
+--- Page 227 ---
+
+•
+Square Root: Calculates the square root of the input value.
+•
+1 / Sq. Root: Calculates the reciprocal square root. The equivalent of dividing 1 by the
+output of the Square Root Module.
+18.1.10 Trigonometric Functions
+ 
+These Modules all take a single input and perform a trigonometric function to produce an out-
+put value.
+The following Modules and functions are available:
+•
+Sine
+•
+Sine/Cosine
+Inverse Trigonometric Functions
+•
+ArcSin
+•
+ArcCos
+•
+ArcTan
+The inverse trigonometric Modules have their inputs and/or outputs limited by necessity.
+•
+ArcSin and ArcCos clip their inputs when they exceed the range -1 to +1
+•
+ArcTan clips its output to the range -0.25 to +0.25
+18.2
+MIDI In
+ 
+Module Reference
+Math
+ 
+REAKTOR 6 - Building In Primary - 227
+
+
+--- Page 228 ---
+
+18.2.1
+Pitch
+ 
+There are two MIDI In Modules that relate to pitch:
+•
+Note Pitch: Outputs the MIDI note value of any note message received by the Ensemble.
+•
+PitchBend: Outputs the value of the PitchBend controller. The range of the output is set
+in the Properties.
+18.2.2
+Gate and Velocity
+ 
+REAKTOR includes several Modules relating to Velocity and Gate.
+Gate signals are used to communicate whenever a MIDI key is pressed and released. Velocity is
+the value of the strength at which these actions happen.
+Gate
+•
+Gate: Outputs the value of the note on velocity when a key is pressed, and a value of 0
+when it is released.
+•
+ST Gate (Single Trig. Gate): A monophonic variant of the Gate Module. This Module out-
+puts a single value with the first note on and ignores subsequent note on messages. It
+then outputs a 0 with a note off and ignores any subsequent note off messages. Essential-
+ly this Module can be used to see whether or not the keyboard in use.
+•
+Sel. Gate (Sel. Note Gate): Sends the gate signal from a single note, which is selected in
+the Module Properties.
+Module Reference
+MIDI In
+ 
+REAKTOR 6 - Building In Primary - 228
+
+
+--- Page 229 ---
+
+Velocity
+•
+On. Vel (On Velocity): Outputs Note On Velocity values, ignoring Note Off messages.
+•
+Off Vel. (Off Velocity): Outputs Note Off Velocities, ignoring Note On messages.
+Most MIDI Keyboards do not send Note Off Velocities, as such the Off Vel. Module is not
+guaranteed to output values.
+18.2.3
+Controllers
+ 
+These Modules can be used to access MIDI controllers (CC) as well as aftertouch. They output
+a value when they receive their relative MIDI message.
+•
+Controller: Outputs a MIDI controller value. The MIDI CC number can be selected in the
+Module Properties.
+•
+Chan. AT (Ch. Aftertouch): Outputs the channel aftertouch value.
+•
+Poly AT (Poly Aftertouch): Outputs the polyphonic aftertouch values.
+•
+SelPolyAT (Sel. Poly Aftertouch): Outputs the polyphonic aftertouch of a single key (se-
+lected from the Module Properties).
+Module Reference
+MIDI In
+ 
+REAKTOR 6 - Building In Primary - 229
+
+
+--- Page 230 ---
+
+18.2.4
+Transport and Clock
+ 
+There are four Modules that relate to the transport and clock (i.e. playback).
+Transport
+•
+The Start/Stop Module sends a gate signal that is set to 1 when the transport starts play-
+back and 0 when it is stopped.
+•
+Song Position outputs the current song position in 1/96 resolution. It has two Outputs
+◦96: An Event signal output. Since events can have their timing controlled, this output
+can be useful when building sequencers.
+◦96a: An Audio signal output, for sample-accurate timing.
+Clock
+•
+Clock (1/96 Clock): Outputs an event on every 1/96th note (i.e. 24 times per beat).
+•
+Sync Pls. (Sync Clock): A MIDI synchronized clock. Its rate, length and values can all be
+set in the Module Properties.
+18.2.5
+Program Change
+ 
+This Module outputs the value of MIDI Program Change messages.
+Module Reference
+MIDI In
+ 
+REAKTOR 6 - Building In Primary - 230
+
+
+--- Page 231 ---
+
+18.2.6
+Channel Message
+ 
+The Channel Message Module outputs all MIDI messages that relate to MIDI channels:
+•
+Note On
+•
+Note Off
+•
+Controllers (including Pitchbend and Aftertouch)
+•
+Program Changes
+The outputs send the MIDI message information:
+•
+St (Status): The type of MIDI message.
+•
+Ch (Channel): The MIDI channel.
+•
+Nr (Number): For Note On messages, this would be the note number; for controllers, this
+is the CC number; and so on.
+•
+Val (Value): The value of the message.
+18.3
+MIDI Out
+ 
+18.3.1
+Note Pitch and Gate
+ 
+Module Reference
+MIDI In
+ 
+REAKTOR 6 - Building In Primary - 231
+
+
+--- Page 232 ---
+
+This Module is used to send MIDI Note Messages to other MIDI devices. The MIDI message
+will be sent when an event arrives at the G input.
+•
+P: Sets the MIDI Note number.
+•
+G: Sets the MIDI Note On velocity. A value of 0 will send a Note Off message.
+18.3.2
+Controllers
+ 
+These Modules can be used to send various MIDI Controller messages.
+•
+Pitchbend: Sends Pitchbend messages.
+•
+Controller: Sends MIDI Controller messages. The Controller Number is set in the Module
+Properties.
+•
+Chan. AT (Ch. Aftertouch): Sends Channel Aftertouch messages.
+•
+Poly AT (Poly Aftertouch): Sends Poly Aftertouch messages. The P input is used to set the
+Note Number, in the same manner as the Note Pitch and Gate Module.
+•
+SelPolyAT (Sel. Poly Aftertouch): Sends a Poly Aftertouch message for a single note. The
+Note Number is set in the Module Properties.
+Module Reference
+MIDI Out
+ 
+REAKTOR 6 - Building In Primary - 232
+
+
+--- Page 233 ---
+
+18.3.3
+Transport and Clock
+ 
+These Modules can be used to send MIDI Transport and Clock messages.
+•
+Start/Stop: Sends Transport Start/Continue/Stop Messages.
+•
+Clock (1/96 Clock): An Event at the input sends a 1/96 clock MIDI message.
+•
+Song Position: Sends a 1/96 resolution Song Position value when an Event with a positive
+value arrives at the Trig input.
+18.3.4
+Channel Message
+ 
+The Channel Message Module can send any MIDI message that relates to MIDI channels:
+•
+Note On
+•
+Note Off
+•
+Controllers (including Pitchbend and Aftertouch)
+•
+Program Changes
+The inputs set the MIDI message information:
+•
+St (Status): The type of MIDI message.
+•
+Ch (Channel): The MIDI channel.
+Module Reference
+MIDI Out
+ 
+REAKTOR 6 - Building In Primary - 233
+
+
+--- Page 234 ---
+
+•
+Nr (Number): For Note On messages, this would be the note number; for controllers, this
+is the CC number; and so on.
+•
+Val (Value): The value of the message.
+An Event at the St (Status) input triggers the MIDI message, so be sure to set this value
+last.
+ 
+18.4
+OSC
+ 
+18.4.1
+Send/Receive
+ 
+These Modules can be used to Send and Receive OSC messages.
+•
+The Address Pattern is set in the Connect Tab of the Module Properties.
+•
+If the OSC message is an array, these Modules can have multiple inputs/outputs for each
+of the indices of the array.
+When using array messages it might be better to use the OSC Array Modules.
+Module Reference
+OSC
+ 
+REAKTOR 6 - Building In Primary - 234
+
+
+--- Page 235 ---
+
+18.4.2
+Arrays
+ 
+These Modules are used to send/receive OSC arrays. Rather than each index having an individ-
+ual output, these Modules use the principals of iteration to send arrays of data.
+•
+The Address Pattern is set in the Connect Tab of the Module Properties.
+The tutorial ↑7, Additive Synthesizer ↑7, Additive Synthesizer covers the principals of
+how iteration works in REAKTOR.
+18.5
+Panel
+ 
+18.5.1
+Basic Controls
+ 
+There are three basic Panel Controls. They are designed to include common functions found on
+GUI elements of music instruments (like MIDI Learn and Automation).
+The three controls are:
+•
+Fader
+•
+Knob
+Module Reference
+OSC
+ 
+REAKTOR 6 - Building In Primary - 235
+
+
+--- Page 236 ---
+
+•
+Button
+The Basic Controls on the Panel in their default states.
+•
+All of these Modules can be given custom graphics.
+•
+The Fader can have its orientation changed in its Module Properties.
+18.5.2
+Basic Displays
+ 
+•
+Lamp: A small colored box, the brightness of which is controlled by the input value.
+•
+Level Lamp: Like the Lamp, but the input uses the dB scale and is smoothed to respond
+better to audio signals.
+•
+RGB Lamp: A Lamp with three inputs for setting the Red, Blue, and Green color values of
+the Lamp.
+•
+Meter: Displays the input value as a bar.
+•
+Level Meter: Like the Meter, but the input uses the dB scale and is smoothed to respond
+better to audio signals.
+•
+Numeric Readout: Displays the input value.
+Module Reference
+Panel
+ 
+REAKTOR 6 - Building In Primary - 236
+
+
+--- Page 237 ---
+
+The Basic Display Modules on the Panel in their default states.
+The colors of the Lamps and Meters are set in the Module Properties.
+18.5.3
+Pictures
+ 
+The Picture Modules are used to display images on the Panel.
+•
+Picture: Displays a single static image.
+•
+Multi Picture: Can be used to read an animation-style image file. It also has outputs for
+mouse interaction and thus can be used as a custom control.
+18.5.4
+Text
+ 
+The Text Modules are used to display text on the Panel.
+•
+Text: Displays static text.
+•
+Multi Text: Contains a list of text options; the displayed is selected from the input.
+Module Reference
+Panel
+ 
+REAKTOR 6 - Building In Primary - 237
+
+
+--- Page 238 ---
+
+The text displayed by these Modules is set in the Info tab of the Module Properties.
+These Modules have several font options, which are set in the Module Properties. There are 9
+available fonts, the color and size of which are fully customizable.
+The Available Fonts
+18.5.5
+List
+ 
+The List Module offers the user a selection of entries that they can choose from.
+The entries and their values are set in the Module Properties.
+This Module can have four different appearances:
+•
+Radio Buttons
+•
+Dropdown Menu
+•
+Text List
+•
+Spin
+Module Reference
+Panel
+ 
+REAKTOR 6 - Building In Primary - 238
+
+
+--- Page 239 ---
+
+The Different List Appearance Options
+18.5.6
+Switch
+ 
+In the Structure, the Switch functions like an M -> 1 Router. It is used to select between mul-
+tiple inputs and then routes the selected input to the output.
+The main benefit of using a Switch is that it deactivates any Modules attached to the unselect-
+ed inputs. Thus the Switch can be used as a CPU saving feature.
+The other benefit is that the Switch already includes a Panel element, in the form of a Radio
+Button List.
+18.5.7
+Receive
+ 
+The Receive Module can connect to any Send Module and can be used to create wireless con-
+nections.
+On the Panel, the Receive Module is presented like a List.
+This Module is the same as the Receive Module located in the Terminal section of the Built-in
+Modules.
+See section ↑18.17.2, Send/Receive ↑18.17.2, Send/Receive for information on the
+Terminal Modules.
+Module Reference
+Panel
+ 
+REAKTOR 6 - Building In Primary - 239
+
+
+--- Page 240 ---
+
+Note that Send/Receive Modules should be used in moderation due to their potential
+performance overhead. See section ↑14.7, Avoid unnecessary use of Send/Receive Mod-
+ules ↑14.7, Avoid unnecessary use of Send/Receive Modules for more details.
+18.5.8
+XY
+ 
+The XY Module is an area that outputs the mouse X and Y positions while the mouse button is
+pressed.
+This Module also has a display element: it can accept up to two coordinates and draw an ob-
+ject in that space. This feature can even be used by audio signals as a scope.
+The XY Module on the Panel
+Module Reference
+Panel
+ 
+REAKTOR 6 - Building In Primary - 240
+
+
+--- Page 241 ---
+
+18.5.9
+Mouse Area
+ 
+This Module sends detailed information about the state of the mouse.
+As well as X, Y coordinates and button states, the Mouse Area can also access Double-clicking
+and the mouse-over state.
+All of these features make the Mouse Area an important asset when creating custom interface
+elements.
+The Mouse Area is used to create a custom control in the tutorial in section ↑6, Ad-
+vanced Step Sequencer ↑6, Advanced Step Sequencer.
+The Mouse Area can also be used in conjunction with the Table Framework to accept audio
+files for drag and drop.
+The Drag and Drop feature of the Mouse Area is examined in section ↑8, Drag and Drop
+Sampler ↑8, Drag and Drop Sampler.
+Module Reference
+Panel
+ 
+REAKTOR 6 - Building In Primary - 241
+
+
+--- Page 242 ---
+
+18.5.10 Advanced Displays
+ 
+The Multi Display and the Poly Display and be used to create various numbers of objects.
+These objects can be simple shapes (like lines and rectangles) or they can be custom images.
+•
+The Multi Display can have the number of objects defined in its Properties.
+•
+The Poly Display creates an object for each polyphonic voice in the Instrument.
+The tutorial in section ↑6, Advanced Step Sequencer ↑6, Advanced Step Sequencer
+shows how to use a Multi Display.
+18.5.11 Scope
+ 
+Module Reference
+Panel
+ 
+REAKTOR 6 - Building In Primary - 242
+
+
+--- Page 243 ---
+
+The Scope Module can be used to create oscilloscopes.
+It samples the signal at the In input and then draws a trace of the input over time when a posi-
+tive Event arrives at the Trig input.
+The ranges and offsets of the time axis and Y axis can be set using the inputs.
+18.5.12 Stacked Macro
+ 
+Stacked Macros can be used to create dynamic control panels.
+•
+The Stacked Macro can contain any number of Macros, but it will only display the Panel
+of one of them at any one time.
+•
+The displayed Macro is selected using the Panel Index, which must be placed inside the
+Stacked Macro.
+Section ↑10.8, Stacked Macros ↑10.8, Stacked Macros describes the use of Stacked
+Macros in more detail.
+18.6
+Signal Path
+ 
+Module Reference
+Panel
+ 
+REAKTOR 6 - Building In Primary - 243
+
+
+--- Page 244 ---
+
+18.6.1
+Selectors
+ 
+There are three Signal Path Modules that can be used to select between multiple signals to
+output a single signal.
+•
+Relay: A switch style selector.
+•
+Selector: Can be used to blend between different inputs.
+•
+Crossfade: Like the Selector, but it pairs the signals and crossfades them as a stereo pair.
+18.6.2
+Distributors
+ 
+There are two distribution Modules. They take an input signal and route it to multiple outputs.
+•
+Distributor: This Module is like the Selector in reverse. It takes an input and routes it to
+different outputs.
+•
+Stereo Pan: A variation of the Distributor that takes an input and blends it between two
+outputs (one for each of the stereo channels).
+Module Reference
+Signal Path
+ 
+REAKTOR 6 - Building In Primary - 244
+
+
+--- Page 245 ---
+
+18.6.3
+Mixers
+ 
+These Modules act like audio mixing amplifiers.
+•
+Mixer: Takes an input signal (In) and alters its level using the decibel scale (Lvl).
+•
+Stereo Mixer: An expansion of the Mixer Module, with two outputs (one for each of the
+stereo channels) and a Pan input to blend the input between these outputs.
+You can add multiple inputs to these Modules, meaning that a single Mixer Module can be
+used to mix together several signals into one.
+The Mixer with multiple inputs
+18.7
+Oscillators
+ 
+Module Reference
+Signal Path
+ 
+REAKTOR 6 - Building In Primary - 245
+
+
+--- Page 246 ---
+
+18.7.1
+Basic Audio Oscillators
+ 
+The basic audio oscillators produce an audio rate waveform based on the two input parame-
+ters:
+•
+P - MIDI Pitch
+•
+A - Amplitude
+The basic oscillator modules are available in the following waveforms:
+•
+Sawtooth
+•
+Triangle
+•
+Parabol
+•
+Sine
+•
+Pulse
+•
+Impulse
+The Pulse waveform has an additional input (W) that controls the width of the pulse cycle.
+FM and Sync variants
+All of the basic audio oscillators are all also available as FM and Sync oscillators.
+Module Reference
+Oscillators
+ 
+REAKTOR 6 - Building In Primary - 246
+
+
+--- Page 247 ---
+
+The FM oscillators add an additional input, which allow them to be used for audio rate Fre-
+quency Modulation (FM):
+•
+F - Linear frequency control, which is added to the frequency of the P input.
+The Sync oscillators add two inputs to the FM oscillator:
+•
+Snc - when the input rises above zero, the oscillator re-starts at the phase set by the Ph
+input.
+•
+Ph - sets the re-starting phase point.
+The FM and Sync variants will have a heavier impact on the CPU, so only use them
+when you need the additional functionality.
+18.7.2
+Variants
+ 
+Some of the Basic Audio Oscillators also feature unique Variants. These offer extra control in-
+puts that affect the shape of the waveform in some way.
+Module Reference
+Oscillators
+ 
+REAKTOR 6 - Building In Primary - 247
+
+
+--- Page 248 ---
+
+Saw
+•
+Saw Pulse: Provides control over the steepness of the saw slope.
+•
+Bi-Saw: Provides control over the width of the saw.
+Triangle/Parabol
+•
+Tri/Par Symm: Includes two outputs for Triangle and Parabol waveforms. The Symmetry of
+the waveforms can be controlled via the W (width) port.
+This Module gives you the ability to morph between a Triangle wave and a Saw wave.
+•
+Par PWM: A Parabol waveform that can have its width controlled. The resulting shapes are
+different from the Par output of the Tri/Par Symm Module.
+Pulse
+Module Reference
+Oscillators
+ 
+REAKTOR 6 - Building In Primary - 248
+
+
+--- Page 249 ---
+
+•
+Bi-Pulse: The Width (W) input controls the width of the whole pulse waveform, rather than
+one side of it.
+•
+Pulse 1-Ramp: Provides control over the slope steepness of the rising edge of the wave-
+form.
+•
+Pulse 2-Ramp: Provides control over the slope steepness for both the rising and falling
+edges of the waveform.
+18.7.3
+Multi-step
+ 
+The Multi-Step Oscillators enables you to draw your own waveforms by entering values for mul-
+tiple steps in the waveform. The oscillator reads through these values like a table.
+They come in two main types with varying numbers of steps:
+•
+Step: Values change instantaneously, producing a blocky waveform.
+◦4-Step
+◦5-Step
+◦6-Step
+◦8-Step
+•
+Ramp: Values change gradually, producing a smoother waveform.
+◦4-Ramp
+◦5-Ramp
+◦6-Ramp
+Module Reference
+Oscillators
+ 
+REAKTOR 6 - Building In Primary - 249
+
+
+--- Page 250 ---
+
+◦8-Ramp
+18.7.4
+Noise
+ 
+There are three Modules that use random numbers to produce a signal:
+•
+Noise: Randomly outputs a value of -0.5*A or 0.5*A at the Sample Rate. Filter Modules
+can be used to change the color of the noise.
+•
+Random: Produces a random number at a rate defined by the P input, and in a range de-
+fined by the A input.
+•
+Geiger: Outputs clicks (a value of 1 followed instantly by a value of 0) at definably ran-
+dom intervals.
+◦The rate of the clicks is controlled by the P input and the randomization is controlled
+by the Rnd input.
+◦The Geiger Module also has an Event output, which generates Events at the same ran-
+dom interval. For example, it can be used to trigger Envelopes at random intervals.
+18.7.5
+Utility
+ 
+The Utility Oscillators are not designed to be used as Audio signals, but are tools that behave
+like oscillators.
+•
+The Ramp Osc ramps from 0 to the value defined at input A over the period defined by
+the F input.
+Module Reference
+Oscillators
+ 
+REAKTOR 6 - Building In Primary - 250
+
+
+--- Page 251 ---
+
+The Ramp Osc is a useful driver for wavetables oscillators.
+•
+The Clock Osc produces an Event of value A followed by an Event with a value of 0 at a
+rate defined at the F input.
+The Clock Osc is used in the tutorial in section ↑5, Basic Step Sequencer ↑5, Basic
+Step Sequencer
+18.7.6
+Additive
+ 
+Additive synthesis uses large numbers of sine waves to create complex sounds.
+REAKTOR has two oscillators designed to use this technique:
+•
+The Sine x4 Module essentially stacks four Sine Oscillator Modules inside one Module.
+•
+The Sine Bank is optimized to produce large numbers of sine waves. Therefore, rather
+than having individual inputs for the parameters of each of the sine waves, the parameters
+are set as values in an array.
+The Sine Bank is one of the main subjects in the tutorial in section ↑7, Additive Synthe-
+sizer ↑7, Additive Synthesizer.
+Module Reference
+Oscillators
+ 
+REAKTOR 6 - Building In Primary - 251
+
+
+--- Page 252 ---
+
+18.8
+Samplers
+ 
+18.8.1
+Basic
+ 
+The Basic Samplers play back audio samples from a Sample Map.
+•
+Sampler: Plays back the samples as they are mapped.
+•
+Sampler FM: Provides the ability to modulate the frequency of the sample playback, as
+well as the option to define the sample start offset.
+•
+Sampler Loop: Like the Sampler FM Module, but with inputs for settings the loop start
+and end points for the sample.
+Sample Maps and the Sample Map Editor are described in more detail in the REAKTOR
+6 Diving Deeper document.
+Sampler Modules all have a Panel element, which is a display of the current sample waveform,
+as well as overlays for the loop points and the playback head position.
+Module Reference
+Samplers
+ 
+REAKTOR 6 - Building In Primary - 252
+
+
+--- Page 253 ---
+
+The Sampler Module Panel Element
+18.8.2
+Granular
+ 
+The Granular Samplers cut the samples into small sections (called grains) and process each
+grain separately. This can produce choppy effects, or be used to individually control pitch and
+time.
+•
+Resynth: The standard granular sampler, with control over the grain settings and loop
+points.
+•
+Pitch Former: Like the Resynth, but with a Formant Shift (FS) input.
+Module Reference
+Samplers
+ 
+REAKTOR 6 - Building In Primary - 253
+
+
+--- Page 254 ---
+
+•
+Grain Cloud: Creates a number of grains (i.e. a cloud), with control over the envelope of
+the grains, and independent control over the distance between the grains and their length.
+Several of the parameters have Jitter inputs that control a randomization of their respec-
+tive partner.
+18.8.3
+Beat Loop
+ 
+Beat Loop is a granular sampler that aims to keep the tempo of the sample locked to the tem-
+po defined by the Clk (1/96 clock) input.
+This Module requires that the sample is an exact number of bars, preferably an even number
+like 1, 2, 4, 8, 16, etc…
+18.8.4
+Lookup
+ 
+The Sample Lookup Module allows you to scrub through the waveform of the sample by man-
+ually setting the playhead position using the Pos input.
+Unlike the other Sampler Modules, this Module does not use the Sample Map Editor. It can
+only hold one sample at a time and that sample is set in the Module Properties.
+Module Reference
+Samplers
+ 
+REAKTOR 6 - Building In Primary - 254
+
+
+--- Page 255 ---
+
+18.9
+Table Framework
+ 
+18.9.1
+Table List
+ 
+This Module is the main Table manager and lets you maintain the list of active Tables, reorder
+and select between them.
+The Table List is the only table reference module with Snapshot support.
+18.9.2
+Table Info
+ 
+The Table Info outputs a specific piece of information (meta-info) about the current table,
+such as Sample Rate, Table Size, Loop Points, etc.
+•
+The table meta-info to be read is selected in the Module Properties.
+•
+If the meta-info is not present in the selected table, then the Miss output sends a value of
+1.
+•
+If the meta-info is present, then the value is sent from the Val output.
+Module Reference
+Table Framework
+ 
+REAKTOR 6 - Building In Primary - 255
+
+
+--- Page 256 ---
+
+18.9.3
+Sample Map
+ 
+This Module takes sample information from the Sample Map and outputs it as a table refer-
+ence. It similar in function to the Sampler Module (see section ↑18.8, Samplers ↑18.8, Sam-
+plers), only it outputs the selected sample as a table reference rather than as an audio signal.
+•
+The sample is selected using the pitch (P) and velocity (Vel) inputs.
+•
+The sample is then sent to the output as a table when an event is sent to the Trig input.
+18.10 Sequencer
+ 
+Module Reference
+Table Framework
+ 
+REAKTOR 6 - Building In Primary - 256
+
+
+--- Page 257 ---
+
+18.10.1 Basic
+ 
+The Sequencer Modules allow you to create sequences of values, which are read at a rate de-
+fined by the Clk input.
+•
+Every time a rising value passes 0 at the Clk input, the sequence progresses to the next
+step. When the sequence passes the last step, it wraps around again.
+•
+You can reset the sequence position using the Rst input.
+There are 4 Sequencer Modules, each defined by their length:
+•
+6-Step
+•
+8-Step
+•
+12-Step
+•
+16-Step
+Module Reference
+Sequencer
+ 
+REAKTOR 6 - Building In Primary - 257
+
+
+--- Page 258 ---
+
+18.10.2 Multiplex 16
+ 
+The Multiplex 16 Module is more like a value selector than the Sequencer Modules.
+•
+You can set the length of the sequence using the Len input and then set the sequence
+position using the Pos input.
+•
+A value is read every time the Pos input receives an Event, so the Pos input also acts as
+the clock input.
+18.11 LFO, Envelope
+ 
+18.11.1 LFO
+ 
+Module Reference
+Sequencer
+ 
+REAKTOR 6 - Building In Primary - 258
+
+
+--- Page 259 ---
+
+LFOs are Low Frequency Oscillators, i.e. Oscillators that are designed to run at a frequency
+lower than the range of human hearing.
+The LFO Modules are Oscillators that output Events rather than Audio signals.
+•
+LFO: A standard LFO with three different waveforms available from individual outputs.
+•
+Slow Random: Produces a random value at the Control Rate. The values are smoothed by
+an internal filter, the cutoff of which is defined at the F input.
+18.11.2 Envelopes
+ 
+Module Reference
+LFO, Envelope
+ 
+REAKTOR 6 - Building In Primary - 259
+
+
+--- Page 260 ---
+
+There are 13 different Envelope Modules, each with a different set of parameters that affect
+the envelope shape and behaviors in different ways. They all use the following abbreviations to
+show how they function:
+•
+A: Attack - A fade-in at the start of the envelope.
+•
+D: Decay - A gradual reduction in level.
+•
+H: Hold - Keeps a value level for a set amount of time.
+•
+B: Break - A Break-point level in the envelope. Usually this is a level between two decay
+phases.
+•
+S: Sustain - The level at which the envelope remains for as long as the gate is active.
+•
+R: Release - The fade-out time after the gate is deactivated.
+The available Envelopes mix and match these functions.
+The most common Envelope type for synthesizer is the ADSR Envelope.
+•
+With the exception of the HR Envelope, all of the Envelopes with a release phase (R) use
+a Gate (G) input as this tells the envelope whether or not the note is being held. The posi-
+tive Gate value also sets the peak value of the Envelope.
+•
+The Other Envelopes use an A input to set the peak value of the Envelope, and a Trig in-
+put to trigger the start of the envelope.
+Module Reference
+LFO, Envelope
+ 
+REAKTOR 6 - Building In Primary - 260
+
+
+--- Page 261 ---
+
+18.11.3 Multi-ramp
+ 
+The Multi-ramp Envelopes allow you to define the shape of the Envelope.
+•
+Each point is defined by the time it takes to get there (T) and its level (L).
+•
+These Envelopes also have a sustain level (LS) and a release time (TR).
+There are three Multi-ramp Envelopes, defined by the number of ramps available (note that the
+release phase counts as a ramp):
+•
+4-Ramp
+•
+5-Ramp
+•
+6-Ramp
+18.12 Filters
+ 
+Module Reference
+LFO, Envelope
+ 
+REAKTOR 6 - Building In Primary - 261
+
+
+--- Page 262 ---
+
+18.12.1 Basic
+ 
+The Basic Filter Modules are designed to filter audio signals.
+There are three steepness levels available:
+•
+-Pole (6dB/Octave). The 1-Pole filters do not have resonance options.
+•
+-Pole (12dB/Octave)
+•
+-Pole (24dB/Octave)
+As the number of poles increases, so do the number of available filter outputs. Note that the 4-
+Pole filters both contain the options available in the 2-Pole Filter.
+The Filters also have a panel element that can be activated from the View tap of the Module
+Properties.
+The Panel Display of the Filter Modules
+Note that the plot shown is that of the primary filter type. So the 4-Pole HP Filter will always
+show a high-pass filter plot, even if you are using the low-pass or band-pass outputs.
+Module Reference
+Filters
+ 
+REAKTOR 6 - Building In Primary - 262
+
+
+--- Page 263 ---
+
+FM
+The Basic Filters also have FM variants, which can have their cutoff frequency modulated at
+the audio rate.
+18.12.2 Modeled
+ 
+There are three Filter Modules that are based on hardware filters:
+•
+Pro-52: This is an emulation of the Prophet 5 filter that was used in the now discontinued
+Pro-52 software.
+•
+Ladder: An emulation of the classic Ladder Filter design. It has four outputs for different
+numbers of poles (i.e. the filter steepness).
+•
+Ladder FM: Similar to the Ladder Module, but with an F input for frequency modulation.
+Module Reference
+Filters
+ 
+REAKTOR 6 - Building In Primary - 263
+
+
+--- Page 264 ---
+
+18.12.3 Modal Bank
+ 
+The Modal Bank creates a large number of resonant band-pass filters. When these filters are
+excited by an input signal, they produce a tone. This process is called modal synthesis and is
+generally considered to be good for physical modeling (although it can take some fine-tuning to
+get the right results.
+The Modal Bank functions similarly to the Sine Bank, in that the parameters of the individual
+band-pass filters are set in an array.
+The tutorial in section ↑7, Additive Synthesizer ↑7, Additive Synthesizer goes into more
+detail about using the Sine Bank. The same principals apply to the Modal Bank.
+18.12.4 Equalizers
+ 
+Module Reference
+Filters
+ 
+REAKTOR 6 - Building In Primary - 264
+
+
+--- Page 265 ---
+
+Equalizers (or EQ for short) are used to alter the levels of a select band of frequencies.
+There are three EQ types available:
+•
+Peak EQ
+•
+Hi Shelf EQ
+•
+Lo Shelf EQ
+Each type comes with and FM variant.
+18.12.5 Differentiator, Integrator
+ 
+•
+Differentiator: A signal slope detector. Calculates and outputs how fast the input signal is
+rising or falling.
+•
+Integrator: A ramp generator. Creates a ramp with a slope defined by the value at the in-
+put.
+Module Reference
+Filters
+ 
+REAKTOR 6 - Building In Primary - 265
+
+
+--- Page 266 ---
+
+18.13 Delay
+ 
+18.13.1 Basic
+ 
+The Delay Modules take an input signal and delay it in time.
+There are three Basic Delay Modules:
+•
+Unit Delay (T): Delays the input signal by one sample. This Module is useful in feedback
+paths.
+If you do not insert a Unit Delay in your feedback paths, REAKTOR will do it automati-
+cally. The location of the delay is marked by a Z.
+•
+Single Delay: Delays the input signal by the time specified at the Dly Port.
+The Single Delay is the main Module in the tutorial in section ↑4, Echo Effect Macro ↑4,
+Echo Effect Macro.
+Module Reference
+Delay
+ 
+REAKTOR 6 - Building In Primary - 266
+
+
+--- Page 267 ---
+
+•
+Multi-Tap Delay: Can create up to 8 different delayed signals from a single input.
+18.13.2 Diffuse
+ 
+The Diffuser Delay Module is an all-pass filter containing a delay line with feedback. Its func-
+tion is to smear (decorrelate) the input signal without emphasizing any particular frequency
+component. The delay time can be continuously modulated by an Audio signal.
+These features make the Diffuser Delay a good component for a reverb effect.
+18.13.3 Granular
+ 
+Module Reference
+Delay
+ 
+REAKTOR 6 - Building In Primary - 267
+
+
+--- Page 268 ---
+
+The Granular Delay Modules cut up the input signal into small sections (grains). Essentially
+these Modules are effect counterparts to the Granular Sampler Modules.
+•
+Grain Delay: This module allows you to modulate the delay time without affecting the
+pitch, and vice versa.
+•
+Grain Cloud Delay: Gives you much more control over the parameters of the grains. This
+Module is an effect version of the Grain Cloud from the Samplers.
+18.14 Audio Modifier
+ 
+18.14.1 Saturators and Distortions
+ 
+These Modules distort the input signal.
+There are seven Modules available:
+•
+Saturator: A soft saturation Module. The saturation amount depends on the level of the
+input.
+•
+Saturator 2: A more advanced version of the Saturator. Gives you access to additional pa-
+rameters that affect the character of the saturation.
+•
+Clipper: Clips the input when it goes beyond certain threshold levels, which are defined at
+the Max and Min inputs.
+Module Reference
+Audio Modifier
+ 
+REAKTOR 6 - Building In Primary - 268
+
+
+--- Page 269 ---
+
+•
+Mod. Clipper: A variation on the Clipper, optimized for modulation of the clipping thresh-
+old.
+•
+Mirror 1: Rather than clipping the signal, this Module "reflects" any signal that passes
+above the threshold level.
+•
+Mirror 2: Similar to the Mirror 1 Module, but is able to reflect signals at both an upper
+limit and a lower limit.
+•
+Chopper: When the value at the M Port is positive, the signal at the In Port is multiplied
+by the value at the X Port. When the M value is negative, the In signal is left unchanged.
+18.14.2 Shapers
+ 
+The Shaper Modules also distort the input signal, but use waveshaping techniques.
+There are three Break-Point (BP) based Shapers:
+•
+Shaper 1 BP: When the input rises above the break-point (Bp), its slope is adjusted by
+the Sl value.
+•
+Shaper 2 BP: Like the Shaper 1BP, but with an additional lower break-point (Bp2), below
+which the slope is affected by the Sl2 value.
+•
+Shaper 3 BP: An expansion on the Shaper 2BP Module, with control of the slope of the
+signal between zero and Bp1, and control over the slope between zero and Bp2.
+There are two mathematical Shapers:
+•
+Parabol Shp (Shaper Parabolic): A Shaper with a parabolic curve. It allows you to mix the
+undistorted signal (Lin) and the parabolic signal (Par).
+Module Reference
+Audio Modifier
+ 
+REAKTOR 6 - Building In Primary - 269
+
+
+--- Page 270 ---
+
+•
+Cubic Shp (Shaper Cubic): Adds cubic distortion to the Parabol Shp Module.
+18.14.3 Modifiers
+ 
+These Modules take the input signal and use it as the basis of a new output signal.
+•
+Slew Limiter: Follows the input signal, but at a limited rate of change. The upward rate
+and downward rate can be set independently.
+•
+Peak Detect. (Peak Detector): The input signal is rectified and then smoothed by an ad-
+justable release time (Rel). The attack time is fixed at 0ms.
+•
+Sample & H. (Sample + Hold): The input signal is sampled and held each time the Trig
+input rises above 0.
+•
+Freq. Divider (Frequency Divider): The zero-crossing slopes of the input signal are counted
+and the output signal only changes when the counters reach the values set at the C+ and
+C- inputs.
+The Frequency Divider Module is the same as the Frequency Divider found in the Event
+Processing section.
+Module Reference
+Audio Modifier
+ 
+REAKTOR 6 - Building In Primary - 270
+
+
+--- Page 271 ---
+
+18.14.4 Audio Table
+ 
+The Audio Table holds a two-dimensional table of values, which can be read and written at the
+audio rate.
+The Audio Table can be used to create a crude sampler or wavetable.
+The Audio Table functionality is very similar to the Event Table, which is used in the tu-
+torial in section ↑5, Basic Step Sequencer ↑5, Basic Step Sequencer.
+The Audio Table is not part of the Table Framework.
+18.15 Event Processing
+ 
+Module Reference
+Audio Modifier
+ 
+REAKTOR 6 - Building In Primary - 271
+
+
+--- Page 272 ---
+
+18.15.1 Counters
+ 
+There are two Event Counters in REAKTOR:
+•
+Counter: Adds or subtracts 1 from an internal value each time an Event arrives at Up or
+Dn (Down) inputs. The internal value can be set to a specific value by using the Set input.
+•
+Accumulator: Adds the value of the input Event to an internal value. The internal value
+can be set to a specific value by using the Set input.
+18.15.2 Random
+ 
+The Random Module modifies the input Event value by a random deviation. The deviation
+amount is set at the Rng input.
+18.15.3 Frequency Divider
+ 
+Module Reference
+Event Processing
+ 
+REAKTOR 6 - Building In Primary - 272
+
+
+--- Page 273 ---
+
+The zero-crossing slopes of the input signal are counted and the output signal only changes
+when the counters reach the values set at the C+ and C- inputs.
+This Module is the same as the Frequency Divider found in the Audio Modifier section.
+18.15.4 Control Shapers
+ 
+The Control Shapers allow you to alter the slope or curve of Event signals. Unlike the Audio
+Shapers, these Modules remap specific values and thus alter the control curve.
+To define the slopes, you set the values of several points; Input values are changed to fit their
+respective location on the lines these points draw.
+Note that the remap values as they are written at the Ports are presented as percentag-
+es, but the input requires a range of 0 to 1. So the 50 Port defines the value remap of a
+0.5 input and the 100 Port defines the remap of a 1 input.
+•
+Ctrl. Shp 1 (Ctrl. Shaper 1 BP): Allows you to alter the minimum point, a midpoint value,
+and the maximum point, creating two different slopes.
+•
+Ctrl. Shp 2 (Ctrl. Shaper 2 BP): Allows you to alter the minimum point, the maximum
+point, and two midpoints (33 and 66), creating three different slopes.
+•
+Ctrl. Shp 3 (Ctrl. Shaper 3 BP): Allows you to alter the minimum point, the maximum
+point, and three midpoints (25, 50, and 75), creating four different slopes.
+Control Shapers can be useful for changing the scaling of a Knob or Fader.
+Module Reference
+Event Processing
+ 
+REAKTOR 6 - Building In Primary - 273
+
+
+--- Page 274 ---
+
+18.15.5 Logic
+ 
+The Logic Modules are used to perform logic (Boolean) processes.
+•
+When an input is greater than 0 it is considered to be True.
+•
+When an input is less than or equal to 0 it is considered to be False.
+The available Modules and processes are:
+•
+AND
+•
+OR
+•
+EXOR
+•
+NOT
+18.15.6 Iteration
+ 
+The Iteration Module is REAKTOR's equivalent of a loop.
+•
+The input Event is set to the output along with N additional Events. The value of each
+Event increments upon the previous Event by the amount set at the Inc input.
+•
+The iteration process can be set to a limited speed in the Module Properties.
+Module Reference
+Event Processing
+ 
+REAKTOR 6 - Building In Primary - 274
+
+
+--- Page 275 ---
+
+•
+The iteration process can be stopped by sending a positive Event to the Brk input.
+The Iteration Module is one of the main topics covered in the tutorial in section ↑7, Ad-
+ditive Synthesizer ↑7, Additive Synthesizer.
+18.15.7 Signal Flow
+ 
+These Modules control the flow of Event signals.
+•
+Order: An Event at the input is set to the outputs in a defined order.
+•
+Separator: Separates an Event to one of the two outputs depending on whether it is above
+or below the Threshold (Thld) value.
+•
+Value: An Event at the Trig input will send an Event with the value of the signal at the
+lower input. Note that this Module can also be used to trigger the transmission of Table
+References.
+•
+StpFlt (Step Filter): An incoming Event is only passed to the output if its larger or smaller
+than the previous value by an amount defined at the Tol input.
+•
+M (Merge): This Module is used to merge multiple signals into one. Whichever input re-
+ceived an Event last will have its value sent to the output. If multiple Events arrived si-
+multaneously, the lowest input will be used.
+Module Reference
+Event Processing
+ 
+REAKTOR 6 - Building In Primary - 275
+
+
+--- Page 276 ---
+
+18.15.8 Routers
+ 
+These Modules are used to route Events to/from different parts of the Structure.
+•
+Router M->1: A "many to one" router. The Pos input is used to select which input signal is
+sent to the output.
+•
+Router: This Module is a precursor to the Router M->1 Module. It can only accept 2 sig-
+nals, and switches to the 1 signal when the Ctrl input is >=1
+•
+Router 1->M: A "one to many" router. The Pos input is used to select to which output the
+input signal will be sent.
+18.15.9 Timing
+ 
+These Modules can be used to measure or manipulate the timing of Events.
+Module Reference
+Event Processing
+ 
+REAKTOR 6 - Building In Primary - 276
+
+
+--- Page 277 ---
+
+•
+Timer: The T Port outputs the number of milliseconds between an Event at the Trig input
+and the previous Event at that input. The F Port outputs the frequency of Events (by cal-
+culating 1/T).
+•
+Hold: When an Event arrives at the Trig input, it is held at the output for an amount of
+time defined at the H input. Once the hold time ends, the output returns to zero.
+The timing of the Hold Module is course, as it uses the Control Rate clock for better
+CPU performance. For finer control over the Hold time, use the H Envelope from the
+LFO, Envelope section, as this uses the Sample Rate clock.
+18.15.10 Event Table
+ 
+The Event Table holds a two-dimensional table of values.
+The tutorial in section ↑5, Basic Step Sequencer ↑5, Basic Step Sequencer makes ex-
+tensive use of the Event Table.
+Module Reference
+Event Processing
+ 
+REAKTOR 6 - Building In Primary - 277
+
+
+--- Page 278 ---
+
+18.16 Auxiliary
+ 
+18.16.1 Audio to Event
+ 
+These Modules are all designed to convert Audio signals into Event Signals.
+•
+A/E (A to E): Simply resamples the incoming Audio signal at the Control Rate.
+•
+A to E Trig: The A value is sampled when the Trig input has a rising edge.
+•
+A to Gate: Converts the Audio signal into a Gate. A rising edge opens the gate, and a fall-
+ing edge closes it. The on value of the gate is set at the A input.
+•
+A to E Perm: Resamples the value A at a rate set at the F input.
+18.16.2 Voice
+ 
+These Modules provide you with the ability to alter or interact with the polyphonic voices.
+•
+To V (To Voice): Sends a monophonic signal to a specific voice in a polyphonic signal. The
+voice number is specified at the V input.
+Module Reference
+Auxiliary
+ 
+REAKTOR 6 - Building In Primary - 278
+
+
+--- Page 279 ---
+
+•
+Fr. V (From Voice): Outputs a monophonic signal by selecting the signal from a single pol-
+yphonic voice. The voice number is specified at the V input.
+•
+Voice Shift: Can be used to shift a signal from one voice to another.
+18.16.3 Voice Combiners
+ 
+Voice Combiners are used to convert polyphonic signals into monophonic signals.
+•
+} (Audio Voice Combiner): Sums the voices of a polyphonic audio signal into a monophon-
+ic audio signal.
+•
+E } (Event V.C. All): Merges the voices of a polyphonic Event signal. The value of the last
+Event to arrive at the input will be the value at the output.
+•
+Select Max (Event V.C. Max): Selects the voice with the current highest value to output as
+a monophonic signal.
+•
+Select Min (Event V.C. Min): Selects the voice with the current lowest value to output as a
+monophonic signal.
+18.16.4 Smoothers
+ 
+Module Reference
+Auxiliary
+ 
+REAKTOR 6 - Building In Primary - 279
+
+
+--- Page 280 ---
+
+Smoothers slow the rate of change in values, effectively smoothing transitions.
+The smoothing time is set in the Module Properties.
+There are two Smoothing Modules:
+•
+Audio Smoother: Takes an Event input and creates smoothed transitions at the Audio
+Sample Rate. This Module is better for higher quality smoothing.
+•
+Event Smoother: Creates smoothed transitions at the Control Rate. This Module is better
+for performance.
+18.16.5 Snapshot
+ 
+The Snapshot Module has inputs and outputs that relate to almost all of the controls in the
+Snapshot tab of the Sidepane.
+Not only does this Module output the current Bank and Snapshot numbers, but it also sends
+Events on Snapshot recall (Recl) and storage (St), which can be useful when initializing the
+instrument after a Snapshot loads.
+Module Reference
+Auxiliary
+ 
+REAKTOR 6 - Building In Primary - 280
+
+
+--- Page 281 ---
+
+18.16.6 Snap Values
+ 
+These Modules hold values that are stored and recalled with Snapshots.
+•
+Snap Value: Stores and recalls a single value with the Snapshot.
+•
+Snap Value [] (Snap Value Array): Stores and Recalls an array of values with the Snap-
+shot.
+The Snap Value Array is used in the tutorial in section ↑6, Advanced Step Sequencer
+↑6, Advanced Step Sequencer.
+18.16.7 System
+ 
+The System Modules output information about REAKTOR.
+•
+Tempo Info: A source for the current tempo in Beats per Second.
+•
+System Info: Contains several outputs relating to the REAKTOR engine:
+◦SR (Sample Rate): The audio engine Sample Rate.
+Module Reference
+Auxiliary
+ 
+REAKTOR 6 - Building In Primary - 281
+
+
+--- Page 282 ---
+
+◦CR (Control Rate): The Control Rate for Event signals.
+◦DClk (Display Clock): Sends an Event before the interface refreshes, which should
+happen around 25 times per second.
+◦CPU: A measurement of the current CPU load. Whether this measurement is smooth-
+ed or raw output can be set in the properties.
+◦GUI: A measurement of the GUI thread load.
+The Display Clock is a useful tool when optimizing custom interfaces. See section
+↑14.4, Use the Display Clock ↑14.4, Use the Display Clock for more information.
+18.16.8 Instrument Properties
+ 
+These Modules can be used to retrieve or define certain settings in the Instrument (or Ensem-
+ble) Properties.
+The available Modules are:
+•
+Master: Accesses the main output volume and tuning.
+•
+Note Range: Accesses the MIDI Note range.
+•
+Midi Channel: Accesses the MIDI input and output channels.
+•
+Tuning: Accesses the tuning properties.
+•
+Voice Info: Accesses the polyphony settings, including an output (V) that sends the Voice
+ID on that Voice.
+Module Reference
+Auxiliary
+ 
+REAKTOR 6 - Building In Primary - 282
+
+
+--- Page 283 ---
+
+18.16.9 Spread
+ 
+The Spread Module is only of use when the Ensemble it is inside is polyphonic.
+This Module generates a different offset value for each voice, which can be used to create uni-
+son spread in other Modules.
+18.16.10 Automation
+ 
+This Module is used to send and receive automation to/from a host program.
+Using this Module is described in more detail in section ↑11.2, The Automation Module
+↑11.2, The Automation Module.
+18.16.11 Set Random
+ 
+Sets the seed value for the random number generation within the Ensemble.
+Module Reference
+Auxiliary
+ 
+REAKTOR 6 - Building In Primary - 283
+
+
+--- Page 284 ---
+
+18.16.12 Tapedeck
+ 
+The Tapedeck Modules essentially mimic the behavior of the Player and Recorder, but as Mod-
+ules in the structure.
+You can use them to record audio, save it, and play it back.
+The Tapedeck is available in two versions:
+•
+Tapedeck 1-Ch: A monophonic audio recorder.
+•
+Tapedeck 2-Ch: A stereo audio recorder.
+18.16.13 Comment
+ 
+The Structure Comment Module is a Module that allows you to annotate your Ensemble’s
+Structure. It appears as floating text within the Structure View of REAKTOR.
+Module Reference
+Auxiliary
+ 
+REAKTOR 6 - Building In Primary - 284
+
+
+--- Page 285 ---
+
+An Unselected Comment as It Appears in the Structure
+See Improving Readability for more information on how to use the Comment Module.
+18.17 Terminal
+ 
+18.17.1 Ports
+ 
+Ports are an essential part of building in REAKTOR. They allow the contents of one level of the
+Structure to send values to the level above.
+The final Ports are the Ensemble Ports, which send audio to the host software or computer
+soundcard.
+18.17.2 Send/Receive
+ 
+The Send and Receive Modules can be used to make wireless connection in the Ensemble.
+Module Reference
+Terminal
+ 
+REAKTOR 6 - Building In Primary - 285
+
+
+--- Page 286 ---
+
+The Receive Module listed here is the same as the Receive Module from the Panel sec-
+tion.
+Caution is advised when using these Modules, as they can impact performance and
+loading times. See section ↑14.7, Avoid unnecessary use of Send/Receive Modules
+↑14.7, Avoid unnecessary use of Send/Receive Modules for more details.
+18.17.3 IC Connections
+ 
+The IC Send and IC Receive Modules use the Internal Connection (IC) Protocol to wirelessly
+send signals.
+The IC Protocol and its use is documented in section ↑13, Internal Connection Protocol
+↑13, Internal Connection Protocol.
+18.17.4 Hardware Control
+ 
+The Hardware Control Module (HW Control) is used to communicate with NATIVE INSTRU-
+MENTS hardware.
+The use of the Hardware Control Module is documented in section ↑12.4, Hardware
+Control ↑12.4, Hardware Control.
+Module Reference
+Terminal
+ 
+REAKTOR 6 - Building In Primary - 286
+
+
+--- Page 287 ---
+
+Index
+Numerics
+2-Osc [53]
+A
+always active [97]
+animation [152]
+array [103]
+Atmotion [87]
+audio engine [59]
+audio signals [22]
+converting to event signals [278]
+routing [243]
+automation [171] [192] [283]
+ID [172]
+name [171] [174]
+B
+bit-crusher [225]
+BPM (Beats Per Minute) [67]
+C
+clock [75] [77] [116] [230] [250]
+color scheme [149]
+connections [21] [58]
+IC (Internal Connection) [197]
+wireless [205] [285]
+constant [222]
+Context Menu [19]
+Built-In Module [20] [60]
+Library [20] [37]
+New Macro [20]
+Open Searchbox [20]
+control rate [204] [282]
+control shaper [273]
+core [207]
+building [139]
+CCCCC (Compiled Core Cell Code Cache)
+[219]
+core cells [128] [137]
+counter [272]
+CPU (Central Processing Unit)
+measurement [30] [282]
+Index
+ 
+REAKTOR 6 - Building In Primary - 287
+
+
+--- Page 288 ---
+
+D
+Debug Structure [28]
+Enable Wire Debugging [29]
+Measure CPU Usage [30]
+Show Event Init Order [32]
+Show Module Sorting [31]
+debugging [28]
+decibel
+converting [226]
+delay [55] [266]
+buffer [69]
+differentiation [265]
+distortion [268]
+E
+Echomania [73]
+edit mode [35]
+Envelope [259]
+envelope follower [270]
+EQ (Equalizer) [264]
+event signals [22] [75] [202]
+filtering [86] [202]
+initialization [32]
+ordering [81] [140] [275]
+processing [271]
+routing [117] [124] [275] [276]
+timing [276]
+F
+factory library
+ensembles [53] [73] [87]
+macros [37] [43] [129] [191]
+feedback [65] [266]
+file player [65]
+filter [43] [261]
+FPS (Frames Per Second) [203]
+frequency divider [270] [273]
+Index
+ 
+REAKTOR 6 - Building In Primary - 288
+
+
+--- Page 289 ---
+
+G
+g200kg KnobMan [152]
+granular [253] [268]
+GUI (Graphical User Interface) [89] [143]
+display clock [203] [282]
+H
+hertz
+converting [226]
+host
+automation [171]
+song position [83] [230]
+tempo synchronization [67] [83]
+transport [230]
+I
+IC (Internal Connection) protocol [197]
+modules [199] [286]
+image
+Image Properties [154]
+importing [153]
+skinning [152]
+info hints [221]
+initialization [32] [140]
+Instrument Properties [282]
+integration [265]
+iteration [108] [274]
+J
+Junatik [54]
+K
+Komplete Kontrol [180]
+browser [184] [193]
+Light Guide [187] [286]
+Native Map [192]
+Komplete Kontrol S-Series [187]
+Index
+ 
+REAKTOR 6 - Building In Primary - 289
+
+
+--- Page 290 ---
+
+L
+Lazerbass [126]
+LFO (Low Frequency Oscillator) [258]
+logarithms [226]
+logic [225] [274]
+Longflow [74]
+loop
+for loop [108]
+loopSee iteration [119]
+M
+macro [19] [55]
+browsing and loading [20] [37] [41] [43] [71]
+creating [57]
+properties [91]
+re-naming [59]
+saving [69]
+stacked macro [161] [243]
+macros
+polyphony [27]
+Maschine [180]
+mathematics [222]
+MIDI (Musical Instrument Digital Interface
+MIDI Out [231]
+MIDI (Musical Instrument Digital Interface)
+MIDI In [41] [114] [227]
+notes [226]
+Mikro Prism [126]
+mixer [245]
+module [19] [47]
+browsing and loading [20] [47] [60]
+deleting [110]
+info [131]
+properties [62]
+reference [221]
+Index
+ 
+REAKTOR 6 - Building In Primary - 290
+
+
+--- Page 291 ---
+
+re-naming [64]
+sorting [31]
+mono [26]
+N
+noise
+generator [250]
+O
+Oki-Computer 2 [126]
+optimization [86] [201] [239]
+OSC (Open Sound Control) [234]
+oscillator [37] [245]
+oscilloscope [243]
+P
+panel
+A/B view [147]
+color scheme [149]
+customization [89] [161]
+customizing [134]
+editing [40] [64] [91]
+header [145]
+layering [158]
+modules [86] [89] [106] [143] [235]
+panel grid [156]
+skinning [152]
+text [237]
+panelsets [186]
+playback [85] [230]
+polyphony [24] [49] [69] [202]
+ports [22] [42] [58] [69] [130] [285]
+Create Control [62]
+Preferences [219]
+Directories [219]
+preset [183]
+Pro-52 [263]
+Q
+quantize [96] [224]
+Index
+ 
+REAKTOR 6 - Building In Primary - 291
+
+
+--- Page 292 ---
+
+R
+random [272] [283]
+Reaktor Prism [126]
+S
+S&H (Sample and Hold) [270]
+sample rate [138] [281]
+sampler [128] [252]
+saturation [268]
+searchbox [20] [41] [47]
+sequencer [75] [256]
+Settings
+Snap to Grid [157]
+skinning [152]
+smoothing [280]
+snapshot [100] [280]
+tagging [180]
+value [100] [121] [281]
+SQX [106]
+synthesis
+additive [109] [251]
+FM (Frequency Modulation) [52] [246]
+modal [126] [264]
+subtractive [34]
+T
+table [78]
+audio [271]
+event [277]
+Table Draw Mode [81]
+table framework [128] [209] [255]
+table references [128] [130] [209]
+tapedeck [284]
+tempo [67] [83]
+transport
+play [85]
+trigonometry [227]
+truncation [85]
+U
+unison [283]
+V
+Vierring [87]
+voices [25] [50] [201]
+Automatic Voice Reduction [201]
+lock voices [26]
+modules [278]
+voice combiners [27] [50] [279]
+Index
+ 
+REAKTOR 6 - Building In Primary - 292
+
+
+--- Page 293 ---
+
+W
+waveshaper [269]
+Index
+ 
+REAKTOR 6 - Building In Primary - 293
+

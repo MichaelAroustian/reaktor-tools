@@ -1,0 +1,453 @@
+--- Page 180 ---
+
+12
+KOMPLETE KONTROL and MASCHINE 2 Integration
+ 
+The following chapter will cover the features that relate to integrating your REAKTOR Ensem-
+bles into MASCHINE 2 and KOMPLETE KONTROL. This includes visibility in the sound brows-
+ers, and optimizing the panel.
+Although this chapter will mostly refer only to KOMPLETE KONTROL, the same principals can
+all be applied to MASCHINE 2.
+12.1
+Snapshot Visibility
+ 
+When using REAKTOR, you can browse for a number of different things: Ensembles, Modules,
+Snapshots, etc. Generally a Snapshot is considered to be a REAKTOR sound preset.
+Since the KOMPLETE KONTROL Browser is used primarily to navigate sounds, it has been de-
+signed to scan for Snapshots within a REAKTOR Ensemble file. However, Snapshots need to
+be tagged so that KOMPLETE KONTROL can integrate them correctly.
+12.1.1
+Tagging Snapshots
+ 
+Since a REAKTOR Ensemble can be an instrument, an effect, or even both, we need to com-
+municate which of these the Snapshot is classed as so KOMPLETE KONTROL will know where
+to place it in the Browser.
+Note that KOMPLETE KONTROL can only open Snapshots tagged as instruments;
+whereas MASCHINE 2 can open both instrument and effect Snapshots.
+Tagging is done in the Presets tab.
+KOMPLETE KONTROL and MASCHINE 2 Integration
+Snapshot Visibility
+ 
+REAKTOR 6 - Building In Primary - 180
+
+
+--- Page 181 ---
+
+The Presets Tab
+1.
+To display Snapshot tags, right-click on a Snapshot and select Show Meta Info.
+KOMPLETE KONTROL and MASCHINE 2 Integration
+Snapshot Visibility
+ 
+REAKTOR 6 - Building In Primary - 181
+
+
+--- Page 182 ---
+
+⇨A new column will appear in the Presets browser displaying any tags applied to the Snap-
+shots.
+There are four kinds of tags:
+•
+None: The sound will be hidden from the KOMPLETE KONTROL browser. This can be
+useful if your Ensemble includes an "Init" (i.e. blank) snapshot, which is not something
+you necessarily want to be displayed in the KOMPLETE KONTROL browser.
+•
+Inst: An Instrument sound. Any Snapshot that generates audio, but does not alter incom-
+ing audio should be tagged as an Instrument sound.
+•
+FX: An Effect sound. Any Snapshot that relies on, alters, or reacts to incoming audio
+should be tagged as an Effect sound.
+•
+Both: A sound that can be either an Instrument or Effect. Any Snapshot that generates
+audio independently, but can also react to incoming audio somehow, should be tagged as
+Both.
+Tagging a Single Snapshot
+1.
+Right-click on the Snapshot in the Snapshot browser.
+KOMPLETE KONTROL and MASCHINE 2 Integration
+Snapshot Visibility
+ 
+REAKTOR 6 - Building In Primary - 182
+
+
+--- Page 183 ---
+
+2.
+Enter the NI Meta Info sub-menu to display the available tags.
+3.
+Click on the relevant tag for the Snapshot.
+4.
+Save the Ensemble file to make the changes permanent.
+Single Preset Files
+If you save a Preset file in REAKTOR the saved file will take the tag information from the last
+selected Snapshot.
+If the Snapshot was saved without a tag, you can tag it by using the Snapshot menu in REAK-
+TOR's toolbar:
+1.
+Right-click on the Snapshot menu.
+2.
+Select the relevant tag for the Snapshot.
+3.
+Re-save the preset file.
+Tagging a preset using this method will not change the tag of the original Snapshot.
+KOMPLETE KONTROL and MASCHINE 2 Integration
+Snapshot Visibility
+ 
+REAKTOR 6 - Building In Primary - 183
+
+
+--- Page 184 ---
+
+12.2
+Defining the Bank Name
+ 
+Any Ensemble created in REAKTOR containing tagged Snapshots will be located in the REAK-
+TOR product when it is added to the KOMPLETE KONTROL library (see section ↑12.6, Adding
+Ensembles to the Library ↑12.6, Adding Ensembles to the Library for a walkthrough of how to
+do this).
+The User Tab of the Komplete Kontrol Browser
+In order to make locating the sounds in the KOMPLETE KONTROL Browser easier, you can de-
+fine a Bank name.
+KOMPLETE KONTROL and MASCHINE 2 Integration
+Defining the Bank Name
+ 
+REAKTOR 6 - Building In Primary - 184
+
+
+--- Page 185 ---
+
+Displaying the Banks
+The Bank name is taken from the Ensemble Bank Path property.
+To change the Bank name:
+1.
+Select the Ensemble and open the Properties tab.
+2.
+Navigate to the Function sub-tab.
+3.
+Scroll to the area called BANK PATH.
+4.
+Enter the name you wish to use in the Bank property.
+⇨When KOMPLETE KONTROL scans the Ensemble, it will use this as the Bank name.
+Note that this also changes the folder name for Preset saving and loading.
+KOMPLETE KONTROL and MASCHINE 2 Integration
+Defining the Bank Name
+ 
+REAKTOR 6 - Building In Primary - 185
+
+
+--- Page 186 ---
+
+12.3
+Panelsets
+ 
+Even if no action is taken, your REAKTOR Ensemble's interface will appear in the KOMPLETE
+KONTROL interface when a sound from it is loaded. The appearance will be the same as the
+last saved state.
+However, it is possible to make some optimizations to make using your Ensemble in KOM-
+PLETE KONTROL a better experience.
+12.3.1
+Default and Additional Views
+ 
+KOMPLETE KONTROL has three ways of viewing a REAKTOR Ensemble's interface:
+The 3 Views in the View Menu
+•
+Default View: The first view displayed when you load the Ensemble.
+•
+Additional View: An optional second view.
+•
+Edit View: Displays the Ensemble in the full REAKTOR interface.
+The first two views are taken automatically from the Ensemble's Panelsets.
+In order for KOMPLETE KONTROL to recognize a Default and Additional view, you need to cre-
+ate two Panelsets:
+•
+The first Panelset will be the first view displayed - the Default View.
+•
+The second Panelset will be the alternate view - the Additional View.
+KOMPLETE KONTROL and MASCHINE 2 Integration
+Panelsets
+ 
+REAKTOR 6 - Building In Primary - 186
+
+
+--- Page 187 ---
+
+The Panelsets for RAZOR
+Any further Panelsets will be ignored by KOMPLETE KONTROL. They will not interfere with the
+KOMPLETE KONTROL integration, but they will not be available either.
+12.4
+Hardware Control
+ 
+The Hardware Control Module (listed in the menus as HW Control) allows greater integration
+with NATIVE INSTRUMENTS hardware products. The module uses an open design so that it
+can be updated to support any new hardware NATIVE INSTRUMENTS releases in the future.
+At the time of writing, this Module allows custom control over certain features of the KOM-
+PLETE KONTROL S-SERIES hardware, namely the Light Guide system.
+KOMPLETE KONTROL and MASCHINE 2 Integration
+Hardware Control
+ 
+REAKTOR 6 - Building In Primary - 187
+
+
+--- Page 188 ---
+
+The Light Guide on the KOMPLETE KONTROL S-SERIES keyboard
+REAKTOR must be used as a plug-in in the MASCHINE or KOMPLETE KONTROL soft-
+ware in order for the Hardware Control messages to be sent. Hardware Control messages
+are not sent when REAKTOR is used in stand-alone mode.
+The Hardware Control module has four inputs:
+•
+Msg (Message Type): Selects the message type to be sent by the module.
+•
+Idx (Index): Sets the index of the array into which data is to be written.
+•
+W (Write): Writes a value into the currently selected array index.
+•
+Trig (Trigger): Triggers the contents of the module's array.
+KOMPLETE KONTROL and MASCHINE 2 Integration
+Hardware Control
+ 
+REAKTOR 6 - Building In Primary - 188
+
+
+--- Page 189 ---
+
+The Hardware Control Module
+To use it correctly, you must send the messages in the following order:
+1.
+Select the Message Type you want to use via the Msg port.
+2.
+Use the Idx and W ports to fill the array with data.
+3.
+Once the necessary data has been written into the array, send an event to the Trig input
+to send the data to the KOMPLETE KONTROL software.
+⇨KOMPLETE KONTROL will take the data and apply the necessary changes to the KOM-
+PLETE KONTROL S-SERIES hardware.
+12.4.1
+Message Types
+ 
+Message Type
+Msg Input Value
+Set single note attributes
+10
+Set 128 note colors
+11
+Set note pressed support
+40
+Set Single Note Attributes
+For this message type, the first index of the array (index 0) sets the MIDI note number, and the
+following indices are used to set various attributes for that note:
+Array[0]
+Array[1]
+Array[2]
+Array[3]
+MIDI Note Number
+Note Color
+Pressed State (0 or 1)
+Note Type (0 or 1)
+0 … 127
+0 … 17
+0: Unpressed
+1: Pressed
+0: Default
+1: Control
+ 
+KOMPLETE KONTROL and MASCHINE 2 Integration
+Hardware Control
+ 
+REAKTOR 6 - Building In Primary - 189
+
+
+--- Page 190 ---
+
+The Note Type tells KOMPLETE KONTROL whether this is a standard playable note, or wheth-
+er it is a control note used for special functions in instruments. Control notes will be excluded
+from any performance functions, such as the arpeggiator.
+Sending any value outside of the value ranges specified above will cause the message to be
+ignored, and the relative setting will remain unchanged.
+The pressed state will only be sent if Note Pressed Support is set to be active.
+Set 128 Note Colors
+This message type allows you to send the note colors for all MIDI notes in a single array. With
+this message type, the array index represents the MIDI note, and the value of that index sets
+the note color.
+Array[0]
+Array[1]
+…
+Array[126]
+Array[127]
+MIDI Note 0 Color
+(0…17)
+MIDI Note 1 Color
+(0…17)
+…
+MIDI Note 126 Col-
+or (0…17)
+MIDI Note 127 Col-
+or (0…17)
+Set Note Pressed Support
+A value of 40 at the Msg input sets the module to send the Note Pressed Support state. A sin-
+gle
+yes/no (0/1) value is needed, and is sent in array index 0:
+•
+: No - REAKTOR will not send Note Pressed messages; this is to be handled by the host.
+•
+: Yes - REAKTOR will send Note Pressed messages, taking control of this from the host.
+12.4.2
+Available Note Colors
+ 
+Value
+Color
+0
+Red
+1
+Orange
+2
+Light Orange
+3
+Warm Yellow
+4
+Yellow
+KOMPLETE KONTROL and MASCHINE 2 Integration
+Hardware Control
+ 
+REAKTOR 6 - Building In Primary - 190
+
+
+--- Page 191 ---
+
+Value
+Color
+5
+Lime
+6
+Green
+7
+Mint
+8
+Cyan
+9
+Turquoise
+10
+Blue
+11
+Plum
+12
+Violet
+13
+Purple
+14
+Magenta
+15
+Fuchsia
+16
+Default
+17
+Inactive
+12.4.3
+Related Macros
+ 
+The Library contains a number of tools designed to help with support the Light Guide system,
+even if you do not have any KOMPLETE KONTROL S-SERIES hardware to test your Ensem-
+bles.
+KOMPLETE KONTROL and MASCHINE 2 Integration
+Hardware Control
+ 
+REAKTOR 6 - Building In Primary - 191
+
+
+--- Page 192 ---
+
+1.
+These tools are found in the 09 - Utility, Display -> HW Control submenu.
+For debugging, the HW KK Simulator Instrument takes the same messages given to the HW
+Control Module, and uses them to display a simulation of how the KOMPLETE KONTROL S-
+SERIES hardware would interpret them.
+12.5
+Native Map
+ 
+The Native Map technology used in KOMPLETE KONTROL scans the automatable controls in
+an Ensemble and maps them to the knobs on the KOMPLETE KONTROL or MASCHINE hard-
+ware.
+As such, it is best to prepare an Ensemble's automation data to use intelligible names, and to
+be ordered in such a way as the most important controls appear first.
+The controls are mapped according to their automation IDs, and the names published are tak-
+en from the automation name.
+Section ↑11, Automation ↑11, Automation gives all the information you will need regarding ed-
+iting automation properties in your Ensemble.
+KOMPLETE KONTROL and MASCHINE 2 Integration
+Native Map
+ 
+REAKTOR 6 - Building In Primary - 192
+
+
+--- Page 193 ---
+
+12.6
+Adding Ensembles to the Library
+ 
+All NATIVE INSTRUMENTS products are automatically integrated into the KOMPLETE KON-
+TROL Browser during installation.
+Since any Ensemble you create lacks an installation, it will not automatically appear in the
+Browser. However, it is possible to tell KOMPLETE KONTROL to scan a certain folder for con-
+tent:
+1.
+Open the Preferences window by selecting Preferences… from the Edit menu.
+2.
+In the Library tab (which should be selected by default), click on the User button.
+3.
+Click on the Add button.
+4.
+A window will open, from which you can browse for a folder to add to the KOMPLETE
+KONTROL User Content.
+5.
+When you have located the folder you wish to add, select it and click OK.
+KOMPLETE KONTROL and MASCHINE 2 Integration
+Adding Ensembles to the Library
+ 
+REAKTOR 6 - Building In Primary - 193
+
+
+--- Page 194 ---
+
+⇨The selected folder will now appear in the Location table.
+With the folder added for KOMPLETE KONTROL to scan, we can change the Alias of this fold-
+er to give it a name that is easier to identify.
+KOMPLETE KONTROL and MASCHINE 2 Integration
+Adding Ensembles to the Library
+ 
+REAKTOR 6 - Building In Primary - 194
+
+
+--- Page 195 ---
+
+1.
+If necessary, you can resize the Preferences window and the Location table columns to
+get a better view of the content.
+2.
+Click on the entry in the Alias column of the Location table.
+3.
+Type the name you want to give this location.
+4.
+When you are finished click away or press [Enter] to apply the changes.
+⇨The Location will now have a custom Alias.
+With the folder added and named, there is only one final step left: KOMPLETE KONTROL
+needs to scan the folder for appropriately tagged Ensembles.
+1.
+Start the scan by clicking on the Rescan button.
+⇨After the scan has finished, the contents of the newly added folder(s) will be added to the
+KOMPLETE KONTROL browser.
+KOMPLETE KONTROL and MASCHINE 2 Integration
+Adding Ensembles to the Library
+ 
+REAKTOR 6 - Building In Primary - 195
+
+
+--- Page 196 ---
+
+If there are a large number of folders and files to scan, this process could take some
+time.
+ 
+KOMPLETE KONTROL and MASCHINE 2 Integration
+Adding Ensembles to the Library
+ 
+REAKTOR 6 - Building In Primary - 196
+

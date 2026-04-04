@@ -1,0 +1,1605 @@
+--- Page 237 ---
+
+4
+Math
+ 
+You figure out the equation and REAKTOR does the math. There are Modules here for 
+common operations such as addition, subtraction, multiplication, and division as well as 
+for less-familiar mathematical functions such as absolute value, arc-tangent, and recipro­
+cal square root. Some of the Math Modules are also used for exponential and logarithmic 
+scale conversion to match REAKTOR's Module-input scaling. For example, some REAK­
+TOR modules have linear frequency inputs (measured in Hertz) while others have exponen­
+tial frequency inputs (measured in semitones and adjusted for MIDI note numbering). 
+There are Modules here for converting between those two formats.
+All Modules in this section are hybrid Modules, meaning they can be used as either Audio 
+or Event Modules depending on their inputs. You can identify hybrid input and output 
+ports by their green color. Many of the Modules (Add and Multiply, for example) also have 
+dynamic inputs as indicated by three small dots at the bottom-left of the Module icon. 
+When a wire is dragged to an empty part of the in-port region (the left edge of the Module 
+icon) of a dynamic-input Module while holding down the Ctrl key in Windows (Cmd key in 
+Mac OS X), a new input port is created automatically.
+4.1
+Constant
+ 
+Fig. 4.1 Costant Module
+4.1.1
+Overview
+ 
+The Constant Module is a monophonic source for a constant value. The value can be either 
+positive or negative and is set with the Value edit field in the Function page of the Proper­
+ties Tab. The Module only sends an Event once, that is for Initialization when it is activat­
+ed. The Initialization Order among Constant Modules in the same Structure may depend 
+on the Modules that they are connected to. Read the example for the Merge Module for 
+details on this. You can create a Constant with the value "1" at any input port of a Module 
+by right-clicking on that input port and clicking on the Create Constant menu entry. You can 
+then change the value of the Constant in the Function page of that Constant's Properties.
+Math
+Constant
+ 
+REAKTOR 5.5 - Module Reference - 237
+
+
+--- Page 238 ---
+
+Application
+Typical usage cases for the Constant Module include:
+▪
+Setting parameters for other Modules, like the amplitude for an oscillator, to a constant 
+value (see example).
+▪
+Modifying incoming signals by using the Constant Module in conjunction with other 
+Math Modules.
+For brevity, the Constant Module is referred to in context simply as Constant, as in "add a 
+Constant with the value "1" to the Structure."
+4.1.2
+Ports
+ 
+Output Ports:
+▪
+(Out) "Out" is the output port for the constant value signal.
+4.1.3
+Properties: Function Page
+ 
+Changing the Constant Value
+In order to change the value of the output, enter a new number into the Value edit field or 
+the Label edit field.
+4.1.4
+Example: Constant Pitch and Amplitude
+ 
+A common use for a Constant Module is the setting of parameters for other Modules to a 
+constant value. In the example illustrated by the screenshot below two Constant Modules 
+with values "69" and "1" are used to set the pitch and amplitude, respectively, of a Sine 
+Module (↑6.14, Sine Oscillator) to constant values. Note that you can either create the 
+Constants by right-clicking the Structure background and then clicking on the Built-In Mod­
+ule > Math > Constant menu entry or by right-clicking on an input port and then clicking on 
+the Create Constant menu entry.
+Math
+Constant
+ 
+REAKTOR 5.5 - Module Reference - 238
+
+
+--- Page 239 ---
+
+Fig. 4.2 Two Constant Modules with values "69" and "1" are used to set the pitch and amplitude of a Sine wave, respective­
+ly.
+4.2
+Add, +
+ 
+Fig. 4.3 The Add Module
+4.2.1
+Overview
+ 
+With the Add Module you can add two or more audio or Event signals. The output signal is 
+the sum of the input signals: Out = In1 + In2 + In3 + …. The Add Module has dynamic 
+input ports. This means that additional input ports can be created (if all existing input 
+ports are already connected) by holding down the Ctrl key in Windows (Cmd key in Mac OS 
+X) while dragging a wire from an output port of another Module to the three dots on the 
+Add Module. The minimum number of input ports can be defined with the Min Port Groups 
+edit field in the Function page. An Event at any input port triggers an Event at the output 
+port.
+Application
+Typical usage cases for the Constant Module include:
+▪
+Performing arithmetic operations with signal values.
+▪
+Using the Add Module as a simple multi-channel mixer where the level of all channels 
+is fixed at 0 dB (see example).
+You also can use the Add Module to subtract values from a signal by setting the value to be 
+subtracted as a negative Constant.
+Math
+Add, +
+ 
+REAKTOR 5.5 - Module Reference - 239
+
+
+--- Page 240 ---
+
+4.2.2
+Ports
+ 
+Input Ports:
+▪
+(In1) "In1" is the input port for the first summand of the output signal.
+▪
+(In2) "In2" is the input port for the second summand of the output signal.
+▪
+(…) "In3, In4, …" are the dynamic inputs for additional summands for the output sig­
+nal. When all the input ports area already connected and a wire is dragged to an empty 
+part of the in-port region (the left edge of the Module icon) while holding down the Ctrl 
+key in Windows (Cmd key in Mac OS X), a new input port is created automatically. The 
+maximum number of input ports for the Add Module is 40.
+Output Ports:
+▪
+(Out) "Out" is the output port for the sum of all the input signals.
+4.2.3
+Properties: Function Page
+ 
+Changing the Minimum Number of Input Ports
+To change the minimum number of input ports, type the desired number into the Min Num 
+Port Groups edit field (shown below). The maximum number of input ports for the Add Mod­
+ule is 40.
+Fig. 4.4 Use the Min Num Ports Groups edit field to set the minimum number of input ports appearing on Add Module.
+4.2.4
+Example: Mixing Two Signals
+ 
+You can mix two signals using the Add Module. Say you have two signals, In1 and In2, 
+that you want to mix together. For that you need to place an Add Module into the Struc­
+ture. Then connect the sources of the two signals (here we have two In Ports with the la­
+bels "In1" and "In2") to the two input ports of the Add Module. The output of the Add 
+Module is a mix of the two signals In1 and In2 with the level of each fixed at 0 dB. You 
+can now use the mix by connecting the output port of the Add Module to another Module. 
+Here the signal was just routed to the "Out" Out Port, as seen in the picture.
+Math
+Add, +
+ 
+REAKTOR 5.5 - Module Reference - 240
+
+
+--- Page 241 ---
+
+Fig. 4.5 Use the Add Module to mix two signals together.
+4.3
+Subtract
+ 
+Fig. 4.6 Subtract Module
+4.3.1
+Overview
+ 
+The Subtract Module subtracts one audio or Event signal from another. The output signal 
+is the difference between the second input signal and the first input signal: Out = In1 - 
+In2. An Event at either input port triggers an Event at the output port.
+Application
+Some usages of the Subtract Module include:
+▪
+Determining the difference between two values.
+▪
+Transposing MIDI notes (see example).
+4.3.2
+Ports
+ 
+Input Ports
+▪
+(In1) "In1" is the input port for signal the signal from which the signal In2 is subtract­
+ed from.
+▪
+(In2) "In2" is the input port for the signal to be subtracted from signal In1.
+Output Ports
+▪
+(Out) "Out" is the output port for the result of the subtraction: Out = In1 - In2.
+Math
+Subtract
+ 
+REAKTOR 5.5 - Module Reference - 241
+
+
+--- Page 242 ---
+
+4.3.3
+Example: Transposing
+ 
+The Subtract Module can be used to transpose notes, here in the logarithmic pitch scale. 
+In the picture below you see a Structure where a Note Pitch Module has been used to de­
+tect the pitch that has been played with the keyboard. You see in the picture that the note 
+with the value "56" in the logarithmic pitch scale has been. This corresponds to the note 
+G3 in the MIDI scale. If we want to transpose this pitch down an octave, we need to sub­
+tract the value "12" from it, since an octave contains 12 semitones (see the explanation of 
+the logarithmic pitch scale for more details on this). This is easily done with the Subtract 
+Module by connecting the signal carrying the pitch to be transposed to the higher input 
+port and the Constant with the value "12" to the lower input port. The output of the Sub­
+tract Module is in this case 56 - 12 = 44, the note G2 in the MIDI scale.
+Fig. 4.7 In this example the Subtract Module is used to transpose the incoming pitch down 12 semitones.
+Please refer to section 9.4 in the Application Reference for more information on the different 
+scales in REAKTOR.
+4.4
+Invert, -x
+ 
+Fig. 4.8 Invert Module
+4.4.1
+Overview
+ 
+The Invert Module multiplies an audio or an Event signal by the value "-1". The output sig­
+nal is then the inverse of the input signal: Out = –In. You can also use the Multiply Mod­
+ule to invert a signal but using the Invert Module makes for a cleaner Structure. Simply 
+inverting a sound has no audible effect, except when the inverted sound is combined in 
+Math
+Subtract
+ 
+REAKTOR 5.5 - Module Reference - 242
+
+
+--- Page 243 ---
+
+some way with the uninverted sound. Inverting control signals generally has a very obvious 
+effect, like for ramp signals, as shown in the example. An Event at the input port triggers 
+an Event at the output port.
+4.4.2
+Ports
+ 
+Input Ports
+▪
+(In) "In" is the input port for the signal to be inverted.
+Output Ports
+▪
+(Out) "Out" is the output port for the inverted signal.
+4.4.3
+Example: Inverting an LFO
+ 
+An example of inverting control signals is sending the output signal of an LFO Module 
+through the Invert Module. The first figure below illustrates an instant where the value 
+"0.995722" is sent from the "Sin" output port of the LFO Module. Connecting a wire from 
+the "Sin" output port to the input port of the Invert Module yields the inverse value of at 
+the output port of the Invert Module, "-0.995722". The second figure qualitatively shows 
+the waveforms of the sine and inverted sine signals that arrive at the "Out" and "Inv" Out 
+Ports, respectively.
+Fig. 4.9 The Invert Module changes the sign of the incoming signal.
+Math
+Invert, -x
+ 
+REAKTOR 5.5 - Module Reference - 243
+
+
+--- Page 244 ---
+
+Fig. 4.10 The above plot shows a sine signal with its inverted counterpart plotted below.
+4.5
+Multiply, X
+ 
+Fig. 4.11 Multiply Module
+4.5.1
+Overview
+ 
+The Multiply Module multiplies two or more audio or Event signals. The output signal is 
+the product of the input signals: Out = In1 * In2 * In3 * …. When a zero is connected to 
+one of the inputs the output value is always zero. The Multiply Module has dynamic input 
+ports. This means that additional input ports can be created if all existing input ports are 
+already connected by holding down the Ctrl key in Windows (Cmd key in Mac OS X) while 
+Math
+Multiply, X
+ 
+REAKTOR 5.5 - Module Reference - 244
+
+
+--- Page 245 ---
+
+dragging a wire from an output port of another Module to the three dots on the Multiply 
+Module. The minimum number of input ports can be defined with the Min Num Port Groups 
+edit field in the Function page of the Properties Tab. An Event at any input port triggers an 
+Event at the output port.
+Application
+Typical usage cases for the Multiply Module include:
+▪
+An amplifier controlled by a signal (corresponds to VCA in analog synthesizers): An au­
+dio signal is fed to one input port and an amplification factor to the other. This appli­
+cation is demonstrated in the example.
+▪
+Applications where you need to compute the square of a signal when the same signal is 
+fed to two inputs: Out = In * In = In². This is the case for quadratic shaping curves 
+where Out = 1 - ( 1 - In ) ².
+▪
+Ring modulation: when two different sounds are connected to the inputs, the output is 
+the ring modulation of the two sounds.
+4.5.2
+Ports
+ 
+Input Ports:
+▪
+(In1) "In1" is the input port for the multiplicand for the output signal.
+▪
+(In2) "In2" is the input port for the second multiplicand for the output signal.
+▪
+(…) "In3, In4, …" are the dynamic inputs for additional summands for the output sig­
+nal. If all the input ports are already connected a wire is dragged to an empty part of 
+the in-port region (the left edge of the Module icon) while holding down the Ctrl key in 
+Windows (Cmd key in Mac OS X), a new input port is created automatically. The maxi­
+mum number of input ports for the Multiply Module is 40.
+Output Ports:
+▪
+(Out) "Out" is the output port for the product of the incoming signals.
+Math
+Multiply, X
+ 
+REAKTOR 5.5 - Module Reference - 245
+
+
+--- Page 246 ---
+
+4.5.3
+Properties: Function Page
+ 
+Changing the Minimum Number of Input Ports
+To change the minimum number of input ports, type the desired number into the Min Num 
+Port Groups edit field (shown below). The maximum number of input ports for the Multiply 
+Module is 40.
+Fig. 4.12 Use the Min Num Ports Groups edit field to set the minimum number of input ports appearing on the Multiply 
+Module.
+4.5.4
+Example: Simple Amplifier
+ 
+The Multiply Module can be used as an amplifier controlled by a signal. In this case the 
+amplifier is controlled by the output value of a Knob Module. The audio or Event signal 
+from the In Port is fed to one input port of the Multiply Module and the amplification fac­
+tor to the other.
+Fig. 4.13 A simple amplifier can be constructed by using the Multiply Module to multiply an incoming signal with a value 
+received from a knob (here labeled "Amp").
+4.6
+Mult/Add (a * b + c), X+
+ 
+Fig. 4.14 Mult/Add Module
+4.6.1
+Overview
+ 
+The Mult/Add Module is a combined multiplier-adder. The output is the result of the oper­
+ation ( a * b ) + c where "a" signifies the highest lying input port, "b" the middle input 
+port, and "c" the lowest lying input port. An Event at any input port triggers an Event at the 
+Math
+Multiply, X
+ 
+REAKTOR 5.5 - Module Reference - 246
+
+
+--- Page 247 ---
+
+output port. You can also use the Multiply Module and Add Module to perform the "multi­
+ply and add" operation but the Mult/Add Module is more convenient and makes for a 
+cleaner Structure. An Event at any input port triggers an Event at the output port.
+Application
+A typical usage case for the Mult/Add Module is the crossfader Structure.
+4.6.2
+Ports
+ 
+Input Ports
+▪
+(a) "a" is the highest input port is the input for the variable "a" for the output equation 
+( a * b ) + c.
+▪
+(b) "b" is the middle input port is the input for the variable "b" for the output equation 
+( a * b ) + c.
+▪
+(c) "c" is the middle lowest input port is the input for the variable "c" for the output 
+equation ( a * b ) + c.
+Output Ports
+▪
+(Out) "Out" is the output port for the signal ( a * b ) + c with the variables defined by 
+the input values as listed above.
+4.6.3
+Example 1: LFO With Envelope
+ 
+The Mult/Add Module is efficiently employed whenever a multiplication and addition are 
+both needed in the corresponding form. One example is a control signal that consists of an 
+LFO that has a gate triggered envelope and a constant value offset. First, the LFO signal, 
+coming from the "Sin" output port of the LFO Module, is multiplied with the envelope sig­
+nal from the "Out" output port of the AD - Env Module. This is done using the upper two 
+input ports of the Mult/Add Module and causes the LFO"s amplitude to change according 
+to the attack and decay settings of the AD - Env Module. If we want the control signal to 
+start at the value "0.1" and also approach the value "0.1" (as opposed to "0") after the en­
+velope decay time has been surpassed, then we can use the lowest input port of the Mult/
+Add Module and connect a Constant with the value "0.1" to it, as seen in the picture be­
+low.
+Math
+Mult/Add (a * b + c), X+
+ 
+REAKTOR 5.5 - Module Reference - 247
+
+
+--- Page 248 ---
+
+Fig. 4.15 You can use the Mult/Add Module on a signal to modulate it with an offset.
+4.6.4
+Example 2: Simple Crossfader
+ 
+A frequent use case for the Mult/Add Module is a linear crossfader between two signals, 
+In1 and In2. To put this functionality in a Macro, create a Macro with two input ports la­
+beled "In1" and "In2" and an output port labeled "Out". The basic mathematical represen­
+tation of this simple mixer is as follows:
+Out = In2 × x + In1 × ( 1 - x )
+where "x" represents a Knob Module with a range [0 … 1] and In1 and In2 the respective 
+input signals. When x = 0 only the In1 signal is forwarded to the output and when x = 1 
+only the In2 signal is let through.
+You see that the general form of the equation is a × b + c and hence you can save some 
+CPU resources by using the Mult/Add Module. Insert the Mult/Add Module and a Knob 
+Module into the Macro. Now connect the uppermost input port of the Mult/Add Module, 
+"a", to the "In2" input port and the middle input port, "b", to a Knob Module. In the Knob 
+Module's Function page, set the Min edit field to "0" and the Max edit field to "1". While you 
+are at it, change label of the Module in the Label edit field to "Fade". Now add a Subtract 
+Module and a Multiply Module to the structure. Connect the output of the Knob Module to 
+the upper input of the Subtract Module. Create a Constant with the value "1" and connect 
+its output to the lower input of the Subtract Module. You now have the ( 1 - x ) at the 
+output of the Subtract Module, where "x" is the value set with the knob labeled "Fader". 
+Now use the Multiply Module to multiply the output of the Subtract Module with the sig­
+nal from the "In2' input port. Finally, connect the output of the Multiply Module to the 
+lowest input port of the Mult/Add Module and connect the output of this Module to the 
+Math
+Mult/Add (a * b + c), X+
+ 
+REAKTOR 5.5 - Module Reference - 248
+
+
+--- Page 249 ---
+
+Out Port. Your structure should now look similar to the following picture. You now have a 
+simple linearly crossfading mixer in the form of a macro. You might want to use this when 
+you wish to mix between two simple signals, like two Oscillators, for example.
+Fig. 4.16 The Structure for a simple crossfade effect.
+For two arbitrarily complex audio signals or to pan between left and right stereo channels, 
+a parabolic curve is used. The difference to the mixer with the linear curve is that when 
+the "Fade" setting is x = 0.5, more than just 50 % of both signals is mixed together to 
+keep the overall volume from being noticeably reduced in the case of two very different 
+input signals. Try building this parabolic mixer using the logic you developed in the previ­
+ous example to implement the following mathematical description of the parabolic mixer:
+Out = In2 × (1 - ( 1 - x )² ) + In1 × ( 1 - x ² )
+If you don't know yet how to calculate the square of a signal, x², then take a look at the over­
+view of the Multiply Module.
+4.7
+Reciprocal, 1 / x
+ 
+Fig. 4.17 Reciprocal Module
+4.7.1
+Overview
+ 
+The output of the Reciprocal Module is one divided by the input. If the input signal is ex­
+actly zero the output is also set to zero. An Event at the input port triggers an Event at the 
+output port.
+Math
+Reciprocal, 1 / x
+ 
+REAKTOR 5.5 - Module Reference - 249
+
+
+--- Page 250 ---
+
+Application
+Processing sound signals does not normally yield anything useful. The Module is rather 
+meant for processing control signals (which do not come near zero). Normalization, as 
+shown in the example, is such a processing operation.
+Be careful with small input values (near zero) because the output values become very large.
+4.7.2
+Ports
+ 
+Input Ports
+▪
+(In) "In" is the input port for the signal by which "1" is to be divided.
+Output Ports
+▪
+(Out) "Out" is the output port sending the value of "1" divided by the input signal value.
+4.7.3
+Example: Efficient Normalization
+ 
+Let's say we have two signals, "a" and "b", that both have the range [0 … c] and we want 
+them to have the range [0 … 1]. The process by which we achieve this is called normaliza­
+tion. Dividing, in this case by "c", is a common way to normalize control signals. The nor­
+malized signals "n1" and "n2" are then defined in respect to the signals "a" and "b" by the 
+following two equations:
+n1 = a / c
+n2 = b / c
+If several signals need to be normalized to the same value, that is, to be divided by the 
+same value, using a Reciprocal Module in conjunction with Multiply Modules will use less 
+CPU resources than explicitly dividing every signal by the same value. This is because 
+multiplying requires less CPU resources than dividing. So to normalize the two signals, "a" 
+and "b", in the most efficient way we need to build the Structure shown in the picture be­
+low.
+Math
+Reciprocal, 1 / x
+ 
+REAKTOR 5.5 - Module Reference - 250
+
+
+--- Page 251 ---
+
+Fig. 4.18 One possible use for the Reciprocal Module is to normalize two signals with the same scaling factor.
+4.8
+Divide, /
+ 
+Fig. 4.19 Divide Module
+4.8.1
+Overview
+ 
+The Divide Module divides the value at the upper input port by the value at the lower input 
+port. If the input signal is exactly zero the output is also set to zero. Be careful with small 
+values (near zero) at the lower input port because the output values become very large. An 
+Event at either input port triggers an Event at the output port.
+Application
+Dividing by sound signals does not normally yield anything useful. Whenever possible, use 
+a Multiply Module instead of a Divide Module for audio signals because the CPU load will 
+be significantly less (see the Reciprocal Module example for more information on this).
+4.8.2
+Ports
+ 
+Input Ports
+▪
+(In1) "In1" is the input port for the numerator of the fraction evaluated by the Module.
+▪
+(In2) "In2" is the input port for the denominator of the fraction which is evaluated by 
+the Module.
+Math
+Divide, /
+ 
+REAKTOR 5.5 - Module Reference - 251
+
+
+--- Page 252 ---
+
+Output Ports
+▪
+(Out) "Out" is the output port for the numeric value of the fraction defined by Out = 
+In1 / In2.
+4.8.3
+Example: Scaling
+ 
+A control signal can be scaled using the Divide Module. In the picture below the signal is 
+scaled to be 10 times smaller. The control signal is carried by the wire from the In Port to 
+the upper input port of the Divide Module. A Constant with the value "10" is connected to 
+the bottom input port of the Divide Module. This causes the signal sent to the Out Port to 
+be 10 times smaller than the signal that is received from the In Port.
+Fig. 4.20 In this example the Divide Module is employed to reduce the signal amplitude by a factor of ten.
+4.9
+Modulo
+ 
+Fig. 4.21 Modulo Module
+4.9.1
+Overview
+ 
+The Modulo Module computes the integer division of the two input values and also the re­
+mainder. An Event at either one of the input ports creates an Event at each output port.
+The Event from the "Mod" output port is sent before the "Div" output port.
+Application
+This Module is commonly used in:
+▪
+Custom value displays
+▪
+Sequencers; to see a basic example of how to calculate the measure number and the 
+count from the song position, go to the example.
+Math
+Divide, /
+ 
+REAKTOR 5.5 - Module Reference - 252
+
+
+--- Page 253 ---
+
+4.9.2
+Ports
+ 
+Input Ports:
+▪
+(A) "A" is the hybrid input port for the signal A that is to be divided by B.
+▪
+(B) "B" is the hybrid input for the signal B used for dividing A. In most applications B 
+is an integer.
+Output Ports:
+▪
+(Div) "Div" (division) is the hybrid output port for the integer division of A and B. This is 
+the largest integer smaller than or equal to A / B.
+▪
+(Mod) "Mod" (modulo) is the hybrid output port for the modulo of A and B. This is the 
+remainder of the integer division of A and B. The range of this output port is [0 ... B ) 
+(excluding B).
+4.9.3
+Example: Measure and Count Calculator
+ 
+Sometimes sequencers are controlled by the song position. The "Pos" Input Port of the se­
+quencer receives the number of beats that the current song position is from the beginning 
+of the song. If you are writing a waltz that has a 3/4 time signature and your sequencer 
+has length "3", then you will need to divide the song position by "3" to determine how 
+many measures have passed since the beginning of the song and which count you are on 
+(1, 2, or 3). This can easily be done with the Modulo Module, as shown in the picture be­
+low. If the song position is "92", then the number of measures that have passed since the 
+beginning is given by the integer division of 92 / 3. The result is the largest multiple of "3" 
+that is less or equal to "92", divided by "3". The largest multiple of "3" that is less than 
+equal to "92" is "90" and 90 / 3 = 30, the value at the "Div" output. The count is then 
+given by 92 % 3 = 2 (also known as the remainder of the integer division), the value at the 
+"Mod" output port.
+Fig. 4.22 Use the Modulo Module to determine from the song position ("Pos") value how many measures have passed since 
+the beginning of the song and which count you are on.
+Math
+Modulo
+ 
+REAKTOR 5.5 - Module Reference - 253
+
+
+--- Page 254 ---
+
+4.10
+Rectifier, |x|
+ 
+Fig. 4.23 Rectifier Module
+4.10.1
+Overview
+ 
+The Rectifier Module takes the absolute value of the input signal, that is, negative values 
+are inverted and become positive and positive values are left unchanged. An Event at the 
+input port triggers an Event at the output port.
+Application
+An application of the Rectifier Module is to combine it with a low pass filter to create a 
+signal level detector.
+4.10.2
+Ports
+ 
+Input Ports
+▪
+(In) "In" is the hybrid input port for the signal to be rectified. Negative values become 
+positive with equal magnitude.
+Output Ports
+▪
+(Out) "Out" is the hybrid output port for the rectified signal.
+4.10.3
+Example: Changing Polarity
+ 
+The Rectifier Module can be used to change the polarity of a control signal. Say you have 
+a bipolar knob that has a range [-1 … 1] to control one parameter and you want that same 
+knob to control another parameter that has range [0 … 1]. You can transform the output 
+signal from the Knob Module using the Rectifier Module as shown in the picture below 
+When you turn the knob from "0" to "1", both the signal at the "+/-" and "+" Out Port will 
+go from "0" to "1". On the other hand if you turn the knob from "0" to "-1", the signal at the 
+"+/-" Out Port will go from "0" to "-1" and the signal at the "+" Out Port will go from "0" to 
+"1".
+Math
+Rectifier, |x|
+ 
+REAKTOR 5.5 - Module Reference - 254
+
+
+--- Page 255 ---
+
+Fig. 4.24 A possible use for the Rectifier Module is to change the polarity of a control signal from bipolar to unipolar.
+4.11
+Rectify/Sign
+ 
+Fig. 4.25 Rectify/Sign Module
+4.11.1
+Overview
+ 
+The input signal is rectified, that is, negative values are inverted and become positive and 
+positive values are left unchanged. Information about the sign of the incoming signal value 
+is sent from the "Sign" output port. An Event at the input port triggers Events at both out­
+put ports.
+The Event from the "|x|" output port is sent before the "Sign" output port.
+Application
+A common application for the Rectify/Sign Module is to separate the sign and the absolute 
+value of value for a custom value display.
+4.11.2
+Ports
+ 
+Input Ports:
+▪
+(In) "In" is the hybrid input port for the audio or Event signal to be rectified and ana­
+lyzed for the sign.
+Math
+Rectify/Sign
+ 
+REAKTOR 5.5 - Module Reference - 255
+
+
+--- Page 256 ---
+
+Output Ports:
+▪
+(Sign) "Sign" is the hybrid output port for the sign of the input signal. It sends the val­
+ue "1" for positive input signal values and the value "-1" for negative input signal val­
+ues.
+▪
+(| x |) "| x |" (absolute value) is the hybrid output port for the rectified signal. Negative 
+input values become positive with equal magnitude. Positive input values are left un­
+changed.
+4.11.3
+Example: Sign and Magnitude Decomposition
+ 
+The Rectify/Sign Module in essence breaks down an incoming value into two parts: its 
+magnitude and its sign. By multiplying the values at the output ports together, we can 
+again reconstruct the value that was initially sent into the Rectify/Sign Module. The pic­
+ture below illustrates this property as a Structure.
+Fig. 4.26 The Rectify/Sign Module retrieves two pieces of information from the incoming value: its sign and its absolute val­
+ue.
+4.12
+Compare
+ 
+Fig. 4.27 Compare Module
+4.12.1
+Overview
+ 
+The Compare Module represents a comparing logic function. It compares the magnitudes 
+of the values at the two input ports and sets the values at the two output ports according 
+to the result of the comparison. For the Compare Module, the two comparison operators 
+are "greater than" and "less than or equal to". An Event at either input port triggers an 
+Event at both output ports.
+Math
+Rectify/Sign
+ 
+REAKTOR 5.5 - Module Reference - 256
+
+
+--- Page 257 ---
+
+The Event from the ">" output port is sent before the "<=" output port.
+Application
+The Compare Module can be used in conjunction with the Signal Path Modules like the 
+Selector Module to control the routing of signals. An implementation of this technique is 
+presented in the example.
+4.12.2
+Ports
+ 
+Input Ports
+▪
+(A) "A" is the hybrid input port for the first of two values to be compared.
+▪
+(B) "B" is the hybrid input port for the second of two values to be compared.
+Output Ports
+▪
+(>) ">" (greater) is the hybrid output port for the result of the comparison A > B ("A" 
+greater than "B"). If A > B is true, the value at the output port is set to "1". Otherwise 
+(if A > B is false) the output port sends the value "0".
+▪
+(<=) "<=" (less or equal) is the hybrid output port for the result of the comparison A <= 
+B ("A" less than or equal to "B"). If A <= B is true, the value at the output port is set to 
+"1". Otherwise (if A <= B is false) the output port sends the value "0".
+4.12.3
+Example: Routing
+ 
+The Compare Module can be used in conjunction with the Selector Module to control the 
+routing of signals. In this example a control signal is compared to a constant value "2" and 
+depending on the result of the comparison, different values are sent to the Out Port. The 
+comparison is done with the Compare Module. In the figure below you see a Structure of 
+this signal flow where the value sent from the In Port is "4". Since "4" is sent to the "A" 
+input port and "2" to the "B" input port of the Compare Module, the comparison A > B or 4 
+> 2 is a logically true statement. Hence the value sent from the ">" output port is "1". 
+Since "Pos" is "1", the value from the "1" input port of the Selector Module, "7", is forward­
+ed to its output port. If, for example, the value at the In Port would be "1", then an analo­
+gous discussion to the previous one would let you deduce that the value "3" is sent to the 
+Out Port.
+Math
+Compare
+ 
+REAKTOR 5.5 - Module Reference - 257
+
+
+--- Page 258 ---
+
+Figure 236 The Compare Module can be used in conjunction with the Selector Module to 
+variably route a signal depending on the value of the incoming control signal (at the "Ctl" 
+input port).
+4.13
+Compare/Equal
+ 
+Fig. 4.28 Compare/Equal Module
+4.13.1
+Overview
+ 
+The Compare/Equal Module represents a comparing logic function. It compares the magni­
+tudes of the values at the two input ports and sets the values at the four output ports ac­
+cording to the result of the comparison. For the Compare/Equal Module, the four compari­
+son operators are "greater than", "less than", "equal to", and "not equal to". An Event at ei­
+ther input port triggers an Event at all output ports.
+The Events are sent from the output ports in the following order: first ">", then "<", then "=", 
+and finally "!=".
+Application
+The Compare Module can be used in conjunction with the Signal Path Modules like the 
+Relay Module to control the routing of signals. An implementation of this technique is pre­
+sented in the example.
+Math
+Compare/Equal
+ 
+REAKTOR 5.5 - Module Reference - 258
+
+
+--- Page 259 ---
+
+4.13.2
+Ports
+ 
+Input Ports:
+▪
+(A) "A" is the hybrid input port for the first of two values to be compared.
+▪
+(B) "B" is the hybrid input port for the second of two values to be compared.
+Output Ports:
+▪
+(>) ">" (greater) is the hybrid output port for the result of the comparison A > B ("A" 
+greater than "B"). If A > B is true, the value at the output port is set to "1". Otherwise 
+(if A > B is false) the output port sends the value "0".
+▪
+(<) "<" (less) is the hybrid output port for the result of the comparison A < B ("A" less 
+than "B"). If A < B is true, the value at the output port is set to "1". Otherwise (if A < B 
+is false) the output port sends the value "0".
+▪
+(=) "=" (equal) is the hybrid output port for the result of the comparison A = B ("A" 
+equal to "B"). If A = B is true, the value at the output port is set to "1". Otherwise (if A 
+= B is false) the output port sends the value "0".
+▪
+(!=) "!=" (not equal) is the hybrid output port for the result of the comparison A != B 
+("A" not equal to "B"). If A != B is true, the value at the output port is set to "1". Other­
+wise (if A != B is false) the output port sends the value "0".
+Note that the values at the (=) and (!=) output ports are always opposite: if (=) is "1" then (!
+=) is "0" and vice versa.
+4.13.3
+Example: Routing
+ 
+The Compare/Equal Module can be used in conjunction with the Relay Module to control 
+the routing of signals. In this example a control signal is compared to a constant value "2" 
+and depending on the result of the comparison, different values are sent to the Out Port. 
+The comparison is done with the Compare/Equal Module. In the figure below you see a 
+Structure of this signal flow where the value sent from the In Port is "2". Since "2" is sent 
+to the "A" input port and "2" to the "B" input port of the Compare/Equal Module, the com­
+parison A = B or 2 = 2 is a logically true statement. Hence the value sent from the "=" 
+output port is "1". Since "Ctl" is "1", the value from the "1" input port of the Relay Module, 
+"6", is forwarded to its output port. If, for example, the value at the In Port would be "1", 
+then an analogous discussion to the previous one would let you deduce that the value "0" 
+Math
+Compare/Equal
+ 
+REAKTOR 5.5 - Module Reference - 259
+
+
+--- Page 260 ---
+
+is sent to the Out Port. This is because in the case that there is only two input ports for 
+the Relay Module, a value of "0" at the "Ctl" input port causes the value "0" to be sent 
+from the output port of the Relay Module.
+Fig. 4.29 This Structure shows an example of conditional signal processing utilizing the Compare/Equal and Relay Modules.
+4.14
+Quantize
+ 
+Fig. 4.30 Quantize
+4.14.1
+Overview
+ 
+The Quantize Module quantizes audio and Event signals to a quantization grid with adjust­
+able step size and offset. The input signal is rounded to the nearest quantization step be­
+fore being forwarded to the "Out" output port. The difference between this output signal 
+value and the input signal value is forwarded to the "Err" output port.
+The Event from the "Out" output port is sent before the Event from the "Err" output port.
+Application
+Useful applications for the Quantize Module include:
+▪
+Quantization of an LFO Rate to sync with a clock signal..
+▪
+Quantization of the frequency of an oscillator to be a multiple of the frequency of an­
+other oscillator (see example).
+Math
+Quantize
+ 
+REAKTOR 5.5 - Module Reference - 260
+
+
+--- Page 261 ---
+
+4.14.2
+Ports
+ 
+Input Ports:
+▪
+(St) "St" (step size) is the hybrid input port for controlling the size of the quantization 
+step. When set to zero, the signal is not quantized.
+▪
+(Ofs) "Ofs" (offset) is the hybrid input port for the offset value of the quantization grid.
+▪
+(In) "In" is the hybrid input port for the signal to be quantized.
+Output Ports:
+▪
+(Out) "Out" is the hybrid output port for the quantized signal.
+▪
+(Err) "Err" (error) is the hybrid output port for the quantization error that is generated by 
+the rounding: Err = Out - In.
+4.14.3
+Example: Frequency Quantization
+ 
+The Quantize Module can be used to quantize the frequency of one "slave" oscillator to the 
+frequency of another "master" oscillator. The Structure in the picture below elucidates how 
+this can be done in a context where two sinus waves (from the "master" and "slave" oscilla­
+tors) are sent through a ring modulator to create a harmonic spectrum with a fundamental 
+tone and one overtone.
+To quantize the "slave" oscillator frequency, the output port of the Knob Module that sets 
+the "slave" oscillator frequency is connected to the "In" input port of the Quantize Module. 
+For the output signal of the Quantize Module to be a multiple of the "master" oscillator fre­
+quency set by the Knob Module labeled "Master", the quantization grid of the Quantize 
+Module needs to comprise multiples of the "master" oscillator frequency. In other words, 
+the step size of the quantization grid needs to be specified by the output port of the Knob 
+Module that sets the "master" oscillator frequency. For this purpose the output port of the 
+Knob Module labeled "Master" is connected to the "St" input port of the Quantize Module. 
+The output port of the Quantize Module now sends a "slave" oscillator frequency value that 
+has been quantized to be a multiple of the "master" oscillator frequency.
+For example, if the "Master" knob sends the value "250" to the "St" input port of the Quan­
+tize Module, the resulting quantization grid is -250, 0, 250, 500, 750, 1000, … (note 
+that negative values are allowed). In this case, if the "Slave" knob sends the value "600" to 
+the "In" input port of the Quantize Module, the closest quantization grid value is "500" and 
+so the "Out" output port of the Quantize Module sends the value "500".
+Math
+Quantize
+ 
+REAKTOR 5.5 - Module Reference - 261
+
+
+--- Page 262 ---
+
+To detune the "slave" oscillator frequency from being a perfectly tuned harmonic of the 
+"master" oscillator frequency, you can send a small value to the "Ofs" input port of the 
+Quantize Module. This is not recommended for normal musical purposes, since the actual 
+detuning of the two frequencies in semitones depends on the frequencies.
+Fig. 4.31 You can use the Quantize Module to quantize the frequencies of a "slave" oscillator to a grid determined by the 
+frequency of a "master" oscillator.
+4.15
+Exp (Lvl-to-A) Module
+ 
+Fig. 4.32 Exp (Lvl-to-A) Module
+4.15.1
+Overview
+ 
+The Exp (Lvl-to-A) Module is an exponential function for converting logarithmic signal level 
+values in dB to linear amplitude values. An Event at the input port triggers an Event at the 
+output port.
+Application
+Use this Module to change level values given in decibel (for example in a mixer) to linear 
+values that, for example, can be connected to the "A" input port of envelopes, samplers, 
+and oscillators.
+Please refer to section 9.4 in the Application Reference for more information on the different 
+scales in REAKTOR.
+Math
+Exp (Lvl-to-A) Module
+ 
+REAKTOR 5.5 - Module Reference - 262
+
+
+--- Page 263 ---
+
+4.15.2
+Ports
+ 
+Input Ports
+▪
+(Lvl) "Lvl" (level) is the hybrid input port for logarithmic signal level values in dB (deci­
+bel) to be converted to linear amplitude values. The typical range for the input values 
+is [-50 … 10].
+Output Ports
+▪
+(A) "A" (amplitude) is the hybrid output port for a linear amplitude control signal..
+4.15.3
+Example: Oscillator Amplitude in dB
+ 
+If you are used to specifying signal levels in dB you might want to control your oscillator 
+levels on the panel with knobs that use the decibel scale. The Oscillator Modules in REAK­
+TOR have an "A" input port for the amplitude which works in linear scale, so you have to 
+convert your values specified in the logarithmic scale with the "Level" Knob Module to lin­
+ear amplitude values. For this, you use the Exp (Lvl-to-A) Module as shown in the picture 
+below.
+Fig. 4.33 Use the Exp (Lvl-to-A) Module to convert a logarithmic amplitude level to a linear amplitude value.
+4.16
+Exp (P-to-F)
+ 
+Fig. 4.34 Exp (P-to-F) Module
+Math
+Exp (Lvl-to-A) Module
+ 
+REAKTOR 5.5 - Module Reference - 263
+
+
+--- Page 264 ---
+
+4.16.1
+Overview
+ 
+The Exp (P-to-F) Module is an exponential function for converting logarithmic pitch values 
+in semitones to linear frequency values in Hz. An Event at the input port triggers an Event 
+at the output port.
+Application
+Use this Module to change pitch values given in semitones (for example MIDI notes from a 
+Note Pitch Module) to linear frequency values that, for example, can be used for frequency 
+shifting (see example) or are relevant for FM Synhesis.
+Please refer to section 9.4 in the Application Reference for more information on the different 
+scales in REAKTOR.
+4.16.2
+Ports
+ 
+Input Ports
+▪
+(P) "P" (pitch) is the hybrid input port for logarithmic pitch values in semitones to be 
+converted to linear amplitude values. The typical range for the input values is [0 … 
+127].
+Output Ports
+▪
+(F) "F" (frequency) is the hybrid output port for a frequency control signal in Hz (Hertz).
+4.16.3
+Example: Frequency Shifting
+ 
+For some purposes, like the synthesis of drum sounds, inharmonic spectra are necessary. 
+This can be achieved with frequency shifting because it allows spectra with arbitrary fre­
+quencies (within the system's range, of course) to be created. Ring modulation, in con­
+trast, creates spectra that have frequencies that are multiples of the components of the 
+modulator frequency, offset by the carrier frequency. What is relevant for us in this context 
+is to know how to convert notes from the Note Pitch Module that come in the logarithmic 
+pitch scale to the linear frequency scale so that we can add or subtract any number of 
+Hertz from the original pitch. This is done with the Exp (P-to-F) Module by connecting the 
+output port of the Note Pitch Module to the "P" input port of the Exp (P-to-F) Module and 
+connecting the "F" output port of the Exp (P-to-F) Module to a Math Module to shift the 
+Math
+Exp (P-to-F)
+ 
+REAKTOR 5.5 - Module Reference - 264
+
+
+--- Page 265 ---
+
+frequency. Since the oscillators receive the pitch information from the "P" input port and 
+in the logarithmic pitch scale, you need to convert the frequencies back to the logarithmic 
+pitch scale. This is done with the Log (F-to-P) Module, as shown in the figure below. Con­
+nect the wires carrying the new frequencies to the "F" input port of Log (F-to-P)Modules 
+and the "P" output ports of the Log (F-to-P)Modules to the "P" input ports of your oscilla­
+tors.
+Fig. 4.35 Use Exp (P-to-F) Module to convert a pitch to a frequency. After shifting the frequencies use the Log (F-to-P) Mod­
+ule to convert the new frequencies back to pitch values.
+4.17
+Log (A-to-Lvl)
+ 
+Fig. 4.36 Log (A-to-Lvl) Module
+4.17.1
+Overview
+ 
+The Log (A-to-Lvl) Module is a logarithm function for converting linear amplitude values to 
+logarithmic signal level values in dB. An Event at the input port triggers an Event at the 
+output port.
+Application
+You can use this Module to:
+▪
+Change linear amplitude values to level values given in decibel that, for example, can 
+be displayed with a level meter.
+▪
+Convert linear time values into logarithmic time values for the "A", "D", "S", "R", and 
+other inputs ports for the decay times of envelopes.
+Math
+Log (A-to-Lvl)
+ 
+REAKTOR 5.5 - Module Reference - 265
+
+
+--- Page 266 ---
+
+Please refer to section 9.4 in the Application Reference for more information on the different 
+scales in REAKTOR.
+4.17.2
+Ports
+ 
+Input Ports:
+▪
+(A) "A" (amplitude) is the hybrid input port for the linear amplitude value to be convert­
+ed to the logarithmic level value in dB. The typical range for the input values is [0 … 
+1000].
+Output Ports:
+▪
+(Lvl) "Lvl" (level) is the hybrid output port for the level in dB. The typical range for the 
+output values is [-60 … 0].
+4.17.3
+Example: Level Meter
+ 
+Although the amplitudes for Oscillator Modules in REAKTOR are specified at the Module's 
+"A" input port, most musicians are used to monitoring the signal levels in the decibel 
+scale. One possibility to monitor the amplitude (which has a range [0 … 1]) in dB is to 
+connect the "Ampl" Knob Module to the input port of a Log (A-to-Lvl) Module and the out­
+put port of the Log (A-to-Lvl) Module to the input port of a Meter Module, as shown in the 
+first figure below. Since the typical range of the "Lvl" output port's values is [-60 … 0], go 
+to the Function page of the Meter Module and set the Max dB Value edit field to "0" and the 
+Min dB Value edit field to "-60". Also, engage the Always Active checkbox to make the Meter 
+Module active independent of the fact if the signal path is ultimately connected to the Au­
+dio Out Module or not. The second figure below shows how the meter looks in the Panel 
+View. Note that the current example is only to demonstrate the functionality of the Log (A-
+to-Lvl) Module, since by replacing the Meter Module with the Level Meter Module you 
+eliminate the need for the Log (A-to-Lvl) Module. The Level Meter Module intrinsically 
+converts the linear amplitude into dB.
+Math
+Log (A-to-Lvl)
+ 
+REAKTOR 5.5 - Module Reference - 266
+
+
+--- Page 267 ---
+
+Fig. 4.37 The Log (A-to-Lvl) Module is used to convert linear amplitude values to logarithmic level values as displayed by the 
+Meter Module.
+Fig. 4.38 The Meter Module displays the incoming amplitude level values in the logarithmic scale (in dB).
+4.18
+Log (F-to-P)
+ 
+Fig. 4.39 Log (F-to-P) Module
+4.18.1
+Overview
+ 
+The Log (F-to-P) Module is a logarithm function for converting linear frequency values in 
+Hz to logarithmic pitch values in semitones. An Event at the input port triggers an Event at 
+the output port.
+Application
+You can use this Module is you want to specify the frequency of an oscillator exactly in Hz.
+Please refer to section 9.4 in the Application Reference for more information on the different 
+scales in REAKTOR.
+Math
+Log (F-to-P)
+ 
+REAKTOR 5.5 - Module Reference - 267
+
+
+--- Page 268 ---
+
+4.18.2
+Ports
+ 
+Input Ports
+▪
+(F) "F" (frequency) is the hybrid input port for the linear frequency value to be convert­
+ed to the logarithmic pitch value in semitones. The typical range for the input values is 
+[0 … 5000].
+Output Ports
+▪
+(P) "P" (pitch) is the hybrid output port for the logarithmic pitch in semitones. The typi­
+cal range for the output values is [0 … 100].
+4.18.3
+Example: Cutoff Frequency
+ 
+For some purposes, like setting the cutoff frequency of a filter to a certain frequency in 
+Hz, it is necessary to convert the frequency to the logarithmic pitch scale so that it can be 
+routed to the "P" input port of a filter. This is done with the Log (F-to-P) Module by con­
+necting the wire carrying the frequency value to the "F" input port of the and connecting 
+the "P" output port to the "P" input port of the Filter Module as shown in the figure below. 
+Here the 2-Pole Notch Module filters out frequencies around 325.7 Hz from the incoming 
+signal.
+Fig. 4.40 Use the Log (F-to-P) Module to convert a precise cutoff frequency value to a logarithmic pitch value which is then 
+fed to the "P" input port of a Filter Module.
+4.19
+Power
+ 
+Fig. 4.41 Power Module
+Math
+Log (F-to-P)
+ 
+REAKTOR 5.5 - Module Reference - 268
+
+
+--- Page 269 ---
+
+4.19.1
+Overview
+ 
+The Power Module represents a power function. The output port delivers the result of the 
+first input port "X" to the power of the second input port "Y" (usually denoted as X^Y). An 
+Event at either input port triggers an Event at the output port.
+Application
+The Power Module is mostly applied for mathematical operations having to do with scaling 
+and compensation, such as when stacking Voices for Unison playing.
+4.19.2
+Ports
+ 
+Input Ports:
+▪
+(X) "X" is the hybrid input port for the basis of the power.
+▪
+(Y) "Y" is the hybrid input port for the exponent of the power.
+Output Ports:
+▪
+(X^Y) "X^Y" is the hybrid output port for the result of the calculation X^Y.
+4.19.3
+Example: Power of 2
+ 
+This example shows you how to calculate a power expression. Here, the value "2" was used 
+for the base and the value "8" was used for the power. The picture below shows you how to 
+calculate the resulting power expression, 2^8 using the Power Module. The result is 256, 
+as you can verify with your calculator.
+Fig. 4.42 The Power Module lets you calculate the results of power expressions such as 2^8.
+Math
+Power
+ 
+REAKTOR 5.5 - Module Reference - 269
+
+
+--- Page 270 ---
+
+4.20
+Square Root
+ 
+Fig. 4.43 Suqare Root Module
+4.20.1
+Overview
+ 
+The Square Root Module represents the square root function. The output port delivers the 
+result of the square root of the value at the input port. For negative input values, the out­
+put is zero. An Event at either input port triggers an Event at the output port.
+Application
+The Square Root Module is mostly applied for mathematical operations having to do with 
+scaling of control and modulation signals, for example.
+The square root can also be calculated using the Power Module. Just set the value at the "Y" 
+input port to "0.5".
+4.20.2
+Ports
+ 
+Input Ports
+▪
+(In) "In" is the hybrid input port for the value of which the square root is to be taken.
+Output Ports
+▪
+(Out) "Out" is the hybrid output port for the square root of the input value.
+4.20.3
+Example: Square Root of 81
+ 
+This example shows you how to calculate the square root of a value. Here, the input value 
+"81" was used. The figure below shows you how to calculate the resulting square root of 
+81 using the Square Root Module. The result is 9, as you can easily verify.
+Math
+Square Root
+ 
+REAKTOR 5.5 - Module Reference - 270
+
+
+--- Page 271 ---
+
+Fig. 4.44 The Square Root Module lets you calculate expressions involving the square root function.
+4.21
+1 / Square Root
+ 
+Fig. 4.45 1/Square Root Module
+4.21.1
+Overview
+ 
+The 1 / Square Root Module calculates the reciprocal of the square root of the value at the 
+input port. For negative input values the output is zero. An Event at either input port trig­
+gers an Event at the output port.
+Application
+The 1 / Square Root Module is mostly used to calculate mathematical equations in REAK­
+TOR.
+The reciprocal square root can also be calculated using the Power Module. Just set the value 
+at the "Y" input port to "-0.5".
+4.21.2
+Ports
+ 
+Input Ports
+▪
+(In) "In" is the hybrid input port for the value of which the reciprocal square root is to 
+be taken.
+Output Ports
+▪
+(Out) "Out" is the hybrid output port for the reciprocal square root of the input value.
+Math
+1 / Square Root
+ 
+REAKTOR 5.5 - Module Reference - 271
+
+
+--- Page 272 ---
+
+4.21.3
+Example: Reciprocal Square Root of 81
+ 
+This example shows you how to calculate the reciprocal of the square root of a value. Here, 
+the input value "81" was used. The figure below shows you how to calculate the resulting 
+reciprocal of the square root of 81 using the 1 / Square Root Module. The result is 1 / 9 or 
+0.11111, as you can verify with your calculator.
+Fig. 4.46 The 1 / Square Root Module enables you to calculate the equivalent of taking the inverse of a value and then 
+taking its square root.
+4.22
+Sine
+ 
+Fig. 4.47 Sine Module
+4.22.1
+Overview
+ 
+The Sine Module calculates the trigonometric sine function. Both the input and output are 
+scaled to a range [-1 … 1]. To calculate an input based on degrees, divide the input value 
+by 360 before sending it to the input port. To calculate an input based on radians, divide 
+the input value by 2*Pi (approximately 6.283) before sending it to the input port. The fig­
+ure below shows a graph of the output values of the sine wave for an input range [-1 … 1]. 
+An Event at the input port triggers an Event at the output port.
+Application
+Common uses of the Sine Module are:
+▪
+Sine waveshaping of audio signals (see the example for details on this)
+Math
+1 / Square Root
+ 
+REAKTOR 5.5 - Module Reference - 272
+
+
+--- Page 273 ---
+
+▪
+Spreading voices out in the stereo panorama, as described in the tutorial in subsection 
+9.3.4 of the Application Reference.
+4.22.2
+Ports
+ 
+Input Ports
+▪
+(In) "In" is the hybrid input port for the value for the scaled argument of the sine func­
+tion.
+Output Ports
+▪
+(Out) "Out" is the hybrid output port for the scaled sine function of the input value. The 
+output ranges from 1 (for an input value of ".25") to -1 (for an input value of ".75"). 
+This input range comprises half a wave cycle.
+4.22.3
+Example: Waveshaping
+ 
+A common use of the Sine Module is the sine waveshaper. Waveshaping is used to apply 
+distortion effects for audio signals. A Structure that implements a sine waveshaper would 
+look like the one shown in the picture below. The audio signal from the In Port is multi­
+plied by the factor "Drive" and then fed to the sine waveshaper. The distorted signal is 
+then routed to the Out Port. For very low input values the sine shaper has an almost linear 
+response (leaving the signal unaffected) but for higher values the distortion is clearly audi­
+ble. Set the range of the Knob Module labeled "Drive" to [0 … 20] by going to its Function 
+page and setting the Max Value edit field to "20" and the Min Value edit field to "0". You can 
+now increase or decrease the strength of this distortion effect by increasing or decreasing 
+the "Drive" parameter, respectively.
+Math
+Sine
+ 
+REAKTOR 5.5 - Module Reference - 273
+
+
+--- Page 274 ---
+
+Fig. 4.48 A common application for the trigonometric sine function is found in waveshaping.
+4.23
+Sine/Cosine
+ 
+Fig. 4.49 Sine/Cosine Modules
+4.23.1
+Overview
+ 
+The Sine/Cosine Module calculates the trigonometric sine and cosine functions. Both the 
+input and output are scaled to a range [-1 … 1]. To calculate an input based on degrees, 
+divide the input value by 360 before sending it to the input port. To calculate an input 
+based on radians, divide the input value by 2*Pi (approximately 6.283) before sending it 
+to the input port. The figure below shows a graph of the output values of the sine wave 
+(solid line) and cosine wave (dotted line) for an input range [-1 … 1]. An Event at the in­
+put port triggers an Event at both output ports.
+The Event from the "Sin" output port is sent before the Event from the "Cos" output port.
+Application
+Common uses for the Sine/Cosine Module include:
+▪
+Plotting of a circle, as shown in the example.
+▪
+Creating a scope with a circular trace. This is a specific example of when you might 
+want to plot a circle.
+Math
+Sine/Cosine
+ 
+REAKTOR 5.5 - Module Reference - 274
+
+
+--- Page 275 ---
+
+4.23.2
+Ports
+ 
+Input Ports
+▪
+(In) "In" is the hybrid input port for the value for the scaled argument of the sine func­
+tion and cosine functions.
+Output Ports
+▪
+(Sin) "Sin" (sine) is the hybrid output port for the scaled sine function of the input val­
+ue. The output ranges from 1 (for an input value of ".25") to -1 (for an input value of ".
+75"). This input range comprises half a wave cycle.
+▪
+(Cos) "Cos" (cosine) is the hybrid output port for the scaled cosine function of the input 
+value. The output ranges from 1 (for an input value of "0") to -1 (for an input value of 
+".50"). This input range comprises half a wave cycle.
+4.23.3
+Example: Circle
+ 
+This example shows how the Sine/Cosine Module is used to plot a circle with the help of 
+Ramp Osc Module and an XY Module. The actual plotting is done with the XY Module and 
+as the name suggests, you need to define the x- and y-coordinate of each point that you 
+want to plot. The simplest way to define the x- and y-coordinates of all points on the unit 
+circle is with the following two equations:
+▪
+x = sin( f )
+▪
+y = cos( f )
+where "f" stands for a parameter that has range [-1 … 1]. You see that the circle is defined 
+by the cosine and sine functions, both of which use the same parameter as the argument. 
+No doubt, the Sine/Cosine Module is the most efficient way to calculate the x- and y-coor­
+dinates from these equations.
+Math
+Sine/Cosine
+ 
+REAKTOR 5.5 - Module Reference - 275
+
+
+--- Page 276 ---
+
+Note that the range [-1 … 1] for the parameter "f" is only valid within REAKTOR since the 
+Modules use scaled versions of the sine and cosine functions.
+The Sine/Cosine Module needs something to specify the parameter "f" at its input port be­
+fore it can calculate anything. A Ramp Osc Module is perfect for that because we can have 
+a parameter "f" that periodically scans through the range [-1 … 1] at a frequency of our 
+choice. As seen in the picture below, Ramp Osc Module was chosen to output a ramp with 
+an amplitude of 1 (range [-1 … 1]) and a frequency of 100 Hz. The Constants at the "A" 
+and "F" inputs, respectively, serve the purpose of specifying these values. The values at 
+the "Sin" and "Cos" output ports of the Sine/Cosine Module now correspond to the values 
+of the x- and y- coordinates, respectively, of points on the unit circle and are routed to the 
+"X1" and "Y1" input ports of the XY Module, respectively. In order for the XY Module to 
+properly plot the circle, go the XY Module's View page and choose the Scope menu item 
+from the Object Type menu The second picture below shows the Panel View of the XY Module 
+plotting a unit circle.
+Fig. 4.50 The "Sin" and "Cos" outputs of the Sine/Cosine Module can conveniently be used to plot a circle.
+Fig. 4.51 The XY Module's Panel representation shows that a circle is plotted when the Sine/Cosine and Ramp Osc Modules 
+are used as discussed above.
+Math
+Sine/Cosine
+ 
+REAKTOR 5.5 - Module Reference - 276
+
+
+--- Page 277 ---
+
+4.24
+ArcSin Module
+ 
+Fig. 4.52 Arc Sin Module
+4.24.1
+Overview
+ 
+The ArcSin Module calculates the inverse sine function. The arc sine of "x" is a number 
+between "-0.25" and "0.25", the sine of which is "x". Since the sine function"s output 
+range is [-1 … 1], the arc sine function is only valid for inputs within that range. For input 
+values < -1 the ArcSin returns -0.25 and for arguments >1, it returns 0.25. An Event at 
+the input port triggers an Event at the output port.
+Application
+The ArcSin Module is mostly used to calculate mathematical equations in REAKTOR.
+4.24.2
+Ports
+ 
+Input Ports
+▪
+(In) "In" is the hybrid input port for the value for the scaled argument of the arc sine 
+function.
+Output Ports
+▪
+(Out) "Out" is the hybrid output port for the scaled arc sine function of the input value. 
+The output ranges from -0.25 (for an input value of "-1") to 0.25 (for an input value of 
+"1").
+4.24.3
+Example: Arc Sine As Inverse of Sine
+ 
+This example demonstrates how the ArcSin Module acts as the inverse of the sine func­
+tion. In the picture below you see a Knob Module with range [-1 … 1] connected to the 
+input port of a ArcSin Module and the output port of the ArcSin Module connected to the 
+input port of a Sine Module. Since the arc sine function is the inverse for the sine func­
+tion, any value in the range [-1 … 1] that is fed to the ArcSin Module will again be repro­
+duced (up to a certain error stemming from the floating point format) at the output port of 
+Math
+ArcSin Module
+ 
+REAKTOR 5.5 - Module Reference - 277
+
+
+--- Page 278 ---
+
+the serially connected Sine Module. In the figure below the input value is "0.14" and the 
+output value at the Sine Module is "0.139992", the same value with an error of 
+"0.000008".
+Fig. 4.53 ArcSin represents the inverse trigonometric function of the sine function. When the two corresponding Modules are 
+connected in series, they approximately cancel each other out.
+4.25
+ArcCos Module
+ 
+Fig. 4.54 ArcCos Module
+4.25.1
+Overview
+ 
+The ArcCos Module calculates the inverse cosine function. The arc cosine of "x" is a num­
+ber between "0" and "0.50", the cosine of which is "x". Since the cosine function's output 
+range is [-1 … 1], the arc sine function is only valid for inputs within that range. For input 
+values < -1 the ArcCos Module returns 0.50 and for arguments >1, it returns 0.
+Application
+The ArcCos Module is mostly used to calculate mathematical equations in REAKTOR.
+4.25.2
+Ports
+ 
+Input Ports
+▪
+(In) "In" is the hybrid input port for the value for the scaled argument of the arc cosine 
+function.
+Math
+ArcCos Module
+ 
+REAKTOR 5.5 - Module Reference - 278
+
+
+--- Page 279 ---
+
+Output Ports
+▪
+(Out) "Out" is the hybrid output port for the scaled arc cosine function of the input val­
+ue. The output ranges from 0.5 (for an input value of "-1") to 0 (for an input value of 
+"1").
+4.25.3
+Example: Arc Cosine As Inverse of Cosine
+ 
+This example demonstrates how the ArcCos Module acts as the inverse of the sine func­
+tion. In the figure below you see a Knob Module with range [-1 … 1] connected to the in­
+put port of a ArcCos Module and the output port of the ArcCos Module connected to the 
+input port of a Sine/Cosine Module. Since the arc cosine function is the inverse for the 
+cosine function, any value in the range [-1 … 1] that is fed to the ArcCos Module will 
+again be reproduced (up to a certain error stemming from the floating point format) at the 
+"Cos" output port of the serially connected Sine/Cosine Module. In the picture below the 
+input value is "0.8" and the output value at the "Cos" output port of the Sine/Cosine Mod­
+ule is "0.799959", the same value with an error of "0.000041".
+Fig. 4.55 ArcCos represents the inverse trigonometric function of the cosine function. When the two corresponding Modules 
+are connected in series, they approximately cancel each other out.
+4.26
+ArcTan Module
+ 
+Fig. 4.56 ArcTan Module
+Math
+ArcCos Module
+ 
+REAKTOR 5.5 - Module Reference - 279
+
+
+--- Page 280 ---
+
+4.26.1
+Overview
+ 
+The ArcTan Module calculates the inverse tangent function. The arc tangent of "x" is a 
+number between "-0.25" and "0.25", the tangent of which is "x". Since the tangent func­
+tion's output range comprises all floating point numbers in REAKTOR, the arc tangent 
+function is valid for all input values. An Event at the input port triggers an Event at the 
+output port.
+Application
+The ArcTan Module can be used as an alternative to the Saturator Module (↑12.1, Satura­
+tor).
+4.26.2
+Ports
+ 
+Input Ports
+▪
+(In) "In" is the hybrid input port for the value for the scaled argument of the arc tangent 
+function.
+Output Ports
+▪
+(Out) "Out" is the hybrid output port for the scaled arc tangent function of the input val­
+ue. The output ranges from -0.25 to 0.25.
+4.26.3
+Example: Arc Tangent as Inverse of Tangent
+ 
+This example demonstrates how the ArcTan Module acts as the inverse of the tangent 
+function. In the picture below you see a Knob Module with range [-1000 … 1000] con­
+nected to the input port of a ArcTan Module and the output port of the ArcTan Module 
+connected to the input port of a Sine/Cosine Module. Since the arc tangent function is the 
+inverse for the tangent function, any value in the range [-1000 … 1000] that is fed to the 
+ArcTan Module will again be reproduced (up to a certain error stemming from the floating 
+point format) at the output port of the Divide Module serially connected Sine/Cosine Mod­
+ule. The Divide Module serves to use the equation sin( x ) / cos ( x ) = tan( x ) to derive the 
+tangent function from the sine and cosine functions of the Sine/Cosine Module. In the fig­
+ure below the input value is "-320" and the output value at the output port of the Divide 
+Module is "-320.012", the same value with an error of "0.012".
+Math
+ArcTan Module
+ 
+REAKTOR 5.5 - Module Reference - 280
+
+
+--- Page 281 ---
+
+Fig. 4.57 ArcTan represents the inverse trigonometric function of the tangent function. When the two corresponding func­
+tions are applied in series to an incoming signal, they approximately cancel each other out.
+Math
+ArcTan Module
+ 
+REAKTOR 5.5 - Module Reference - 281
+

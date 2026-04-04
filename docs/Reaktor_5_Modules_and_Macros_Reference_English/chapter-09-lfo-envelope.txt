@@ -1,0 +1,2543 @@
+--- Page 454 ---
+
+9
+LFO, Envelope
+ 
+This category includes a fully modulatable, multiwaveform LFO, a random control genera­
+tor, and envelope generators of just about any description including time/level ramp gener­
+ators in three sizes.
+All Envelopes can optionally display their curve in a panel graphic. This can be achieved 
+with the Visible option on the Appearance page in the module Properties. The size of the 
+display can be set in the Properties using the Size X and Size Y options. The timeline of 
+the curve in the display is not scaled.
+9.1
+LFO
+ 
+Fig. 9.1 LFO Module
+9.1.1
+Overview
+ 
+The LFO Module is a low frequency oscillator (short: LFO) with sine, triangle and pulse 
+waveforms available at the corresponding output ports. The output signal is a stream of 
+Events at the Control Rate that has been selected in the Settings > Control Rate submenu. 
+For each waveform you can control its frequency, amplitude, phase synchronization and 
+phase offset at the corresponding input ports. To control the shape of the individual wave­
+forms you can use the "W" (width) input port.
+Application
+It is typically used as a source for periodic modulation signals such as vibrato, tremolo, 
+etc. Since the LFO operates at the Control Rate, it is much more CPU efficient than an 
+audio oscillator which could do the same job. Therefore when working with control signals 
+which are not meant to be audible by themselves, it is usually smart to use the LFO Mod­
+ule instead of an Oscillator Module
+LFO, Envelope
+LFO
+ 
+REAKTOR 5.5 - Module Reference - 454
+
+
+--- Page 455 ---
+
+9.1.2
+Ports
+ 
+Input Ports
+▪
+(F) "F" (frequency) is the Audio input port for controlling of the oscillator frequency in 
+Hz (cycles per second). If you wish to control the frequency in tempo-relevant units 
+such as BPM (beats per minute), you can compute the required value in Hz as follows: 
+F = oscillations-per-beat / 60 BPM. So, for example, for 3 oscillations per bar at 4 
+beats to the bar (that is ¾ oscillations per beat), you get F = (¾) / 60 BPM or 0.0125 
+BPM.
+▪
+(A) "A" (amplitude) is the Audio input port for controlling the LFO waveform amplitude. 
+The output signal then moves in the range [-A … A].
+▪
+(W) "W' (width) is the Audio input port to control the shape of the individual wave­
+forms. For the pulse waveform, the "W" (width) parameter is the ratio of the duration of 
+the high state of the pulse signal to the low state of the pulse signal. For the other 
+waveforms the "W" (width) parameter also controls the symmetry of the waveform. The 
+values at this input port should be in the range [-1 … 1]. When the input port is left 
+unconnected, the default value, "0" is used. This corresponds to a symmetric wave­
+form.
+▪
+(Snc) "Sync" (synchronization) is the Audio input port for phase synchronization of the 
+LFO waveform. A positive Event at this input port synchronizes the oscillator, resetting 
+it to the phase given by the value at the "Ph" (phase) input port.
+▪
+(Ph) "Ph" (phase) is the Audio input port for specifying the phase (position in the wave­
+form) to which the oscillator is reset when synchronization occurs. Ph = -1 corresponds 
+to a phase of -180 degrees (start of rising slope), Ph = 0 corresponds to a phase of 0 
+degrees (middle of rising slope), and Ph = 1 corresponds to a phase of 180 degrees 
+which is the same as -180 degrees. The default value, "0" is used if this port is left 
+disconnected. Otherwise, the range [-1 … 1] should be used for the values at this in­
+put port.
+Output Ports
+▪
+(Sin) "Sin" (sine) is the Event output port for the sine waveform signal.
+▪
+(Tri) "Tri" (triangle) is the Event output port for the triangle waveform signal.
+▪
+(Pls) "Pls" (pulse) is the Event output port for the pulse waveform signal.
+LFO, Envelope
+LFO
+ 
+REAKTOR 5.5 - Module Reference - 455
+
+
+--- Page 456 ---
+
+9.1.3
+Example: Tremolo
+ 
+This example illustrates how to apply an LFO to the amplitude of an incoming signal 
+(tremolo). The incoming signal can be any Audio signal, the simplest example being an os­
+cillator signal. The LFO is applied to an incoming signal by multiplying the LFO Module's 
+output with that signal. Here an LFO with a sine waveform has been used, as can be seen 
+by the connected "Sin" (sinus) output port in the Structure below.
+More often than not it is useful to have some control over the amount of tremolo effect 
+that is applied to the incoming signal. The crossfading Structure, shown in the second ex­
+ample for the Mult/Add Module (↑4.6, Mult/Add (a * b + c), X+), is used here to crossfade 
+between an unaltered input signal and an input signal with the tremolo effect. In the 
+Structure below, the Knob labeled "Tremolo" has an output range [0 … 1] where "0" corre­
+sponds to an unaltered signal and "1" corresponds to fully applying the LFO to the signal 
+amplitude. Note that for Tremolo = 0, the incoming signal is multiplied by "1" and for 
+Tremolo = 1 the incoming signal is multiplied by the output of the LFO Module. In the 
+second figure below, a screenshot shown how the waveform of a sine oscillator might look 
+like after being treated by the tremolo effect.
+Fig. 9.2 The Structure for a simple tremolo effect, utilizing the LFO Module.
+Fig. 9.3 The signal of a sine oscillator to which a tremolo effect has been applied.
+LFO, Envelope
+LFO
+ 
+REAKTOR 5.5 - Module Reference - 456
+
+
+--- Page 457 ---
+
+9.2
+Slow Random
+ 
+Fig. 9.4 Slow Random Module
+9.2.1
+Overview
+ 
+The Slow Random Module is a pseudorandom value generator. The output signal is a step­
+ped waveform where the level of each step is pseudorandom in the amplitude interval. 
+Each "level" has an equal probability of appearing. We say pseudorandom because the al­
+gorithm for generating the number is well-defined and therefore will always behave in a 
+predictable manner. However, if you don’t know that the sequence of numbers is generat­
+ed by an algorithm, they appear to be perfectly random. The Slow Random Module works 
+like a noise generator with uniform distribution followed by a sample & hold circuit 
+clocked at a regular frequency.
+Application
+The Slow Random Module can be applied anywhere where you wish to make things a bit 
+more interesting by adding an unpredictable component. You could use the Slow Random 
+Module to give "human touch" to a sequencer by adding a slight random offset to the val­
+ues it sends (such as velocity) and their timing. Adding a random waveform instead of a 
+periodic LFO as a modulation of a filter cutoff or oscillator pitch also can have a very dis­
+tinct effect.
+9.2.2
+Ports
+ 
+Input Ports
+▪
+(F) "F" (frequency) is the Audio input port for the step frequency in Hz.
+▪
+(A) "A" (amplitude) is the Audio input port for controlling the amplitude range of the 
+signal. The output values will be somewhere in the range [–A … A].
+Output Ports
+▪
+(Out) "Out" is the Event output port for the pseudorandom signal.
+LFO, Envelope
+Slow Random
+ 
+REAKTOR 5.5 - Module Reference - 457
+
+
+--- Page 458 ---
+
+9.2.3
+Example: Random Pitch Deviation
+ 
+In old analog synthesizers variations in the internal state of voltage controlled oscillators 
+resulted in a random deviation from the intended oscillator pitch. This effect can be simu­
+lated in REAKTOR using the Slow Random Module. As shown in the Structure below, just 
+add the output of a Slow Random Module to the intended pitch value (here from a Note 
+Pitch Module, also see ↑2.1, Note Pitch). The extent of the random deviation can be con­
+trolled by a knob at the "A" (amplitude) input port of the Slow Random Module. The fre­
+quency has been set quite arbitrarily to 3 Hz, as indicated by the value "3" at the "F" (fre­
+quency) input port. The resulting pitch is then fed to the "P" (pitch) input port of a para­
+bolic oscillator, for example. Note the Set Random Module (↑14.24, Set Random). With 
+this Module the seed for the pseudorandom sequence created by the Slow Random Mod­
+ule is set to "24".
+Fig. 9.5 A simple Structure to emulate random pitch deviations, as they appear in old analog synthesizers.
+9.3
+H - Env
+ 
+Fig. 9.6 H Module
+9.3.1
+Overview
+ 
+The H Module is an envelope generator with a hold characteristic. The envelope is trig­
+gered with a rising zero crossing at the "Trig" (trigger) input port. Upon a trigger the output 
+value jumps to the current value of the "A" (amplitude) input port and stays there until the 
+LFO, Envelope
+Slow Random
+ 
+REAKTOR 5.5 - Module Reference - 458
+
+
+--- Page 459 ---
+
+hold time (set at the "H" (hold) input port) has passed, after which the output jumps back 
+to zero. The envelope can be triggered at any time, including retriggering during the hold 
+time.
+Application
+The H Module is the simplest envelope. It is commonly used for percussive sounds or as a 
+control parameter in signal processing structures. Parameters which are commonly modu­
+lated by envelopes include oscillator or sampler amplitude, filter cutoff and resonance, FM 
+modulation index, and the modulation amplitude of an LFO. The "Trig" (trigger) input port 
+can be connected to a Differentiator Module (↑10.22, Differentiator). This way when an 
+incoming signal at the Differentiator Module (↑10.22, Differentiator) goes from a falling 
+slope to a rising slope, the Envelope Module is triggered.
+Please refer to the HR Envelope Module's "envelope follower" example for a demonstration of 
+the Differentiator Module as a source for the envelope trigger signal.
+9.3.2
+Ports
+ 
+Input Ports
+▪
+(Trig) "Trig" (Trigger) is the Audio input port for the trigger signal. A trigger signal is 
+considered to be a positive zero crossing.
+▪
+(A) "A" (amplitude) is the Audio input port for the output amplitude of the envelope 
+curve.
+▪
+(H) "H" (hold) is the logarithmic Event input port for controlling the hold time. H = 0 
+corresponds to 1 ms, H = 20 corresponds to 10 ms, and H = 40 corresponds to 100 
+ms. The typical range for the values at this input port is [0 … 80]. When disconnected, 
+this input port receives the default value "0" which corresponds to a transition time of 
+1 ms.
+Output Ports
+▪
+(Out) "Out" is the Audio output port for the envelope signal.
+LFO, Envelope
+H - Env
+ 
+REAKTOR 5.5 - Module Reference - 459
+
+
+--- Page 460 ---
+
+9.3.3
+Properties: View Page
+ 
+Making the Envelope Graph Visible on the Panel
+Envelopes have a Panel representation which graphically depicts the time evolution of the 
+envelope function. This can be a very useful component in your Instrument since you get 
+direct visual feedback on how the time and level parameters that you have set for your en­
+velope affect the overall envelope curve.
+► To turn on the graphic display of your envelope in the Instrument Panel, go to the Mod­
+ule's View page and engage the On checkbox, shown in the figure below.
+Changing the Size of the Envelope's Panel Representation
+Depending on the type of Envelope Module you are using, you might need a small or large 
+graph of the envelope curve on your Instrument Panel.
+► To change the width and height of the Envelope Module's Panel representation, go to 
+the Module's View page and enter the desired values into the Width and Height edit fields, as 
+shown in the figure below.
+9.3.4
+Example: Amplitude Envelope
+ 
+This example shows how to apply a hold envelope to an incoming signal, such as an oscil­
+lator output signal. The corresponding Structure is shown in the figure below. The signal to 
+which the envelope is to be applied is incoming at the "In" input port. It is multiplied with 
+the envelope output signal using a Multiply Module (↑4.5, Multiply, X). A trigger signal in­
+coming at the "G" (gate) input port triggers the envelope at its "Trig" (trigger) input port. 
+The trigger signal can, for example, come from a Gate Module (↑2.3, Gate) with its "Min" 
+and "Max" values in the Function page set to "-1" and "1", respectively. Pressing a key on 
+your MIDI keyboard then causes the signal at the "G" (and hence "Trig") input port to go 
+LFO, Envelope
+H - Env
+ 
+REAKTOR 5.5 - Module Reference - 460
+
+
+--- Page 461 ---
+
+from "-1" to "1". This positive zero crossing constitutes a trigger signal for the H - Env 
+Module. The amplitude is set to "1" with a Constant Module at the "A" input port. A Knob 
+Module at the "H" (hold time) input port lets you set the envelope's hold time from the In­
+strument Panel.
+Fig. 9.7 A simple implementation of a hold envelope.
+In the Rehearsal Ensemble you can get acquainted with the envelopes in REAKTOR. The 
+Ensemble consists of an easy to use interface to select and tweak your envelope of choice. 
+Since each envelope has its own set of controls for the signal levels and transition times, 
+Stacked Macro Modules (↑1.19, Stacked Macro) have been used to make only the relevant 
+controls appear when an envelope has been selected from the "Envelopes" list. Also, the On 
+checkbox in the View page has been engaged such that the graphic Panel representation 
+of the envelope is visible, as shown in the figure below.
+Fig. 9.8 The Hold Envelope's Panel representation and knob for the hold time.
+9.4
+HR - Env
+ 
+Fig. 9.9 HR - Env Module
+LFO, Envelope
+HR - Env
+ 
+REAKTOR 5.5 - Module Reference - 461
+
+
+--- Page 462 ---
+
+9.4.1
+Overview
+ 
+The HR Module is an envelope generator with a hold-release characteristic. The envelope 
+is triggered with a rising zero crossing at the "Trig" (trigger) input port. This causes the out­
+put value to jump to the value specified at the "A" (amplitude) Audio input port. The out­
+put signal is held at that value for the hold time (specified at the "H" (hold) input port) 
+and then decays exponentially to zero with the release time, set at the "R" (release) input 
+port.
+Application
+The HR Module is the simplest sustained envelope with a release curve. It is commonly 
+used for percussive sounds. Parameters which are commonly modulated by envelopes in­
+clude oscillator or sampler amplitude, filter cutoff and resonance, FM modulation index, 
+and the modulation amplitude of an LFO. The "Trig" (trigger) input port can be connected 
+to a Differentiator Module (↑10.22, Differentiator), as shown in the second example. This 
+way when an incoming signal at the Differentiator Module (↑10.22, Differentiator) goes 
+from a falling slope to a rising slope, the Envelope Module is triggered.
+9.4.2
+Ports
+ 
+Input Ports
+▪
+(Trig) "Trig" (Trigger) is the Audio input port for the trigger signal. A trigger signal is 
+considered to be a positive zero crossing.
+▪
+(A) "A" (amplitude) is the Audio input port for the output amplitude of the envelope 
+curve.
+▪
+(H) "H" (hold) is the logarithmic Event input port for controlling the hold time. H = 0 
+corresponds to 1 ms, H = 20 corresponds to 10 ms, and H = 40 corresponds to 100 
+ms. The typical range for the values at this input port is [0 … 80]. When disconnected, 
+this input port receives the default value "0" which corresponds to a transition time of 
+1 ms.
+▪
+(R) "R" (release) is the logarithmic Event input port for controlling the release time. 
+This part of the curve is exponential and is adopted upon a zero valued Event at the "G" 
+(gate) input port (Gate Off Event). T = 0 corresponds to 1 ms, T = 20 corresponds to 
+LFO, Envelope
+HR - Env
+ 
+REAKTOR 5.5 - Module Reference - 462
+
+
+--- Page 463 ---
+
+10 ms, and T = 40 corresponds to 100 ms. The typical range for the values at this 
+input port is [0 … 80]. When disconnected, this input port receives the default value 
+"0" which corresponds to a transition time of 1 ms.
+Output Ports
+▪
+(Out) "Out" is the Audio output port for the envelope signal.
+9.4.3
+Properties: View Page
+ 
+Making the Envelope Graph Visible on the Panel
+Envelopes have a Panel representation which graphically depicts the time evolution of the 
+envelope function. This can be a very useful component in your Instrument since you get 
+direct visual feedback on how the time and level parameters that you have set for your en­
+velope affect the overall envelope curve.
+► To turn on the graphic display of your envelope in the Instrument Panel, go to the Mod­
+ule's View page and engage the On checkbox, shown in the figure below.
+Changing the Size of the Envelope's Panel Representation
+Depending on the type of Envelope Module you are using, you might need a small or large 
+graph of the envelope curve on your Instrument Panel.
+► To change the width and height of the Envelope Module's Panel representation, go to 
+the Module's View page and enter the desired values into the Width and Height edit fields, as 
+shown in the figure below.
+LFO, Envelope
+HR - Env
+ 
+REAKTOR 5.5 - Module Reference - 463
+
+
+--- Page 464 ---
+
+9.4.4
+Example 1: Amplitude Envelope
+ 
+This example shows how to apply a HR (hold-release) envelope to an incoming signal, 
+such as an oscillator output signal. The corresponding Structure is shown in the figure be­
+low. The signal to which the envelope is to be applied is incoming at the "In" input port. It 
+is multiplied with the envelope output signal using a Multiply Module (↑4.5, Multiply, X). 
+A trigger signal incoming at the "G" (gate) input port triggers the envelope at its "Trig" (trig­
+ger) input port. The trigger signal can, for example, come from a Gate Module (↑2.3, Gate) 
+with its "Min" and "Max" values in the Function page set to "-1" and "1", respectively. 
+Pressing a key on your MIDI keyboard then causes the signal at the "G" (and hence "Trig") 
+input port to go from "-1" to "1". This positive zero crossing constitutes a trigger signal for 
+the HR - Env Module. The amplitude is set to "1" with a Constant Module at the "A" input 
+port. Two Knob Modules at the "H" (hold time) and "R" (release time) input ports let you 
+set the envelope's hold and release times from the Instrument Panel.
+Fig. 9.10 A simple implementation of a hold-release envelope.
+In the Rehearsal Ensemble you can get acquainted with the envelopes in REAKTOR. The 
+Ensemble consists of an easy to use interface to select and tweak your envelope of choice. 
+Since each envelope has its own set of controls for the signal levels and transition times, 
+Stacked Macro Modules (↑1.19, Stacked Macro) have been used to make only the relevant 
+controls appear when an envelope has been selected from the "Envelopes" list. Also, the On 
+checkbox in the View page has been engaged such that the graphic Panel representation 
+of the envelope is visible, as shown in the figure below.
+LFO, Envelope
+HR - Env
+ 
+REAKTOR 5.5 - Module Reference - 464
+
+
+--- Page 465 ---
+
+Fig. 9.11 The HR Envelope's Panel representation and knobs for the hold and release times.
+9.4.5
+Example: Envelope Follower
+ 
+A good way to modulate your effects, filters, envelopes, and oscillators, is using envelope 
+followers. An envelope follower takes an input signal and uses its peaks to trigger an enve­
+lope whose amplitude matches that of the peak. The Structure in the figure below illus­
+trates such an envelope follower Structure, utilizing the Peak Detector (↑12.14, Peak De­
+tector), Differentiator (↑10.22, Differentiator), Sample and Hold (↑12.15, Sample & 
+Hold), HR Envelope, and a 1-Pole Filter (↑10.2, HP/LP 1-Pole FM).
+The incoming signal that is to trigger the envelope is first fed into the Peak Detector Mod­
+ule (↑12.14, Peak Detector). Depending on the frequency of peaks, the release time of the 
+peaks in the Peak Detector's output signal is set with the "PkRel" knob at the "Rel" input 
+port. Next, the Peak Detector Module's output is fed to the Sample and Hold Module 
+(↑12.15, Sample & Hold). This signal is only sampled and held when a negative value at 
+the Sample and Hold Module's "Trig" (trigger) input port goes from a negative value to a 
+positive value. At the same time, the Differentiator Module (↑10.22, Differentiator) records 
+if the Peak Detector Module's output is rising or falling. Therefore, if the Peak Detector 
+signal goes from a falling state to a rising state, its output is sampled and forwarded to the 
+"A" (amplitude) input port of the HR Envelope Module. At the same time, the HR Envelope 
+Module is triggered (with this new amplitude, ultimately received from the Peak Detector 
+Module). The envelope's output signal is then smoothed by a 1-Pole Filter (low-pass) 
+where the value at its "P" (pitch) input port determines the amount of smoothing.
+Fig. 9.12 The Structure for an envelope follower effect.
+LFO, Envelope
+HR - Env
+ 
+REAKTOR 5.5 - Module Reference - 465
+
+
+--- Page 466 ---
+
+9.5
+D - Env
+ 
+Fig. 9.13 D- Env Module
+9.5.1
+Overview
+ 
+The D Module is an envelope generator with a decay characteristic. The envelope is trig­
+gered with a rising zero crossing at the "Trig" (trigger) input port. This causes the output 
+value to jump to the value specified at the "A" (amplitude) Audio input port. The output 
+signal then decays exponentially to zero with the decay time, set at the "D" (decay) input 
+port.
+Application
+The D Module is the simplest decay envelope. It is commonly used for percussive sounds. 
+Parameters which are commonly modulated by envelopes include oscillator or sampler am­
+plitude, filter cutoff and resonance, FM modulation index, and the modulation amplitude 
+of an LFO. The "Trig" (trigger) input port can be connected to a Differentiator Module 
+(↑10.22, Differentiator). This way when an incoming signal at the Differentiator Module 
+(↑10.22, Differentiator) goes from a falling slope to a rising slope, the Envelope Module is 
+triggered.
+Please refer to the HR Envelope Module's "envelope follower" example for a demonstration of 
+the Differentiator Module as a source for the envelope trigger signal.
+9.5.2
+Ports
+ 
+Input Ports
+▪
+(Trig) "Trig" (Trigger) is the Audio input port for the trigger signal. A trigger signal is 
+considered to be a positive zero crossing.
+▪
+(A) "A" (amplitude) is the Audio input port for the output amplitude of the envelope 
+curve.
+LFO, Envelope
+D - Env
+ 
+REAKTOR 5.5 - Module Reference - 466
+
+
+--- Page 467 ---
+
+▪
+(D) "D" (decay is the logarithmic Event input port for controlling the decay time. This 
+part of the curve is exponential. D = 0 corresponds to 1 ms, D = 20 corresponds to 10 
+ms, and D = 40 corresponds to 100 ms. The typical range for the values at this input 
+port is [0 … 80]. When disconnected, this input port receives the default value "0" 
+which corresponds to a transition time of 1 ms.
+Output Ports
+▪
+(Out) "Out" is the Audio output port for the envelope signal.
+9.5.3
+Properties: View Page
+ 
+Making the Envelope Graph Visible on the Panel
+Envelopes have a Panel representation which graphically depicts the time evolution of the 
+envelope function. This can be a very useful component in your Instrument since you get 
+direct visual feedback on how the time and level parameters that you have set for your en­
+velope affect the overall envelope curve.
+► To turn on the graphic display of your envelope in the Instrument Panel, go to the Mod­
+ule's View page and engage the On checkbox, shown in the figure below.
+Changing the Size of the Envelope's Panel Representation
+Depending on the type of Envelope Module you are using, you might need a small or large 
+graph of the envelope curve on your Instrument Panel.
+► To change the width and height of the Envelope Module's Panel representation, go to 
+the Module's View page and enter the desired values into the Width and Height edit fields, as 
+shown in the figure below.
+LFO, Envelope
+D - Env
+ 
+REAKTOR 5.5 - Module Reference - 467
+
+
+--- Page 468 ---
+
+9.5.4
+Example: Amplitude Envelope
+ 
+This example shows how to apply a decay envelope to an incoming signal, such as an os­
+cillator output signal. The corresponding Structure is shown in the figure below. The signal 
+to which the envelope is to be applied is incoming at the "In" input port. It is multiplied 
+with the envelope output signal using a Multiply Module (↑4.5, Multiply, X). A trigger sig­
+nal incoming at the "G" (gate) input port triggers the envelope at its "Trig" (trigger) input 
+port. The trigger signal can, for example, come from a Gate Module (↑2.3, Gate) with its 
+"Min" and "Max" values in the Function page set to "-1" and "1", respectively. Pressing a 
+key on your MIDI keyboard then causes the signal at the "G" (and hence "Trig") input port 
+to go from "-1" to "1". This positive zero crossing constitutes a trigger signal for the D - Env 
+Module. The amplitude is set to "1" with a Constant Module at the "A" input port. A Knob 
+Module at the "D" (decay time) input port lets you set the envelope's decay time from the 
+Instrument Panel.
+Fig. 9.14 A simple implementation of a decay envelope.
+In the Rehearsal Ensemble you can get acquainted with the envelopes in REAKTOR. The 
+Ensemble consists of an easy to use interface to select and tweak your envelope of choice. 
+Since each envelope has its own set of controls for the signal levels and transition times, 
+Stacked Macro Modules (↑1.19, Stacked Macro) have been used to make only the relevant 
+controls appear when an envelope has been selected from the "Envelopes" list. Also, the On 
+checkbox in the View page has been engaged such that the graphic Panel representation 
+of the envelope is visible, as shown in the figure below.
+Fig. 9.15 The Decay Envelope's Panel representation and Knob for the decay time.
+LFO, Envelope
+D - Env
+ 
+REAKTOR 5.5 - Module Reference - 468
+
+
+--- Page 469 ---
+
+9.6
+DR - Env
+ 
+Fig. 9.16 DR Module
+9.6.1
+Overview
+ 
+The DR Module is an envelope generator with a decay-release characteristic. The envelope 
+is triggered with a Gate On Event at the "G" (gate) input. This causes the output value to 
+jump to the amplitude value of the Gate signal (received at the "G" (gate) input port), after 
+which the output decays linearly for the decay time set at the "D" (decay) input port. After 
+that it continues to decay to zero, exponentially, with the time parameter set at the "R" (re­
+lease) input port. If a gate Event with amplitude zero (Gate Off Event) arrives at the "G" 
+(gate) input port, the exponential release decay curve is initiated immediately.
+Application
+The DR Module is useful in situations where you need a control parameter that instantly 
+jumps to its maximum value and then decays along a curve with a linear and exponential 
+part. Parameters which are commonly modulated by envelopes include oscillator or sam­
+pler amplitude, filter cutoff and resonance, FM modulation index, and the modulation am­
+plitude of an LFO.
+9.6.2
+Ports
+ 
+Input Ports
+▪
+(G) "G" (gate) is the Event input port for the Gate signal that triggers and releases the 
+envelope. The envelope is triggered with a positive valued Event (a Note On Event) and 
+released with a zero valued Event (a Note Off Event). The amplitude of the Gate signal 
+determines the maximum output value. The typical range of values at this input port is 
+[0 … 1]..
+LFO, Envelope
+DR - Env
+ 
+REAKTOR 5.5 - Module Reference - 469
+
+
+--- Page 470 ---
+
+▪
+(D) "D" (decay) is the logarithmic Event input port for controlling the decay time. This 
+part of the curve is exponential. D = 0 corresponds to 1 ms, D = 20 corresponds to 10 
+ms, and D = 40 corresponds to 100 ms. The typical range for the values at this input 
+port is [0 … 80]. When disconnected, this input port receives the default value "0" 
+which corresponds to a transition time of 1 ms.
+▪
+(R) "R" (release) is the logarithmic Event input port for controlling the release time. 
+This part of the curve is exponential and is adopted upon a zero valued Event at the "G" 
+(gate) input port (Gate Off Event). T = 0 corresponds to 1 ms, T = 20 corresponds to 
+10 ms, and T = 40 corresponds to 100 ms. The typical range for the values at this 
+input port is [0 … 80]. When disconnected, this input port receives the default value 
+"0" which corresponds to a transition time of 1 ms.
+Output Ports
+▪
+(Out) "Out" is the Audio output port for the envelope signal.
+9.6.3
+Properties: View Page
+ 
+Making the Envelope Graph Visible on the Panel
+Envelopes have a Panel representation which graphically depicts the time evolution of the 
+envelope function. This can be a very useful component in your Instrument since you get 
+direct visual feedback on how the time and level parameters that you have set for your en­
+velope affect the overall envelope curve.
+► To turn on the graphic display of your envelope in the Instrument Panel, go to the Mod­
+ule's View page and engage the On checkbox, shown in the figure below.
+Changing the Size of the Envelope's Panel Representation
+Depending on the type of Envelope Module you are using, you might need a small or large 
+graph of the envelope curve on your Instrument Panel.
+LFO, Envelope
+DR - Env
+ 
+REAKTOR 5.5 - Module Reference - 470
+
+
+--- Page 471 ---
+
+► To change the width and height of the Envelope Module's Panel representation, go to 
+the Module's View page and enter the desired values into the Width and Height edit fields, as 
+shown in the figure below.
+9.6.4
+Example: Amplitude Envelope
+ 
+This example shows how to apply a DR (decay-release) envelope to an incoming signal, 
+such as an oscillator output signal. The corresponding Structure is shown in the figure be­
+low. The signal to which the envelope is to be applied is incoming at the "In" input port. It 
+is multiplied with the envelope output signal using a Multiply Module (↑4.5, Multiply, X). 
+A trigger signal incoming at the "G" (gate) input port triggers the envelope at its "Trig" (trig­
+ger) input port. The trigger signal can, for example, come from a Gate Module (↑2.3, Gate) 
+with its "Min" and "Max" values in the Function page set to "-1" and "1", respectively. 
+Pressing a key on your MIDI keyboard then causes the signal at the "G" (and hence "Trig") 
+input port to go from "-1" to "1". This positive zero crossing constitutes a trigger signal for 
+the DR - Env Module. The amplitude is set to "1" with a Constant Module (↑4.1, Constant) 
+at the "A" input port. Two Knob Modules at the "D" (decay time) and "R" (release time) in­
+put ports let you set the envelope's decay and release times from the Instrument Panel.
+Fig. 9.17 A simple implementation of a decay-release envelope.
+In the Rehearsal Ensemble you can get acquainted with the envelopes in REAKTOR. The 
+Ensemble consists of an easy to use interface to select and tweak your envelope of choice. 
+Since each envelope has its own set of controls for the signal levels and transition times, 
+Stacked Macro Modules (↑1.19, Stacked Macro) have been used to make only the relevant 
+LFO, Envelope
+DR - Env
+ 
+REAKTOR 5.5 - Module Reference - 471
+
+
+--- Page 472 ---
+
+controls appear when an envelope has been selected from the "Envelopes" list. Also, the On 
+checkbox in the View page has been engaged such that the graphic Panel representation 
+of the envelope is visible, as shown in the figure below.
+Fig. 9.18 The DR Envelope's Panel representation and knobs for the decay and release times.
+9.7
+DSR - Env
+ 
+Fig. 9.19 DSR Module
+9.7.1
+Overview
+ 
+The DSR Module is an envelope generator with a decay-sustain-release characteristic. The 
+envelope is triggered with a Gate On Event at the "G" (gate) input. This causes the output 
+value to jump to the amplitude value of the Gate signal (received at the "G" (gate) input 
+port), after which the output decays linearly with the decay time set at the "D" (decay) in­
+put port until it reaches the sustain level (multiplied by the amplitude) is reached. The 
+sustain level is set at the "S" (sustain) input port. The output is held at the sustain level 
+until a gate Event with amplitude zero (Gate Off Event) arrives at the "G" (gate) input port, 
+after which the output decays exponentially with the release time (set at the "R" (release) 
+input port) back to zero.
+Application
+The DSR Module is useful in situations where you need a control parameter that instantly 
+jumps to its maximum value and then decays to the sustain level. Parameters which are 
+commonly modulated by envelopes include oscillator or sampler amplitude, filter cutoff 
+and resonance, FM modulation index, and the modulation amplitude of an LFO.
+LFO, Envelope
+DSR - Env
+ 
+REAKTOR 5.5 - Module Reference - 472
+
+
+--- Page 473 ---
+
+Envelope generator with decay-sustain-release characteristic. When the envelope is trig­
+gered with a gate event the output value jumps to the amplitude value of the Gate signal, 
+after which the output decays exponentially with the decay time to the sustain level (multi­
+plied by the amplitude). After a gate event with amplitude zero (at note off) the output de­
+cays exponentially with the release time back to zero.
+9.7.2
+Ports
+ 
+Input Ports
+▪
+(G) "G" (gate) is the Event input port for the Gate signal that triggers and releases the 
+envelope. The envelope is triggered with a positive valued Event (a Note On Event) and 
+released with a zero valued Event (a Note Off Event). The amplitude of the Gate signal 
+determines the maximum output value. The typical range of values at this input port is 
+[0 … 1].
+▪
+(D) "D" (decay) is the logarithmic Event input port for controlling the decay time. This 
+part of the curve is exponential. D = 0 corresponds to 1 ms, D = 20 corresponds to 10 
+ms, and D = 40 corresponds to 100 ms. The typical range for the values at this input 
+port is [0 … 80]. When disconnected, this input port receives the default value "0" 
+which corresponds to a transition time of 1 ms.
+▪
+(S) "S" (sustain) is the Event input port for controlling the sustain level. Typical values 
+at this input port are in the range [0 … 1]. However, values outside this range are al­
+lowed. S = 0 corresponds to a decay to zero whereas S = 1 corresponds to holding the 
+value at the end of the attack phase (no decay curve). When this input port is discon­
+nected, the default value, "0", is used.
+▪
+(R) "R" (release) is the logarithmic Event input port for controlling the release time. 
+This part of the curve is exponential and is adopted upon a zero valued Event at the "G" 
+(gate) input port (Gate Off Event). T = 0 corresponds to 1 ms, T = 20 corresponds to 
+10 ms, and T = 40 corresponds to 100 ms. The typical range for the values at this 
+input port is [0 … 80]. When disconnected, this input port receives the default value 
+"0" which corresponds to a transition time of 1 ms.
+Output Ports
+▪
+(Out) "Out" is the Audio output port for the envelope signal.
+LFO, Envelope
+DSR - Env
+ 
+REAKTOR 5.5 - Module Reference - 473
+
+
+--- Page 474 ---
+
+9.7.3
+Properties: View Page
+ 
+Making the Envelope Graph Visible on the Panel
+Envelopes have a Panel representation which graphically depicts the time evolution of the 
+envelope function. This can be a very useful component in your Instrument since you get 
+direct visual feedback on how the time and level parameters that you have set for your en­
+velope affect the overall envelope curve.
+► To turn on the graphic display of your envelope in the Instrument Panel, go to the Mod­
+ule's View page and engage the On checkbox, shown in the figure below.
+Changing the Size of the Envelope's Panel Representation
+Depending on the type of Envelope Module you are using, you might need a small or large 
+graph of the envelope curve on your Instrument Panel.
+► To change the width and height of the Envelope Module's Panel representation, go to 
+the Module's View page and enter the desired values into the Width and Height edit fields, as 
+shown in the figure below.
+9.7.4
+Example: Amplitude Envelope
+ 
+This example shows how to apply a DSR (decay-sustain-release) envelope to an incoming 
+signal, such as an oscillator output signal. The corresponding Structure is shown in the 
+figure below. The signal to which the envelope is to be applied is incoming at the "In" in­
+put port. It is multiplied with the envelope output signal using a Multiply Module (↑4.5, 
+Multiply, X). A gate signal incoming at the "G" (gate) input port usually comes from a Gate 
+Module (↑2.3, Gate). Pressing a key on your MIDI keyboard then causes a Gate On signal 
+to be sent to the "G" input port, triggering the envelope. Releasing the key sends a Gate 
+LFO, Envelope
+DSR - Env
+ 
+REAKTOR 5.5 - Module Reference - 474
+
+
+--- Page 475 ---
+
+Off signal to the envelope, initiating the envelopes release curve. Knob Modules at the "D" 
+(decay time) "S" (sustain level), and "R" (release time) input ports let you set the enve­
+lope's parameters from the Instrument Panel.
+Fig. 9.20 A simple implementation of a decay-sustain-release envelope.
+In the Rehearsal Ensemble you can get acquainted with the envelopes in REAKTOR. The 
+Ensemble consists of an easy to use interface to select and tweak your envelope of choice. 
+Since each envelope has its own set of controls for the signal levels and transition times, 
+Stacked Macro Modules (↑1.19, Stacked Macro) have been used to make only the relevant 
+controls appear when an envelope has been selected from the "Envelopes" list. Also, the On 
+checkbox in the View page has been engaged such that the graphic Panel representation 
+of the envelope is visible, as shown in the figure below.
+Fig. 9.21 The DSR Envelope's Panel representation and knobs for its curve parameters.
+9.8
+DBDR - Env
+ 
+Fig. 9.22 DBDR Module
+LFO, Envelope
+DBDR - Env
+ 
+REAKTOR 5.5 - Module Reference - 475
+
+
+--- Page 476 ---
+
+9.8.1
+Overview
+ 
+The DBDR Module is an envelope generator with a decay-breakpoint-decay -release char­
+acteristic. The envelope is triggered with a Gate On Event at the "G" (gate) input. This 
+causes the output value to jump to the amplitude value of the Gate signal (received at the 
+"G" (gate) input port), after which the output decays linearly with the decay time set at the 
+"D1" (decay 1) input port until it reaches the breakpoint level (multiplied by the ampli­
+tude). The breakpoint level is set at the "B" (breakpoint) input port. Next it continues de­
+caying exponentially to zero with the time parameter set at the "D2" (decay 2) input port 
+for that part of the curve. If a gate Event with amplitude zero (Gate Off Event) arrives at 
+the "G" (gate) input port, after which the output decays exponentially with the release time 
+(set at the "R" (release) input port) back to zero. The "R" (release) value is normally set to 
+be shorter than the "D2" (decay 2) value.
+Application
+The DBDR Module is useful in situations where you need a control parameter that instant­
+ly jumps to its maximum value and then decays along a more complex curve and eventual­
+ly fades to zero. Parameters which are commonly modulated by envelopes include oscilla­
+tor or sampler amplitude, filter cutoff and resonance, FM modulation index, and the mod­
+ulation amplitude of an LFO.
+9.8.2
+Ports
+ 
+Input Ports
+▪
+(G) "G" (gate) is the Event input port for the Gate signal that triggers and releases the 
+envelope. The envelope is triggered with a positive valued Event (a Note On Event) and 
+released with a zero valued Event (a Note Off Event). The amplitude of the Gate signal 
+determines the maximum output value. The typical range of values at this input port is 
+[0 … 1].
+▪
+(D1) "D1" (decay 1) is the logarithmic Event input port for controlling the first decay 
+time. This part of the curve is linear. D1 = 0 corresponds to 1 ms, D1 = 20 corre­
+sponds to 10 ms, and D1 = 40 corresponds to 100 ms. The typical range for the val­
+ues at this input port is [0 … 80]. When disconnected, this input port receives the de­
+fault value "0" which corresponds to a transition time of 1 ms.
+LFO, Envelope
+DBDR - Env
+ 
+REAKTOR 5.5 - Module Reference - 476
+
+
+--- Page 477 ---
+
+▪
+(B) "B" (breakpoint) is the Event input port for controlling the breakpoint level. The 
+range for the values at this input port is [0 … 1]. For B = 0, the "D2" (decay 2) time 
+parameter is never used. For B = 1 the envelope curve immediately starts running 
+through the "D2" (decay 2) curve when a positive Event arrives at the "G" (gate) input 
+port (Gate On Event). When disconnected, the default value that is used for this input 
+port is "0". 
+▪
+(D2) "D2" (decay 2) is the logarithmic Event input port for controlling the second decay 
+time. This part of the curve is exponential. D2 = 0 corresponds to 1 ms, D2 = 20 cor­
+responds to 10 ms, and D2 = 40 corresponds to 100 ms. The typical range for the val­
+ues at this input port is [0 … 80]. When disconnected, this input port receives the de­
+fault value "0" which corresponds to a transition time of 1 ms.
+▪
+(R) "R" (release) is the logarithmic Event input port for controlling the release time. 
+This part of the curve is exponential and is adopted upon a zero valued Event at the "G" 
+(gate) input port (Gate Off Event). T = 0 corresponds to 1 ms, T = 20 corresponds to 
+10 ms, and T = 40 corresponds to 100 ms. The typical range for the values at this 
+input port is [0 … 80]. When disconnected, this input port receives the default value 
+"0" which corresponds to a transition time of 1 ms.
+Output Ports
+▪
+(Out) "Out" is the Audio output port for the envelope signal.
+9.8.3
+Properties: View Page
+ 
+Making the Envelope Graph Visible on the Panel
+Envelopes have a Panel representation which graphically depicts the time evolution of the 
+envelope function. This can be a very useful component in your Instrument since you get 
+direct visual feedback on how the time and level parameters that you have set for your en­
+velope affect the overall envelope curve.
+► To turn on the graphic display of your envelope in the Instrument Panel, go to the Mod­
+ule's View page and engage the On checkbox, shown in the figure below.
+LFO, Envelope
+DBDR - Env
+ 
+REAKTOR 5.5 - Module Reference - 477
+
+
+--- Page 478 ---
+
+Changing the Size of the Envelope's Panel Representation
+Depending on the type of Envelope Module you are using, you might need a small or large 
+graph of the envelope curve on your Instrument Panel.
+► To change the width and height of the Envelope Module's Panel representation, go to 
+the Module's View page and enter the desired values into the Width and Height edit fields, as 
+shown in the figure below.
+9.8.4
+Example: Amplitude Envelope
+ 
+This example shows how to apply a DBDR (decay-breakpoint-decay-release) envelope to an 
+incoming signal, such as an oscillator output signal. The corresponding Structure is shown 
+in the figure below. The signal to which the envelope is to be applied is incoming at the 
+"In" input port. It is multiplied with the envelope output signal using a Multiply Module 
+(↑4.5, Multiply, X). A gate signal incoming at the "G" (gate) input port usually comes from 
+a Gate Module (↑2.3, Gate). Pressing a key on your MIDI keyboard then causes a Gate On 
+signal to be sent to the "G" input port, triggering the envelope. Releasing the key sends a 
+Gate Off signal to the envelope, initiating the envelopes release curve (if not already en­
+tered). Knob Modules at the "D1" (first decay time) "B" (breakpoint level), "D2" (second 
+decay time), and "R" (release time) input ports let you set the envelope's parameters from 
+the Instrument Panel.
+Fig. 9.23 A simple implementation of a decay-breakpoint-decay-release envelope.
+In the Rehearsal Ensemble you can get acquainted with the envelopes in REAKTOR. The 
+Ensemble consists of an easy to use interface to select and tweak your envelope of choice. 
+Since each envelope has its own set of controls for the signal levels and transition times, 
+Stacked Macro Modules (↑1.19, Stacked Macro) have been used to make only the relevant 
+LFO, Envelope
+DBDR - Env
+ 
+REAKTOR 5.5 - Module Reference - 478
+
+
+--- Page 479 ---
+
+controls appear when an envelope has been selected from the "Envelopes" list. Also, the On 
+checkbox in the View page has been engaged such that the graphic Panel representation 
+of the envelope is visible, as shown in the figure below.
+Fig. 9.24 The DBDR Envelope's Panel representation and knobs for its curve parameters.
+9.9
+DBDSR-Env
+ 
+Fig. 9.25 DBDSR Module
+9.9.1
+Overview
+ 
+The DBDSR Module is an envelope generator with a decay-breakpoint-decay-sustain-re­
+lease characteristic. The envelope is triggered with a Gate On Event at the "G" (gate) input. 
+This causes the output value to jump to the amplitude value of the Gate signal (received at 
+the "G" (gate) input port), after which the output decays linearly with the decay time set at 
+the "D1" (decay 1) input port until it reaches the breakpoint level (multiplied by the ampli­
+tude). The breakpoint level is set at the "B" (breakpoint) input port. Next it continues de­
+caying exponentially with the time parameter set at the "D2" (decay 2) input port until the 
+sustain level (multiplied by the amplitude) is reached. The sustain level is set at the "S" 
+(sustain) input port. The output is held at the sustain level until a gate Event with ampli­
+tude zero (Gate Off Event) arrives at the "G" (gate) input port, after which the output de­
+cays exponentially with the release time (set at the "R" (release) input port) back to zero. 
+The "R" (release) value is normally set to be shorter than the "D2" (decay 2) value.
+LFO, Envelope
+DBDSR-Env
+ 
+REAKTOR 5.5 - Module Reference - 479
+
+
+--- Page 480 ---
+
+Application
+The DBDSR Module is useful in situations where you need a control parameter that in­
+stantly jumps to its maximum value and then decays along a more complex curve. Parame­
+ters which are commonly modulated by envelopes include oscillator or sampler amplitude, 
+filter cutoff and resonance, FM modulation index, and the modulation amplitude of an 
+LFO.
+9.9.2
+Ports
+ 
+Input Ports
+▪
+(G) "G" (gate) is the Event input port for the Gate signal that triggers and releases the 
+envelope. The envelope is triggered with a positive valued Event (a Note On Event) and 
+released with a zero valued Event (a Note Off Event). The amplitude of the Gate signal 
+determines the maximum output value. The typical range of values at this input port is 
+[0 … 1].
+▪
+(D1) "D1" (decay 1) is the logarithmic Event input port for controlling the first decay 
+time. This part of the curve is linear. D1 = 0 corresponds to 1 ms, D1 = 20 corre­
+sponds to 10 ms, and D1 = 40 corresponds to 100 ms. The typical range for the val­
+ues at this input port is [0 … 80]. When disconnected, this input port receives the de­
+fault value "0" which corresponds to a transition time of 1 ms.
+▪
+(B) "B" (breakpoint) is the Event input port for controlling the breakpoint level. The 
+range for the values at this input port is [0 … 1]. For B = 0, the "D2" (decay 2) time 
+parameter is never used. For B = 1 the envelope curve immediately starts running 
+through the "D2" (decay 2) curve when a positive Event arrives at the "G" (gate) input 
+port (Gate On Event). When disconnected, the default value that is used for this input 
+port is "0".
+▪
+(D2) "D2" (decay 2) is the logarithmic Event input port for controlling the second decay 
+time. This part of the curve is exponential. D2 = 0 corresponds to 1 ms, D2 = 20 cor­
+responds to 10 ms, and D2 = 40 corresponds to 100 ms. The typical range for the val­
+ues at this input port is [0 … 80]. When disconnected, this input port receives the de­
+fault value "0" which corresponds to a transition time of 1 ms.
+▪
+(S) "S" (sustain) is the Event input port for controlling the sustain level. Typical values 
+at this input port are in the range [0 … 1]. However, values outside this range are al­
+lowed. When this input port is disconnected, the default value, "0", is used.
+LFO, Envelope
+DBDSR-Env
+ 
+REAKTOR 5.5 - Module Reference - 480
+
+
+--- Page 481 ---
+
+▪
+(R) "R" (release) is the logarithmic Event input port for controlling the release time. 
+This part of the curve is exponential and is adopted upon a zero valued Event at the "G" 
+(gate) input port (Gate Off Event). T = 0 corresponds to 1 ms, T = 20 corresponds to 
+10 ms, and T = 40 corresponds to 100 ms. The typical range for the values at this 
+input port is [0 … 80]. When disconnected, this input port receives the default value 
+"0" which corresponds to a transition time of 1 ms.
+Output Port
+▪
+(Out) "Out" is the Audio output port for the envelope signal.
+9.9.3
+Properties: View Page
+ 
+Making the Envelope Graph Visible on the Panel
+Envelopes have a Panel representation which graphically depicts the time evolution of the 
+envelope function. This can be a very useful component in your Instrument since you get 
+direct visual feedback on how the time and level parameters that you have set for your en­
+velope affect the overall envelope curve.
+► To turn on the graphic display of your envelope in the Instrument Panel, go to the Mod­
+ule's View page and engage the On checkbox, shown in the figure below.
+Changing the Size of the Envelope's Panel Representation
+Depending on the type of Envelope Module you are using, you might need a small or large 
+graph of the envelope curve on your Instrument Panel.
+► To change the width and height of the Envelope Module's Panel representation, go to 
+the Module's View page and enter the desired values into the Width and Height edit fields, as 
+shown in the figure below.
+LFO, Envelope
+DBDSR-Env
+ 
+REAKTOR 5.5 - Module Reference - 481
+
+
+--- Page 482 ---
+
+9.9.4
+Example: Amplitude Envelope
+ 
+This example shows how to apply a DBDSR (decay-breakpoint-decay-sustain-release) enve­
+lope to an incoming signal, such as an oscillator output signal. The corresponding Struc­
+ture is shown in the figure below. The signal to which the envelope is to be applied is in­
+coming at the "In" input port. It is multiplied with the envelope output signal using a Mul­
+tiply Module (↑4.5, Multiply, X). A gate signal incoming at the "G" (gate) input port usually 
+comes from a Gate Module (↑2.3, Gate). Pressing a key on your MIDI keyboard then caus­
+es a Gate On signal to be sent to the "G" input port, triggering the envelope. Releasing the 
+key sends a Gate Off signal to the envelope, initiating the envelopes release curve. Knob 
+Modules at the "D1" (first decay time) "B" (breakpoint level), "D2" (second decay time), "S" 
+(sustain level), and "R" (release time) input ports let you set the envelope's parameters 
+from the Instrument Panel.
+Fig. 9.26 A simple implementation of a decay-breakpoint-decay-sustain-release envelope.
+In the Rehearsal Ensemble you can get acquainted with the envelopes in REAKTOR. The 
+Ensemble consists of an easy to use interface to select and tweak your envelope of choice. 
+Since each envelope has its own set of controls for the signal levels and transition times, 
+Stacked Macro Modules (↑1.19, Stacked Macro) have been used to make only the relevant 
+controls appear when an envelope has been selected from the "Envelopes" list. Also, the On 
+checkbox in the View page has been engaged such that the graphic Panel representation 
+of the envelope is visible, as shown in the figure below.
+LFO, Envelope
+DBDSR-Env
+ 
+REAKTOR 5.5 - Module Reference - 482
+
+
+--- Page 483 ---
+
+Fig. 9.27 The DBDSR Envelope's Panel representation and knobs for its curve parameters.
+9.10
+AD - Env
+ 
+Fig. 9.28 AD Module
+9.10.1
+Overview
+ 
+The AD Module is an envelope generator with an attack-decay characteristic. The envelope 
+is triggered with a rising zero crossing at the "Trig" (trigger) input. This causes the output 
+value to rise with a linear slope over the course of the attack time (set at the "A" (attack 
+input port) to the amplitude specified at the "A" (amplitude) Audio input port. The output 
+signal then decays exponentially to zero with the decay time, set at the "D" (decay) input 
+port.
+Application
+The AD Module is the simplest envelope with an attack slope. It is commonly used for per­
+cussive sounds. Parameters which are commonly modulated by envelopes include oscilla­
+tor or sampler amplitude, filter cutoff and resonance, FM modulation index, and the mod­
+ulation amplitude of an LFO. The "Trig" (trigger) input port can be connected to a Differen­
+tiator Module (↑10.22, Differentiator). This way when an incoming signal at the Differen­
+tiator Module (↑10.22, Differentiator) goes from a falling slope to a rising slope, the Enve­
+lope Module is triggered.
+Please refer to the HR Envelope Module's "envelope follower" example for a demonstration of 
+the Differentiator Module as a source for the envelope trigger signal.
+LFO, Envelope
+AD - Env
+ 
+REAKTOR 5.5 - Module Reference - 483
+
+
+--- Page 484 ---
+
+9.10.2
+Ports
+ 
+Input Ports
+▪
+(Trig) "Trig" (Trigger) is the Audio input port for the trigger signal. A trigger signal is 
+considered to be a positive zero crossing.
+▪
+(A) "A" (amplitude) is the Audio input port for the output amplitude of the envelope 
+curve.
+▪
+(A) "A" (attack) is the Event input port for controlling the attack time in the logarithmic 
+scale. This part of the curve is linear. A = 0 corresponds to 1 ms, A = 20 corresponds 
+to 10 ms, and A = 40 corresponds to 100 ms. The typical range for the values at this 
+input port is [0 … 80]. When disconnected, this input port receives the default value 
+"0" which corresponds to a transition time of 1 ms.
+▪
+(D) "D" (decay) is the logarithmic Event input port for controlling the decay time. This 
+part of the curve is exponential. D = 0 corresponds to 1 ms, D = 20 corresponds to 10 
+ms, and D = 40 corresponds to 100 ms. The typical range for the values at this input 
+port is [0 … 80]. When disconnected, this input port receives the default value "0" 
+which corresponds to a transition time of 1 ms.
+Output Ports
+▪
+(Out) "Out" is the Audio output port for the envelope signal.
+9.10.3
+Properties: View Page
+ 
+Making the Envelope Graph Visible on the Panel
+Envelopes have a Panel representation which graphically depicts the time evolution of the 
+envelope function. This can be a very useful component in your Instrument since you get 
+direct visual feedback on how the time and level parameters that you have set for your en­
+velope affect the overall envelope curve.
+► To turn on the graphic display of your envelope in the Instrument Panel, go to the Mod­
+ule's View page and engage the On checkbox, shown in the figure below.
+LFO, Envelope
+AD - Env
+ 
+REAKTOR 5.5 - Module Reference - 484
+
+
+--- Page 485 ---
+
+Changing the Size of the Envelope's Panel Representation
+Depending on the type of Envelope Module you are using, you might need a small or large 
+graph of the envelope curve on your Instrument Panel.
+► To change the width and height of the Envelope Module's Panel representation, go to 
+the Module's View page and enter the desired values into the Width and Height edit fields, as 
+shown in the figure below.
+9.10.4
+Example: Amplitude Envelope
+ 
+This example shows how to apply an AD (attack-decay) envelope to an incoming signal, 
+such as an oscillator output signal. The corresponding Structure is shown in the figure be­
+low. The signal to which the envelope is to be applied is incoming at the "In" input port. It 
+is multiplied with the envelope output signal using a Multiply Module (↑4.5, Multiply, X). 
+A trigger signal incoming at the "G" (gate) input port triggers the envelope at its "Trig" (trig­
+ger) input port. The trigger signal can, for example, come from a Gate Module (↑2.3, Gate) 
+with its "Min" and "Max" values in the Function page set to "-1" and "1", respectively. 
+Pressing a key on your MIDI keyboard then causes the signal at the "G" (and hence "Trig") 
+input port to go from "-1" to "1". This positive zero crossing constitutes a trigger signal for 
+the AD - Env Module. The amplitude is set to "1" with a Constant Module at the "A" input 
+port. Two Knob Modules at the "A" (attack time) and "D" (decay time) input ports let you 
+set the envelope's decay and release times from the Instrument Panel.
+Fig. 9.29 A simple implementation of an attack-decay envelope.
+In the Rehearsal Ensemble you can get acquainted with the envelopes in REAKTOR. The 
+Ensemble consists of an easy to use interface to select and tweak your envelope of choice. 
+Since each envelope has its own set of controls for the signal levels and transition times, 
+LFO, Envelope
+AD - Env
+ 
+REAKTOR 5.5 - Module Reference - 485
+
+
+--- Page 486 ---
+
+Stacked Macro Modules (↑1.19, Stacked Macro) have been used to make only the relevant 
+controls appear when an envelope has been selected from the "Envelopes" list. Also, the On 
+checkbox in the View page has been engaged such that the graphic Panel representation 
+of the envelope is visible, as shown in the figure below.
+Fig. 9.30 The AD Envelope's Panel representation and knobs for the attack and decay times.
+9.11
+AR - Env
+ 
+Fig. 9.31 AR Module
+9.11.1
+Overview
+ 
+The AR Module is an envelope generator with an attack-release characteristic. The enve­
+lope is triggered with a Gate On Event at the "G" (gate) input. This causes the output value 
+to rise with a linear slope over the course of the attack time (set at the "A" (attack) input 
+port) to the amplitude value of the Gate signal at the "G" (gate) input port. The output sig­
+nal stays at the maximum value until a zero valued Event arrives at the "G" (gate) input 
+port (Gate Off Event). Then the output decays exponentially to zero with the release time, 
+set at the "R" (release) input port.
+Application
+The AR Module is the simplest sustained envelope with an attack slope. Parameters which 
+are commonly modulated by envelopes include oscillator or sampler amplitude, filter cut­
+off and resonance, FM modulation index, and the modulation amplitude of an LFO.
+LFO, Envelope
+AR - Env
+ 
+REAKTOR 5.5 - Module Reference - 486
+
+
+--- Page 487 ---
+
+9.11.2
+Ports
+ 
+Input Ports
+▪
+(G) "G" (gate) is the Event input port for the Gate signal that triggers and releases the 
+envelope. The envelope is triggered with a positive valued Event (a Note On Event) and 
+released with a zero valued Event (a Note Off Event). The amplitude of the Gate signal 
+determines the maximum output value. The typical range of values at this input port is 
+[0 … 1].
+▪
+(A) "A" (attack) is the Event input port for controlling the attack time in the logarithmic 
+scale. This part of the curve is linear. A = 0 corresponds to 1 ms, A = 20 corresponds 
+to 10 ms, and A = 40 corresponds to 100 ms. The typical range for the values at this 
+input port is [0 … 80]. When disconnected, this input port receives the default value 
+"0" which corresponds to a transition time of 1 ms.
+▪
+(R) "R" (release) is the logarithmic Event input port for controlling the release time. 
+This part of the curve is exponential and is adopted upon a zero valued Event at the "G" 
+(gate) input port (Gate Off Event). T = 0 corresponds to 1 ms, T = 20 corresponds to 
+10 ms, and T = 40 corresponds to 100 ms. The typical range for the values at this 
+input port is [0 … 80]. When disconnected, this input port receives the default value 
+"0" which corresponds to a transition time of 1 ms.
+Output Ports
+▪
+(Out) "Out" is the Audio output port for the envelope signal.
+9.11.3
+Properties: View Page
+ 
+Making the Envelope Graph Visible on the Panel
+Envelopes have a Panel representation which graphically depicts the time evolution of the 
+envelope function. This can be a very useful component in your Instrument since you get 
+direct visual feedback on how the time and level parameters that you have set for your en­
+velope affect the overall envelope curve.
+LFO, Envelope
+AR - Env
+ 
+REAKTOR 5.5 - Module Reference - 487
+
+
+--- Page 488 ---
+
+► To turn on the graphic display of your envelope in the Instrument Panel, go to the Mod­
+ule's View page and engage the On checkbox, shown in the figure below.
+Changing the Size of the Envelope's Panel Representation
+Depending on the type of Envelope Module you are using, you might need a small or large 
+graph of the envelope curve on your Instrument Panel.
+► To change the width and height of the Envelope Module's Panel representation, go to 
+the Module's View page and enter the desired values into the Width and Height edit fields, as 
+shown in the figure below.
+9.11.4
+Example: Amplitude Envelope
+ 
+This example shows how to apply an AR (attack-release) envelope to an incoming signal, 
+such as an oscillator output signal. The corresponding Structure is shown in the figure be­
+low. The signal to which the envelope is to be applied is incoming at the "In" input port. It 
+is multiplied with the envelope output signal using a Multiply Module (↑4.5, Multiply, X). 
+A gate signal incoming at the "G" (gate) input port usually comes from a Gate Module 
+(↑2.3, Gate). Pressing a key on your MIDI keyboard then causes a Gate On signal to be 
+sent to the "G" input port, triggering the attack phase of the envelope. Releasing the key 
+sends a Gate Off signal to the envelope, initiating the envelope's release curve. Knob Mod­
+ules at the "A" (attack time) and "R" (release time) input ports let you set the envelope's 
+parameters from the Instrument Panel.
+Fig. 9.32 A simple implementation of an attack-release envelope.
+LFO, Envelope
+AR - Env
+ 
+REAKTOR 5.5 - Module Reference - 488
+
+
+--- Page 489 ---
+
+In the Rehearsal Ensemble you can get acquainted with the envelopes in REAKTOR. The 
+Ensemble consists of an easy to use interface to select and tweak your envelope of choice. 
+Since each envelope has its own set of controls for the signal levels and transition times, 
+Stacked Macro Modules (↑1.19, Stacked Macro) have been used to make only the relevant 
+controls appear when an envelope has been selected from the "Envelopes" list. Also, the On 
+checkbox in the View page has been engaged such that the graphic Panel representation 
+of the envelope is visible, as shown in the figure below.
+Fig. 9.33 The AR Envelope's Panel representation and knobs for its curve parameters.
+9.12
+ADR-Env
+ 
+Fig. 9.34 ADR Module
+9.12.1
+Overview
+ 
+The ADR Module is an envelope generator with an attack-decay-release characteristic. The 
+envelope is triggered with a Gate On Event at the "G" (gate) input. This causes the output 
+value to rise with a linear slope over the course of the attack time (set at the "A" (attack) 
+input port) to the amplitude value of the Gate signal at the "G" (gate) input port. After that 
+amplitude value has been reached, the output signal decays to zero along an exponential 
+slope according to the time parameter set at the "D" (decay) input port. If a zero valued 
+Event arrives at the "G" (gate) input port (Gate Off Event), the output decays exponentially 
+to zero, but with the release time, set at the "R" (release) input port.
+LFO, Envelope
+ADR-Env
+ 
+REAKTOR 5.5 - Module Reference - 489
+
+
+--- Page 490 ---
+
+Application
+The ADR Module is a bread and butter envelope that eventually fades to zero. Parameters 
+which are commonly modulated by envelopes include oscillator or sampler amplitude, fil­
+ter cutoff and resonance, FM modulation index, and the modulation amplitude of an LFO.
+9.12.2
+Ports
+ 
+Input Ports
+▪
+(G) "G" (gate) is the Event input port for the Gate signal that triggers and releases the 
+envelope. The envelope is triggered with a positive valued Event (a Note On Event) and 
+released with a zero valued Event (a Note Off Event). The amplitude of the Gate signal 
+determines the maximum output value. The typical range of values at this input port is 
+[0 … 1].
+▪
+(A) "A" (attack) is the Event input port for controlling the attack time in the logarithmic 
+scale. This part of the curve is linear. A = 0 corresponds to 1 ms, A = 20 corresponds 
+to 10 ms, and A = 40 corresponds to 100 ms. The typical range for the values at this 
+input port is [0 … 80]. When disconnected, this input port receives the default value 
+"0" which corresponds to a transition time of 1 ms.
+▪
+(D) "D" (decay) is the logarithmic Event input port for controlling the decay time. This 
+part of the curve is exponential. D = 0 corresponds to 1 ms, D = 20 corresponds to 10 
+ms, and D = 40 corresponds to 100 ms. The typical range for the values at this input 
+port is [0 … 80]. When disconnected, this input port receives the default value "0" 
+which corresponds to a transition time of 1 ms.
+▪
+(R) "R" (release) is the logarithmic Event input port for controlling the release time. 
+This part of the curve is exponential and is adopted upon a zero valued Event at the "G" 
+(gate) input port (Gate Off Event). T = 0 corresponds to 1 ms, T = 20 corresponds to 
+10 ms, and T = 40 corresponds to 100 ms. The typical range for the values at this 
+input port is [0 … 80]. When disconnected, this input port receives the default value 
+"0" which corresponds to a transition time of 1 ms.
+Output Ports
+▪
+(Out) "Out" is the Audio output port for the envelope signal.
+LFO, Envelope
+ADR-Env
+ 
+REAKTOR 5.5 - Module Reference - 490
+
+
+--- Page 491 ---
+
+9.12.3
+Properties: View Page
+ 
+Making the Envelope Graph Visible on the Panel
+Envelopes have a Panel representation which graphically depicts the time evolution of the 
+envelope function. This can be a very useful component in your Instrument since you get 
+direct visual feedback on how the time and level parameters that you have set for your en­
+velope affect the overall envelope curve.
+► To turn on the graphic display of your envelope in the Instrument Panel, go to the Mod­
+ule's View page and engage the On checkbox, shown in the figure below.
+Changing the Size of the Envelope's Panel Representation
+Depending on the type of Envelope Module you are using, you might need a small or large 
+graph of the envelope curve on your Instrument Panel.
+► To change the width and height of the Envelope Module's Panel representation, go to 
+the Module's View page and enter the desired values into the Width and Height edit fields, as 
+shown in the figure below.
+9.12.4
+Example: Amplitude Envelope
+ 
+This example shows how to apply an ADR (attack-decay-release) envelope to an incoming 
+signal, such as an oscillator output signal. The corresponding Structure is shown in the 
+figure below. The signal to which the envelope is to be applied is incoming at the "In" in­
+put port. It is multiplied with the envelope output signal using a Multiply Module (↑4.5, 
+Multiply, X). A gate signal incoming at the "G" (gate) input port usually comes from a Gate 
+Module (↑2.3, Gate). Pressing a key on your MIDI keyboard then causes a Gate On signal 
+to be sent to the "G" input port, triggering the attack phase of the envelope. Releasing the 
+LFO, Envelope
+ADR-Env
+ 
+REAKTOR 5.5 - Module Reference - 491
+
+
+--- Page 492 ---
+
+key sends a Gate Off signal to the envelope, initiating the envelope's release curve (if not 
+already reached). Knob Modules at the "A" (attack time), "D" (decay time), and "R" (release 
+time) input ports let you set the envelope's parameters from the Instrument Panel.
+Fig. 9.35 A simple implementation of an attack-decay-release envelope.
+In the Rehearsal Ensemble you can get acquainted with the envelopes in REAKTOR. The 
+Ensemble consists of an easy to use interface to select and tweak your envelope of choice. 
+Since each envelope has its own set of controls for the signal levels and transition times, 
+Stacked Macro Modules (↑1.19, Stacked Macro) have been used to make only the relevant 
+controls appear when an envelope has been selected from the "Envelopes" list. Also, the On 
+checkbox in the View page has been engaged such that the graphic Panel representation 
+of the envelope is visible, as shown in the figure below.
+Fig. 9.36 The ADR Envelope's Panel representation and knobs for its curve parameters.
+9.13
+ADSR - Env
+ 
+Fig. 9.37 ADSR Module
+LFO, Envelope
+ADSR - Env
+ 
+REAKTOR 5.5 - Module Reference - 492
+
+
+--- Page 493 ---
+
+9.13.1
+Overview
+ 
+The ADSR Module is an envelope generator with an attack-decay-sustain-release charac­
+teristic. The envelope is triggered with a Gate On Event at the "G" (gate) input. This causes 
+the output value to rise with a linear slope over the course of the attack time (set at the "A" 
+(attack) input port) to the amplitude value of the Gate signal at the "G" (gate) input port. 
+After that amplitude value has been reached, the output signal decays to the sustain level 
+along an exponential slope according to the time parameter set at the "D" (decay) input 
+port. The sustain level is specified at the "S" (sustain) input port. The output value is then 
+held at the sustain level until a zero valued Event arrives at the "G" (gate) input port (Gate 
+Off Event). After that the output decays exponentially back to zero. For this last decay the 
+release time, set at the "R" (release) input port, is used.
+Application
+The ADSR Module is the bread and butter envelope that is used in most synths. Parame­
+ters which are commonly modulated by envelopes include oscillator or sampler amplitude, 
+filter cutoff and resonance, FM modulation index, and the modulation amplitude of an 
+LFO.
+9.13.2
+Ports
+ 
+Input Ports
+▪
+(G) "G" (gate) is the Event input port for the Gate signal that triggers and releases the 
+envelope. The envelope is triggered with a positive valued Event (a Note On Event) and 
+released with a zero valued Event (a Note Off Event). The amplitude of the Gate signal 
+determines the maximum output value. The typical range of values at this input port is 
+[0 … 1].
+▪
+(A) "A" (attack) is the Event input port for controlling the attack time in the logarithmic 
+scale. This part of the curve is linear. A = 0 corresponds to 1 ms, A = 20 corresponds 
+to 10 ms, and A = 40 corresponds to 100 ms. The typical range for the values at this 
+input port is [0 … 80]. When disconnected, this input port receives the default value 
+"0" which corresponds to a transition time of 1 ms.
+LFO, Envelope
+ADSR - Env
+ 
+REAKTOR 5.5 - Module Reference - 493
+
+
+--- Page 494 ---
+
+▪
+(D) "D" (decay) is the logarithmic Event input port for controlling the decay time. This 
+part of the curve is exponential. D = 0 corresponds to 1 ms, D = 20 corresponds to 10 
+ms, and D = 40 corresponds to 100 ms. The typical range for the values at this input 
+port is [0 … 80]. When disconnected, this input port receives the default value "0" 
+which corresponds to a transition time of 1 ms.
+▪
+(S) "S" (sustain) is the Event input port for controlling the sustain level. Typical values 
+at this input port are in the range [0 … 1]. However, values outside this range are al­
+lowed. S = 0 corresponds to a decay to zero whereas S = 1 corresponds to holding the 
+value at the end of the attack phase (no decay curve). When this input port is discon­
+nected, the default value, "0", is used.
+▪
+(R) "R" (release) is the logarithmic Event input port for controlling the release time. 
+This part of the curve is exponential and is adopted upon a zero valued Event at the "G" 
+(gate) input port (Gate Off Event). T = 0 corresponds to 1 ms, T = 20 corresponds to 
+10 ms, and T = 40 corresponds to 100 ms. The typical range for the values at this 
+input port is [0 … 80]. When disconnected, this input port receives the default value 
+"0" which corresponds to a transition time of 1 ms.
+Output Ports
+▪
+(Out) "Out" is the Audio output port for the envelope signal.
+9.13.3
+Properties: View Page
+ 
+Making the Envelope Graph Visible on the Panel
+Envelopes have a Panel representation which graphically depicts the time evolution of the 
+envelope function. This can be a very useful component in your Instrument since you get 
+direct visual feedback on how the time and level parameters that you have set for your en­
+velope affect the overall envelope curve.
+► To turn on the graphic display of your envelope in the Instrument Panel, go to the Mod­
+ule's View page and engage the On checkbox, shown in the figure below.
+LFO, Envelope
+ADSR - Env
+ 
+REAKTOR 5.5 - Module Reference - 494
+
+
+--- Page 495 ---
+
+Changing the Size of the Envelope's Panel Representation
+Depending on the type of Envelope Module you are using, you might need a small or large 
+graph of the envelope curve on your Instrument Panel.
+► To change the width and height of the Envelope Module's Panel representation, go to 
+the Module's View page and enter the desired values into the Width and Height edit fields, as 
+shown in the figure below.
+9.13.4
+Example: Amplitude Envelope
+ 
+This example shows how to apply an ADR (attack-decay-sustain-release) envelope to an in­
+coming signal, such as an oscillator output signal. The corresponding Structure is shown 
+in the figure below. The signal to which the envelope is to be applied is incoming at the 
+"In" input port. It is multiplied with the envelope output signal using a Multiply Module 
+(↑4.5, Multiply, X). A gate signal incoming at the "G" (gate) input port usually comes from 
+a Gate Module (↑2.3, Gate). Pressing a key on your MIDI keyboard then causes a Gate On 
+signal to be sent to the "G" input port, triggering the attack phase of the envelope. Releas­
+ing the key sends a Gate Off signal to the envelope, initiating the envelope's release curve. 
+Knob Modules at the "A" (attack time), "D" (decay time), "S" (sustain level), and "R" (re­
+lease time) input ports let you set the envelope's parameters from the Instrument Panel.
+Fig. 9.38 A simple implementation of an attack-decay-sustain-release envelope.
+In the Rehearsal Ensemble you can get acquainted with the envelopes in REAKTOR. The 
+Ensemble consists of an easy to use interface to select and tweak your envelope of choice. 
+Since each envelope has its own set of controls for the signal levels and transition times, 
+Stacked Macro Modules (↑1.19, Stacked Macro) have been used to make only the relevant 
+LFO, Envelope
+ADSR - Env
+ 
+REAKTOR 5.5 - Module Reference - 495
+
+
+--- Page 496 ---
+
+controls appear when an envelope has been selected from the "Envelopes" list. Also, the On 
+checkbox in the View page has been engaged such that the graphic Panel representation 
+of the envelope is visible, as shown in the figure below.
+Fig. 9.39 The ADSR Envelope's Panel representation and knobs for its curve parameters.
+9.14
+ADBDR - Env
+ 
+Fig. 9.40 ADBDR Module
+9.14.1
+Overview
+ 
+The ADBDR Module is an envelope generator with an attack-decay-breakpoint-decay-re­
+lease characteristic. The envelope is triggered with a Gate On Event at the "G" (gate) input. 
+This causes the output value to rise with a linear slope over the course of the attack time 
+(set at the "A" (attack) input port) to the amplitude value of the Gate signal (at the "G" in­
+put port. Then the output value then decays linearly over the course of the time set at the 
+"D1" (decay 1) input port until it reaches the breakpoint level (multiplied by the amplitude 
+received from the Gate signal). Next it continues decaying exponentially with the time pa­
+rameter set at the "D2" (decay 2) input port back to zero. A gate Event with amplitude zero 
+(a Note Off Event) causes the envelope to exponentially decay to zero. However, here the 
+time parameter at the "R" (release) input port is used. The "R" (release) value is normally 
+set to be shorter than the "D2" (decay 2) value.
+LFO, Envelope
+ADBDR - Env
+ 
+REAKTOR 5.5 - Module Reference - 496
+
+
+--- Page 497 ---
+
+Application
+The ADBDR Module should be applied when a complex and eventually fading envelope 
+curve is required. Parameters which are commonly modulated by envelopes include oscil­
+lator or sampler amplitude, filter cutoff and resonance, FM modulation index, and the 
+modulation amplitude of an LFO.
+9.14.2
+Ports
+ 
+Input Ports
+▪
+(G) "G" (gate) is the Event input port for the Gate signal that triggers and releases the 
+envelope. The envelope is triggered with a positive valued Event (a Note On Event) and 
+released with a zero valued Event (a Note Off Event). The amplitude of the Gate signal 
+determines the maximum output value. The typical range of values at this input port is 
+[0 … 1].
+▪
+(A) "A" (attack) is the Event input port for controlling the attack time in the logarithmic 
+scale. This part of the curve is linear. A = 0 corresponds to 1 ms, A = 20 corresponds 
+to 10 ms, and A = 40 corresponds to 100 ms. The typical range for the values at this 
+input port is [0 … 80]. When disconnected, this input port receives the default value 
+"0" which corresponds to a transition time of 1 ms.
+▪
+(D1) "D1" (decay 1) is the logarithmic Event input port for controlling the first decay 
+time. This part of the curve is linear. D1 = 0 corresponds to 1 ms, D1 = 20 corre­
+sponds to 10 ms, and D1 = 40 corresponds to 100 ms. The typical range for the val­
+ues at this input port is [0 … 80]. When disconnected, this input port receives the de­
+fault value "0" which corresponds to a transition time of 1 ms.• B: Event input for con­
+trolling the breakpoint level. Range of values: 0 (never use decay-2 time) to 1 (immedi­
+ately use decay-2 time).
+▪
+(D2) "D2" (decay 2) is the logarithmic Event input port for controlling the second decay 
+time. This part of the curve is exponential. D2 = 0 corresponds to 1 ms, D2 = 20 cor­
+responds to 10 ms, and D2 = 40 corresponds to 100 ms. The typical range for the val­
+ues at this input port is [0 … 80]. When disconnected, this input port receives the de­
+fault value "0" which corresponds to a transition time of 1 ms.
+▪
+(R) "R" (release) is the logarithmic Event input port for controlling the release time. 
+This part of the curve is exponential and is adopted upon a zero valued Event at the "G" 
+(gate) input port (Gate Off Event). T = 0 corresponds to 1 ms, T = 20 corresponds to 
+LFO, Envelope
+ADBDR - Env
+ 
+REAKTOR 5.5 - Module Reference - 497
+
+
+--- Page 498 ---
+
+10 ms, and T = 40 corresponds to 100 ms. The typical range for the values at this 
+input port is [0 … 80]. When disconnected, this input port receives the default value 
+"0" which corresponds to a transition time of 1 ms.
+Output Ports
+▪
+(Out) "Out" is the Audio output port for the envelope signal.
+9.14.3
+Properties: View Page
+ 
+Making the Envelope Graph Visible on the Panel
+Envelopes have a Panel representation which graphically depicts the time evolution of the 
+envelope function. This can be a very useful component in your Instrument since you get 
+direct visual feedback on how the time and level parameters that you have set for your en­
+velope affect the overall envelope curve.
+► To turn on the graphic display of your envelope in the Instrument Panel, go to the Mod­
+ule's View page and engage the On checkbox, shown in the figure below.
+Changing the Size of the Envelope's Panel Representation
+Depending on the type of Envelope Module you are using, you might need a small or large 
+graph of the envelope curve on your Instrument Panel.
+► To change the width and height of the Envelope Module's Panel representation, go to 
+the Module's View page and enter the desired values into the Width and Height edit fields, as 
+shown in the figure below.
+LFO, Envelope
+ADBDR - Env
+ 
+REAKTOR 5.5 - Module Reference - 498
+
+
+--- Page 499 ---
+
+9.14.4
+Example: Amplitude Envelope
+ 
+This example shows how to apply an ADBDR (attack-decay-breakpoint-decay-release) en­
+velope to an incoming signal, such as an oscillator output signal. The corresponding Struc­
+ture is shown in the figure below. The signal to which the envelope is to be applied is in­
+coming at the "In" input port. It is multiplied with the envelope output signal using a Mul­
+tiply Module (↑4.5, Multiply, X). A gate signal incoming at the "G" (gate) input port usually 
+comes from a Gate Module (↑2.3, Gate). Pressing a key on your MIDI keyboard then caus­
+es a Gate On signal to be sent to the "G" input port, triggering the attack phase of the en­
+velope. Releasing the key sends a Gate Off signal to the envelope, initiating the envelope's 
+release curve (if not already reached). Knob Modules at the "A" (attack time), "D1" (first 
+decay time), "B" (breakpoint level), "D2" (second decay time), and "R" (release time) input 
+ports let you set the envelope's parameters from the Instrument Panel.
+Fig. 9.41 A simple implementation of an attack-decay-breakpoint-decay-release envelope.
+In the Rehearsal Ensemble you can get acquainted with the envelopes in REAKTOR. The 
+Ensemble consists of an easy to use interface to select and tweak your envelope of choice. 
+Since each envelope has its own set of controls for the signal levels and transition times, 
+Stacked Macro Modules (↑1.19, Stacked Macro) have been used to make only the relevant 
+controls appear when an envelope has been selected from the "Envelopes" list. Also, the On 
+checkbox in the View page has been engaged such that the graphic Panel representation 
+of the envelope is visible, as shown in the figure below.
+LFO, Envelope
+ADBDR - Env
+ 
+REAKTOR 5.5 - Module Reference - 499
+
+
+--- Page 500 ---
+
+Fig. 9.42 The ADBDR Envelope's Panel representation and knobs for its curve parameters.
+9.15
+ADBDSR-Env
+ 
+Fig. 9.43 ADBDSR Module
+9.15.1
+Overview
+ 
+The ADBDSR Module is an envelope generator with an attack-hold-decay-sustain-release 
+characteristic. The envelope is triggered with a Gate On Event at the "G" (gate) input. This 
+causes the output value to rise with a linear slope over the course of the attack time (set at 
+the "A" (attack) input port) to the amplitude value of the Gate signal at the "G" (gate) input 
+port. After that amplitude value has been reached, the output signal decays to the break­
+point level (specified at the "B" input port) along a linear ramp with the decay time speci­
+fied at the "D1" (decay 2) input port. Then the envelope signal decays to the sustain level 
+along an exponential slope according to the time parameter set at the "D2" (decay 2) input 
+port. The sustain level is specified at the "S" (sustain) input port. The output value is then 
+held at the sustain level until a zero valued Event arrives at the "G" (gate) input port (Gate 
+Off Event). After that the output decays exponentially back to zero. For this last decay the 
+release time, set at the "R" (release) input port, is used.
+LFO, Envelope
+ADBDSR-Env
+ 
+REAKTOR 5.5 - Module Reference - 500
+
+
+--- Page 501 ---
+
+Application
+The ADBDSR Module should be applied when a more complex sustained envelope curve is 
+required. Parameters which are commonly modulated by envelopes include oscillator or 
+sampler amplitude, filter cutoff and resonance, FM modulation index, and the modulation 
+amplitude of an LFO.
+9.15.2
+Ports
+ 
+Input Ports
+▪
+(G) "G" (gate) is the Event input port for the Gate signal that triggers and releases the 
+envelope. The envelope is triggered with a positive valued Event (a Note On Event) and 
+released with a zero valued Event (a Note Off Event). The amplitude of the Gate signal 
+determines the maximum output value. The typical range of values at this input port is 
+[0 … 1].
+▪
+(A) "A" (attack) is the Event input port for controlling the attack time in the logarithmic 
+scale. This part of the curve is linear. A = 0 corresponds to 1 ms, A = 20 corresponds 
+to 10 ms, and A = 40 corresponds to 100 ms. The typical range for the values at this 
+input port is [0 … 80]. When disconnected, this input port receives the default value 
+"0" which corresponds to a transition time of 1 ms.
+▪
+(D1) "D1" (decay 1) is the logarithmic Event input port for controlling the first decay 
+time. This part of the curve is linear. D1 = 0 corresponds to 1 ms, D1 = 20 corre­
+sponds to 10 ms, and D1 = 40 corresponds to 100 ms. The typical range for the val­
+ues at this input port is [0 … 80]. When disconnected, this input port receives the de­
+fault value "0" which corresponds to a transition time of 1 ms.
+▪
+(B) "B" (breakpoint) is the Event input port for controlling the breakpoint level. The 
+range for the values at this input port is [0 … 1]. However, values outside this range 
+are allowed. When disconnected, the default value that is used for this input port is 
+"0".
+▪
+(D2) "D2" (decay 2) is the logarithmic Event input port for controlling the second decay 
+time. This part of the curve is exponential. D2 = 0 corresponds to 1 ms, D2 = 20 cor­
+responds to 10 ms, and D2 = 40 corresponds to 100 ms. The typical range for the val­
+ues at this input port is [0 … 80]. When disconnected, this input port receives the de­
+fault value "0" which corresponds to a transition time of 1 ms.
+LFO, Envelope
+ADBDSR-Env
+ 
+REAKTOR 5.5 - Module Reference - 501
+
+
+--- Page 502 ---
+
+▪
+(S) "S" (sustain) is the Event input port for controlling the sustain level. Typical values 
+at this input port are in the range [0 … 1]. However, values outside this range are al­
+lowed. When this input port is disconnected, the default value, "0", is used.
+▪
+(R) "R" (release) is the logarithmic Event input port for controlling the release time. 
+This part of the curve is exponential and is adopted upon a zero valued Event at the "G" 
+(gate) input port (Gate Off Event). T = 0 corresponds to 1 ms, T = 20 corresponds to 
+10 ms, and T = 40 corresponds to 100 ms. The typical range for the values at this 
+input port is [0 … 80]. When disconnected, this input port receives the default value 
+"0" which corresponds to a transition time of 1 ms.
+Output Ports
+▪
+(Out) Audio output for the envelope signal.
+9.15.3
+Properties: View Page
+ 
+Making the Envelope Graph Visible on the Panel
+Envelopes have a Panel representation which graphically depicts the time evolution of the 
+envelope function. This can be a very useful component in your Instrument since you get 
+direct visual feedback on how the time and level parameters that you have set for your en­
+velope affect the overall envelope curve.
+► To turn on the graphic display of your envelope in the Instrument Panel, go to the Mod­
+ule's View page and engage the On checkbox, shown in the figure below.
+Changing the Size of the Envelope's Panel Representation
+Depending on the type of Envelope Module you are using, you might need a small or large 
+graph of the envelope curve on your Instrument Panel.
+LFO, Envelope
+ADBDSR-Env
+ 
+REAKTOR 5.5 - Module Reference - 502
+
+
+--- Page 503 ---
+
+► To change the width and height of the Envelope Module's Panel representation, go to 
+the Module's View page and enter the desired values into the Width and Height edit fields, as 
+shown in the figure below.
+9.15.4
+Example: Amplitude Envelope
+ 
+This example shows how to apply an ADBDSR (attack-decay-breakpoint-decay-sustain-re­
+lease) envelope to an incoming signal, such as an oscillator output signal. The correspond­
+ing Structure is shown in the figure below. The signal to which the envelope is to be ap­
+plied is incoming at the "In" input port. It is multiplied with the envelope output signal 
+using a Multiply Module (↑4.5, Multiply, X). A gate signal incoming at the "G" (gate) input 
+port usually comes from a Gate Module (↑2.3, Gate). Pressing a key on your MIDI key­
+board then causes a Gate On signal to be sent to the "G" input port, triggering the attack 
+phase of the envelope. Releasing the key sends a Gate Off signal to the envelope, initiat­
+ing the envelope's release. Knob Modules at the "A" (attack time), "D1" (first decay time), 
+"B" (breakpoint level), "D2" (second decay time), "S" (sustain level), and "R" (release time) 
+input ports let you set the envelope's parameters from the Instrument Panel.
+Fig. 9.44 A simple implementation of an attack-decay-breakpoint-decay-sustain-release envelope.
+In the Rehearsal Ensemble you can get acquainted with the envelopes in REAKTOR. The 
+Ensemble consists of an easy to use interface to select and tweak your envelope of choice. 
+Since each envelope has its own set of controls for the signal levels and transition times, 
+Stacked Macro Modules (↑1.19, Stacked Macro) have been used to make only the relevant 
+controls appear when an envelope has been selected from the "Envelopes" list. Also, the On 
+checkbox in the View page has been engaged such that the graphic Panel representation 
+of the envelope is visible, as shown in the figure below.
+LFO, Envelope
+ADBDSR-Env
+ 
+REAKTOR 5.5 - Module Reference - 503
+
+
+--- Page 504 ---
+
+Fig. 9.45 The ADBDSR Envelope's Panel representation and knobs for its curve parameters.
+9.16
+AHDSR - Env
+ 
+Fig. 9.46 AHDSR Module
+9.16.1
+Overview
+ 
+The AHDSR Module is an envelope generator with an attack-hold-decay-sustain-release 
+characteristic. The envelope is triggered with a Gate On Event at the "G" (gate) input. This 
+causes the output value to rise with a linear slope over the course of the attack time (set at 
+the "A" (attack) input port) to the amplitude value of the Gate signal at the "G" (gate) input 
+port. After that amplitude value has been reached, the output signal stays there until the 
+hold time (set at the "H" (hold) input port) has passed. Then it decays to the sustain level 
+with a linear slope according to the time parameter set at the "D" (decay) input port. The 
+sustain level is specified at the "S" (sustain) input port. The output value is then held at 
+the sustain level until a zero valued Event arrives at the "G" (gate) input port (Gate Off 
+Event). After that the output decays exponentially back to zero. For this last decay the re­
+lease time, set at the "R" (release) input port, is used.
+Application
+The AHDSR Module should be applied when a more complex envelope curve with hold and 
+sustain is required. Parameters which are commonly modulated by envelopes include os­
+cillator or sampler amplitude, filter cutoff and resonance, FM modulation index, and the 
+modulation amplitude of an LFO.
+LFO, Envelope
+AHDSR - Env
+ 
+REAKTOR 5.5 - Module Reference - 504
+
+
+--- Page 505 ---
+
+9.16.2
+Ports
+ 
+Input Ports
+▪
+(G) "G" (gate) is the Event input port for the Gate signal that triggers and releases the 
+envelope. The envelope is triggered with a positive valued Event (a Note On Event) and 
+released with a zero valued Event (a Note Off Event). The amplitude of the Gate signal 
+determines the maximum output value. The typical range of values at this input port is 
+[0 … 1].
+▪
+(A) "A" (attack) is the Event input port for controlling the attack time in the logarithmic 
+scale. This part of the curve is linear. A = 0 corresponds to 1 ms, A = 20 corresponds 
+to 10 ms, and A = 40 corresponds to 100 ms. The typical range for the values at this 
+input port is [0 … 80]. When disconnected, this input port receives the default value 
+"0" which corresponds to a transition time of 1 ms.
+▪
+(H) "H" (hold) is the logarithmic Event input port for controlling the hold time. H = 0 
+corresponds to 1 ms, H = 20 corresponds to 10 ms, and H = 40 corresponds to 100 
+ms. The typical range for the values at this input port is [0 … 80]. When disconnected, 
+this input port receives the default value "0" which corresponds to a transition time of 
+1 ms.
+▪
+(D) "D" (decay) is the logarithmic Event input port for controlling the decay time. This 
+part of the curve is exponential. D = 0 corresponds to 1 ms, D = 20 corresponds to 10 
+ms, and D = 40 corresponds to 100 ms. The typical range for the values at this input 
+port is [0 … 80]. When disconnected, this input port receives the default value "0" 
+which corresponds to a transition time of 1 ms.
+▪
+(S) "S" (sustain) is the Event input port for controlling the sustain level. Typical values 
+at this input port are in the range [0 … 1]. However, values outside this range are al­
+lowed. S = 0 corresponds to a decay to zero whereas S = 1 corresponds to holding the 
+value at the end of the attack phase (no decay curve). When this input port is discon­
+nected, the default value, "0", is used.
+▪
+(R) "R" (release) is the logarithmic Event input port for controlling the release time. 
+This part of the curve is exponential and is adopted upon a zero valued Event at the "G" 
+(gate) input port (Gate Off Event). T = 0 corresponds to 1 ms, T = 20 corresponds to 
+10 ms, and T = 40 corresponds to 100 ms. The typical range for the values at this 
+input port is [0 … 80]. When disconnected, this input port receives the default value 
+"0" which corresponds to a transition time of 1 ms.
+LFO, Envelope
+AHDSR - Env
+ 
+REAKTOR 5.5 - Module Reference - 505
+
+
+--- Page 506 ---
+
+Output Ports
+▪
+(Out) "Out" is the Audio output port for the envelope signal.
+9.16.3
+Properties: View Page
+ 
+Making the Envelope Graph Visible on the Panel
+Envelopes have a Panel representation which graphically depicts the time evolution of the 
+envelope function. This can be a very useful component in your Instrument since you get 
+direct visual feedback on how the time and level parameters that you have set for your en­
+velope affect the overall envelope curve.
+► To turn on the graphic display of your envelope in the Instrument Panel, go to the Mod­
+ule's View page and engage the On checkbox, shown in the figure below.
+Changing the Size of the Envelope's Panel Representation
+Depending on the type of Envelope Module you are using, you might need a small or large 
+graph of the envelope curve on your Instrument Panel.
+► To change the width and height of the Envelope Module's Panel representation, go to 
+the Module's View page and enter the desired values into the Width and Height edit fields, as 
+shown in the figure below.
+9.16.4
+Example: Amplitude Envelope
+ 
+This example shows how to apply an AHDSR (attack-hold-decay-sustain-release) envelope 
+to an incoming signal, such as an oscillator output signal. The corresponding Structure is 
+shown in the figure below. The signal to which the envelope is to be applied is incoming at 
+the "In" input port. It is multiplied with the envelope output signal using a Multiply Mod­
+ule (↑4.5, Multiply, X). A gate signal incoming at the "G" (gate) input port usually comes 
+from a Gate Module (↑2.3, Gate). Pressing a key on your MIDI keyboard then causes a 
+LFO, Envelope
+AHDSR - Env
+ 
+REAKTOR 5.5 - Module Reference - 506
+
+
+--- Page 507 ---
+
+Gate On signal to be sent to the "G" input port, triggering the attack phase of the envelope. 
+Releasing the key sends a Gate Off signal to the envelope, initiating the envelope's re­
+lease. Knob Modules at the "A" (attack time), "H" (hold time), "D" (decay time), "S" (sus­
+tain level), and "R" (release time) input ports let you set the envelope's parameters from 
+the Instrument Panel.
+Fig. 9.47 A simple implementation of an attack-hold-decay-sustain-release envelope.
+In the Rehearsal Ensemble you can get acquainted with the envelopes in REAKTOR. The 
+Ensemble consists of an easy to use interface to select and tweak your envelope of choice. 
+Since each envelope has its own set of controls for the signal levels and transition times, 
+Stacked Macro Modules (↑1.19, Stacked Macro) have been used to make only the relevant 
+controls appear when an envelope has been selected from the "Envelopes" list. Also, the On 
+checkbox in the View page has been engaged such that the graphic Panel representation 
+of the envelope is visible, as shown in the figure below.
+Fig. 9.48 The AHDSR Envelope's Panel representation and knobs for its curve parameters.
+LFO, Envelope
+AHDSR - Env
+ 
+REAKTOR 5.5 - Module Reference - 507
+
+
+--- Page 508 ---
+
+9.17
+AHDBDR - Env
+ 
+Fig. 9.49 AHDBDR Module
+9.17.1
+Overview
+ 
+The AHDBDR Module is an envelope generator with attack-hold-decay-breakpoint-decay-
+release characteristic. The envelope is triggered with a Gate On Event at the "G" (gate) in­
+put. This causes the output value to rise with a linear slope over the course of the attack 
+time (set at the "A" (attack) input port) to the amplitude value of the Gate signal (at the 
+"G" input port) and to stay there until the hold time (set at the "H" (hold) input port) has 
+passed. Then the output value decays linearly over the course of the time set at the "D1" 
+(decay 1) input port until it reaches the breakpoint level (multiplied by the amplitude re­
+ceived from the Gate signal). Next it continues decaying exponentially with the time pa­
+rameter set at the "D2" (decay 2) input port back to zero. A gate Event with amplitude zero 
+(a Note Off Event) causes the envelope to exponentially decay to zero. However, here the 
+time parameter at the "R" (release) input port is used. The "R" (release) value is normally 
+set to be shorter than the "D2" (decay 2) value.
+Application
+The AHDBDR Module should be applied when a more complex and eventually fading enve­
+lope curve is required. Parameters which are commonly modulated by envelopes include 
+oscillator or sampler amplitude, filter cutoff and resonance, FM modulation index, and the 
+modulation amplitude of an LFO.
+LFO, Envelope
+AHDBDR - Env
+ 
+REAKTOR 5.5 - Module Reference - 508
+
+
+--- Page 509 ---
+
+9.17.2
+Ports
+ 
+Input Ports
+▪
+(G) "G" (gate) is the Event input port for the Gate signal that triggers and releases the 
+envelope. The envelope is triggered with a positive valued Event (a Note On Event) and 
+released with a zero valued Event (a Note Off Event). The amplitude of the Gate signal 
+determines the maximum output value. The typical range of values at this input port is 
+[0 … 1].
+▪
+(A) "A" (attack) is the Event input port for controlling the attack time in the logarithmic 
+scale. This part of the curve is linear. A = 0 corresponds to 1 ms, A = 20 corresponds 
+to 10 ms, and A = 40 corresponds to 100 ms. The typical range for the values at this 
+input port is [0 … 80]. When disconnected, this input port receives the default value 
+"0" which corresponds to a transition time of 1 ms.
+▪
+(H) "H" (hold) is the logarithmic Event input port for controlling the hold time. H = 0 
+corresponds to 1 ms, H = 20 corresponds to 10 ms, and H = 40 corresponds to 100 
+ms. The typical range for the values at this input port is [0 … 80]. When disconnected, 
+this input port receives the default value "0" which corresponds to a transition time of 
+1 ms.
+▪
+(D1) "D1" (decay 1) is the logarithmic Event input port for controlling the first decay 
+time. This part of the curve is linear. D1 = 0 corresponds to 1 ms, D1 = 20 corre­
+sponds to 10 ms, and D1 = 40 corresponds to 100 ms. The typical range for the val­
+ues at this input port is [0 … 80]. When disconnected, this input port receives the de­
+fault value "0" which corresponds to a transition time of 1 ms.
+▪
+(B) "B" (breakpoint) is the Event input port for controlling the breakpoint level. The 
+range for the values at this input port is [0 … 1]. However, values outside this range 
+are allowed. When disconnected, the default value that is used for this input port is 
+"0".
+▪
+(D2) "D2" (decay 2) is the logarithmic Event input port for controlling the second decay 
+time. This part of the curve is exponential. D2 = 0 corresponds to 1 ms, D2 = 20 cor­
+responds to 10 ms, and D2 = 40 corresponds to 100 ms. The typical range for the val­
+ues at this input port is [0 … 80]. When disconnected, this input port receives the de­
+fault value "0" which corresponds to a transition time of 1 ms.
+LFO, Envelope
+AHDBDR - Env
+ 
+REAKTOR 5.5 - Module Reference - 509
+
+
+--- Page 510 ---
+
+▪
+(R) "R" (release) is the logarithmic Event input port for controlling the release time. 
+This part of the curve is exponential and is adopted upon a zero valued Event at the "G" 
+(gate) input port (Gate Off Event). T = 0 corresponds to 1 ms, T = 20 corresponds to 
+10 ms, and T = 40 corresponds to 100 ms. The typical range for the values at this 
+input port is [0 … 80]. When disconnected, this input port receives the default value 
+"0" which corresponds to a transition time of 1 ms.
+Output Ports
+▪
+(Out) "Out" is the Audio output port for the envelope signal.
+9.17.3
+Properties: View Page
+ 
+Making the Envelope Graph Visible on the Panel
+Envelopes have a Panel representation which graphically depicts the time evolution of the 
+envelope function. This can be a very useful component in your Instrument since you get 
+direct visual feedback on how the time and level parameters that you have set for your en­
+velope affect the overall envelope curve.
+► To turn on the graphic display of your envelope in the Instrument Panel, go to the Mod­
+ule's View page and engage the On checkbox, shown in the figure below.
+Changing the Size of the Envelope's Panel Representation
+Depending on the type of Envelope Module you are using, you might need a small or large 
+graph of the envelope curve on your Instrument Panel.
+► To change the width and height of the Envelope Module's Panel representation, go to 
+the Module's View page and enter the desired values into the Width and Height edit fields, as 
+shown in the figure below.
+LFO, Envelope
+AHDBDR - Env
+ 
+REAKTOR 5.5 - Module Reference - 510
+
+
+--- Page 511 ---
+
+9.17.4
+Example: Amplitude Envelope
+ 
+This example shows how to apply an AHDBDR (attack-decay-breakpoint-decay-release) en­
+velope to an incoming signal, such as an oscillator output signal. The corresponding Struc­
+ture is shown in the figure below. The signal to which the envelope is to be applied is in­
+coming at the "In" input port. It is multiplied with the envelope output signal using a Mul­
+tiply Module (↑4.5, Multiply, X). A gate signal incoming at the "G" (gate) input port usually 
+comes from a Gate Module (↑2.3, Gate). Pressing a key on your MIDI keyboard then caus­
+es a Gate On signal to be sent to the "G" input port, triggering the attack phase of the en­
+velope. Releasing the key sends a Gate Off signal to the envelope, initiating the envelope's 
+release curve (if not already reached). Knob Modules at the "A" (attack time), "H" (hold), 
+"D1" (first decay time), "B" (breakpoint level), "D2" (second decay time), and "R" (release 
+time) input ports let you set the envelope's parameters from the Instrument Panel.
+Fig. 9.50 A simple implementation of an attack-hold-decay-breakpoint-decay-release envelope.
+In the Rehearsal Ensemble you can get acquainted with the envelopes in REAKTOR. The 
+Ensemble consists of an easy to use interface to select and tweak your envelope of choice. 
+Since each envelope has its own set of controls for the signal levels and transition times, 
+Stacked Macro Modules (↑1.19, Stacked Macro) have been used to make only the relevant 
+controls appear when an envelope has been selected from the "Envelopes" list. Also, the On 
+checkbox in the View page has been engaged such that the graphic Panel representation 
+of the envelope is visible, as shown in the figure below.
+Fig. 9.51 The AHDBDR Envelope's Panel representation and knobs for its curve parameters.
+LFO, Envelope
+AHDBDR - Env
+ 
+REAKTOR 5.5 - Module Reference - 511
+
+
+--- Page 512 ---
+
+9.18
+4-Ramp
+ 
+Fig. 9.52 4-Ramp Module
+9.18.1
+Overview
+ 
+The 4-Ramp Module is a 4-stage envelope generator with linear slopes. The envelope is 
+triggered with a Gate On Event at the "G" (gate) input. This causes the output value to rise 
+to the first level, set at the "L1" (level 1) input port, which is reached within the time set 
+for the first stage, set at the "T2" (time 2) input port. Then it the second level ("L2") is 
+reached within the time set at the "T2" (time 2) input port for the second stage, and so on. 
+The third level is the sustain level and is set at the "LS" (sustain level) input port. The en­
+velope output is then held at that level until a Gate Off Event (an Event with value "0") 
+arrives at the "G" (gate) input port. After that the envelope output returns to zero within the 
+release time period, set at the "TR" (release time) input port.
+Application
+The 4-Ramp Module is useful for more complex modulations which are best defined by 
+breakpoints connected by ramps. Parameters which are commonly modulated by enve­
+lopes include oscillator or sampler amplitude, filter cutoff and resonance, FM modulation 
+index, and the modulation amplitude of an LFO.
+9.18.2
+Ports
+ 
+Input Ports
+▪
+(G) "G" (gate) is the Event input port for the Gate signal that triggers the envelope. The 
+amplitude of the Gate signal combines with all the level values at the "L1", "L2", and 
+"LS" input ports to determine the actual envelope levels reached.
+LFO, Envelope
+4-Ramp
+ 
+REAKTOR 5.5 - Module Reference - 512
+
+
+--- Page 513 ---
+
+▪
+(T1) "T1" (time 1) is the Event input port for controlling the time parameter for the first 
+stage in the logarithmic scale. T1 = 0 corresponds to 1 ms, T1 = 20 corresponds to 10 
+ms, and T1 = 40 corresponds to 100 ms. The typical range for the values at this input 
+port is [0 … 80]. When disconnected, this input port receives the default value "0" 
+which corresponds to a transition time of 1 ms.
+▪
+(L1) "L1" (level1) is the Event input port for controlling the level which is reached at 
+the end of the first stage. The typical range for the values at this input port is [-1 … 
+1]. When disconnected, this port receives the default value "0".
+▪
+(T2) "T2" (time 2) is the Event input port for controlling the time parameter for the sec­
+ond stage in the logarithmic scale. T2 = 0 corresponds to 1 ms, T2 = 20 corresponds 
+to 10 ms, and T2 = 40 corresponds to 100 ms. The typical range for the values at this 
+input port is [0 … 80]. When disconnected, this input port receives the default value 
+"0" which corresponds to a transition time of 1 ms.
+▪
+(L2) "L2" (level 2) is the Event input port for controlling the level which is reached at 
+the end of the second stage. The typical range for the values at this input port is [-1 … 
+1]. When disconnected, this port receives the default value "0".
+▪
+(T3) "T3" (time 3) is the Event input port for controlling the time parameter for the 
+third stage in the logarithmic scale. T3 = 0 corresponds to 1 ms, T3 = 20 corresponds 
+to 10 ms, and T3 = 40 corresponds to 100 ms. The typical range for the values at this 
+input port is [0 … 80]. When disconnected, this input port receives the default value 
+"0" which corresponds to a transition time of 1 ms.
+▪
+(LS) "LS" (sustain level) is the Event input port for controlling the level which is 
+reached at the end of the third stage. This is the sustain level. The typical range for the 
+values at this input port is [-1 … 1]. When disconnected, this port receives the default 
+value "0".
+▪
+(TR) "TR" (release time) is the Event input port for controlling the time parameter for 
+the release in the logarithmic scale. TR = 0 corresponds to 1 ms, TR = 20 corresponds 
+to 10 ms, and TR = 40 corresponds to 100 ms. The typical range for the values at this 
+input port is [0 … 80]. When disconnected, this input port receives the default value 
+"0" which corresponds to a transition time of 1 ms.
+Please refer to section 9.4 in the Application Reference for more information on the logarith­
+mic scales in REAKTOR.
+LFO, Envelope
+4-Ramp
+ 
+REAKTOR 5.5 - Module Reference - 513
+
+
+--- Page 514 ---
+
+Output Ports
+▪
+(St) "St" (stage) is the Event output port delivering the envelope’s current stage (1, 
+2 ...). After the end of the release stage and before a new trigger the value is "0". With 
+appropriate processing this value in can be used to chain other envelopes, or for the 
+envelope to retrigger itself.
+▪
+(Out) "Out" is the Audio output port for the envelope signal.
+9.18.3
+Properties: View Page
+ 
+Making the Envelope Graph Visible on the Panel
+Envelopes have a Panel representation which graphically depicts the time evolution of the 
+envelope function. This can be a very useful component in your Instrument since you get 
+direct visual feedback on how the time and level parameters that you have set for your en­
+velope affect the overall envelope curve.
+► To turn on the graphic display of your envelope in the Instrument Panel, go to the Mod­
+ule's View page and engage the On checkbox, shown in the figure below.
+Changing the Size of the Envelope's Panel Representation
+Depending on the type of Envelope Module you are using, you might need a small or large 
+graph of the envelope curve on your Instrument Panel.
+► To change the width and height of the Envelope Module's Panel representation, go to 
+the Module's View page and enter the desired values into the Width and Height edit fields, as 
+shown in the figure below.
+LFO, Envelope
+4-Ramp
+ 
+REAKTOR 5.5 - Module Reference - 514
+
+
+--- Page 515 ---
+
+9.18.4
+Example: Amplitude Envelope
+ 
+This example shows how to apply a 4-ramp envelope to an incoming signal, such as an 
+oscillator output signal. The corresponding Structure is shown in the figure below. The sig­
+nal to which the envelope is to be applied is incoming at the "In" input port. It is multi­
+plied with the envelope output signal using a Multiply Module (↑4.5, Multiply, X). A gate 
+signal incoming at the "G" (gate) input port usually comes from a Gate Module (↑2.3, 
+Gate). Pressing a key on your MIDI keyboard then causes a Gate On signal to be sent to 
+the "G" input port, triggering the attack phase of the envelope. Releasing the key sends a 
+Gate Off signal to the envelope, initiating the envelope's release curve. Knob Modules at 
+the "T1" (first transition time), "L1" (first breakpoint level), "T2" (second transition time), 
+"L2" (second breakpoint level), "T3" (third transition time), "LS" (sustain level), and "TR" 
+(release time) input ports let you set the envelope's parameters from the Instrument Panel.
+Fig. 9.53 A simple implementation of a 4-ramp envelope.
+In the Rehearsal Ensemble you can get acquainted with the envelopes in REAKTOR. The 
+Ensemble consists of an easy to use interface to select and tweak your envelope of choice. 
+Since each envelope has its own set of controls for the signal levels and transition times, 
+Stacked Macro Modules (↑1.19, Stacked Macro) have been used to make only the relevant 
+controls appear when an envelope has been selected from the "Envelopes" list. Also, the On 
+checkbox in the View page has been engaged such that the graphic Panel representation 
+of the envelope is visible, as shown in the figure below.
+LFO, Envelope
+4-Ramp
+ 
+REAKTOR 5.5 - Module Reference - 515
+
+
+--- Page 516 ---
+
+Fig. 9.54 The 4-Ramp Envelope Module's Panel representation and knobs for its curve parameters.
+9.19
+5-Ramp
+ 
+Fig. 9.55 5-Ramp Module
+9.19.1
+Overview
+ 
+The 5-Ramp Module is a 5-stage envelope generator with linear slopes. The envelope is 
+triggered with a Gate On Event at the "G" (gate) input. This causes the output value to rise 
+to the first level, set at the "L1" (level 1) input port, which is reached within the time set 
+for the first stage, set at the "T2" (time 2) input port. Then it the second level ("L2") is 
+reached within the time set at the "T2" (time 2) input port for the second stage, and so on. 
+The fourth level is the sustain level and is set at the "LS" (sustain level) input port. The 
+envelope output is then held at that level until a Gate Off Event (an Event with value "0") 
+arrives at the "G" (gate) input port. After that the envelope output returns to zero within the 
+release time period, set at the "TR" (release time) input port.
+LFO, Envelope
+5-Ramp
+ 
+REAKTOR 5.5 - Module Reference - 516
+
+
+--- Page 517 ---
+
+Application
+The 5-Ramp Module is useful for more complex modulations which are best defined by 
+breakpoints connected by ramps. Parameters which are commonly modulated by enve­
+lopes include oscillator or sampler amplitude, filter cutoff and resonance, FM modulation 
+index, and the modulation amplitude of an LFO.
+9.19.2
+Ports
+ 
+Input Ports
+▪
+(G) "G" (gate) is the Event input port for the Gate signal that triggers the envelope. The 
+amplitude of the Gate signal combines with all the level values at the "L1", "L2", "L3", 
+and "LS" input ports to determine the actual envelope levels reached.
+▪
+(T1) "T1" (time 1) is the Event input port for controlling the time parameter for the first 
+stage in the logarithmic scale. T1 = 0 corresponds to 1 ms, T1 = 20 corresponds to 10 
+ms, and T1 = 40 corresponds to 100 ms. The typical range for the values at this input 
+port is [0 … 80]. When disconnected, this input port receives the default value "0" 
+which corresponds to a transition time of 1 ms.
+▪
+(L1) "L1" (level1) is the Event input port for controlling the level which is reached at 
+the end of the first stage. The typical range for the values at this input port is [-1 … 
+1]. When disconnected, this port receives the default value "0".
+▪
+(T2) "T2" (time 2) is the Event input port for controlling the time parameter for the sec­
+ond stage in the logarithmic scale. T2 = 0 corresponds to 1 ms, T2 = 20 corresponds 
+to 10 ms, and T2 = 40 corresponds to 100 ms. The typical range for the values at this 
+input port is [0 … 80]. When disconnected, this input port receives the default value 
+"0" which corresponds to a transition time of 1 ms.
+▪
+(L2) "L2" (level 2) is the Event input port for controlling the level which is reached at 
+the end of the second stage. The typical range for the values at this input port is [-1 … 
+1]. When disconnected, this port receives the default value "0".
+▪
+(T3) "T3" (time 3) is the Event input port for controlling the time parameter for the 
+third stage in the logarithmic scale. T3 = 0 corresponds to 1 ms, T3 = 20 corresponds 
+to 10 ms, and T3 = 40 corresponds to 100 ms. The typical range for the values at this 
+input port is [0 … 80]. When disconnected, this input port receives the default value 
+"0" which corresponds to a transition time of 1 ms.
+LFO, Envelope
+5-Ramp
+ 
+REAKTOR 5.5 - Module Reference - 517
+
+
+--- Page 518 ---
+
+▪
+(L3) "L3" (level 3) is the Event input port for controlling the level which is reached at 
+the end of the third stage. The typical range for the values at this input port is [-1 … 
+1]. When disconnected, this port receives the default value "0".
+▪
+(T4) "T4" (time 4) is the Event input port for controlling the time parameter for the 
+fourth stage in the logarithmic scale. T4 = 0 corresponds to 1 ms, T4 = 20 corre­
+sponds to 10 ms, and T4 = 40 corresponds to 100 ms. The typical range for the values 
+at this input port is [0 … 80]. When disconnected, this input port receives the default 
+value "0" which corresponds to a transition time of 1 ms.
+▪
+(LS) "LS" (sustain level) is the Event input port for controlling the level which is 
+reached at the end of the fourth stage. This is the sustain level. The typical range for 
+the values at this input port is [-1 … 1]. When disconnected, this port receives the de­
+fault value "0".
+▪
+(TR) "TR" (release time) is the Event input port for controlling the time parameter for 
+the release in the logarithmic scale. TR = 0 corresponds to 1 ms, TR = 20 corresponds 
+to 10 ms, and TR = 40 corresponds to 100 ms. The typical range for the values at this 
+input port is [0 … 80]. When disconnected, this input port receives the default value 
+"0" which corresponds to a transition time of 1 ms.
+Please refer to section 9.4 in the Application Reference for more information on the logarith­
+mic scales in REAKTOR.
+Output Ports
+▪
+(St) "St" (stage) is the Event output port delivering the envelope’s current stage (1, 
+2 ...). After the end of the release stage and before a new trigger the value is "0". With 
+appropriate processing this value in can be used to chain other envelopes, or for the 
+envelope to retrigger itself.
+▪
+(Out) "Out" is the Audio output port for the envelope signal.
+9.19.3
+Properties: View Page
+ 
+Making the Envelope Graph Visible on the Panel
+Envelopes have a Panel representation which graphically depicts the time evolution of the 
+envelope function. This can be a very useful component in your Instrument since you get 
+direct visual feedback on how the time and level parameters that you have set for your en­
+velope affect the overall envelope curve.
+LFO, Envelope
+5-Ramp
+ 
+REAKTOR 5.5 - Module Reference - 518
+
+
+--- Page 519 ---
+
+► To turn on the graphic display of your envelope in the Instrument Panel, go to the Mod­
+ule's View page and engage the On checkbox, shown in the figure below.
+Changing the Size of the Envelope's Panel Representation
+Depending on the type of Envelope Module you are using, you might need a small or large 
+graph of the envelope curve on your Instrument Panel.
+► To change the width and height of the Envelope Module's Panel representation, go to 
+the Module's View page and enter the desired values into the Width and Height edit fields, as 
+shown in the figure below.
+9.19.4
+Example: Amplitude Envelope
+ 
+This example shows how to apply a 5-ramp envelope to an incoming signal, such as an 
+oscillator output signal. The corresponding Structure is shown in the figure below. The sig­
+nal to which the envelope is to be applied is incoming at the "In" input port. It is multi­
+plied with the envelope output signal using a Multiply Module (↑4.5, Multiply, X). A gate 
+signal incoming at the "G" (gate) input port usually comes from a Gate Module (↑2.3, 
+Gate). Pressing a key on your MIDI keyboard then causes a Gate On signal to be sent to 
+the "G" input port, triggering the attack phase of the envelope. Releasing the key sends a 
+Gate Off signal to the envelope, initiating the envelope's release curve. Knob Modules at 
+the "T1" (first transition time), "L1" (first breakpoint level), "T2" (second transition time), 
+"L2" (second breakpoint level), "T3" (third transition time), "L3" (third breakpoint level), 
+"T4" (fourth transition time), "LS" (sustain level), and "TR" (release time) input ports let 
+you set the envelope's parameters from the Instrument Panel.
+LFO, Envelope
+5-Ramp
+ 
+REAKTOR 5.5 - Module Reference - 519
+
+
+--- Page 520 ---
+
+Fig. 9.56 A simple implementation of a 5-ramp envelope.
+In the Rehearsal Ensemble you can get acquainted with the envelopes in REAKTOR. The 
+Ensemble consists of an easy to use interface to select and tweak your envelope of choice. 
+Since each envelope has its own set of controls for the signal levels and transition times, 
+Stacked Macro Modules (↑1.19, Stacked Macro) have been used to make only the relevant 
+controls appear when an envelope has been selected from the "Envelopes" list. Also, the On 
+checkbox in the View page has been engaged such that the graphic Panel representation 
+of the envelope is visible, as shown in the figure below.
+Fig. 9.57 The 5-Ramp Envelope Module's Panel representation and knobs for its curve parameters.
+LFO, Envelope
+5-Ramp
+ 
+REAKTOR 5.5 - Module Reference - 520
+
+
+--- Page 521 ---
+
+9.20
+6-Ramp
+ 
+Fig. 9.58 6-Ramp Module
+9.20.1
+Overview
+ 
+The 6-Ramp Module is a 6-stage envelope generator with linear slopes. The envelope is 
+triggered with a Gate On Event at the "G" (gate) input. This causes the output value to rise 
+to the first level, set at the "L1" (level 1) input port, which is reached within the time set 
+for the first stage, set at the "T2" (time 2) input port. Then it the second level ("L2") is 
+reached within the time set at the "T2" (time 2) input port for the second stage, and so on. 
+The fifth level is the sustain level and is set at the "LS" (sustain level) input port. The en­
+velope output is then held at that level until a Gate Off Event (an Event with value "0") 
+arrives at the "G" (gate) input port. After that the envelope output returns to zero within the 
+release time period, set at the "TR" (release time) input port.
+Application
+The 6-Ramp Module is useful for more complex modulations which are best defined by 
+breakpoints connected by ramps. Parameters which are commonly modulated by enve­
+lopes include oscillator or sampler amplitude, filter cutoff and resonance, FM modulation 
+index, and the modulation amplitude of an LFO.
+LFO, Envelope
+6-Ramp
+ 
+REAKTOR 5.5 - Module Reference - 521
+
+
+--- Page 522 ---
+
+9.20.2
+Ports
+ 
+Input Ports
+▪
+(G) "G" (gate) is the Event input port for the Gate signal that triggers the envelope. The 
+amplitude of the Gate signal combines with all the level values at the "L1", "L2", "L3", 
+"L4", and "LS" input ports to determine the actual envelope levels reached.
+▪
+(T1) "T1" (time 1) is the Event input port for controlling the time parameter for the first 
+stage in the logarithmic scale. T1 = 0 corresponds to 1 ms, T1 = 20 corresponds to 10 
+ms, and T1 = 40 corresponds to 100 ms. The typical range for the values at this input 
+port is [0 … 80]. When disconnected, this input port receives the default value "0" 
+which corresponds to a transition time of 1 ms.
+▪
+(L1) "L1" (level1) is the Event input port for controlling the level which is reached at 
+the end of the first stage. The typical range for the values at this input port is [-1 … 
+1]. When disconnected, this port receives the default value "0".
+▪
+(T2) "T2" (time 2) is the Event input port for controlling the time parameter for the sec­
+ond stage in the logarithmic scale. T2 = 0 corresponds to 1 ms, T2 = 20 corresponds 
+to 10 ms, and T2 = 40 corresponds to 100 ms. The typical range for the values at this 
+input port is [0 … 80]. When disconnected, this input port receives the default value 
+"0" which corresponds to a transition time of 1 ms.
+▪
+(L2) "L2" (level 2) is the Event input port for controlling the level which is reached at 
+the end of the second stage. The typical range for the values at this input port is [-1 … 
+1]. When disconnected, this port receives the default value "0".
+▪
+(T3) "T3" (time 3) is the Event input port for controlling the time parameter for the 
+third stage in the logarithmic scale. T3 = 0 corresponds to 1 ms, T3 = 20 corresponds 
+to 10 ms, and T3 = 40 corresponds to 100 ms. The typical range for the values at this 
+input port is [0 … 80]. When disconnected, this input port receives the default value 
+"0" which corresponds to a transition time of 1 ms.
+▪
+(L3) "L3" (level 3) is the Event input port for controlling the level which is reached at 
+the end of the third stage. The typical range for the values at this input port is [-1 … 
+1]. When disconnected, this port receives the default value "0".
+LFO, Envelope
+6-Ramp
+ 
+REAKTOR 5.5 - Module Reference - 522
+
+
+--- Page 523 ---
+
+▪
+(T4) "T4" (time 4) is the Event input port for controlling the time parameter for the 
+fourth stage in the logarithmic scale. T4 = 0 corresponds to 1 ms, T4 = 20 corre­
+sponds to 10 ms, and T4 = 40 corresponds to 100 ms. The typical range for the values 
+at this input port is [0 … 80]. When disconnected, this input port receives the default 
+value "0" which corresponds to a transition time of 1 ms.
+▪
+(L4) "L4" (level 4) is the Event input port for controlling the level which is reached at 
+the end of the fourth stage. The typical range for the values at this input port is [-1 … 
+1]. When disconnected, this port receives the default value "0".
+▪
+(T5) "T5" (time 5) is the Event input port for controlling the time parameter for the fifth 
+stage in the logarithmic scale. T5 = 0 corresponds to 1 ms, T5 = 20 corresponds to 10 
+ms, and T5 = 40 corresponds to 100 ms. The typical range for the values at this input 
+port is [0 … 80]. When disconnected, this input port receives the default value "0" 
+which corresponds to a transition time of 1 ms.
+▪
+(LS) "LS" (sustain level) is the Event input port for controlling the level which is 
+reached at the end of the fifth stage. This is the sustain level. The typical range for the 
+values at this input port is [-1 … 1]. When disconnected, this port receives the default 
+value "0".
+▪
+(TR) "TR" (release time) is the Event input port for controlling the time parameter for 
+the release in the logarithmic scale. TR = 0 corresponds to 1 ms, TR = 20 corresponds 
+to 10 ms, and TR = 40 corresponds to 100 ms. The typical range for the values at this 
+input port is [0 … 80]. When disconnected, this input port receives the default value 
+"0" which corresponds to a transition time of 1 ms.
+Please refer to section 9.4 in the Application Reference for more information on the logarith­
+mic scales in REAKTOR.
+Output Ports
+▪
+(St) "St" (stage) is the Event output port delivering the envelope’s current stage (1, 
+2 ...). After the end of the release stage and before a new trigger the value is "0". With 
+appropriate processing this value in can be used to chain other envelopes, or for the 
+envelope to retrigger itself.
+▪
+(Out) "Out" is the Audio output port for the envelope signal.
+LFO, Envelope
+6-Ramp
+ 
+REAKTOR 5.5 - Module Reference - 523
+
+
+--- Page 524 ---
+
+9.20.3
+Properties: View Page
+ 
+Making the Envelope Graph Visible on the Panel
+Envelopes have a Panel representation which graphically depicts the time evolution of the 
+envelope function. This can be a very useful component in your Instrument since you get 
+direct visual feedback on how the time and level parameters that you have set for your en­
+velope affect the overall envelope curve.
+► To turn on the graphic display of your envelope in the Instrument Panel, go to the Mod­
+ule's View page and engage the On checkbox, shown in the figure below.
+Changing the Size of the Envelope's Panel Representation
+Depending on the type of Envelope Module you are using, you might need a small or large 
+graph of the envelope curve on your Instrument Panel.
+► To change the width and height of the Envelope Module's Panel representation, go to 
+the Module's View page and enter the desired values into the Width and Height edit fields, as 
+shown in the figure below.
+9.20.4
+Example: Amplitude Envelope
+ 
+This example shows how to apply a 6-ramp envelope to an incoming signal, such as an 
+oscillator output signal. The corresponding Structure is shown in the figure below. The sig­
+nal to which the envelope is to be applied is incoming at the "In" input port. It is multi­
+plied with the envelope output signal using a Multiply Module (↑4.5, Multiply, X). A gate 
+signal incoming at the "G" (gate) input port usually comes from a Gate Module (↑2.3, 
+Gate). Pressing a key on your MIDI keyboard then causes a Gate On signal to be sent to 
+the "G" input port, triggering the attack phase of the envelope. Releasing the key sends a 
+Gate Off signal to the envelope, initiating the envelope's release curve. Knob Modules at 
+LFO, Envelope
+6-Ramp
+ 
+REAKTOR 5.5 - Module Reference - 524
+
+
+--- Page 525 ---
+
+the "T1" (first transition time), "L1" (first breakpoint level), "T2" (second transition time), 
+"L2" (second breakpoint level), "T3" (third transition time), "L3" (third breakpoint level), 
+"T4" (fourth transition time), "L4" (fourth breakpoint level), "T5" (fifth transition time), "LS" 
+(sustain level), and "TR" (release time) input ports let you set the envelope's parameters 
+from the Instrument Panel.
+Fig. 9.59 A simple implementation of a 6-ramp envelope.
+In the Rehearsal Ensemble you can get acquainted with the envelopes in REAKTOR. The 
+Ensemble consists of an easy to use interface to select and tweak your envelope of choice. 
+Since each envelope has its own set of controls for the signal levels and transition times, 
+Stacked Macro Modules (↑1.19, Stacked Macro) have been used to make only the relevant 
+controls appear when an envelope has been selected from the "Envelopes" list. Also, the On 
+checkbox in the View page has been engaged such that the graphic Panel representation 
+of the envelope is visible, as shown in the figure below.
+Fig. 9.60 The 6-Ramp Envelope Module's Panel representation and knobs for its curve parameters.
+LFO, Envelope
+6-Ramp
+ 
+REAKTOR 5.5 - Module Reference - 525
+

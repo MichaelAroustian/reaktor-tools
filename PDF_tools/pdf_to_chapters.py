@@ -18,9 +18,10 @@ Usage:
     python pdf_to_chapters.py ~/Downloads/some_other.pdf --toc-start 5 --toc-pages 4 --debug
 
 Known settings:
-    Reaktor 6 Building in Core:   --toc-start 4  --toc-pages 5   --page-offset 0
-    Reaktor 5.5 Core Reference:   --toc-start 4  --toc-pages 12  --page-offset 0
-    VA Filter Design 2.1.0:       --toc-start 5  --toc-pages 4   --page-offset 12
+    Reaktor 6 Building in Primary: --toc-start 4  --toc-pages 11  --page-offset 0
+    Reaktor 6 Building in Core:    --toc-start 4  --toc-pages 5   --page-offset 0
+    Reaktor 5.5 Core Reference:    --toc-start 4  --toc-pages 12  --page-offset 0
+    VA Filter Design 2.1.0:        --toc-start 5  --toc-pages 4   --page-offset 12
 
 Options:
     pdf                 Path to the PDF file
@@ -114,7 +115,7 @@ def parse_toc(page):
             continue
 
         lines = [l.strip() for l in block[4].splitlines() if l.strip()]
-        if len(lines) < 2:
+        if not lines:
             continue
 
         first = lines[0]

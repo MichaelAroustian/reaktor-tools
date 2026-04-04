@@ -1,0 +1,1151 @@
+--- Page 67 ---
+
+4
+Processing Model of Core
+ 
+4.1
+Events
+ 
+A fundamental concept of signal processing in Core is the event. Similarly to the Primary level,
+an event within REAKTOR Core simply means that at some point in time a value has been gen-
+erated at some output port. This value is immediately transmitted further downstream along
+the wires (or connections of other kinds), which is referred to as 'an event is being sent from
+the output to the connected inputs.' The downstream Modules then usually generate further
+events at their outputs in response to the incoming events.
+The default event triggering convention in Core is the following: a Module sends an output event
+in response to an incoming event at any of its inputs.
+This convention is most commonly used for the math processing Modules such as the ones
+found in Built-In Module > Math and Built-In Module > Bit menus. See section ↑5.1, Expres-
+sion Computation for an example of efficient use of this convention. Nevertheless, there are a
+number of other different triggering conventions used for certain groups of Modules or individ-
+ual Modules (constants, Core Cell inputs, Modulation Macros, audio processing Macros, audio
+generation Macros etc.). These conventions are described in the respective areas of the man-
+ual.
+Differently from Primary, within REAKTOR Core Structures there is no distinction be-
+tween audio- and event-mode connections. In Core everything is an event. An audio sig-
+nal is simply consisting of events regularly sent at the sampling rate.
+Conversion between Primary and Core Signals
+The conversion between Primary audio/event signals and Core event signals is done according
+to the following:
+•
+The audio-mode input ports of Core Cells produce events at the sampling rate of the Pri-
+mary Ensemble.
+•
+The event-mode input ports of Core Cells forward Primary level events arriving on the out-
+side of the Core Cell to the Core Cell's internal Structure.
+Processing Model of Core
+Events
+ 
+REAKTOR 6 - - 67
+
+
+--- Page 68 ---
+
+Respectively:
+•
+The audio-mode output ports of Core Cells simply make their internal (Core level) value
+available to the external Primary level. This internal value is simply the value of the most
+recently arrived event.
+•
+The event-mode output ports of Core Cells simply forward the internally arriving events to
+the external Primary level.
+The Primary level does not support simultaneous events (see section ↑4.2, Processing
+Order for the discussion of simultaneous events in Core). If several Core events arrive si-
+multaneously at the event-mode outputs of a Core Cell, they will be sent to the outside
+Primary Structure consecutively, one after the other. The order of sending is 'top-to-bot-
+tom', according to the visual ordering of the Core Cell output ports. The events are sent
+immediately upon the completion of the respective handler (see section ↑5.6.1, Core
+Cell Handlers). Particularly, if the events are generated from the audio handler, they will
+be sent before any further audio processing is done in the Primary Structure.
+Event Processing and Triggering Example
+The following example Core Cell Structure implements an event signal inverter Core Cell:
+A simple audio inverter Core Cell.
+The Structure consists of an event-mode input port Module, an event-mode output port Module
+and a Core level inverter Module connected in between, where the latter can be found under
+Built-In Module > Math > -x. Since in Core there is no difference between audio and events,
+the built-in Core level inverter Module does not need to be configured (neither automatically
+nor manually) to an audio or an event-mode.
+Processing Model of Core
+Events
+ 
+REAKTOR 6 - - 68
+
+
+--- Page 69 ---
+
+The processing of an incoming Primary level event by the above Core Cell is happening like fol-
+lows:
+1.
+A Primary level event is arriving at the Core Cell's event input
+2.
+The Core Cell's event input is converting the Primary event into the Core event, which is
+then sent from the output of the input port Module inside the Core Structure.
+3.
+The event reaches the input of the -x Module.
+4.
+The -x Module is inverting the value and sends the result as its output event.
+5.
+The event reaches the input of the Core Cell's output port Module.
+6.
+The Core Cell's output port is converting the Core event into the Primary event and sends
+it further within the Primary level.
+The above Core Cell can be turned into an audio inverter Core Cell by simply reconfiguring the
+input and output port Modules of the Core Cell to the audio-mode. In this case the input port
+Module will send the events regularly at the audio rate. Configuring the Core Cell's ports to an
+event-mode input and an audio-mode output is also possible.
+One also can configure the input to the audio-mode and the output to the event-mode. In this
+case the expected behavior of the Core Cell is to send the Primary level output events at an
+audio rate. However, since the Primary level handles the events differently from Core, such a
+dense event stream on the Primary level will typically cause a noticeable CPU overhead. In or-
+der to avoid accidentally doing this by mistake, the Core Cell's output port has the Allow Audio
+Events property, which is disabled by default. When disabled, it will prevent the events origi-
+nating at the Core Cell's audio-mode inputs (or another audio rate source, such as SR.C and
+CR.C) from being sent to the Primary level, blocking the events completely. The property has
+no effect on audio-mode ports.
+Events derived from an audio rate source by routing (e.g. custom CR.C of a lower rate) will be
+equally blocked. On the other hand, the events derived from the event-mode Core Cell ports are
+not blocked. The initialization event (see the discussion of the initialization event in section ↑4.4,
+Initialization), including the initialization event obtained from the audio-mode Core Cell ports, is
+not blocked either.
+Processing Model of Core
+Events
+ 
+REAKTOR 6 - - 69
+
+
+--- Page 70 ---
+
+4.2
+Processing Order
+ 
+As long as a Core event is processed exclusively in a serial fashion, there is no difference be-
+tween Primary and Core event processing. The event is simply propagated downstream from
+one Module to the other. There is however a fundamental difference if the event propagation
+path splits into several branches.
+On the Primary level an event that is sent to more than one destination is forwarded to each of
+these destinations in turn, one destination after the other. If the event paths later merge back
+again, then, instead of one event arriving at the mergepoint, there are two or more, depending
+on how many parallel paths the event was split into before merging back (for details about Pri-
+mary level event processing, see the Building in Primary document).
+In Core (logically seen) an event is sent to all such parallel destinations simultaneously on all
+paths. The following Core Cell Structure illustrates this:
+A Core Cell Structure illustrating the simultaneity of parallel events in Core.
+The purpose of this Core Cell is simply to double the values of the incoming events. Instead of
+multiplying the values by 2, the signal's value is added to itself by using the adder Module
+(Built-In Module > Math > +).
+Each incoming event is sent to the two inputs of the adder on two parallel paths. In Primary,
+the incoming event would first arrive at one input of the adder, producing an output event at
+the adder's output, and later it would arrive at the other input of the adder, producing another
+output event at the adder's output. Thus, for each incoming audio event the adder would have
+Processing Model of Core
+Processing Order
+ 
+REAKTOR 6 - - 70
+
+
+--- Page 71 ---
+
+generated two output events. This would lead not only to a doubling of the value, but also to a
+doubling of the count of the incoming event. In Core, the event arrives simultaneously at both
+inputs of the adder, so the adder produces a single output event.
+The simultaneity of parallel events is of course extended to more complicated Structures, e.g.
+like the following one:
+Another Core Cell Structure illustrating the event parallelism in Core.
+In this Structure the event is going through the absolute value Module on the upper path and
+through the inverter on the lower path, and then both paths are merged by the adder. Of
+course, internally one of the two parallel Modules (the absolute value and the inverter) will be
+processed before the other. However, both the output event of the absolute value Module and
+the output event of the inverter Module will arrive at the adder's inputs simultaneously, thereby
+producing one event at the adder's output.
+Thus, logically seen, it is impossible to tell which of the two parallel Modules (the absolute val-
+ue and the inverter) has been processed first. From the formal point of view, both Modules can
+be considered as being processed simultaneously.
+The processing order rule in Core is the following. If two Modules are connected by a
+unidirectional path (that is one can start at one of the Modules and reach the other one
+by always going only 'downstream' or only 'upstream') then the upstream Module is proc-
+essed before the downstream one. If there is no unidirectional path between the two
+Modules, then their relative processing order is undefined. Such unordered Modules can
+be considered as 'simultaneously processed' ones.
+The 'simultaneous processing' paradigm is not applicable to the explicit accesses to the memory
+by the OBC Modules. Memory accesses from the unordered Modules are serial and unordered.
+Processing Model of Core
+Processing Order
+ 
+REAKTOR 6 - - 71
+
+
+--- Page 72 ---
+
+4.3
+Object Bus Connections (OBC)
+ 
+Explicit memory storage is handled in Core by the Read and Write Modules performing the
+memory reading and the memory writing operations respectively. These Modules can be found
+under the Built-In Module > Memory menu. For the purpose of identifying the storage items
+referred to by these Modules, Core uses a dedicated connection class, called OBC (Object Bus
+Connection):
+A simple event accumulator Core Cell.
+In the above Core Structure there is a Read Module on the left, followed by an adder, followed
+by a Write Module. The direct connection between a Read Module and a Write Module is an
+OBC connection. It means that the Read and the Write Modules access the same storage (or
+the same variable, in terms of text-based programming languages). This storage is implicitly
+created by the mere fact that the Read and the Write Modules want to access some storage.
+Had there been no OBC connection between the Read and Write Modules, they would have ac-
+cessed two independent storage items.
+All Read and Write Modules connected together by OBC connections access one and the
+same memory storage (as long as there are no special OBC Modules, like e.g. the Index
+Module in between them).
+The above Structure implements a simple event accumulator and works as follows:
+1.
+An incoming event from the Primary level is converted into a Core event by the input Mod-
+ule and is sent to the Read Module and to the adder.
+Processing Model of Core
+Object Bus Connections (OBC)
+ 
+REAKTOR 6 - - 72
+
+
+--- Page 73 ---
+
+2.
+The event arrives at the upper input of the Read Module. This is the clock or triggering
+input of the Read Module. In response to this clock event the Read Module reads the val-
+ue from the memory and sends it from its upper output (the initial value of the memory is
+zero).
+3.
+The event from the input Module and the event from the Read Module simultaneously ar-
+rive at the inputs of the adder. The adder computes the sum and sends it from its output.
+4.
+The output event from the adder is sent to the Core Cell's output and also to the Write
+Module. The Write Module stores the new value of the accumulated sum in the memory,
+while the output forwards the same value to the Primary level.
+The arrays and array connections which are a special kind of OBC are discussed separately in sec-
+tion ↑4.7, Arrays.
+Memory Access Ordering
+In typical cases the memory accesses are naturally ordered by the OBC connection between
+the Read and the Write Modules. However, it is possible to construct Structures where these
+accesses are not ordered relative to each other:
+Unordered memory accesses.
+In the above picture the two Write Modules are ordered relative to the Read Module, but are
+not ordered relative to each other. If an event comes simultaneously on both wires, then it is
+not defined which value will be written first and which second. Such Structures are generally not
+recommended, unless the access order is explicitly unimportant.
+As in the other cases of unspecified behavior, it is highly unrecommended to rely on the
+de-facto ordering of conceptually unordered OBC Modules, even if this ordering seems
+consistent.
+Processing Model of Core
+Object Bus Connections (OBC)
+ 
+REAKTOR 6 - - 73
+
+
+--- Page 74 ---
+
+As a general rule, it is recommended to ensure the correct ordering of the OBC Modules
+(accessing the same memory) by arranging them serially along one and the same OBC
+wire.
+Macro boundaries by themselves do not ensure any ordering (please see section ↑4.7.4,
+Advanced OBC Ordering for a more detailed explanation).
+4.4
+Initialization
+ 
+Upon loading, before the regular processing begins, the Core Structures are getting initialized.
+The Core Cell initialization is performed as a part of the Primary level initialization process
+(please see the Building in Primary document for more information).The Core Cell initialization
+runs in the following steps.
+•
+Firstly, all writable memory of the Core Cell is reset to zero. This includes the states of the
+output ports and the OBC storage.
+•
+Then, an initialization event is sent simultaneously from all initialization event sources,
+which include the following.
+◦Audio-mode Core Cell inputs. These always send the initialization event. The value of
+the event is equal to the value available on the outside of the Core Cell at the moment
+of the Core Cell's initialization.
+◦Event-mode Core Cell inputs. These send the initialization event if and only if there is
+a Primary level initialization event coming from the outside at the moment of the Core
+Cell's initialization. The event's value is equal to the value of the incoming Primary
+level event.
+◦Constants and QuickConsts (also including unconnected inputs without special de-
+fault meaning as well as scoped and Bundle pickups which failed to connect). These
+always send the initialization event. The value of the event is equal to the constant's
+value. The constants never send any other events afterwards.
+•
+After that, the Primary level initialization process might send additional events after the
+Core's initialization event is finished. From a Core perspective these events are regular
+events, not initialization events.
+Processing Model of Core
+Initialization
+ 
+REAKTOR 6 - - 74
+
+
+--- Page 75 ---
+
+Initialization Example
+The following Core Cell Structure demonstrates the effects of the initialization process (the
+Structure has a bug, which is embedded there for the demonstration purposes):
+A (faulty) event counter Core Cell.
+At the first glance, this Structure should implement an event counter (notice the integer mode
+of the Modules used in the Structure). However, this Structure has a bug. If no Primary events
+have ever been sent to the Core Cell's input, the output value of the Core Cell (and the value
+stored internally in the OBC memory of the counter) is still one rather than zero. Furthermore,
+even though there is no incoming initialization event on the Primary side, the event counter
+Core Cell sends an initialization event (of value 1) from its Primary level output.
+The reason for this are the details of the Core Structure initialization which runs as follows:
+1.
+The shared OBC storage of the Read/Write Module pair and the output port states are ze-
+roed.
+2.
+The initialization event is sent from the constant "1" Module. Assuming there is no incom-
+ing initialization event from the Primary level at the Core Cell's input, there are no other
+initialization event sources in the Structure.
+3.
+In response to the incoming event from the constant Module the adder computes the sum
+of the input values, where the lower input value is obtained from the just zeroed output of
+the Read Module. Thus, the adder outputs a value of 1.
+4.
+The value of the sum is written into the OBC storage and is sent to the Core Cell's output.
+Such problems can be avoided by using latches (discussed in section ↑4.5, Clocks and Latch-
+es) and/or Modulation Macros (discussed in section ↑4.6, Modulation Macros).
+Processing Model of Core
+Initialization
+ 
+REAKTOR 6 - - 75
+
+
+--- Page 76 ---
+
+4.5
+Clocks and Latches
+ 
+A factory library Latch Macro is available under Library > Memory > Latch:
+A Latch Macro.
+An integer version of the latch is available in the same menu under the name ILatch.
+The upper input of the Latch Macro is the value input. The lower input of the Latch Macro is
+the event or the clock input. The output combines both into one event where the value is taken
+from the upper input and the clock or the triggering is taken from the lower input.
+The Latch Macro can be used for two different purposes:
+•
+Replacing a value of an event with another value:
+•
+Delaying a sent value until a certain event (clock) occurs:
+Both purposes simply represent two different viewpoints on one and the same process.
+The second usage purpose (delaying a value) is the reason for the Latch Macro's icon and for the
+alignment of the Latch Macro's ports.
+The internal Structure of the Latch Macro is very simple:
+Processing Model of Core
+Clocks and Latches
+ 
+REAKTOR 6 - - 76
+
+
+--- Page 77 ---
+
+The internal Structure of the Latch Macro.
+In this Structure it is imperative that the Write Module precedes the Read Module in the OBC
+chain. This ensures that if the value and the clock events arrive simultaneously at the Latch
+Macro's inputs, the value will be used to generate the output event.
+The opposite ordering (the Read Module preceding the Write Module) is used to build the one-
+sample delay (z-1) Macro discussed in section ↑4.10.4, Resolution Mechanism.
+The compiler recognizes the 'Write Module followed by a Read' Module OBC pattern and
+treats it in special, optimized way. Depending on the circumstances, using a Latch Mac-
+ro at a given position in a Structure will produce more efficient code than without using
+it. As a general rule, the Core Structures should employ latches where logically appropri-
+ate without attempting to minimize their amount.
+Usage Examples
+The faulty event counter discussed in section ↑4.4, Initialization could have been fixed in one
+of the two following ways using the latches.
+Processing Model of Core
+Clocks and Latches
+ 
+REAKTOR 6 - - 77
+
+
+--- Page 78 ---
+
+•
+Use an integer event accumulator Structure (similar to the float event accumulator dis-
+cussed in section ↑4.3, Object Bus Connections (OBC)) and use an integer latch (ILatch)
+Macro to replace the values of the incoming events with 1:
+•
+Start with the faulty Structure discussed in section ↑4.4, Initialization and use a Latch
+Macro to make sure that the output event of the constant Module does not trigger the ad-
+dition:
+Notably, the two Structures are pretty much identical, differing only by the specific pickup
+points of the clock signals for the Latch and the Read Module.
+The clock inputs completely ignore the incoming signal's value. The Core compiler is aware of
+that and drops out the respective computations in the incoming signal's path if these values are
+not needed otherwise. Particularly, the compiler will drop a value conversion from int to float if an
+int signal is used at a float clock input. For that reason it does not matter whether a clock input is
+configured to int or float type. The convention used in Core however is that all clocks are float.
+Processing Model of Core
+Clocks and Latches
+ 
+REAKTOR 6 - - 78
+
+
+--- Page 79 ---
+
+The most appropriate way to fix the event counter is by using Modulation Macros, dis-
+cussed in section ↑4.6, Modulation Macros.
+4.6
+Modulation Macros
+ 
+The basic math operation Modules follow the standard Core triggering convention: any input
+triggers an output event. Sometimes a different convention is desired, where some inputs
+should not trigger the output. This convention is implemented in the Modulation Macros,
+found under Library > Math Mod (for Math Modulation).
+The following alternative implementation of the event doubler Core Cell from section ↑4.2,
+Processing Order illustrates the concept of Modulation Macros:
+An alternative implementation of the event doubler Core Cell using a modulation multiplier.
+The Macro in the middle is the modulation multiplier, available under Library > Math Mod >
+x mul a. If one of the usual built-in multipliers had been used instead, the Structure would
+have had the same bug (for exactly the same reason) as the event counter in section ↑4.4, Ini-
+tialization. With the modulation multiplier, the constant Module does not trigger the addition,
+thus the Structure does not have a bug.
+The name 'modulation multiplier' comes from the use case where the amplitude of an event
+stream is being modulated by some other 'gain' signal. Clearly, in this case it is not desired
+that the events of the 'gain' signal trigger the multiplication:
+Processing Model of Core
+Modulation Macros
+ 
+REAKTOR 6 - - 79
+
+
+--- Page 80 ---
+
+Modulation of the amplitude of an event stream
+This use case is also the reason for the icon and the port alignment of the Macro. The arrow in
+the icon corresponds to the modulation signal input. Additionally, in the name of the Macro
+and in the labels of the ports the modulation inputs are denoted with the letters from the be-
+ginning of the Latin alphabet ("a", "b", ..).
+Occasionally the opposite to the modulation concept is used: the tapping. While the
+modulation inputs are inputs that are explicitly declared as non-triggering, a tapping in-
+put is explicitly declared as triggering (whereas the remaining inputs are assumed non-
+triggering by default).
+The internal Structure of the modulation multiplier is using a Latch Macro to prevent the lower
+input from triggering the computation:
+The internal Structure of the modulation multiplier.
+Another good illustration of Modulation Macro usage is yet another way of fixing the event
+counter of section ↑4.4, Initialization, besides the two bug-fixing approaches discussed in sec-
+tion ↑4.5, Clocks and Latches. The fix is using an integer modulation adder, which is available
+under Library > Math Mod > Integer > Ix + a:
+Processing Model of Core
+Modulation Macros
+ 
+REAKTOR 6 - - 80
+
+
+--- Page 81 ---
+
+A bug-fixed event counter using a modulation adder.
+4.7
+Arrays
+ 
+REAKTOR Core supports arrays as a special kind of OBC storage. While ordinary OBC storage is
+implicitly defined by the mere fact of using it (by reading or writing), the arrays need to be ex-
+plicitly defined by placing an array Module into the structure. There are two array flavors:
+•
+Writable array (available under Built-In Module > Memory > Array): The number of array
+elements is specified in the Properties. As with all writable memory, writable arrays are
+zero-initialized upon initialization.
+•
+Read-only array or Table (available under Built-In Module > Memory > Table): The table is
+supposed to be prefilled by the Structure builder using the Table Editor available from the
+Table Module's Properties.
+The array memory is allocated per voice. Thus an array of 1024 floats in a 16 voice set-
+ting needs a total memory for 16*1024=16384 floats, which, considering that each
+float needs 4 bytes of storage, is equal to 64 Kbytes.
+The read-only tables are allocated just once and are not multiplied with the number of
+voices. Furthermore, multiple tables sharing exactly identical sets of data are internally
+combined into a single table. Thus having multiple copies of the same table Module
+containing a large table does not noticeably increase the memory usage.
+Processing Model of Core
+Arrays
+ 
+REAKTOR 6 - - 81
+
+
+--- Page 82 ---
+
+The output port of the Array or Table Modules is of a special array OBC type (which is further
+subdivided into int and float types with variable float precision). Thus a Read or a Write Mod-
+ule cannot be directly connected to an array. In order to be able to read or write into an array,
+a single array element needs to be selected first for access.
+A Macro port of the Latch class can be configured to the array connection mode in the Properties.
+4.7.1
+Array Indexing
+ 
+The array element selection is performed by using the Index Module (Built-In Module > Memo-
+ry > Index):
+An Index Module.
+•
+The lower input of the Index Module is of the array OBC type and is supposed to be con-
+nected (directly or via some Macro ports and other connectivity features) to the array to be
+accessed.
+•
+The output of the Index Module is of the usual (latch) OBC type and is supposed to be
+connected, directly or indirectly, to one or more Read and/or Write Modules.
+•
+The upper input of the Index Module is of scalar int type. An incoming event at this input
+causes a selection of an array element of the corresponding index for the OBC output of
+the Index Module.
+The indexing is zero-based. That is the valid index range is from 0 to N-1, where N is
+the array size.
+The result of accessing the array elements out of the valid index range is unspecified, except that
+such accesses should not cause memory corruption or crash REAKTOR.
+Processing Model of Core
+Arrays
+ 
+REAKTOR 6 - - 82
+
+
+--- Page 83 ---
+
+In the current implementation of the Core compiler the safety of the out of range index
+accesses is ensured by internally clipping the index value (in the unsigned integer
+mode). However, as with other unspecified behavior, the specific details of this safety
+mechanism should be never relied upon. Correctly built REAKTOR Core Structures
+should never use out of range index values.
+Sometimes it is convenient to be able to automatically determine the size of an array. This func-
+tion is provided by the Built-In Module > Memory > Size [] Module. The Module outputs the total
+number of the array elements.
+The Index Module rarely should be used directly. Typically Read [] and Write [] Macros should
+be used instead. For the sake of illustration of the Index Module's functionality the following
+two cases are presented:
+Usage of raw Index Modules to access array elements (unrecommended).
+In the above picture the two Index Modules are used to access the array elements with the in-
+dices 7 and 8 respectively, where the 7th element is accessed for reading and the 8th element
+for writing.
+In principle, it is possible to attach a Read and a Write Module to the same Index Module, e.g.
+in series. In this case they are obviously accessing the same array element.
+A Read and a Write Module sharing the same Index Module (untypical and unrecommended).
+Processing Model of Core
+Arrays
+ 
+REAKTOR 6 - - 83
+
+
+--- Page 84 ---
+
+Neither of the two cases is a recommended way to access the array.
+4.7.2
+Read [] and Write [] Macros
+ 
+The array accesses typically should be done by using the Read [] and Write [] Macros available
+under Library > Memory.
+•
+The Read [] Macro has a clock input, an index input and an array OBC input. The clock
+input triggers the array reading operation at the specified index, sending the read value at
+the upper output of the Macro.
+•
+The Write [] Macro has a value input, an index input and an array OBC input. An incoming
+value at the write input causes a write operation at the respective index.
+It would have been possible to implement the Read [] Module without the clock input, by using
+the event at the index input as the triggering signal for the reading operation. Besides being in-
+consistent with the Write [] Macro this would have caused unnecessary CPU overhead if the read-
+ing is performed without an actual change of the index. With the index input being separate, the
+(rather small) CPU overhead associated with the indexing is occurring only in response to the
+events at the index input.
+The array OBC inputs and outputs of the Read [] and Write [] Macros are supposed to be used
+to order the array accesses relatively to each other:
+Processing Model of Core
+Arrays
+ 
+REAKTOR 6 - - 84
+
+
+--- Page 85 ---
+
+An example of the ordering of read and write accesses to an array.
+4.7.3
+Table Specifics
+ 
+The Table Module works pretty much as an usual array, except that writing into the table is not
+possible. The tables also have specific properties.
+•
+FP Precision: In case the table contains float data, this configures the precision of the
+outgoing float OBC connection type (and thus the precision of the compatible Read ac-
+cesses). The precision of values internally stored in the table is not affected by this set-
+ting.
+The Read [] and Write [] Macros can be connected to a table with a non-default FP precision by
+changing the FP precision setting of the Read [] and Write [] Macros.
+•
+Table Editor: Calls up the table editor, which allows to fill the table with values.
+Processing Model of Core
+Arrays
+ 
+REAKTOR 6 - - 85
+
+
+--- Page 86 ---
+
+The Table editor.
+(1) Create/Resize Table: This button allows you to configure the table's data type and size and
+to pre-fill it with a specified initial value.
+(2) Import Table Data: This button allows you to load the table from a file. A number of audio
+and text file formats are supported, where the latter can be used to import special numeric ta-
+bles prepared in other software.
+(3) Layout: These buttons turn the numeric display and the wave display on or off.
+(4) Wave display: The wave display displays the contents of the table as a wave.
+(5) Numeric display: The numeric display can also be used to edit the individual values in the
+table.
+Processing Model of Core
+Arrays
+ 
+REAKTOR 6 - - 86
+
+
+--- Page 87 ---
+
+4.7.4
+Advanced OBC Ordering
+ 
+Some advanced OBC ordering topics can be nicely illustrated by the internal Structure of the
+Read [] Macro:
+The internal Structure of the Read [] Macro.
+The function of the Index and Read Modules is clear. The third Module (the one next to the
+OBC output of the Macro) is the R/W Order Module (available under Built-In Module > Memory
+> R/W Order).
+The R/W Order Module is also used inside the Write [] Macro at the similar position.
+Upon the first look this Module might seem to be completely redundant, because the Read []
+Macro could have been implemented without it:
+A faulty implementation of the Read [] Macro without R/W Order.
+Processing Model of Core
+Arrays
+ 
+REAKTOR 6 - - 87
+
+
+--- Page 88 ---
+
+However, in this case the OBC output of the Macro is not ordered relatively to the Read Module
+inside the Macro. This means that Modules and Macros (such as e.g. a Write [] Macro) con-
+nected to this OBC output will not be ordered relative to the reading operation.
+The R/W Order Module inside the Read [] Macro does nothing more than providing a formal
+ordering between the Read Module and the OBC output of the Macro, due to the mere fact that
+the Read Module is connected to its upper input. The lower input of the R/W Order Module
+simply forwards the incoming OBC connection to the output.
+The R/W Order Module can also be used for explicit ordering of non-array OBC connections, al-
+though there such need is much less likely to occur.
+The need for the explicit ordering by the R/W Order Module is not affected by the setting of the
+Solid property of the containing Macro. This might be improved in future versions of REAKTOR
+Core (without loss of compatibility with older Structures).
+4.8
+Routing and Merging
+ 
+The Router Module (Built-In Module > Flow > Router) is used to direct the event flow to one of
+two alternative paths, where the event flow direction can be switched at runtime:
+A Router Module.
+Depending on the router state (controlled by the upper input) the events arriving at the lower
+input are directed either to the upper output or to the lower output. The upper input (the con-
+trol input of the router) is of BoolCtl type and can be in the true or false state.
+•
+If the control input is in the true state then the events are routed to the upper output.
+•
+If the control input is in the false state then the evens are routed to the lower output.
+The BoolCtl connection does not transmit any events. It only transmits the state but no trigger-
+ing information. Therefore it is not a signal in the same sense as the scalar type class.
+Processing Model of Core
+Routing and Merging
+ 
+REAKTOR 6 - - 88
+
+
+--- Page 89 ---
+
+The BoolCtl sources are provided by Compare, Compare Sign or ES Ctl Modules in the
+Built-In Module > Flow menu.
+The comparison criterion of the Compare and Compare Sign Modules can be adjusted in
+their Properties.
+The Compare Sign Module is useful for detecting zero (and other thresholds) crossings.
+There are no Boolean operation built-in Modules to combine different BoolCtl connec-
+tions together. Use the Macros from Library > Logic (at the cost of a somewhat higher
+CPU load) if you need standard Boolean logical operations.
+A signal split by a Router Module can be merged back by the Built-In Module > Flow > Merge:
+Merging the two paths back. The Macro Structure implements the absolute value functionality.
+The Merge Module simply lets all incoming events go through to the output. If the events arrive
+simultaneously at both inputs, the lower input has priority.
+Instead of merging the two paths of the split signal, another common pattern is to merge back
+with the original signal:
+Processing Model of Core
+Routing and Merging
+ 
+REAKTOR 6 - - 89
+
+
+--- Page 90 ---
+
+Merging back to the original signal. The Macro Structure implements the absolute value functionality.
+Since the lower input of the Merge Module has higher priority, in case the signal goes through
+the inversion path, the inverted signal at the lower input of the Merge Module has priority over
+the original (unrouted) non-inverted signal.
+The Merge Module does not need to be used exclusively in combination with routers. One can
+merge arbitrary events.
+In the current implementation of the REAKTOR Core technology this kind of 'chaotic'
+merging (as compared to merging the split paths back together or to their original
+source) might overload the compiler. Therefore 'chaotic merging' needs to be used with
+some care. In cases of large amounts of chaotic merging, the compilation time may grow
+excessively. Event reclocking by using latches and Modulation Macros often helps (see
+section ↑5.6.3, Routing and Merging).
+The math processing Module such as the built-in adder, multiplier etc. technically per-
+form event merging. The difference to the Merge Module is solely in how the output val-
+ue is computed. Therefore the math processing Structures are subject to the same
+'chaotic merging' considerations.
+The Merge can be made to have more than 2 inputs by configuring the number of inputs in its
+Properties. The priority rule for simultaneous events is the same: the priority is highest at the low-
+est input. Intuitively this can be imagined as the events being locally ordered from the top input
+Processing Model of Core
+Routing and Merging
+ 
+REAKTOR 6 - - 90
+
+
+--- Page 91 ---
+
+to the bottom one, so that the lowest event is the one which arrives latest of all and thus overrides
+the value prepared for the output.
+4.9
+SR and CR Buses
+ 
+A number of signal processing Modules need to be clocked by some regular trigger sources.
+The typical examples are oscillators, filters, envelopes and LFOs. REAKTOR Core provides de-
+fault clock sources for such Modules. There are two sources provided in the form of Bundle
+Scoped Buses with two different names:
+•
+SR (for Sampling Rate): The bus with this name is the source of the audio clock.
+•
+CR (for Control Rate): The bus with this name is the source of the control clock.
+The SR bus is intended to be used for audio processing Modules like oscillators and filters,
+while the CR bus is intended to be used for control processing Modules like envelopes and
+LFOs. However, this SR/CR distinction is purely conventional and is made with the sole pur-
+pose of being able to provide different audio and control clocks 'by default'. There is always a
+possibility of overriding the default connection and/or providing even more clocks by defining
+further buses with different names and the same Structure.
+The default CR source in REAKTOR Core is identical to SR signal-wise, runs at the au-
+dio rate and has nothing to do with the Control Rate source in the REAKTOR Primary. If
+desired, the Primary Control Rate can be 'imported' into the CR bus by using the Library
+> Clk Bundle > Control > CR From Prim Macro.
+Both SR and CR bus Bundles have identical internal Structure and theoretically can be used in
+place of each other. Practically this is usually not recommended. Particularly, the conversion
+between different clock rates needs to be different for audio and control signals.
+Processing Model of Core
+SR and CR Buses
+ 
+REAKTOR 6 - - 91
+
+
+--- Page 92 ---
+
+The default built-in SR and CR buses are provided 'one level higher' than the top Struc-
+ture of the Core Cell, thereby allowing to redefine them already within this top-level
+Structure without causing a definition conflict. If such redefinition is done, the 'previ-
+ous' (default) bus has to be picked up using the parent-mode scoped accessors, as usu-
+ally. See ↑4.9.4, CR rate change and ↑4.9.5, SR Rate Change for the details of redefin-
+ing SR/CR.
+4.9.1
+Connections to the Clock Buses
+ 
+A Core Macro Library Module that needs an SR or a CR connection has by convention a Bundle
+input, labelled SR or CR respectively:
+The SR input of an oscillator.
+The SR/CR input convention is not used for the low-level library Macros. Particularly, the z^-1 ffd
+and z^-1 fbk Macros connect themselves to the SR bus, even though they do not have an SR in-
+put.
+If the SR or CR input is not connected, it automatically picks up the SR or CR bus. In the case
+of the above oscillator, in the default unconnected state of the SR input, this input will be au-
+tomatically picking up the SR bus. Should this default connection be undesired, some other
+clock Bundle source needs to be manually connected to this input. This automatic connection
+convention is employed for effectively all signal generating and processing Modules in the Core
+Macro Library.
+4.9.2
+Clock Gating
+ 
+Sometimes it is desired to turn off audio or control processing within a given part of the Struc-
+ture. This can be achieved by gating the clock.
+In the following Structure the audio clock is gated for a 2-pole SVF filter:
+Processing Model of Core
+SR and CR Buses
+ 
+REAKTOR 6 - - 92
+
+
+--- Page 93 ---
+
+SR clock gating.
+The XR Gate Macro (Library > Clk Bundle > XR Gate) on the left interrupts the SR clock as
+long as the gate signal G is zero. As soon as G is turned to 1 the clock begins to run.
+Upon turning from 0 to 1, the XR Gate sends a reset signal (see section ↑4.9.6, Internal Struc-
+ture of Clock Buses) along the clock Bundle, causing the connected Modules to reinitialize their
+internal states if necessary. Should the reset signal be undesired in this case, use an XR Freeze
+Macro instead.
+The "XR" stands for either "SR" or "CR". That is, the XR Macros are equally usable for both SR
+and CR Bundles. Some other clock Bundle Macros are usable only for SR or only for CR Bun-
+dles. Those Macros are located under Library > Clk Bundle > Audio and Library > Clk Bundle >
+Control respectively.
+The XR Gate Macro only gates the clock, but does not cause the outputs of the connect-
+ed audio- and control-processing Macros, such as the LP output of the filter in the
+above picture, to be zeroed (this is done for the CPU efficiency reasons, associated with
+the event merging issues discussed in section ↑5.6.3, Routing and Merging). It is the
+builder's responsibility to avoid picking up the 'frozen' output values by some other run-
+ning parts of the Structure downstream.
+The automatic default connection of SR/CR input is implemented only for the signal
+generating and processing Modules like oscillators, filters, envelopes, LFOs, etc. The
+Modules dedicated to the handling of SR/CR bus themselves (such as clock gates, divid-
+ers, etc. (located in Library > Clk Bundle > Control) always need to be connected explic-
+itly.
+Processing Model of Core
+SR and CR Buses
+ 
+REAKTOR 6 - - 93
+
+
+--- Page 94 ---
+
+4.9.3
+SR and CR redefinition
+ 
+If a whole area of the Structure is being controlled by a gated clock, then instead of wiring up
+the output of the XR Gate Macro to each of the clocked Modules, it is convenient to put all
+such gated Modules into one Macro Structure and locally redefine the clock bus within this
+Structure:
+Redefining the SR bus.
+Notice the parent-mode accessor usage at the input of the XR Gate, which ensures that
+the higher-level SR bus, rather than the one defined on this level, will be picked up.
+Another version of the same approach is discussed in section ↑5.2, Generation of Audio and
+Other Regularly Clocked Events.
+Some kind of an 'in-between' approach is to define a Scoped Bus (or a QuickBus) with a different
+name and explicitly connect to this bus. Notice that there is no need for the parent-mode acces-
+sor at the XR Gate's input in this case.
+4.9.4
+CR rate change
+ 
+In certain advanced Structure building scenarios one control rate is insufficient. Or the default
+control rate, which is equal to the audio rate, may be considered too high for the builder's pur-
+poses. In this case the CR rate division may be employed to generate lower control rates. E.g.
+the following Structure fragment employs the CR Div Macro (Library > Clk Bundle > Control >
+CR Div) to locally redefine the CR bus to a 4 times lower rate:
+Processing Model of Core
+SR and CR Buses
+ 
+REAKTOR 6 - - 94
+
+
+--- Page 95 ---
+
+Redefining the CR bus to a 4 times lower rate.
+Of course, the other discussed possibilities to connect to the new CR (including explicit wiring,
+QuickBuses and differently named Scoped Buses) can be used as well.
+Smoothing
+Converting a signal from a higher control rate to a lower control rate can be done by the XR Re-
+clock Macro (Library > Clk Bundle > XR Reclock):
+Reclocking control signal to a lower rate.
+In principle the XR Reclock Macro can be also used for control signal upclocking or audio up- or
+downclocking. Usually, however, this will create undesired artifacts that can be avoided by using
+other means instead.
+Conversion from a lower control rate to a higher control rate is achieved by smoothing. A linear
+cross-control rate smoother is provided by the CR Lin XSmoother Macro (Library > Clk Bundle
+> Control > CR Lin XSmoother):
+Smoothing from a lower control rate to a higher one.
+Processing Model of Core
+SR and CR Buses
+ 
+REAKTOR 6 - - 95
+
+
+--- Page 96 ---
+
+The CR Lin XSmoother Macro is designed to be used by hard-locked control rates, the ratio of
+which is an integer number. E.g. in the above picture the CR/4 control rate is obtained by ap-
+plying the CR Div Macro to the CR control rate. If this condition is not met, the smoother will not
+work correctly.
+The "(0)" input of this and other smoothers is intended to provide an initial value for the smooth-
+er. If the input signal of a smoother is clocked, then according to the clocking conventions (see
+sections ↑4.9.6, Internal Structure of Clock Buses, ↑5.2, Generation of Audio and Other Regularly
+Clocked Events and ↑5.3, Processing of Audio and Other Regularly Clocked Events) the input sig-
+nal cannot arrive during the initialization or a Structure reset. Thus, it will be not possible to use
+the input signal to specify the initial state of the smoother. One way around it is to merge in a
+dedicated initial value signal using a Merge Module in front of the smoother's input. However this
+is a kind of hidden violation of the mentioned clocking convention. Instead, one should connect
+the initialization signal to the "(0)" input of the smoother. If the input signal is not following the
+clocking convention (like e.g. a signal which comes from a knob) and provides a reasonable initial
+value setting for the smoother, then the "(0)" input can be left disconnected. The smoother will
+use the input signal as the initial value source in this case.
+Irregular Permanent Smoothing
+Smoothing can also be applied to convert an irregularly clocked signal (or a signal which
+comes completely sporadically, such as a stream of values from a panel knob) to remove the
+steps in the signal. Such smoothing will produce a stream of values clocked at some control
+rate. Depending on the specifics of the particular smoother, however, the signal events might
+not be sent all the time, but only until the destination value is reached by the smoother. E.g.
+in the following Structure the "Cutoff" knob's value at the Macro's input is being smoothed by a
+Lin Smoother [P] Macro (Library > Control > Smoother > Lin Smoother [P]):
+Permanent smoothing of an irregular control event stream.
+Processing Model of Core
+SR and CR Buses
+ 
+REAKTOR 6 - - 96
+
+
+--- Page 97 ---
+
+The Library > Control > Smoother > Lin Smoother [P] Macro is not considered a CR-han-
+dling Macro, since it does not modify the CR Bundle or explicitly convert from one rate
+to another. For that reason it is located under Library > Control rather than Library >
+Clk Bundle > Control. For the same reason it automatically connects to the CR scope
+bus.
+The Lin Smoother P Macro generates a permanent stream of output events at a rate defined by
+CR bus ("P" for Permanent). Whenever there is a new event coming from the "Cutoff" input port
+Module, the smoother generates a ramp of duration specified by the Time input (in seconds)
+from the old value to the new value.
+If the Time input is not connected, there is some preconfigured default. The "(0)" input has the
+same function as for CR Lin XSmoother.
+Irregular Automatic Smoothing
+Imagine the control signal processing Structure downstream from a smoother. The processing
+in this Structure may follow different conventions, such as the following:
+•
+The control signal processing Structure is clocked by the CR clock.
+•
+The control signal processing Structure is unclocked; the processing is triggered by the in-
+coming control signal events.
+In the latter case it might be undesirable that the smoother is generating the output events all
+the time, thereby causing the control signal processing to run all the time as well. Rather, the
+smoother should only generate the output events until the target value is reached and then
+stop. This behavior is implemented by the Lin Smoother [A] Macro (Library > Control >
+Smoother > Lin Smoother [A], "A" for Automatic), which differs from Lin Smoother [P] only in
+exactly this aspect:
+Automatic smoothing of an irregular control event stream.
+Processing Model of Core
+SR and CR Buses
+ 
+REAKTOR 6 - - 97
+
+
+--- Page 98 ---
+
+Irregular Batch Smoothing
+The automatic stop option however still requires a runtime check on every control clock in or-
+der to determine whether the smoother is active or not. Such runtime check also consumes
+CPU time. Therefore it is a good idea, if one has a group of several of such smoothers, to group
+them together, performing one single runtime check for the entire group.
+This approach is implemented by the Lin Smoothers [A] Macro (Library > Control > Smoother
+> Lin Smoothers [A]):
+Batch smoothing of two irregular control event streams.
+Internally the Lin Smoothers [A] Macro contains a 'master' smoother (containing the master
+check) and a chain of 'slave' smoothers:
+The internal Structure of Lin Smoothers [A] Macro.
+Processing Model of Core
+SR and CR Buses
+ 
+REAKTOR 6 - - 98
+
+
+--- Page 99 ---
+
+The slave smoothers are the ones doing the smoothing itself and can be added or removed by
+the user of the Macro according to the number of signals which need to be smoothed. The "No
+Event" default for the Macro inputs prevents the unused inputs from initiating a smoothing
+ramp upon reset. The maximum number of slave smoothers supported by the current imple-
+mentation is 32, which should be sufficient for most purposes.
+Sticking too many smoothers together in this fashion will produce some small overhead, due to
+the fact that the per-smoother runtime checks will be performed for all smoothers as long as at
+least one of the smoothers is active.
+4.9.5
+SR Rate Change
+ 
+A conversion between audio signals of different rates is done differently from control signals.
+While control signals can be naively downsampled and smoothed upon upsampling, the audio
+signal resampling requires special kinds filtering techniques.
+In the current version of REAKTOR Core the clock rates can be only lowered, not raised.
+Thus, oversampling is currently not possible. The rate conversion Macros are of course
+available in both directions: downsampling (used upon entering the downsampled area)
+and upsampling (used upon leaving the downsampled area).
+Thus, a set of library Macros provided for the SR rate change is different from those for CR:
+A locally downsampled SVF (State-Variable Filter)
+The SRdiv2 Master Macro (Library > Clk Bundle > Audio > SRdiv2 Master) on the very left is
+the downsampling master, which is driving the downsampling converter SRdiv2 In on the left
+and the upsampling converter SRdiv2 Out on the right. Thus the filter in between is running at
+halved sampling rate. You can drive multiple SRdiv2 In and SRdiv2 Out converters with the
+same master.
+Processing Model of Core
+SR and CR Buses
+ 
+REAKTOR 6 - - 99
+
+
+--- Page 100 ---
+
+Often it might be reasonable to put the entire downsampled area inside a dedicated Macro. In
+this case it is useful to locally redefine the SR bus to the downclocked one using the same trick
+as it was explained for the CR bus in ↑4.9.4, CR rate change. Note that you still need to explicitly
+resample all incoming and outgoing audio signals of the downsampled area by using SRdiv2 In
+and SRdiv2 Out Macros.
+4.9.6
+Internal Structure of Clock Buses
+ 
+A clock bus is a Bundle containing three different fibers named "C", "R" and "Reset". For the
+convenience of the builders the Macro library contains preconfigured Bundle Pack and Unpack
+Modules for the SR and CR buses under Library > Clk Bundle > Audio > XR Pack and XR Un-
+pack:
+Preconfigured Pack and Unpack Modules for the SR/CR Bundles from the library
+The details of each of the fibers are described below. The examples of the low-level usage of
+the clock buses can be found in sections ↑5.2, Generation of Audio and Other Regularly
+Clocked Events and ↑5.3, Processing of Audio and Other Regularly Clocked Events.
+"C" Fiber
+This is the clock fiber which sends regular events at the clock rate. The audio processing Mac-
+ros are supposed to send the output audio events only in response to the clock events. Same
+holds for regularly clocked control events.
+The convention requires that no event is sent on the C fiber during the initialization.
+This particularly means that the audio signal outputs and clocked control outputs of
+Core Macros are not sending during the initialization.
+The value of the C fiber is unspecified and should not be relied upon.
+Processing Model of Core
+SR and CR Buses
+ 
+REAKTOR 6 - - 100
+
+
+--- Page 101 ---
+
+"R" Fiber
+This fiber transmits the clock rate in Hz.
+The convention requires that the R event is sent during the initialization. Afterwards it is
+sent as needed.
+The reason for this convention is to simplify the event processing in the use cases of the R fiber.
+Since the R fiber is guaranteed to send the initialization event, it can be safely used as a divisor
+in the computation of oscillator increment steps, normalized filter cutoffs, and so on.
+The events on the R fiber may cause additional computation overhead in the consumer Struc-
+tures, as they are reconfiguring themselves to a new rate, and should not be sent indiscriminately,
+but rather only when the rate changes or is likely to change (filtering out the duplicate values sent
+on this fiber is probably a little excessive, while sending events here at a regular rate is a highly
+questionable practice).
+"Reset" Fiber
+This fiber transmits a zero-value reset event. The consumers of the SR Bundle are supposed to
+reset their state (if necessary) in response to this event. E.g. a filter should reset its state,
+while a free-running oscillator does not have to do anything in response to this event.
+The convention requires that the Reset event is sent during the initialization. Afterwards
+it is sent as needed.
+The convention requires that the Reset event always has a zero value.
+The convention specifies the Reset event semantics as 'starting again without the past'.
+E.g. a Reset event can be sent upon resuming a paused clock to cause the Structures
+(such as e.g. filters) to reinitialize their states.
+Processing Model of Core
+SR and CR Buses
+ 
+REAKTOR 6 - - 101
+
+
+--- Page 102 ---
+
+The reason for sending the Reset event during the initialization is to simplify the initialization of
+the Structures, which otherwise might need to take special measures to make sure that the same
+initialization steps are performed during the initialization and during further resets. The reason for
+the zero value of the Reset event is that a typical response to the Reset event is to zero the states,
+therefore the Reset event can be directly stored to the state memory of the respective Structures.
+4.10
+Feedback Connections
+ 
+4.10.1
+Automatic Resolution
+ 
+REAKTOR Core allows the usage of the feedback loops in the Structures, provided each feed-
+back loop contains at least one scalar (float or int) wire. The loop will be handled by automati-
+cally placing an implicit one-sample audio delay somewhere within the loop,
+'Audio' means that this implicitly inserted delay will be clocked by the SR.C clock obtained from
+the current scope. The delay also responds to SR.Reset by zeroing its memory.
+It is not guaranteed that REAKTOR Core will use at maximum one implicit one-sample
+delay per detected feedback loop. In some cases it is possible that more delays will be
+inserted. For exact control over the feedback loop resolution, one needs to use z^-1 fbk
+Macros explicitly (see section ↑4.10.2, Manual Resolution).
+REAKTOR Core highlights the feedback loop visually by turning the connection color to orange:
+A highlighted feedback loop.
+If the loop does not contain any scalar wires then it is an error, which is highlighted in red:
+Processing Model of Core
+Feedback Connections
+ 
+REAKTOR 6 - - 102
+
+
+--- Page 103 ---
+
+A purely non-scalar feedback loop.
+Equally, if an SR bus definition is contained in or depends on a feedback loop, such loop is an
+error, even if it does contain scalar wires:
+SR bus dependent on the feedback loop
+The reason for this is that the implicit audio delay used for the feedback loop resolution needs
+access to SR.C and SR.Reset, which creates another feedback loop after the resolution of the first
+one. See section ↑4.10.4, Resolution Mechanism for the details of the delay's Structure.
+4.10.2
+Manual Resolution
+ 
+If exact control over the feedback loop resolution is needed, a z^-1 fbk Macro (Library > Mem-
+ory > z^-1 fbk) has to be used. In this case the compiler does not highlight the loop anymore:
+The use of the z^-1 fbk Macro to explicitly resolve the feedback loop.
+Processing Model of Core
+Feedback Connections
+ 
+REAKTOR 6 - - 103
+
+
+--- Page 104 ---
+
+The z^-1 fbk Macro implements the same one-sample delay Structure which is used by the au-
+tomatic resolution. Differently from the automatic resolution, by using this Macro the builder
+can exactly specify the position of the one-sample delay.
+The z^-1 ffd Macro (Library > Memory > z^-1 ffd) is not intended and cannot be used
+for the feedback resolution. Its intention is implementation of feedforward 1-sample au-
+dio delays.
+Neither of the above two Macros is supposed to be used for other purposes than audio
+rate 1-sample delays. For delaying other kinds of events by one tick use the Latch[-1]
+and Event[-1] Macros.
+4.10.3
+Nonsolid Macros and Feedback Loops
+ 
+The Solid property setting of the Macro is affecting how the Macro is treated in respect to the
+feedback loops.
+•
+Solid Macros 'cannot be entered' by feedback loops. This means that, regardless of the in-
+ternal contents of the Macro, a feedback loop around this Macro is always a feedback
+loop. A Macro is treated as if it didn't have any internal Structure and was just a single
+solid block:
+Processing Model of Core
+Feedback Connections
+ 
+REAKTOR 6 - - 104
+
+
+--- Page 105 ---
+
+•
+The boundaries of nonsolid Macros are transparent to the feedback loops. If there is no
+unidirectional connection from an input to an output internally inside a nonsolid Macro,
+there will be no loop:
+In particular, the z^-1 fbk Macro needs to be nonsolid in order to be able to resolve the
+feedback.
+4.10.4
+Resolution Mechanism
+ 
+Internally the z^-1 fbk Macro loops like follows:
+The internal Structure of the z^-1 fbk Macro.
+Processing Model of Core
+Feedback Connections
+ 
+REAKTOR 6 - - 105
+
+
+--- Page 106 ---
+
+The Latch and the Write Modules on the left are responsible for handling the SR.Reset, where
+the "(0)" input can be used to specify the value to reset to. The DN Cancel Module takes care
+of denormals (see section ↑5.5, Denormals and Other Bad Numbers). The essential part of the
+Structure is based on the remaining two Modules:
+The essential part of the z^-1 fbk Macro's internal Structure.
+Since the z^-1 fbk Macro is nonsolid, the following two Structures are equivalent:
+An equivalent expansion of the z^-1 fbk Macro (the nonessential parts of the z^-1 fbk's internal Structure are omitted).
+So, formally from the compiler's perspective, there is no feedback loop at all (and thus no
+highlighting either).
+Processing Model of Core
+Feedback Connections
+ 
+REAKTOR 6 - - 106
+

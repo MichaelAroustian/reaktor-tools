@@ -1,0 +1,958 @@
+--- Page 805 ---
+
+15
+Terminal
+ 
+Terminal Modules are used to route Audio and Control signals in and out of REAKTOR’s 
+Instrument and Macro sub-Structures. The most common type of Terminal Modules are 
+the In and Out Modules which serve as input and output ports for your Instruments and 
+Macros. There are also Send and Receive as well as IC Send and IC Receive Modules to 
+create "wireless" connections within and across Instruments, respectively. Additionally, you 
+will find here the OSC Send and OSC Modules which make it possible to create custom 
+OSC connections to and from your Instrument. You can create In and Out Modules auto­
+matically by using the dynamic ports feature. This is done by dragging a wire to the three 
+dots on either lower corner of the Instrument or Macro Object (depending if you want input 
+or output ports) while holding down the Ctrl key in Windows (Cmd key in Mac OS X).
+15.1
+In Module
+ 
+15.1.1
+Overview
+ 
+The In Module is the most common input terminal for Audio and Event signals. To each In 
+Module inside an Instrument or Macro corresponds an input port on the Instrument or 
+Macro Object.
+Application
+Place an In Module inside an Instrument or Macro Object to create an input port for it. 
+Through this input port you can now route signals from outside the Object into its Struc­
+ture.
+In Modules that are placed in the top-level Instrument's Structure create connections to 
+the Audio Bridge between REAKTOR and your soundcard. The input and output connec­
+tions of the Audio Bridge can be configured in the Audio and MIDI Settings dialog window 
+(see chapter 2 in the Getting Started Manual). In such a case the Info page of the Module 
+shows which audio input channel of your soundcard it is connected to.
+15.1.2
+Ports
+ 
+(In) "In" is the hybrid input port for the signal to be sent from the outside into the Instru­
+ment or Macro.
+Terminal
+In Module
+ 
+REAKTOR 5.5 - Module Reference - 805
+
+
+--- Page 806 ---
+
+15.1.3
+Properties: Function Page
+ 
+Changing the Port Order
+The number on the In Module (shown in the Module picture above) denotes the position at 
+which the input port appears on the Instrument or Macro when counted from the topmost 
+input port. This number can be changed using the Port Index edit field in the Module's 
+Function page (shown below).
+Please refer to subsection 7.3.4 in the Application Reference for more information on 
+changing the port order including an example for working with input and output ports.
+Fig. 15.1 Use the Port Index edit field in the Module's Function page to set the position at which the input port appears at 
+the outside of the Instrument or Macro when counted starting from the topmost input port.
+15.2
+Out Module
+ 
+Fig. 15.2 Out Module
+15.2.1
+Overview
+ 
+The Out Module is the most common output terminal for Audio and Event signals. To each 
+Out Module inside an Instrument or Macro corresponds an output port on the Instrument 
+or Macro Object.
+Application
+Place an Out Module inside an Instrument or Macro Object to create an output port for it. 
+Through this output port you can now route signals from the Object's internal Structure to 
+the outside. Note that Instruments can only output Monophonic signals. In Instrument's 
+send outgoing Polyphonic signals through a Voice Combiner Module (↑14.3, Audio Voice 
+Combiner) before connecting them to the Out Module.
+Terminal
+In Module
+ 
+REAKTOR 5.5 - Module Reference - 806
+
+
+--- Page 807 ---
+
+Out Modules that are placed in the top-level Instrument's Structure create connections to 
+the Audio Bridge between REAKTOR and your soundcard. The input and output connec­
+tions of the Audio Bridge can be configured in the Audio and MIDI Settings dialog window 
+(see chapter 2 in the Getting Started Manual). In such a case the Info page of the Module 
+shows which audio output channel of your soundcard it is connected to.
+15.2.2
+Ports
+ 
+▪
+(Out) "Out" is the hybrid output port for the signal to be sent from the Instrument's or 
+Macro's internal Structure to the outside.
+15.2.3
+Properties: Function Page
+ 
+The number on the Out Module (shown above in the Module picture) denotes the position 
+at which the output port appears on the Instrument or Macro when counted from the top­
+most output port. This number can be changed using the Port Index edit field in the Mod­
+ule's Function page (shown below).
+Please refer to subsection 7.3.4 in the Application Reference for more information on 
+changing the port order including an example for working with input and output ports.
+Fig. 15.3 Use the Port Index edit field in the Module's Function page to set the position at which the output port appears at 
+the outside of the Instrument or Macro when counted starting from the topmost output port.
+15.3
+Send
+ 
+Fig. 15.4 Send Module
+15.3.1
+Overview
+ 
+The Send Module is an outgoing "wireless" connection for Audio and Event signals within 
+an Instrument. Signals sent to the hybrid input port can be retrieved at the output port of 
+any Receive Module within the same Instrument. Each inserted Send Module creates an 
+entry in a list of available signal sources in the Function page of all Receive Modules 
+(↑15.4, Receive) in the Instrument. The label of the Send Module is used as the name of 
+Terminal
+Out Module
+ 
+REAKTOR 5.5 - Module Reference - 807
+
+
+--- Page 808 ---
+
+the corresponding entry in the signal sources list. Choosing the corresponding entry from 
+the signal sources list of a Receive Module automatically creates a "wireless" connection 
+between the Send Module and that Receive Module.
+Application
+Use the Send and Receive Modules to create "wireless" connections within an Instrument. 
+This might be desirable to keep Structures tidy by eliminating wires or just to save you the 
+hassle of wiring signals over great distances and many hierarchy levels. Also, you could 
+create a modular synthesizer Instrument for which the connections between the individual 
+modules can be controlled from the Instrument Panel.
+For an example regarding the Send Module, please refer to the entry on the Receive Module 
+(↑15.4, Receive).
+15.3.2
+Ports
+ 
+▪
+(In) "In" is the hybrid input port for the signal to be sent to a Receive Module.
+15.3.3
+Properties: Function Page
+ 
+Keeping the Send Module Always Active
+If the Send Module is not connected to an active signal flow, values at its input port are 
+not sent to connected Receive Modules. Connecting it directly to a Knob Module, for ex­
+ample, does not suffice. In such a case you can activate the Module with the Always Active 
+checkbox.
+► To activate Send Module, go to its Function page and engage the Always Active checkbox, 
+shown in the figure below.
+Terminal
+Send
+ 
+REAKTOR 5.5 - Module Reference - 808
+
+
+--- Page 809 ---
+
+15.4
+Receive
+ 
+Fig. 15.5 Receive Module
+15.4.1
+Overview
+ 
+The Receive Module is an incoming "wireless" connection for Audio and Event signals 
+within an Instrument. Use the signal sources list in the Module's Panel representation or 
+the Function page to select the Send Module whose input signal should be sent from the 
+Receive Module's hybrid output port. Each Send Module creates an entry in the signal 
+sources list seen by Receive Modules within the same Instrument. Choosing a Send Mod­
+ule's entry from the signal sources list automatically creates a "wireless" connection be­
+tween that Send Module and the Receive Module.
+Application
+Use the Send and Receive Modules to create "wireless" connections within an Instrument. 
+This might be desirable to keep Structures tidy by eliminating wires or just to save you the 
+hassle of wiring signals over great distances and many hierarchy levels. Also, you could 
+create a modular synthesizer Instrument for which the connections between the individual 
+modules can be controlled from the Instrument Panel.
+15.4.2
+Ports
+ 
+▪
+(Out) "Out" is the hybrid output port for the signal received from a Send Module within 
+the same Instrument.
+Terminal
+Receive
+ 
+REAKTOR 5.5 - Module Reference - 809
+
+
+--- Page 810 ---
+
+15.4.3
+Properties: Function Page
+ 
+Selecting a Send Module
+For each Send Module inserted in the same Instrument a list entry is created (shown in 
+the figure below). The list entry name will be created according to the Label of the corre­
+sponding Send module.
+► To choose a Send Module from which to receive the incoming signal, choose the corre­
+sponding menu entry from the Connect drop-down menu, as shown in the screenshot below. 
+The "wireless" connection is created right after choosing the signal source. Note that only 
+compatible connections show up in the Connect drop-down menu.
+The Signal Sources List
+The signal sources list contains the following columns:
+▪
+#: This column indicates the position of the Send Module in the list. The Default Value 
+refers to this number.
+▪
+Label: This column displays the name of the Send Module. If you rename a Send mod­
+ule the Label in the list will be updated.
+▪
+State: This column indicates if a connection to this Send Module is possible. Only es­
+tablish a connection if this field displays OK. Note that the "State" corresponding to 
+"Send 3" shows "#Err A->E", indicating that a connection to the Send 3 Module is in­
+compatible since "Send 3" sends an Audio signal, but the output port of the Receive 
+Module at hand has already been connected to an Event input port.
+Terminal
+Receive
+ 
+REAKTOR 5.5 - Module Reference - 810
+
+
+--- Page 811 ---
+
+▪
+Use: This column allows you to set the position of the list entry in the Receive Module's 
+Panel representation. "0" corresponds to the first entry, "1" to the second, and so on. 
+To remove an entry from the Panel representation, double-click he corresponding "Use" 
+value and press the Del or Backspace key on your computer keyboard.
+Automatic Adding of New Send Entries to Panel's List
+► To automatically add entries for newly created Send Modules to a Receive Module's 
+Panel representation, engage the Automatic Use of new Sends checkbox, shown in the figure 
+above.
+Setting the Mouse Sensitivity of the Spin Panel Representation
+If you have chosen the Spin Panel representation in the View page, you can switch be­
+tween signal sources by clicking and dragging the Spin menu. For this, you might want to 
+change the sensitivity of the Spin menu in respect to your mouse movements.
+► To set the Spin Panel representation to have low mouse sensitivity, set the Mouse Reso 
+edit field in the Function page to a high value, perhaps “500”. For high sensitivity, you 
+might set the Mouse Reso edit field to “10”. The Mouse Reso edit field is shown in the figure 
+below.
+Setting the Default Signal Source
+The Default Value is used whenever an Initialization of the control happens. In this case 
+the entry in the signal sources list that has the same value for "#" as the Default Value will 
+be chosen as the signal source.
+► To set the Default Value, enter the integer corresponding to the desired default signal 
+source's "#" value into the Default edit field (shown in the figure above).
+Adding the Switch Off List Entry
+You can also create a menu entry in the Panel representation's signal sources list that cor­
+responds to receiving no signal from any of the Send Modules.
+Terminal
+Receive
+ 
+REAKTOR 5.5 - Module Reference - 811
+
+
+--- Page 812 ---
+
+► To insert a menu entry to the Module's Panel representation that corresponds to switch­
+ing the receive functionality off, engage the Enable Switch Off checkbox, shown in the figure 
+above. A menu entry labeled "Off" will appear in the Receive Module's Panel representa­
+tion.
+15.4.4
+Properties: View Page
+ 
+Activating the Receive Module's Panel Representation
+The Receive Module allows you to choose the signal source from the Instrument Panel. For 
+this you need to make the Panel representation visible.
+► To activate the Receive Module's Panel representation, go to the View page and engage 
+the On checkbox, shown in the figure below.
+Choosing the Receive Module's Panel Representation
+You can choose between four styles for the Receive Module's Panel representation. This is 
+done by choosing the desired menu entry from the Style drop-down menu in the Module's 
+View page, as shown in the figure below. The following styles are available:
+▪
+Button: Each signal source entry creates a button. All buttons will be arrayed vertically 
+in the Instrument Panel. The currently selected signal source's button will be displayed 
+in the Indicator color of the Instrument (please refer to section 8.3 in the Application 
+Reference for more information on changing the different colors of the Instrument). 
+The size of the buttons can be adjusted in the Module's View page.
+▪
+Menu: The signal sources are listed in a drop-down menu on the Instrument Panel.
+▪
+Text Panel: Each signal source has an entry in a list on the Instrument Panel. The list 
+displays several entries at once. If you have created more entries than are able to fit 
+into the text panel display specified by the Width and Height edit field in the View page, 
+you will get scrollbars in the panel.
+▪
+Spin: Each signal source has an entry in a list on the Instrument Panel. The list only 
+displays the currently selected signal source. You can switch through the list of signal 
+sources using a + and a - button to the right of the list entry in the Panel representa­
+tion.
+Terminal
+Receive
+ 
+REAKTOR 5.5 - Module Reference - 812
+
+
+--- Page 813 ---
+
+Fig. 15.6 Use the Style drop-down menu to choose the Panel representation of the Receive Module.
+Changing the Size of the Snapshot Module's Panel Representation
+Depending on the size of your signal sources list, you might need a small or large area for 
+the Receive Module's Panel representation.
+► To change the width and height of the Receive Module's Panel representation, go to the 
+Module's View page and enter the desired values into the Width and Height edit fields, as 
+shown in the figure below.
+For more detailed information on editing the Receive Module's Panel appearance using the 
+View page, please refer to subsection 8.2.3 in the Application Reference. Also, custom con­
+trol styles can be created via skins. Please refer to section 8.5 in the Application Reference 
+for more information on how to do this.
+15.4.5
+Example: Send and Receive within an Instrument
+ 
+This example briefly outlines how to create a connection between Send (↑15.3, Send) and 
+Receive Modules (↑15.4, Receive). First, let's say you have three signal sources coming 
+from a Macro's output ports (shown in the Structure below). To be able to use these sour­
+ces with Receive Modules elsewhere in the Instrument, place a Send Module for each sig­
+nal into the Structure. Rename the Send Modules as you like.
+Terminal
+Receive
+ 
+REAKTOR 5.5 - Module Reference - 813
+
+
+--- Page 814 ---
+
+Fig. 15.7 Fetch signals for using Send Modules.
+Navigate to the place where you wish to use one or more of these signals connected to 
+Send Modules and insert a Receive Module (↑15.4, Receive), as shown in the figure be­
+low.
+Fig. 15.8 Signals connected to Send Modules elsewhere in the Structure can be retrieved using the Receive Module.
+For the example shown, three sources are available for the Receive Module. These sources 
+can be chosen in the Receive Module's Function page, depicted in the figure below. Note 
+that the signal types should be compatible between the chosen Send Module (↑15.3, 
+Send) and the Receive Module.
+Fig. 15.9 Use the Receive Module's Function page to choose which Send Module's signal it should output.
+Terminal
+Receive
+ 
+REAKTOR 5.5 - Module Reference - 814
+
+
+--- Page 815 ---
+
+15.5
+IC Send
+ 
+Fig. 15.10 IC Send Module
+15.5.1
+Overview
+ 
+The IC Send Module transmits Monophonic Event signals to any Module in the Ensemble 
+capable of receiving IC (Internal Connection) signals. Such Modules include IC Receive 
+Modules, but also various Panel elements such as knobs and switches. The IC Send Mod­
+ule has a Panel display allowing connections to be configured from the Instrument panel. 
+All Modules in the Ensemble capable of receiving IC signals will appear in this Panel rep­
+resentation, except those with the No Entry in IC Send Menu checkbox in their Function page 
+engaged. Connections can also be established in the Connections page of the Modules to 
+be connected.
+Application
+Internal Connections work globally. This means that the IC Send Module can be used to 
+make wireless connections between different Instruments within the Ensemble. Connec­
+tions between Send (↑15.3, Send) and Receive Modules (↑15.4, Receive) ↑15.6, IC Re­
+ceive(described above) are limited to the bounds of the parent Instrument. The advantage 
+of the IC protocol is that connections between parts of different Instruments can be made 
+and between a number of Modules, not only IC Send and IC Receive Modules (↑15.6, IC 
+Receive) (as is the case for Send and Receive Modules). However, the IC protocol only 
+supports Event streams whereas Send and Receive Modules can transmit Audio signals as 
+well. Use the IC protocol to transmit control messages between instruments ranging from 
+macro control parameters for several knobs and faders to Monophonic modulation sequen­
+ces.
+► To choose a destination to which to route the Event signal at the IC Send Module's in­
+put port, click on its Panel representation and select the desired destination from the 
+drop-down menu (shown below).
+Terminal
+IC Send
+ 
+REAKTOR 5.5 - Module Reference - 815
+
+
+--- Page 816 ---
+
+Fig. 15.11 The incoming signal at this IC Send Module has been routed to two faders in the Master Instrument one of which 
+controls the Master Level the other the Master Tune parameters (as indicated by the fader Labels).
+The menu is sorted into submenus, one for each Instrument in the Ensemble. Selected 
+menu entries have a dot next to them. As can be seen in the screenshot above, you can 
+select several menu entries. Clicking on a selected menu entry again disconnects the IC 
+Send Module from the corresponding destination. The screenshot below shows how the 
+two Internal Connections created above are reflected in the IC Send Module's Connections 
+page.
+Fig. 15.12 The Internal Connections area of the IC Send Module shown in the previous figure indicates that two Internal 
+Connections have been made to faders labeled "Level" and "Tune", respectively. These are both outgoing connections.
+Please refer to section 14.2 in the Application Reference for more information on the IC 
+Send Module's Function page and in particular for an example on how to create Internal 
+Connections from the Connections page of a compatible Module.
+15.5.2
+Ports
+ 
+▪
+(In) "In" is the Event input port for the Event signal to be sent to an IC compatible 
+Module anywhere in the Ensemble.
+Terminal
+IC Send
+ 
+REAKTOR 5.5 - Module Reference - 816
+
+
+--- Page 817 ---
+
+15.5.3
+Properties: Function Page
+ 
+Keeping the IC Send Module Always Active
+If the IC Send Module is not connected to an active signal flow, values at its input port are 
+not sent to the chosen destination. Connecting its input port directly to a Knob Module, 
+for example, does not suffice. In such a case you can activate the Module with the Always 
+Active checkbox.
+► To activate IC Send Module, go to its Function page and engage the Always Active check­
+box, shown in the figure below.
+Please refer to subsection 14.2.2 in the Application Reference for an explanation on how 
+ranges are treated in the IC protocol and how the Min and Max edit fields of the IC Send Mod­
+ule affect IC transmission.
+15.5.4
+Properties: View Page
+ 
+Visibility of the Panel Representation
+The IC Send Module's Panel representation consists of a drop-down menu and a picture.
+► To make the whole Panel representation disappear, disengage the On checkbox, shown 
+in the figure below.
+► To make the Label above the drop-down menu disappear, disengage the Show Label 
+checkbox, shown in the screenshot below.
+► To make the drop-down menu disappear, independent of the Label, disengage the Show 
+Picture checkbox, also shown in the figure below.
+Terminal
+IC Send
+ 
+REAKTOR 5.5 - Module Reference - 817
+
+
+--- Page 818 ---
+
+Fig. 15.13 The Visible area of the IC Send Module's lets you choose the visibility of the Label and drop-down menu sepa­
+rately. The Width edit field lets you choose the width of the drop-down menu in pixels.
+Choosing the Size of the Drop-Down Menu
+Depending on the number of characters that you wish to be visible in the IC Send Mod­
+ule's drop-down menu, you might want to increase or decrease the width of the Panel rep­
+resentation.
+► To set the width of the IC Send Module's Panel representation, enter the desired value 
+in pixels into the Width edit field, shown in the figure above.
+15.6
+IC Receive
+ 
+Fig. 15.14 IC Receive Module
+15.6.1
+Overview
+ 
+The IC Receive Module is used to transmit Monophonic Event signals from any Module in 
+the Ensemble capable of sending IC (Internal Connection) signals. Such Modules include 
+IC Send Modules (↑15.5, IC Send), but also various Panel elements such as knobs and 
+switches. The IC Receive Module is typically used together with IC Send Modules. In such 
+a case the connection is usually made using the IC Send Module's Panel representation 
+(shown in its entry in the Module Reference). However, connections to other IC compatible 
+Modules can also be established in the Connections page of the Modules to be connected.
+Application
+Internal Connections work globally. This means that the IC Receive Module can be used to 
+make wireless connections between different Instruments within the Ensemble. Connec­
+tions between Send Modules (↑15.3, Send) and Receive Modules (↑15.4, Receive)are lim­
+Terminal
+IC Receive
+ 
+REAKTOR 5.5 - Module Reference - 818
+
+
+--- Page 819 ---
+
+ited to the bounds of the parent Instrument. The advantage of the IC protocol is that con­
+nections between parts of different Instruments can be made and between a number of 
+Modules, not only IC Send and IC Receive Modules (as is the case for Send and Receive 
+Modules). However, the IC protocol only supports Event streams whereas Send and Re­
+ceive Modules can transmit Audio signals as well. Use the IC protocol to transmit control 
+messages between instruments ranging from macro control parameters for several knobs 
+and faders to Monophonic modulation sequences.
+Please refer to section 14.2 in the Application Reference for an example treating how to cre­
+ate Internal Connections from the Connections pages of Modules to be connected as well as 
+how ranges set in the IC Module's Function page are processed.
+15.6.2
+Ports
+ 
+▪
+(Out) "Out" is the Event output port for the IC signal incoming from an IC Send Module 
+(↑15.5, IC Send) or another source configured in the IC Receive Module's Connections 
+page.
+15.6.3
+Properties: Connections Page
+ 
+All knobs, faders, and switches automatically appear in the IC Send Module's (↑15.5, IC 
+Send) menu in the Instrument Panel. Luckily you can keep unwanted entries from appear­
+ing in the IC Send Menu.
+► Engage the No Entry in IC Send Menu checkbox in a Module's Connections page (shown be­
+low) to keep its menu entry from appearing in the IC Send menu.
+The No Entry In IC Send Menu checkbox is found in the Connections page of all IC compatible 
+Modules except the IC Send Module.
+15.7
+OSC Send
+ 
+Fig. 15.15 OSC Send Module
+Terminal
+IC Receive
+ 
+REAKTOR 5.5 - Module Reference - 819
+
+
+--- Page 820 ---
+
+15.7.1
+Overview
+ 
+The OSC Send Module is used to transmit incoming Event signals as OSC messages. 
+These OSC messages can either be sent to other Modules in your Ensemble (Panel ele­
+ments, for example) or to one or more external OSC devices, including other computers. In 
+the Connections page you can use the OSC Target and OSC Source drop-down menus (shown in 
+the figure below) to select Modules or external devices to which to send and from which to 
+receive OSC signals. Established OSC connections show up in the same display in the 
+Connections page as Internal Connections. . This is shown in the figure below, which also 
+serves as an example of how to connect an OSC Send Module placed in the Structure. Use 
+the trashcan icon to delete existing connections. The OSC send and receive settings in the 
+Connections pages of other OSC compatible REAKTOR Modules are the same as for the 
+OSC Send and OSC Receive Modules.
+Fig. 15.16 Established OSC Connections appear in the Internal Connections area of the Connections page.
+In order for the desired destinations and sources to appear in the OSC Target and OSC Source 
+drop-down menus, you need to configure REAKTOR's OSC Settings. Please refer to section 
+13.4 in the Application Reference to learn how to do this and how to set up an external OSC 
+device with REAKTOR.
+The OSC Send Module supports dynamic input ports. When all existing input ports are 
+connected, new input ports can be added by wiring to the three dots in the input port area 
+while holding down the Ctrl key in Windows (Cmd key in Mac OS X). The maximum num­
+ber of input ports is 10.
+When the OSC Send Module receives signals at more than one input port, it sends OSC 
+messages with multiple arguments. For example, if you wire the "MX" and "MY" output 
+ports of an XY Module (↑1.14, XY) to two input ports of the OSC Send Module, each out­
+going OSC message from the OSC Send Module will carry both the "MX" and "MY" value. 
+When recollecting such multiple arguments with an OSC Receive Module, you must create 
+Terminal
+OSC Send
+ 
+REAKTOR 5.5 - Module Reference - 820
+
+
+--- Page 821 ---
+
+the same number of output ports as is the multiplicity of the incoming OSC message: one 
+for each argument. The maximum number of arguments for the OSC protocol is 10. So 
+naturally, it is the maximum number of input and output ports for the OSC Send and OSC 
+Receive Modules as well.
+Application
+Use the OSC protocol to set up communication between REAKTOR and other computers 
+and OSC devices. You can even have two separate instances of REAKTOR running on dif­
+ferent computers in different parts of the world and control one from the other. OSC is also 
+a convenient communication protocol for multi-touch devices and other advanced control­
+lers.
+15.7.2
+Properties: Function Page
+ 
+Keeping the OSC Send Module Always Active
+If the OSC Send Module is not connected to an active signal flow, values at its input port 
+are not sent to the chosen destination. Connecting its input port directly to a Knob Mod­
+ule, for example, does not suffice. In such a case you can activate the Module with the 
+Always Active checkbox.
+► To activate OSC Send Module, go to its Function page and engage the Always Active 
+checkbox, shown in the figure below.
+Changing the Minimum Number of Input Ports
+► To change the minimum number of input ports, type the desired number into the Min 
+Num Port Groups edit field (shown in the figure below). The maximum number of input ports 
+for the OSC Send Module is 10.
+Terminal
+OSC Send
+ 
+REAKTOR 5.5 - Module Reference - 821
+
+
+--- Page 822 ---
+
+15.8
+OSC Receive
+ 
+Fig. 15.17 OSC Receive Module
+15.8.1
+Overview
+ 
+The OSC Receive Module is used to transmit incoming OSC signals to the Structure 
+Events. Incoming OSC messages can either stem from other Modules in your Ensemble 
+(Panel elements, for example) or from one or more external OSC devices, including other 
+computers. In the Connections page you can use the OSC Source and OSC Target drop-down 
+menus (shown in the figure below) to select Modules or external devices from which to re­
+ceive and to which to send OSC signals. Established OSC connections show up in the 
+same display in the Connections page as Internal Connections. This is shown in the figure 
+below, which also serves as an example of how to connect an OSC Receive Module placed 
+in the Structure. Use the trashcan icon to delete existing connections. The OSC send and 
+receive settings in the Connections pages of other OSC compatible REAKTOR Modules are 
+the same as for the OSC Send and OSC Receive Modules.
+Fig. 15.18 Established OSC Connections appear in the Internal Connections area of the Connections page.
+In order for the desired destinations and sources to appear in the OSC Target and OSC Source 
+drop-down menus, you need to configure REAKTOR's OSC Settings. Please refer to section 
+13.4 in the Application Reference to learn how to do this and how to set up an external OSC 
+device with REAKTOR.
+Terminal
+OSC Receive
+ 
+REAKTOR 5.5 - Module Reference - 822
+
+
+--- Page 823 ---
+
+The OSC Receive Module supports dynamic output ports. When all existing output ports 
+are connected, new output ports can be added by wiring to the three dots in the output 
+port area while holding down the Ctrl key in Windows (Cmd key in Mac OS X). The maxi­
+mum number of output ports is 10.
+The OSC Receive Module can receive OSC messages with multiple arguments. In this case 
+you must create the same number of output ports as is the multiplicity of the incoming 
+OSC message: one for each argument. The maximum number of arguments for the OSC 
+protocol is 10. So naturally, it is the maximum number of input and output ports for the 
+OSC Send and OSC Receive Modules as well.
+Application
+Use the OSC protocol to set up communication between REAKTOR and other computers 
+and OSC devices. You can even have two separate instances of REAKTOR running on dif­
+ferent computers in different parts of the world and control one from the other. OSC is also 
+a convenient communication protocol for multi-touch devices and other advanced control­
+lers.
+15.8.2
+Properties: Function Page
+ 
+Changing the Minimum Number of Output Ports
+► To change the minimum number of output ports, type the desired number into the Min 
+Num Port Groups edit field (shown in the figure below). The maximum number of output ports 
+for the OSC Receive Module is 10.
+Terminal
+OSC Receive
+ 
+REAKTOR 5.5 - Module Reference - 823
+
+
+--- Page 824 ---
+
+Index
+Numerics
+1 / Square Root Module [271]
+12-Step Sequencer Module [442]
+16-Step Sequencer Module [445]
+1-Pole FM Module [528]
+1-Pole Module [526]
+2-Pole Module [533]
+2-Pole Notch Module [539] [542]
+4-Ramp Module [383] [512]
+4-Step Module [374]
+5-Ramp Module [385] [516]
+5-Step Module [376]
+6-Ramp Module [387] [521]
+6-Step Module [378]
+8-Ramp Module [389]
+8-Step Module [380]
+8-Step Sequencer Module [438]
+A
+A to E Module [739]
+A to E Perm Module [743]
+A to E Trig Module [741]
+A to Gate Module [744]
+Accumulator Module [666]
+AD Module [483]
+ADBDR Module [496]
+ADBDSR Module [500]
+ADR Module [489]
+AHDBDR Module [508]
+AHDSR Module [504]
+AR Module [486]
+ArcCos Module [278]
+ArcSin Module [277]
+ArcTan Module [280]
+Audio Frequency Divider Module [660]
+Audio Modifier Modules [626]
+Audio Smoother Module [753]
+Audio Table Module [662]
+Audio Voice Combiner Module [734]
+B
+Beat Loop Module [428]
+Bi-Pulse Module [365]
+Bi-Saw Module [316]
+Button Module [48]
+Index
+ 
+REAKTOR 5.5 - Module Reference - 824
+
+
+--- Page 825 ---
+
+C
+Channel Aftertouch Out Module [217]
+Channel Message Module [205]
+Channel Message Out Module [233]
+Chopper Module [638]
+Clock Module [199]
+Clock Osc Module [393]
+Clock Out Module [230]
+Compare Module [256]
+Compare/Equal Module [258]
+Constant Module [237]
+Control Shaper 2 Module [680]
+Controller Module [177]
+Controller Out Module [213]
+Counter Module [669]
+Crossfade Module [289]
+Cubic Shaper Module [651]
+D
+D Module [466]
+DBDR Module [476]
+DBDSR Module [479]
+Delay Modules [599]
+Diffuser Module [607]
+Distributor Module [293]
+Divide Module [251]
+DR Module [469]
+DSR Module [472]
+E
+Envelope Modules [454]
+Event Frequency Divider Module [676]
+Event Processing Modules [666]
+Event Smoother Module [756]
+Event Voice Combiner All Module [735]
+Event Voice Combiner Min Module [738]
+Exp (Lvl-to-A) Module [262]
+Exp (P-to-F) Module [264]
+F
+Fader Module [46]
+Filter Modules [526]
+From Voice Module [750]
+G
+Gate Module [156]
+Geiger Module [399]
+Grain Cloud Delay Module [615]
+Grain Cloud Module [423]
+Grain Delay Module [611]
+H
+H Module [458]
+Hi Shelf EQ FM Module [586]
+Hi Shelf EQ Module [584]
+Hold Module [716]
+HR - Env Module [462]
+Index
+ 
+REAKTOR 5.5 - Module Reference - 825
+
+
+--- Page 826 ---
+
+I
+IC Receive Module [818]
+IC Send Module [815]
+Impulse FM Module [369]
+Impulse Module [367]
+Impulse Sync Module [371]
+In Module [805]
+Integrator Module [596]
+Invert Module [242]
+K
+Knob Module [46]
+L
+Ladder Filter FM Module [569]
+Ladder Filter Module [565]
+Lamp Module [56]
+Level Lamp Module [61]
+Level Meter Module [73]
+LFO Module [454]
+LFO Modules [454]
+List Module [49]
+Lo Shelf EQ FM Module [591]
+Lo Shelf EQ Module [589]
+Log (A-to-Lvl) Module [265]
+Log (F-to-P) Module [267]
+Logic AND Module [684]
+Logic EXOR Module [688]
+Logic OR Module [686]
+Lookup Module [432]
+M
+Master Tune/Level Module [757]
+Math Modules [237]
+Merge Module [701]
+Meter Module [69]
+MIDI Channel Info Module [774]
+MIDI In Modules [151]
+MIDI Out Modules [208]
+Mirror 1 Module [634]
+Mirror 2 Module [636]
+Mixer Module [302]
+Mod Clipper Module [632]
+Modal Bank Module [573]
+Modulo Module [252]
+Mouse Area Module [132]
+Mult/Add Module [246]
+Multi 2-Pole FM Module [535]
+Multi Display Module [111]
+Multi Picture Module [80]
+Multi Text Module [96]
+Multi/HP 4-Pole FM Module [558]
+Multi/HP 4-Pole Module [554]
+Multi/LP 4-Pole FM Module [550]
+Multiplex 16 Module [449]
+Multiply Module [244]
+Multi-Tap Module [603]
+N
+Noise Module [396]
+Note Pitch Module [151]
+Note Pitch/Gate Module [208]
+Note Range Module [771]
+Index
+ 
+REAKTOR 5.5 - Module Reference - 826
+
+
+--- Page 827 ---
+
+O
+Off Velocity Module [174]
+On Velocity Module [169]
+Order Module [691]
+OSC Receive Module [822]
+Oscillator Modules [307]
+Out Module [806]
+P
+Panel Index Module [148]
+Panel Modules [46]
+Par FM Module [329]
+Par PWM Module [334]
+Par Sync Module [331]
+Parabol Module [327]
+Parabolic Shaper Module [650]
+Peak Detector Module [656]
+Peak EQ Module [578] [580]
+Picture Module [77]
+Pitch Former Module [417]
+Pitchbend Module [155]
+Pitchbend Out Module [211]
+-Pole All-Pass Module [531]
+Poly Aftertouch Module [184]
+Poly Aftertouch Out Module [220]
+Poly Display Module [122]
+Power Module [269]
+Pro-52 Module [562]
+Program Change Module [191]
+Program Change Out Module [226]
+Pulse 1-Ramp Module [359]
+Pulse 2-Ramp Module [362]
+Pulse FM Module [353]
+Pulse Module [350]
+Q
+Quantize Module [260]
+R
+Ramp Osc Module [391]
+Random Module [397]
+Randomize Module [674]
+Receive Module [809]
+Reciprocal Module [249]
+Rectifier Module [254]
+Rectify/Sign Module [255]
+Relay Module [287]
+Resynth Module [412]
+RGB Lamp Module [66]
+Router 1 to M Module [711]
+Router M to 1 Module [706]
+Router Module [709]
+Index
+ 
+REAKTOR 5.5 - Module Reference - 827
+
+
+--- Page 828 ---
+
+S
+Sample and Hold Module [658]
+Sampler FM Module [404]
+Sampler Loop Module [407]
+Sampler Module [402]
+Sampler Modules [402]
+Saturator 2 Module [628]
+Saturator Module [626]
+Saw FM Module [309]
+Saw Pulse Module [314]
+Saw Sync Module [311]
+Sawtooth Module [307]
+Scope Module [107]
+Sel Note Gate Module [165]
+Sel Poly Aftertouch [187]
+Sel Poly Aftertouch Out Module [222]
+Selector Module [282]
+Send Module [807]
+Separator Module [697]
+Sequencer Modules [435]
+Set Random Module [782]
+Shaper 1 BP Module [641]
+Shaper 2 BP Module [643]
+Shaper 3 BP Module [646]
+Signal Path Modules [282]
+Sine 4x Module [343]
+Sine Bank Module [346]
+Sine FM Module [338]
+Sine Module [272] [336]
+Sine Sync Module [340]
+Sine/Cosine Module [274]
+Single Trig Gate Module [161]
+Slew Limiter Module [654]
+Slow Random Module [457]
+Snap Value Array Module [797]
+Song Position Module [203]
+Song Position Out Module [231]
+Square Root Module [270]
+Stacked Macro Module [147]
+Start/Stop Module [194]
+Start/Stop Out Module [228]
+Step Filter Module [703]
+Stereo Mixer Module [304]
+Stereo Pan Module [298]
+Subtract Module [241]
+Switch Module [52]
+Sync Pulse Module [201]
+System Info Module [769]
+T
+Tapedeck 1 Channel Module [722]
+Tapedeck 2 Channel Module [728]
+Tempo Info Module [760]
+Terminal Modules [805]
+Text Module [93]
+Timer Module [715]
+To Voice Module [746]
+Tri Sync Module [322]
+Tri/Par Symm Module [325]
+Triangle FM Module [320]
+Triangle Module [318]
+Tuning Module [766]
+U
+Unison Spread Module [784]
+Unit Delay Module [622]
+Index
+ 
+REAKTOR 5.5 - Module Reference - 828
+
+
+--- Page 829 ---
+
+V
+Value Module [699]
+Voice Info Module [761]
+Voice Shift Module [752]
+X
+XY Module [100]
+Index
+ 
+REAKTOR 5.5 - Module Reference - 829
+

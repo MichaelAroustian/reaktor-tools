@@ -97,11 +97,14 @@ The retail Reaktor 6.5.0 binary includes a built-in Robot Framework XML-RPC serv
 ### One-time setup (persists across reboots)
 
 ```bash
+# Feature flag — write to system plist (requires sudo) so it survives user plist resets
+sudo defaults write "/Library/Preferences/com.native-instruments.Reaktor 6" "5d4e071323382551707559765a3322d24e9e3fcd" -bool true
+
 # Serial number — 391 = Reaktor Full product ID (enables Full-flavour keywords)
 defaults write "com.native-instruments.Reaktor 6" "RobotSNO" -string "391"
 ```
 
-After writing this key, **restart Reaktor**. Port 8270 should be listening within a few seconds.
+After writing these keys, **restart Reaktor**. Port 8270 should be listening within a few seconds.
 
 ### Verify
 
@@ -112,7 +115,7 @@ python3 -c "import xmlrpc.client; print(xmlrpc.client.ServerProxy('http://127.0.
 
 ### Why it works
 
-- The feature flag `5d4e071323382551707559765a3322d24e9e3fcd` (`SHA1("Reaktor" + "Robot")`) is already present as `true` in the **system** plist `/Library/Preferences/com.native-instruments.Reaktor 6.plist` — written by the NI installer (root-owned). No manual intervention needed for this flag.
+- The feature flag `5d4e071323382551707559765a3322d24e9e3fcd` (`SHA1("Reaktor" + "Robot")`) must be written as `true` to the **system** plist `/Library/Preferences/com.native-instruments.Reaktor 6.plist` (requires `sudo`). Writing only to the user plist is not sufficient.
 - `RobotSNO` is written to the **user** plist (`~/Library/Preferences/com.native-instruments.Reaktor 6.plist`) and tells `reaktor::robot::Activation` the product flavour. `391` = Reaktor Full (enables all keywords).
 - `NI::GP::Registry::initSystemAndUser("Reaktor 6", ...)` reads both the system and user plists at startup.
 

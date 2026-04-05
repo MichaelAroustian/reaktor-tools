@@ -109,3 +109,14 @@ version: `3` = R6, `1` = R5. Fetch search page for entry IDs, then fetch each `e
 - Consider MIDI pitch input for the oscillators
 - LFO modulation of FM depth for evolving timbres
 - Mix Osc B into crossfader properly (currently unconnected)
+
+---
+
+### Reaktor Stability — File > Open Crash (resolved 2026-04-05)
+
+Three crash reports generated today (`Reaktor 6-2026-04-05-213522.ips`, `-214456.ips`, `-215226.ips`) while using **File > Open**. The crashes no longer reproduce as of this session.
+
+**Likely cause:** Reaktor Robot XML-RPC server (port 8270) and/or the feature-flag plist write during initial setup interacting with a file-open dialog operation. After Reaktor was restarted cleanly the dialog became stable.
+
+**Resolution:** No code changes required. Reaktor 6 now opens the File > Open dialog without crashing.
+

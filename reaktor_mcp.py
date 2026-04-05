@@ -482,11 +482,14 @@ async def list_tools() -> list[Tool]:
                 "Call a Robot Framework keyword on the running Reaktor 6 instance via its built-in "
                 "XML-RPC server on port 8270. Reaktor must be running with the Robot server enabled "
                 "(feature flag 5d4e071323382551707559765a3322d24e9e3fcd=1 in com.native-instruments.Reaktor 6 prefs). "
-                "Available keywords include: 'Is Active', 'Get Version', 'New Ensemble', 'New Rack', "
+                "Available keywords include: 'Is Active', 'Get Version', 'New Ensemble', "
                 "'Save Project', 'Open Project', 'Get Project Name', 'Is Edit Mode', 'Is Touched', "
                 "'Create Instrument', 'Create Macro', 'Create Core Cell', 'Get Num Modules', "
                 "'Load Via Structure', 'Delete Module', 'Find Module By Label', 'Process File Load Requests'. "
-                "Use args for keyword arguments (e.g. a file path for 'Open Project')."
+                "IMPORTANT: Keywords that take a structure path (Get Num Modules, Create Instrument, "
+                "Create Macro, Create Core Cell, Delete Module, Find Module By Label) require the path "
+                "as an array argument. Use [[]] for the root level, e.g. args=[[]] not args=[]. "
+                "Use args for keyword arguments (e.g. a file path string for 'Open Project')."
             ),
             inputSchema={
                 "type": "object",

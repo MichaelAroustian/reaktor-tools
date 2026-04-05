@@ -141,7 +141,7 @@ python3 -c "import xmlrpc.client; print(xmlrpc.client.ServerProxy('http://127.0.
 | `Find Module By Label` | `parentPath[], label` | Find a module by its label string |
 | `Process File Load Requests` | — | Flush any pending file-load queue |
 
-The `call_reaktor_robot` MCP tool wraps these via XML-RPC — no `xmlrpc.client` import needed in Claude.
+**Path argument convention:** Keywords marked `path[]` or `parentPath[]` take the path as an array passed as the first element of `args`. Use `[[]]` for the root level (empty path). Example: `args=[[]]` not `args=[]`.
 
 ---
 

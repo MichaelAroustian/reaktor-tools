@@ -6,9 +6,27 @@ Reaktor 6.5.0 ships with a built-in Robot Framework XML-RPC server on port **827
 
 ---
 
+## ⚠️ Critical Known Issue — `File > Open` Crash
+
+Enabling the Robot feature flag in Reaktor 6.5.0 causes a **hard crash** (`SIGABRT`) whenever `File > Open` is used. This is deterministic — it happens regardless of preferences data, recent files, or bookmarks. The crash address (`imageOffset:18941000`) is identical across all occurrences.
+
+**Root cause:** The Robot init code in `src/reaktor/robot/Setup.cpp` conflicts with macOS `NSOpenPanel` in a way that cannot be worked around at the plist level.
+
+**Current state: both keys have been removed from the user plist. Robot is disabled. `File > Open` works.**
+
+To disable Robot (restore normal operation):
+```bash
+defaults delete "com.native-instruments.Reaktor 6" "5d4e071323382551707559765a3322d24e9e3fcd"
+defaults delete "com.native-instruments.Reaktor 6" "RobotSNO"
+```
+
+Use Robot only in sessions where `File > Open` / `Open Project` dialogs will NOT be needed (use the `Open Project` Robot keyword instead, or pre-load an ensemble before activating).
+
+---
+
 ## Activation (one-time setup)
 
-Both keys survive Reaktor restarts and reboots.
+Both keys survive Reaktor restarts and reboots. **See crash warning above before enabling.**
 
 ```bash
 # Feature flag — SHA1("Reaktor" + "Robot"). Integer 1 in the user plist is sufficient.
@@ -187,9 +205,9 @@ def kw(name, *args):
 
 kw("New Ensemble")
 assert kw("Is Edit Mode") == True
-n_before = kw("Get Num Modules", [])      # root path = []
-path = kw("Create Instrument", [])         # returns e.g. ['5']
-n_after = kw("Get Num Modules", [])
+n_before = kw("Get Num Modules", [[]])     # root path = [[]] not []
+path = kw("Create Instrument", [[]])        # returns e.g. ['5']
+n_after = kw("Get Num Modules", [[]])
 assert n_after == n_before + 1
 kw("Set Project File Name", "/path/to/output.ens")
 kw("Save Project")

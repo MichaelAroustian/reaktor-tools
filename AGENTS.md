@@ -95,7 +95,24 @@ All Reaktor files (`.ens`, Core/Primary modules) are **binary format** and canno
 
 The retail Reaktor 6.5.0 binary includes a built-in Robot Framework XML-RPC server that exposes full GUI-automation keywords. It is gated by a feature flag and disabled by default.
 
-### One-time setup (persists across reboots)
+> ⚠️ **KNOWN CRASH — DO NOT ACTIVATE WITHOUT READING THIS**
+>
+> In Reaktor 6.5.0, enabling the Robot feature flag causes a hard crash (`SIGABRT` at a deterministic code path, `imageOffset:18941000`) whenever `File > Open` is invoked. This makes the Robot server **mutually exclusive with normal file-dialog usage**. The root cause is in Reaktor's internals and is not data-driven (clearing preferences does not help).
+>
+> **Current status: both keys have been removed from the user plist.** Robot server is disabled. `File > Open` works normally.
+>
+> To re-enable (accepting the `File > Open` crash):
+> ```bash
+> defaults write "com.native-instruments.Reaktor 6" "5d4e071323382551707559765a3322d24e9e3fcd" -int 1
+> defaults write "com.native-instruments.Reaktor 6" "RobotSNO" -string "391"
+> ```
+> To disable again:
+> ```bash
+> defaults delete "com.native-instruments.Reaktor 6" "5d4e071323382551707559765a3322d24e9e3fcd"
+> defaults delete "com.native-instruments.Reaktor 6" "RobotSNO"
+> ```
+
+### Setup (when Robot crash is acceptable)
 
 ```bash
 # Feature flag — integer 1 in the user plist is sufficient (no sudo required)

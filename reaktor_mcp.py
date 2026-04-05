@@ -505,6 +505,24 @@ async def list_tools() -> list[Tool]:
                 "required": ["keyword"],
             },
         ),
+        Tool(
+            name="restart_reaktor",
+            description=(
+                "Quit Reaktor 6 (if running) and reopen it. "
+                "Use this after changing preferences that require a restart, such as enabling "
+                "the Robot server. Optionally open a specific ensemble file on launch."
+            ),
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "ensemble": {
+                        "type": "string",
+                        "description": "Optional absolute path to a .ens file to open on launch.",
+                    },
+                },
+                "required": [],
+            },
+        ),
     ]
 
 
@@ -941,6 +959,30 @@ async def call_tool(name: str, arguments: dict) -> list[TextContent]:
         except Exception as e:
             log.error("call_reaktor_robot error: %s", e)
             return [TextContent(type="text", text=f"Error: {e}")]
+
+    # ── restart_reaktor ───────────────────────────────────────────────────────
+    elif name == "restart_reaktor":
+        ensemble = arguments.get("ensemble", "")
+        try:
+            # Quit gracefully via AppleScript (no-op if not running)
+            subprocess.run(
+                ["osascript", "-e", 'tell application "Reaktor 6" to quit'],
+                timeout=10,
+            )
+            import time
+            time.sleep(2)
+            # Reopen
+            if ensemble:
+                cmd = ["open", "-a", str(REAKTOR_APP), ensemble] if REAKTOR_APP.exists() else ["open", "-a", "Reaktor 6", ensemble]
+            else:
+                cmd = ["open", str(REAKTOR_APP)] if REAKTOR_APP.exists() else ["open", "-a", "Reaktor 6"]
+            subprocess.Popen(cmd)
+            msg = f"Reaktor 6 restarted" + (f" with {ensemble}" if ensemble else "")
+            log.info("restart_reaktor: %s", msg)
+            return [TextContent(type="text", text=msg)]
+        except Exception as e:
+            log.error("restart_reaktor error: %s", e)
+            return [TextContent(type="text", text=f"Error restarting Reaktor: {e}")]
 
     # ── unknown ────────────────────────────────────────────────────────────────
     log.error("Unknown tool: %s", name)

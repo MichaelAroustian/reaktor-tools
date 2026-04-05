@@ -33,7 +33,7 @@ git --no-pager show
 
 ## Architecture
 
-`reaktor_mcp.py` is a single-file MCP server. All 13 tool handlers live inside one `@app.call_tool()` function, dispatched by `name` with `if/elif` branches.
+`reaktor_mcp.py` is a single-file MCP server. All 15 tool handlers live inside one `@app.call_tool()` function, dispatched by `name` with `if/elif` branches.
 
 **Three named roots** (location strings are always lowercase):
 
@@ -70,6 +70,7 @@ All Reaktor files (`.ens`, Core/Primary modules) are **binary format** and canno
 | `search_user_library` | network | Search the NI Reaktor User Library website (returns browser URL if blocked) |
 | `list_templates` | read | List available template `.ens` files in the local `templates/` folder |
 | `open_in_reaktor` | local | Open an ensemble file in Reaktor 6 (launches Reaktor if not running) |
+| `restart_reaktor` | local | Quit Reaktor 6 and reopen it (optionally with a specific ensemble) |
 | `call_reaktor_robot` | local | Call a Robot Framework keyword on the running Reaktor via XML-RPC (port 8270) |
 
 ---
@@ -97,8 +98,8 @@ The retail Reaktor 6.5.0 binary includes a built-in Robot Framework XML-RPC serv
 ### One-time setup (persists across reboots)
 
 ```bash
-# Feature flag — write to system plist (requires sudo) so it survives user plist resets
-sudo defaults write "/Library/Preferences/com.native-instruments.Reaktor 6" "5d4e071323382551707559765a3322d24e9e3fcd" -bool true
+# Feature flag — integer 1 in the user plist is sufficient (no sudo required)
+defaults write "com.native-instruments.Reaktor 6" "5d4e071323382551707559765a3322d24e9e3fcd" -int 1
 
 # Serial number — 391 = Reaktor Full product ID (enables Full-flavour keywords)
 defaults write "com.native-instruments.Reaktor 6" "RobotSNO" -string "391"
@@ -115,7 +116,7 @@ python3 -c "import xmlrpc.client; print(xmlrpc.client.ServerProxy('http://127.0.
 
 ### Why it works
 
-- The feature flag `5d4e071323382551707559765a3322d24e9e3fcd` (`SHA1("Reaktor" + "Robot")`) must be written as `true` to the **system** plist `/Library/Preferences/com.native-instruments.Reaktor 6.plist` (requires `sudo`). Writing only to the user plist is not sufficient.
+- The feature flag `5d4e071323382551707559765a3322d24e9e3fcd` (`SHA1("Reaktor" + "Robot")`) written as integer `1` to the **user** plist is sufficient. Writing to the system plist (with `sudo`) is not required.
 - `RobotSNO` is written to the **user** plist (`~/Library/Preferences/com.native-instruments.Reaktor 6.plist`) and tells `reaktor::robot::Activation` the product flavour. `391` = Reaktor Full (enables all keywords).
 - `NI::GP::Registry::initSystemAndUser("Reaktor 6", ...)` reads both the system and user plists at startup.
 

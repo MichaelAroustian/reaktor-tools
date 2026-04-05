@@ -97,14 +97,11 @@ The retail Reaktor 6.5.0 binary includes a built-in Robot Framework XML-RPC serv
 ### One-time setup (persists across reboots)
 
 ```bash
-# Feature flag: SHA1("ReaktorRobot") must be written as an integer (not bool)
-defaults write "com.native-instruments.Reaktor 6" "5d4e071323382551707559765a3322d24e9e3fcd" -int 1
-
 # Serial number — 391 = Reaktor Full product ID (enables Full-flavour keywords)
 defaults write "com.native-instruments.Reaktor 6" "RobotSNO" -string "391"
 ```
 
-After writing these keys, **restart Reaktor**. Port 8270 should be listening within a few seconds.
+After writing this key, **restart Reaktor**. Port 8270 should be listening within a few seconds.
 
 ### Verify
 
@@ -115,10 +112,9 @@ python3 -c "import xmlrpc.client; print(xmlrpc.client.ServerProxy('http://127.0.
 
 ### Why it works
 
-- `NI::GP::Features::init("Reaktor 6", toggles)` reads **integer** (not bool) values from `com.native-instruments.Reaktor 6` user plist.
-- The Robot feature key is `SHA1("Reaktor" + "Robot") = 5d4e071323382551707559765a3322d24e9e3fcd`.
-- `NI::GP::Registry::initSystemAndUser("Reaktor 6", ...)` maps to `com.native-instruments.Reaktor 6` via `openNIProductKey`.
-- `RobotSNO` is the serial number used by `reaktor::robot::Activation` to determine product flavour (Full/Player/Demo).
+- The feature flag `5d4e071323382551707559765a3322d24e9e3fcd` (`SHA1("Reaktor" + "Robot")`) is already present as `true` in the **system** plist `/Library/Preferences/com.native-instruments.Reaktor 6.plist` — written by the NI installer (root-owned). No manual intervention needed for this flag.
+- `RobotSNO` is written to the **user** plist (`~/Library/Preferences/com.native-instruments.Reaktor 6.plist`) and tells `reaktor::robot::Activation` the product flavour. `391` = Reaktor Full (enables all keywords).
+- `NI::GP::Registry::initSystemAndUser("Reaktor 6", ...)` reads both the system and user plists at startup.
 
 ### Available keywords (partial list)
 

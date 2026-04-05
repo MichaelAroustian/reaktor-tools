@@ -7,7 +7,8 @@ allowed-tools: Read, Write, Edit, Bash, Glob, Grep
 # Reaktor 6 — Codebase Reference
 
 ## Repository
-Local path: `/Users/michael.aroustian/Documents/_dev/repos/_NI/Komplete/KOM-Reaktor`
+- Local path: `/Users/michael.aroustian/Documents/_dev/repos/_NI/Komplete/KOM-Reaktor`
+- Online private internal repo (not public on GitHub): https://github.com/native-instruments/KOM-Reaktor
 
 ---
 

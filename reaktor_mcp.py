@@ -148,6 +148,115 @@ def format_directory(target: Path) -> str:
     return "\n".join(entries) if entries else "(empty)"
 
 
+def _extract_ens_strings(data: bytes) -> dict:
+    """Extract and categorize human-readable strings from a Reaktor .ens binary.
+
+    Reaktor stores module names, parameter labels, port descriptions, help text,
+    and preset names as plain ASCII inside the binary. This function extracts and
+    categorizes them, filtering out binary noise and format tokens.
+
+    Returns a dict with:
+      labels       — short strings: module names, parameter/preset/port labels
+      descriptions — longer sentences: help text, port descriptions
+      file_refs    — embedded file:// paths (samples, modules)
+      osc_hints    — strings starting with '/' that may be OSC addresses
+    """
+    import re as _re
+
+    # Extract all printable ASCII sequences >= 4 chars
+    raw_matches = _re.findall(rb'[\x20-\x7e]{4,}', data)
+    seen: set[str] = set()
+    labels: list[str] = []
+    descriptions: list[str] = []
+    file_refs: list[str] = []
+    osc_hints: list[str] = []
+
+    # Noise: internal format tokens and Reaktor binary-section markers
+    _SKIP_PREFIXES = (
+        "KSModul", "KEnsemble", "KInPort", "KOutPort", "KParam", "KStat",
+        "BTN_", "KNB_", "LBL_", "TBN_", "BG_", "RNG_", "LED_", "ANIM_",
+        "GUI_", "SCL_", "VALUE_", "Align ", "Numeral", "ModA ", "ModB ",
+        "Mod A:", "Mod B:", "INIT -", "blend_", "splitter", "separator",
+        "slider", "lamp", "button logic",
+    )
+    _NOISE_PATTERNS = [
+        _re.compile(r'^[A-Z]{2,8}[a-z]{0,2}$'),          # DSIN, RTKR, hsin, etc.
+        _re.compile(r'^[0-9a-fA-F]{5,}$'),                # pure hex
+        _re.compile(r'^\d+\.?\d*\s*(kHz|Hz|ms|dB|s)$'),  # "5.50 kHz", "100 ms"
+        _re.compile(r'^\d+\s*\.\.\.\s*\d+'),              # "0...100", "0 ms ... 999 ms"
+        _re.compile(r'^[A-Z_]{4,}[_A-Z0-9]{2,}$'),       # ALL_CAPS_IDENTIFIERS
+        _re.compile(r'^[0-9\s.,]+$'),                      # pure numbers/spacing
+        _re.compile(r'^file:'),                            # handled separately
+    ]
+
+    def _is_noise(s: str) -> bool:
+        if not any(c.isalpha() for c in s):
+            return True
+        # Strings containing ? are almost always binary artifacts in .ens files
+        if '?' in s:
+            return True
+        alnum_ratio = sum(c.isalnum() or c.isspace() for c in s) / len(s)
+        if alnum_ratio < 0.65:
+            return True
+        for pat in _NOISE_PATTERNS:
+            if pat.match(s):
+                return True
+        return False
+
+    for raw in raw_matches:
+        try:
+            s = raw.decode('ascii').strip()
+        except Exception:
+            continue
+        if not s or len(s) < 3 or s in seen:
+            continue
+        seen.add(s)
+
+        # File references
+        if s.startswith('file:///'):
+            file_refs.append(s)
+            continue
+
+        # Skip internal UI/format tokens
+        if any(s.startswith(p) for p in _SKIP_PREFIXES):
+            continue
+
+        if _is_noise(s):
+            continue
+
+        # OSC address hint: starts with / followed by word chars, min length 4
+        if s.startswith('/') and len(s) >= 4 and _re.match(r'^/[a-zA-Z][a-zA-Z0-9/_.-]{2,}$', s):
+            osc_hints.append(s)
+            continue
+
+        # Longer sentences with a capital start → description / help text
+        if len(s) >= 30 and ' ' in s and (s[0].isupper() or s[0].isdigit()):
+            descriptions.append(s)
+        elif 3 <= len(s) <= 80:
+            labels.append(s)
+
+    # Sort labels by quality before capping:
+    # multi-word title-case strings first (likely component/module names),
+    # then uppercase-start single words (likely parameter names),
+    # then everything else.
+    def _label_priority(s: str) -> tuple:
+        has_space = ' ' in s
+        starts_upper = bool(s) and s[0].isupper()
+        return (
+            -int(has_space and starts_upper),  # multi-word capital first
+            -int(starts_upper),                 # uppercase-start second
+            -len(s),                            # longer strings before short
+        )
+    labels.sort(key=_label_priority)
+
+    return {
+        "labels": labels[:600],
+        "descriptions": descriptions[:100],
+        "file_refs": list(dict.fromkeys(file_refs))[:30],
+        "osc_hints": osc_hints[:20],
+    }
+
+
 # ── Server ─────────────────────────────────────────────────────────────────────
 app = Server("reaktor-tools")
 
@@ -482,14 +591,21 @@ async def list_tools() -> list[Tool]:
                 "Call a Robot Framework keyword on the running Reaktor 6 instance via its built-in "
                 "XML-RPC server on port 8270. Reaktor must be running with the Robot server enabled "
                 "(feature flag 5d4e071323382551707559765a3322d24e9e3fcd=1 in com.native-instruments.Reaktor 6 prefs). "
-                "Available keywords include: 'Is Active', 'Get Version', 'New Ensemble', "
-                "'Save Project', 'Open Project', 'Get Project Name', 'Is Edit Mode', 'Is Touched', "
-                "'Create Instrument', 'Create Macro', 'Create Core Cell', 'Get Num Modules', "
-                "'Load Via Structure', 'Delete Module', 'Find Module By Label', 'Process File Load Requests'. "
+                "Core keywords: 'Is Active', 'Get Version', 'Stop Remote Server'. "
+                "Project: 'New Ensemble', 'New Rack', 'Save Project', 'Close No Save', 'Open Project', "
+                "'Get Project Name', 'Set Project File Name', 'Is Edit Mode', 'Is Rack Mode', 'Is Ensemble Mode', "
+                "'Is Touched', 'Touch Project', 'Is Null', 'Process File Load Requests'. "
+                "Structure: 'Get Num Modules', 'Get Num Instruments', 'Create Instrument', 'Create Macro', "
+                "'Create Core Cell', 'Delete Module', 'Find Module By Label', 'Load Via Structure', "
+                "'Structure Unselect All'. "
+                "Dialogs: 'Is System Dialog Pending', 'Expect Message Dialog', 'Close No Save'. "
+                "Panel: 'Is Panel Visible', 'Is Structure Visible', 'Is Panel Locked', 'Set Panel Locked', "
+                "'Panel.Toggle Compact View', 'Panel.Toggle Ports And Wires View', 'Panel.To A View', 'Panel.To B View'. "
+                "Undo: 'Can Undo', 'Undo', 'Can Redo', 'Redo'. "
                 "IMPORTANT: Keywords that take a structure path (Get Num Modules, Create Instrument, "
                 "Create Macro, Create Core Cell, Delete Module, Find Module By Label) require the path "
                 "as an array argument. Use [[]] for the root level, e.g. args=[[]] not args=[]. "
-                "Use args for keyword arguments (e.g. a file path string for 'Open Project')."
+                "See skills/reaktor-robot-skill.md for the complete keyword reference."
             ),
             inputSchema={
                 "type": "object",
@@ -506,6 +622,78 @@ async def list_tools() -> list[Tool]:
                     },
                 },
                 "required": ["keyword"],
+            },
+        ),
+        Tool(
+            name="read_ensemble_strings",
+            description=(
+                "Extract human-readable strings from a Reaktor .ens binary file. "
+                "Reaktor stores module names, parameter labels, port descriptions, help text, "
+                "preset names, and embedded file paths as plain text inside the binary. "
+                "This tool surfaces that content without requiring Reaktor to be running. "
+                "Useful as the first step in understanding an unknown ensemble."
+            ),
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "location": {
+                        "type": "string",
+                        "enum": ["factory library", "user library", "ensembles", "templates"],
+                        "description": "Which root the .ens file lives in.",
+                    },
+                    "filepath": {
+                        "type": "string",
+                        "description": "Path to the .ens file, relative to the chosen root.",
+                    },
+                },
+                "required": ["location", "filepath"],
+            },
+        ),
+        Tool(
+            name="describe_structure",
+            description=(
+                "Walk the structure tree of the currently-loaded Reaktor ensemble via the "
+                "Robot XML-RPC server (port 8270). Shows a hierarchical map of module "
+                "containers (instruments, macros) and leaf modules at each path level. "
+                "Requires Reaktor running with the Robot feature enabled. "
+                "⚠️ Robot causes a crash on File > Open — see reaktor-robot-skill.md before enabling. "
+                "Use max_depth to control recursion depth (default 3)."
+            ),
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "max_depth": {
+                        "type": "integer",
+                        "description": "How many levels deep to recurse (default 3, max 6).",
+                        "default": 3,
+                    },
+                },
+                "required": [],
+            },
+        ),
+        Tool(
+            name="explain_ensemble",
+            description=(
+                "Analyse a Reaktor .ens file and produce a structured explanation of what it is "
+                "and how it works. Extracts module names, parameter labels, preset names, "
+                "port descriptions, and help text from the binary. Does not require Reaktor "
+                "to be running. For deeper analysis, follow up with search_docs using "
+                "module names from the output, or describe_structure if Robot is available."
+            ),
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "location": {
+                        "type": "string",
+                        "enum": ["factory library", "user library", "ensembles", "templates"],
+                        "description": "Which root the .ens file lives in.",
+                    },
+                    "filepath": {
+                        "type": "string",
+                        "description": "Path to the .ens file, relative to the chosen root.",
+                    },
+                },
+                "required": ["location", "filepath"],
             },
         ),
         Tool(
@@ -986,6 +1174,294 @@ async def call_tool(name: str, arguments: dict) -> list[TextContent]:
         except Exception as e:
             log.error("restart_reaktor error: %s", e)
             return [TextContent(type="text", text=f"Error restarting Reaktor: {e}")]
+
+    # ── read_ensemble_strings ─────────────────────────────────────────────────
+    elif name == "read_ensemble_strings":
+        location = arguments.get("location", "")
+        filepath = arguments.get("filepath", "")
+
+        root = get_root(location)
+        if root is None:
+            return [TextContent(type="text", text=f"Error: unknown location '{location}'.")]
+
+        target = resolve_safe(root, filepath)
+        if target is None:
+            return [TextContent(type="text", text="Error: path is outside the allowed root.")]
+
+        if not target.exists():
+            return [TextContent(type="text", text=f"File not found: {filepath}")]
+
+        if not target.is_file():
+            return [TextContent(type="text", text=f"Not a file: {filepath}")]
+
+        data = target.read_bytes()
+        extracted = _extract_ens_strings(data)
+
+        lines = [f"Strings extracted from: {target.name}  ({target.stat().st_size / 1024:.1f} KB)\n{'─' * 60}"]
+
+        if extracted["labels"]:
+            lines.append(f"\nLABELS  ({len(extracted['labels'])} items)")
+            lines.append("  " + "\n  ".join(extracted["labels"]))
+
+        if extracted["descriptions"]:
+            lines.append(f"\nDESCRIPTIONS / HELP TEXT  ({len(extracted['descriptions'])} items)")
+            for d in extracted["descriptions"]:
+                lines.append(f"  • {d}")
+
+        if extracted["osc_hints"]:
+            lines.append(f"\nOSC ADDRESS HINTS")
+            for o in extracted["osc_hints"]:
+                lines.append(f"  {o}")
+
+        if extracted["file_refs"]:
+            lines.append(f"\nEMBEDDED FILE REFERENCES")
+            for f_ref in extracted["file_refs"]:
+                lines.append(f"  {f_ref}")
+
+        if not any(extracted.values()):
+            lines.append("No readable strings found.")
+
+        log.debug("read_ensemble_strings: %s → %d labels, %d descriptions",
+                  target.name, len(extracted["labels"]), len(extracted["descriptions"]))
+        return [TextContent(type="text", text="\n".join(lines))]
+
+    # ── describe_structure ────────────────────────────────────────────────────
+    elif name == "describe_structure":
+        import xmlrpc.client as _xmlrpc
+
+        max_depth = min(int(arguments.get("max_depth", 3)), 6)
+        robot_url = "http://127.0.0.1:8270"
+
+        def _rk(proxy, keyword, path):
+            """Call a Robot structure keyword that takes a single path argument."""
+            try:
+                r = proxy.run_keyword(keyword, [path], {})
+                if isinstance(r, dict) and r.get("status") == "PASS":
+                    return r.get("return")
+            except Exception:
+                pass
+            return None
+
+        def _walk(proxy, path, depth, max_d, lines, prefix):
+            if depth > max_d:
+                lines.append(f"{prefix}  … (max depth reached)")
+                return
+            n = _rk(proxy, "Get Num Modules", path)
+            if n is None:
+                return
+            if n == 0 and depth > 0:
+                return
+            for i in range(min(n, 25)):
+                child_path = path + [str(i)]
+                child_n = _rk(proxy, "Get Num Modules", child_path) or 0
+                child_instr = _rk(proxy, "Get Num Instruments", child_path) or 0
+                if child_n > 0:
+                    kind = "Instrument" if child_instr > 0 else "Macro/Group"
+                    lines.append(f"{prefix}📦 [{i}]  {kind}  ({child_n} children)")
+                    if depth < max_d:
+                        _walk(proxy, child_path, depth + 1, max_d, lines, prefix + "    ")
+                else:
+                    lines.append(f"{prefix}◻  [{i}]  leaf module")
+            if n > 25:
+                lines.append(f"{prefix}  … ({n - 25} more modules not shown)")
+
+        try:
+            proxy = _xmlrpc.ServerProxy(robot_url, allow_none=True)
+
+            active = proxy.run_keyword("Is Active", [], {})
+            if not isinstance(active, dict) or active.get("status") != "PASS":
+                return [TextContent(type="text", text="Error: Reaktor Robot server not responding.")]
+
+            project_name = _rk(proxy, "Get Project Name", []) or "(unknown)"
+            is_edit = proxy.run_keyword("Is Edit Mode", [], {}).get("return", False)
+            is_touched = proxy.run_keyword("Is Touched", [], {}).get("return", False)
+            root_n = _rk(proxy, "Get Num Modules", []) or 0
+
+            lines = [
+                f"Structure: {project_name}",
+                f"Edit mode: {'YES' if is_edit else 'no'}   Unsaved changes: {'YES' if is_touched else 'no'}",
+                f"Root modules: {root_n}",
+                "─" * 60,
+            ]
+            _walk(proxy, [], 0, max_depth, lines, "")
+            log.info("describe_structure: %s  root_n=%d", project_name, root_n)
+            return [TextContent(type="text", text="\n".join(lines))]
+
+        except ConnectionRefusedError:
+            return [TextContent(type="text", text=(
+                "Error: Reaktor Robot server not reachable on port 8270. "
+                "Ensure Reaktor is running with the Robot feature enabled."
+            ))]
+        except Exception as e:
+            log.error("describe_structure error: %s", e)
+            return [TextContent(type="text", text=f"Error: {e}")]
+
+    # ── explain_ensemble ──────────────────────────────────────────────────────
+    elif name == "explain_ensemble":
+        location = arguments.get("location", "")
+        filepath = arguments.get("filepath", "")
+
+        root = get_root(location)
+        if root is None:
+            return [TextContent(type="text", text=f"Error: unknown location '{location}'.")]
+
+        target = resolve_safe(root, filepath)
+        if target is None:
+            return [TextContent(type="text", text="Error: path is outside the allowed root.")]
+
+        if not target.exists():
+            return [TextContent(type="text", text=f"File not found: {filepath}")]
+
+        if not target.is_file():
+            return [TextContent(type="text", text=f"Not a file: {filepath}")]
+
+        data = target.read_bytes()
+        stat = target.stat()
+        size_kb = stat.st_size / 1024
+        modified = datetime.fromtimestamp(stat.st_mtime).strftime("%Y-%m-%d %H:%M")
+        extracted = _extract_ens_strings(data)
+
+        labels = extracted["labels"]
+        descriptions = extracted["descriptions"]
+        file_refs = extracted["file_refs"]
+        osc_hints = extracted["osc_hints"]
+
+        # ── Classify labels into categories ───────────────────────────────────
+        import re as _re
+
+        def _clean_label(s: str) -> bool:
+            """Return True if s looks like a genuine UI label (no binary noise)."""
+            return bool(_re.match(r'^[\w\s.()\-/\'&!,+#%°]+$', s))
+
+        def _looks_like_word(s: str) -> bool:
+            """Return True if s follows a recognizable Reaktor label word pattern.
+
+            Rejects Base64-like mixed-case strings (e.g. 'VPAPpVi', 'AyxZMxL').
+            Accepts: Title case ('Attack'), ALL-CAPS ('ADSR'), acronym+digit ('LFO1'),
+            compound with separator ('Bi/Uni', 'Key Tracking').
+            """
+            if not s:
+                return False
+            # Compound labels with space/slash/dash — check each token
+            tokens = _re.split(r'[ /\-]', s)
+            for tok in tokens:
+                if not tok:
+                    continue
+                # Each token: Title Case, ALL_CAPS, all lowercase, or acronym+digit
+                if not (_re.match(r'^[A-Z][a-z]+\d*$', tok)   # Title: "Attack"
+                        or _re.match(r'^[A-Z]{2,6}\d{0,2}$', tok)  # Acronym: "LFO1"
+                        or _re.match(r'^[a-z]{2,}$', tok)           # lower: "reverb"
+                        or _re.match(r'^\d{1,3}$', tok)):            # digits: "4"
+                    return False
+            return True
+
+        module_names = [l for l in labels
+                        if len(l) >= 6 and ' ' in l and _clean_label(l)
+                        and l[0].isupper()
+                        and not l.endswith('.')
+                        and not _re.match(r'^\d', l)]
+        # Params: only accept strings that follow a recognisable label case pattern
+        param_names = [l for l in labels
+                       if 4 <= len(l) <= 22
+                       and l[0].isupper()
+                       and _re.match(r'^[A-Za-z][A-Za-z\s/\-]+$', l)
+                       and _looks_like_word(l)
+                       and (
+                           ' ' not in l
+                           or all(len(w) >= 2 for w in l.split())
+                       )
+                       and not _re.match(r'^[A-Z]{4,}$', l)]
+        preset_names = [l for l in module_names
+                        if not l.endswith('.')
+                        and not any(kw in l.lower() for kw in
+                                    ('bento', 'rounds', 'blocks', 'modul', 'port', 'panel',
+                                     'instrument', 'macro', 'ensemble', 'file', 'core',
+                                     'channel', 'velocity', 'tracking', 'control', 'output',
+                                     'input', 'trigger', 'feedback', 'mode', 'type', 'data',
+                                     'display', 'value', 'select', 'button', 'knob', 'scale',
+                                     'range', 'pitch', 'bend', 'glide', 'priority', 'util',
+                                     'note in', 'note out', 'midi', 'init', 'enable'))]
+        preset_names = [l for l in module_names
+                        if not any(kw in l.lower() for kw in
+                                   ('bento', 'rounds', 'blocks', 'modul', 'port', 'panel',
+                                    'instrument', 'macro', 'ensemble', 'file', 'core'))]
+        component_names = [l for l in module_names
+                           if any(kw in l.lower() for kw in
+                                  ('bento', 'rounds', 'blocks', 'vco', 'vcf', 'vca', 'lfo',
+                                   'adsr', 'env', 'osc', 'filter', 'amp', 'delay', 'reverb',
+                                   'chorus', 'distort', 'compress', 'eq ', 'synth', 'sampler',
+                                   'sequencer', 'step', 'arp', 'mixer', 'modulator'))]
+
+        # ── Infer ensemble type from labels ───────────────────────────────────
+        all_text = " ".join(labels + descriptions).lower()
+        type_hints = []
+        if any(kw in all_text for kw in ("reverb", "delay", "chorus", "flanger", "phaser", "distort", "compress")):
+            type_hints.append("effects processor")
+        if any(kw in all_text for kw in ("vco", "oscillator", "sawtooth", "wavetable", "fm", "adsr")):
+            type_hints.append("synthesizer")
+        if any(kw in all_text for kw in ("sequencer", "step", "pattern", "arp", "clock", "gate")):
+            type_hints.append("sequencer/arpeggiator")
+        if any(kw in all_text for kw in ("sampler", "sample", "playback", "loop")):
+            type_hints.append("sampler")
+        if any(kw in all_text for kw in ("lfo", "envelope", "modulation", "modulator")):
+            type_hints.append("has modulation")
+        ensemble_type = " + ".join(type_hints) if type_hints else "unknown type"
+
+        # ── Assemble output ───────────────────────────────────────────────────
+        lines = [
+            f"Ensemble: {target.stem}",
+            f"File:     {target}",
+            f"Size:     {size_kb:.1f} KB   Modified: {modified}",
+            f"Type:     {ensemble_type}",
+            "─" * 60,
+        ]
+
+        if component_names:
+            lines.append(f"\nCOMPONENTS  (named module/instrument blocks)")
+            for c in list(dict.fromkeys(component_names))[:20]:
+                lines.append(f"  • {c}")
+
+        if param_names:
+            lines.append(f"\nPARAMETERS / CONTROLS  (knobs, buttons, sliders)")
+            # Deduplicate and show top-level ones first (shorter names first)
+            params_sorted = sorted(set(param_names), key=len)[:40]
+            lines.append("  " + ",  ".join(params_sorted))
+
+        if preset_names and len(preset_names) > len(component_names):
+            # Only show preset section if there are clearly preset names
+            preset_display = [p for p in list(dict.fromkeys(preset_names))
+                              if p not in component_names][:25]
+            if preset_display:
+                lines.append(f"\nPRESETS / SNAPSHOTS")
+                lines.append("  " + ",  ".join(preset_display))
+
+        if descriptions:
+            lines.append(f"\nHELP TEXT & PORT DESCRIPTIONS  (from embedded documentation)")
+            for d in descriptions[:15]:
+                lines.append(f"  • {d}")
+            if len(descriptions) > 15:
+                lines.append(f"  … ({len(descriptions) - 15} more — use read_ensemble_strings for full list)")
+
+        if osc_hints:
+            lines.append(f"\nOSC ADDRESSES FOUND")
+            for o in osc_hints:
+                lines.append(f"  {o}")
+
+        if file_refs:
+            lines.append(f"\nEMBEDDED FILE REFERENCES  (samples, sub-modules)")
+            for f_ref in file_refs[:10]:
+                lines.append(f"  {f_ref}")
+            if len(file_refs) > 10:
+                lines.append(f"  … ({len(file_refs) - 10} more)")
+
+        lines.append(f"\n{'─' * 60}")
+        lines.append("To go deeper:")
+        lines.append("  search_docs — look up any component or parameter name in the Reaktor manuals")
+        lines.append("  read_ensemble_strings — full raw string dump from this file")
+        lines.append("  describe_structure — live module tree (requires Reaktor + Robot on port 8270)")
+
+        log.info("explain_ensemble: %s  type=%s  labels=%d", target.name, ensemble_type, len(labels))
+        return [TextContent(type="text", text="\n".join(lines))]
 
     # ── unknown ────────────────────────────────────────────────────────────────
     log.error("Unknown tool: %s", name)

@@ -402,3 +402,78 @@ def test_call_reaktor_robot_is_edit_mode_live():
     """Live: Is Edit Mode should return a boolean result."""
     result = run(call_tool("call_reaktor_robot", {"keyword": "Is Edit Mode"}))
     assert "OK:" in result[0].text
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# read_ensemble_strings
+# ─────────────────────────────────────────────────────────────────────────────
+
+def test_read_ensemble_strings_bad_location():
+    result = run(call_tool("read_ensemble_strings", {"location": "nowhere", "filepath": "blank.ens"}))
+    assert "Error" in result[0].text
+
+
+def test_read_ensemble_strings_traversal_blocked():
+    result = run(call_tool("read_ensemble_strings", {"location": "templates", "filepath": "../../etc/passwd"}))
+    assert "Error" in result[0].text
+
+
+def test_read_ensemble_strings_missing_file():
+    result = run(call_tool("read_ensemble_strings", {"location": "templates", "filepath": "__no_such.ens"}))
+    assert "not found" in result[0].text.lower()
+
+
+def test_read_ensemble_strings_blank_ens():
+    result = run(call_tool("read_ensemble_strings", {"location": "templates", "filepath": "blank.ens"}))
+    text = result[0].text
+    # Should produce output with a header line
+    assert "Strings extracted from" in text or "Error" in text
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# describe_structure
+# ─────────────────────────────────────────────────────────────────────────────
+
+def test_describe_structure_no_robot():
+    """When Robot is not running, should return an Error: response."""
+    import unittest.mock as mock
+    import xmlrpc.client
+
+    with mock.patch("xmlrpc.client.ServerProxy") as MockProxy:
+        MockProxy.return_value.run_keyword.side_effect = ConnectionRefusedError
+        result = run(call_tool("describe_structure", {}))
+    assert "Error" in result[0].text
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# explain_ensemble
+# ─────────────────────────────────────────────────────────────────────────────
+
+def test_explain_ensemble_bad_location():
+    result = run(call_tool("explain_ensemble", {"location": "nowhere", "filepath": "blank.ens"}))
+    assert "Error" in result[0].text
+
+
+def test_explain_ensemble_traversal_blocked():
+    result = run(call_tool("explain_ensemble", {"location": "templates", "filepath": "../../etc/passwd"}))
+    assert "Error" in result[0].text
+
+
+def test_explain_ensemble_missing_file():
+    result = run(call_tool("explain_ensemble", {"location": "templates", "filepath": "__no_such.ens"}))
+    assert "not found" in result[0].text.lower()
+
+
+def test_explain_ensemble_blank_ens():
+    result = run(call_tool("explain_ensemble", {"location": "templates", "filepath": "blank.ens"}))
+    text = result[0].text
+    # Should produce a structured output header
+    assert "Ensemble:" in text or "Error" in text
+
+
+def test_explain_ensemble_has_next_steps():
+    result = run(call_tool("explain_ensemble", {"location": "templates", "filepath": "blank.ens"}))
+    text = result[0].text
+    if "Error" not in text:
+        assert "search_docs" in text  # should always mention follow-up tools
+

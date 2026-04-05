@@ -1,0 +1,329 @@
+--- Page 183 ---
+
+15
+Appendix F. Built-in Modules
+ 
+15.1
+F.1. Const
+ 
+Produces a signal of a constant value. The value is displayed in the module.
+INITIALIZATION EVENT: during initialization sends the event of the specified value to the 
+output. This is the only time when this module sends an event.
+PROPERTIES
+Value: the value to be sent to the output
+15.2
+F.2. Math > +
+ 
+Produces the sum of the incoming signals at the output. The output event is sent each 
+time there is an event at either of the inputs or at both of them simultaneously.
+15.3
+F.3. Math > -
+ 
+Produces the difference of the incoming signals at the output (the signal at the lower in­
+put is subtracted from the signal at the upper input). The output event is sent each time 
+there is an event at either of the inputs or at both of them simultaneously.
+Appendix F. Built-in Modules
+ 
+REAKTOR 5.5 - Core Reference - 183
+
+
+--- Page 184 ---
+
+15.4
+F.4. Math > *
+ 
+Generates the multiplication product of the incoming signals at the output. The output 
+event is sent each time there is an event at either of the inputs or at both of them simulta­
+neously.
+15.5
+F.5. Math > /
+ 
+Produces the quotient of the incoming signals at the output (the signal at the upper input 
+is divided by the signal at the lower input). In integer mode performs a division with re­
+mainder, the remainder being discarded. The output event is sent each time there is an 
+event at either of the inputs or at both of them simultaneously.
+15.6
+F.6. Math > |x|
+ 
+Produces the absolute value of the incoming signal at the output. The output event is sent 
+each time there is an event at the input.
+15.7
+F.7. Math > –x
+ 
+Appendix F. Built-in Modules
+F.4. Math > *
+ 
+REAKTOR 5.5 - Core Reference - 184
+
+
+--- Page 185 ---
+
+Produces the inverted value (changes sign) of the incoming signal at the output. The out­
+put event is sent each time there is an event at the input.
+15.8
+F.8. Math > DN Cancel
+ 
+Modifies the incoming signal in a way to kill denormal numbers. This is currently imple­
+mented by adding a very small constant. Works only on floating point numbers. The output 
+event is sent each time there is an event at the input.
+15.9
+F.9. Math > ~log
+ 
+Computes an approximation of a logarithm of the incoming value. The output event is sent 
+each time there is an event at the input.
+PROPERTIES
+▪
+Base: the logarithm base
+▪
+Precision: the approximation precision (better precisions require more CPU)
+15.10 F.10. Math > ~exp
+ 
+Computes an approximation of an exponent of the incoming value. The output event is 
+sent each time there is an event at the input.
+PROPERTIES
+▪
+Base: the exponent base
+▪
+Precision: the approximation precision (better precision requires more CPU)
+Appendix F. Built-in Modules
+F.8. Math > DN Cancel
+ 
+REAKTOR 5.5 - Core Reference - 185
+
+
+--- Page 186 ---
+
+15.11 F.11. Bit > Bit AND
+ 
+Performs the bitwise conjunction of the incoming signals. Works only on integers. The out­
+put event is sent each time there is an event at either of the inputs or at both of them 
+simultaneously.
+15.12 F.12. Bit > Bit OR
+ 
+Performs the bitwise disjunction of the incoming signals. Works only on integers. The out­
+put event is sent each time there is an event at either of the inputs or at both of them 
+simultaneously.
+15.13 F.13. Bit > Bit XOR
+ 
+Performs the bitwise exclusive disjunction of the incoming signals. Works only on integers. 
+The output event is sent each time there is an event at either of the inputs or at both of 
+them simultaneously.
+15.14 F.14. Bit > Bit NOT
+ 
+Appendix F. Built-in Modules
+F.11. Bit > Bit AND
+ 
+REAKTOR 5.5 - Core Reference - 186
+
+
+--- Page 187 ---
+
+Performs the bitwise inversion of the incoming signal. Works only on integers. The output 
+event is sent each time there is an event at the input.
+15.15 F.15. Bit > Bit <<
+ 
+Bit-shifts the value at the upper input to the left (towards more significant bits). The 
+amount of bits to shift by is specified by the lower input. The result for N < 0 and N > 31 
+is undefined (use it only for 0 ≤ N ≤ 31). Works only on integers. The output event is sent 
+each time there is an event at either of the inputs or at both of them simultaneously.
+15.16 F.16. Bit > Bit >>
+ 
+Bit-shifts the value at the upper input to the right (towards less significant bits). No sign 
+extension is performed. The amount of bits to shift by is specified by the lower input. The 
+result for N < 0 and N > 31 is undefined (use it only for 0 ≤ N ≤ 31). Works only on inte­
+gers. The output event is sent each time there is an event at either of the inputs or at both 
+of them simultaneously.
+15.17 F.17. Flow > Router
+ 
+Appendix F. Built-in Modules
+F.15. Bit > Bit <<
+ 
+REAKTOR 5.5 - Core Reference - 187
+
+
+--- Page 188 ---
+
+Routes the signal at the signal input (the lower one) to one of the two outputs depending 
+on the state of the control signal (the upper input). If control signal is in the true state it 
+routes to output 1 (the upper one), and if control signal is in the false state it routes to 
+output 0 (the lower one). The output event is sent to exactly one of the outputs each time 
+there is an event at the signal input.
+15.18 F.18. Flow > Compare
+ 
+Produces a BoolCtl signal at the output indicating the result of comparison of the input 
+values. The value at the upper input is placed to the left of the comparison sign and the 
+value at the lower input to the right (so that the module on the picture above checks if 
+upper value is greater than the lower one).
+PROPERTIES
+▪
+Criterion the comparison operation to be performed
+15.19 F.19. Flow > Compare Sign
+ 
+Produces a BoolCtl signal at the output indicating the result of the sign comparison of the 
+input values. The value at the upper input is placed to the left of the comparison sign and 
+the value at the lower input to the right (so that the module on the picture above checks if 
+the sign of the upper value is greater than the sign of the lower one).
+The sign comparison is defined as follows:
+▪
++ is equal to +
+▪
+– is equal to –
+▪
++ is larger than –
+The sign of zero value is undefined, so arbitrary result may be produced should one of the 
+compared values be zero.
+Appendix F. Built-in Modules
+F.18. Flow > Compare
+ 
+REAKTOR 5.5 - Core Reference - 188
+
+
+--- Page 189 ---
+
+PROPERTIES
+▪
+Criterion the comparison operation to be performed
+15.20 F.20. Flow > ES Ctl
+ 
+Produces a BoolCtl signal at the output indicating the momentary presence of an event at 
+the input (that is, the control signal is true if there is an event at the input of this module 
+at the given moment).
+15.21 F.21. Flow > ~BoolCtl
+ 
+Produces a BoolCtl signal at the output which is an inversion of the input BoolCtl signal 
+(true changes to false and vice versa).
+15.22 F.22. Flow > Merge
+ 
+An output event is sent each time there is an event at any of the inputs or at several of 
+them simultaneously. If only one input receives the event at a given time, the value of the 
+output event will be equal to the value of the input event. If several inputs receive an 
+event simultaneously, the value at the lowest input (among those receiving the event) will 
+be selected. For example, if both second and third (counting from top) inputs receive an 
+event, the value at the third input will be taken.
+PROPERTIES
+▪
+Input Count number of inputs of the module
+Appendix F. Built-in Modules
+F.20. Flow > ES Ctl
+ 
+REAKTOR 5.5 - Core Reference - 189
+
+
+--- Page 190 ---
+
+15.23 F.23. Flow > EvtMerge
+ 
+The functionality is similar to that of the Merge module, except that all input values are 
+ignored. The value of the output event is undefined. This module is intended to be used 
+for generating signals to be used as clocks. Works only in floating point mode, since the 
+value is not meant to be used anyway.
+PROPERTIES
+▪
+Input Count number of inputs of the module
+15.24 F.24. Memory > Read
+ 
+Reads the stored value from the memory associated with the OBC chain that this module 
+belongs to. The reading occurs in response to an event at the upper (clock) input and is 
+sent to the upper output. The ports at the bottom are OBC master and slave connections, 
+respectively.
+15.25 F.25. Memory > Write
+ 
+Appendix F. Built-in Modules
+F.23. Flow > EvtMerge
+ 
+REAKTOR 5.5 - Core Reference - 190
+
+
+--- Page 191 ---
+
+Writes the value arriving at the upper input to the memory associated with the OBC chain 
+that this module belongs to. The writing occurs in response to an event at the upper input. 
+The ports at the bottom are OBC master and slave connections, respectively.
+15.26 F.26. Memory > R/W Order
+ 
+This module does not perform any action. It can be inserted into a structure to control the 
+processing order of OBC-connected modules. The OBC ports at the bottom are OBC master 
+and slave connections, which are internally connected in a “thru” way. The OBC input at 
+the top is called the “sidechain” connection and allows you to place this module logically 
+after the module connected to the sidechain input.
+The sidechain connection can be connected only to normal Latch OBC type modules. The 
+master and slave ports on the other hand can be connected to Latch or Array OBC type 
+modules depending on the properties settings for the R/W Order module. In any case, the 
+signal type and the precision must be the same for all connections to this module (e.F. 
+you cannot connect side chain to an integer Read and the master and the slave to float 
+modules at the same time).
+PROPERTIES
+▪
+Connection Type type of the “thru” port connection (latch or array)
+15.27 F.27. Memory > Array
+ 
+Defines an array memory object. The module itself does not perform any action. All opera­
+tions on the array are to be performed by the modules connected to the array output which 
+is an OBC slave connection of array type.
+Appendix F. Built-in Modules
+F.26. Memory > R/W Order
+ 
+REAKTOR 5.5 - Core Reference - 191
+
+
+--- Page 192 ---
+
+PROPERTIES
+▪
+Size number of elements in the array
+15.28 F.28. Memory > Size [ ]
+ 
+Reports the size of the array object connected to the input. The size is a constant integer 
+value.
+INITIALIZATION EVENT: during initialization sends the event with the value of the array size 
+to the output. This is the only time when this module sends an event.
+15.29 F.29. Memory > Index
+ 
+Provides access to a single array element. The access is provided in a form of a latch OBC 
+connection associated with the array element. The association is established and/or 
+changed by sending an event to the upper (index) input of the Index module, which is 
+zero-based and is always in the integer mode. The lower input is the master OBC connec­
+tion to the array. The output provides the latch OBC connection to the array element se­
+lected by the index input. The base value type and precision are, of course, the same for 
+both input and output OBC connections and are controlled by the module properties.
+15.30 F.30. Memory > Table
+ 
+Defines a pre-initialized read-only array. The module itself does not perform any action. All 
+operations on the table are to be performed by the modules connected to the table output 
+which is an OBC slave connection of array type.
+Appendix F. Built-in Modules
+F.28. Memory > Size [ ]
+ 
+REAKTOR 5.5 - Core Reference - 192
+
+
+--- Page 193 ---
+
+PROPERTIES
+ edit the values in the table
+▪
+FP Precision controls the formal precision of the output connection
+15.31 F.31. Macro
+ 
+Provides a container for an internal structure. The number of inputs and outputs is not 
+fixed and is defined by the internal structure.
+PROPERTIES
+▪
+FP Precision controls the formal precision of the output connection
+▪
+Look changes between Large (label and port names visible) and Small (label and port 
+names invisible) looks
+▪
+Pin Alignment controls the alignment of the ports in the outside view of the macro
+▪
+Solid controls the treatment of the macro by the core engine. If turned off the macro 
+boundary is transparent for feedback resolution and possibly other things. Leave it ON 
+unless you really, really know what you’re doing!
+▪
+Icon The Open File button loads a new icon for the macro, the File button clears the 
+icon (no icon assigned)
+Appendix F. Built-in Modules
+F.31. Macro
+ 
+REAKTOR 5.5 - Core Reference - 193
+

@@ -1,0 +1,468 @@
+--- Page 144 ---
+
+8
+Arrays
+ 
+8.1
+Introduction to Arrays
+ 
+Let’s imagine you want to build an audio-signal selector module, which, depending on the 
+value at the control input, picks up the signal from one of four audio-signal inputs:
+One approach would be to use Router modules, but there is also another possibility—we 
+can use another feature of Reaktor Core – arrays.
+A one-dimensional array is an ordered collection of data items of the same type which can 
+be addressed by their rank in this order or index. For example, here we have a group of 5 
+float numbers:
+▪
+5.2 16.1 -24.0 11.9 -0.5
+In Reaktor Core the array element indices are zero-based, which means that the first ele­
+ment of the array has an index of 0. Therefore, the element with an index of 0 is 5.2, an 
+index of 1 gives us 16.1, and indices of 2, 3, and 4 address –24.0, 11.9, and 0.5, re­
+spectively.
+Here is a representation of this array using a table:
+Index
+Value
+0
+5.2
+1
+16.1
+2
+-24.0
+Arrays
+ 
+REAKTOR 5.5 - Core Reference - 144
+
+
+--- Page 145 ---
+
+Index
+Value
+3
+11.9
+4
+0.5
+Arrays are created in Reaktor Core using Array modules (Built‑In Module > Memory > Ar
+ray):
+An Array module has a single output which is of Array OBC type. The size of the array 
+(number of elements) and the type of data kept in the elements of the array are specified 
+in the Array module’s properties:
+For example, for the above table of 5 elements we will need to specify the float data type 
+and the size of 5.
+Please note that because array indices in Reaktor Core are zero-based, the index range for an 
+array of size 5 would be 0 to 4 (you can also see it in the table above).
+Array OBC signals corresponding to different item data types are, of course, not compatible.
+To address an array element you need to specify an index, which you can do using an In­
+dex module (Built‑In In Module > Memory > Index):
+Arrays
+Introduction to Arrays
+ 
+REAKTOR 5.5 - Core Reference - 145
+
+
+--- Page 146 ---
+
+The master OBC input (bottom) of the Index module should be connected to the slave out­
+put of an array module. The master input connection type should match the array type, the 
+former can be specified in the properties of the Index module:
+And now the connection:
+The upper input of the Index module is always integer type and accepts the index value. 
+Here we are addressing the array element with the index of 1:
+Notice that the constant module has also been set to integer mode (you can tell that by 
+the look of the output port). This is not necessary, because automatic conversion to integer 
+would have been performed anyway; it just looks better.
+Arrays
+Introduction to Arrays
+ 
+REAKTOR 5.5 - Core Reference - 146
+
+
+--- Page 147 ---
+
+Alternatively we could have used a QuickConst:
+The output of the Index module is a Latch OBC type, which means that you can connect 
+Read and Write modules (or even several of them) to that output. Of course, you need to 
+take care that the Read and Write modules are set to the same data type as the data type 
+of the Array and Index modules.
+Here the array element with index of 1 will be initialized to 16.1:
+If an out-of-range index is sent to the Index module, the result of accessing the array is unde­
+fined. The structure will not crash, but it’s unspecified which array element will be accessed 
+in this case or whether the access operation will take place at all. If you’re unsure of the range 
+of incoming index values, you should clip the input value range using Routers or macro mod­
+ules from the library.
+8.2
+Building an Audio Signal Selector
+ 
+Now let’s return to building the audio signal selector module:
+Here is an empty internal structure for this module:
+Arrays
+Building an Audio Signal Selector
+ 
+REAKTOR 5.5 - Core Reference - 147
+
+
+--- Page 148 ---
+
+We are going to use an array of 4 float elements for storing our audio signals:
+Here are the properties of the array module:
+To write the input values into the array we will use the standard macro Write [] (Expert 
+Macro > Memory > Write []):
+Arrays
+Building an Audio Signal Selector
+ 
+REAKTOR 5.5 - Core Reference - 148
+
+
+--- Page 149 ---
+
+This macro internally has an Index module and a Write module, performing writing into the 
+array element with a specified index:
+The upper input, of course, receives the value to be written. The [] input receives the in­
+dex at which the write operation should take place. The M input receives the OBC connec­
+tion to a default precision float array, and the S output is a thru connection, similar to oth­
+er OBC modules like Read and Write.
+The M input and the S output are another type of macro port, which differs from the ones 
+we have been using up to now. These ports can be inserted by selecting the Latch entry 
+from the port insertion menu (the third type is the BoolCtl macro port type):
+Latch ports can be used for latch OBC connections (between Reads and Writes) as well as 
+for array OBC connections. How they are used is controlled in the port’s properties:
+Arrays
+Building an Audio Signal Selector
+ 
+REAKTOR 5.5 - Core Reference - 149
+
+
+--- Page 150 ---
+
+Setting the connection type to Latch or Array defines the OBC connection type between 
+latch OBC and array OBC, respectively. For the Write [] macro ports this has obviously 
+been set to Array type.
+The module with two parallel horizontal lines is the R/W Order module (Built‑In Module >
+Memory > R/W Order):
+It does nothing except let the connection at its master (bottom) input through to its slave 
+output. The upper input has absolutely no effect; however, because there is a connection 
+at this input, it will affect the processing order of the modules. Therefore, everything con­
+nected to the S output of the macro will be processed after the Write module, which would 
+not be the case were the R/W Order module missing from the structure.
+In the absence of the R/W Order module, the functionality of the Write [] macro would not be 
+very reliable or intuitive, because the user expects everything connected to the S output of the 
+Write [] macro to be processed after this macro. Generally, such problem arises only with OBC 
+connections, and in those cases, you need to take care to put R/W Order modules into the 
+macros that you design where necessary.
+Arrays
+Building an Audio Signal Selector
+ 
+REAKTOR 5.5 - Core Reference - 150
+
+
+--- Page 151 ---
+
+Like OBC ports, the R/W Order module has a Connection Type property. For this module 
+the Connection Type property controls only the type of the M and S ports; the sidechain 
+input is always in latch mode. See the description of R/W Order in the module reference 
+section for details. Now let’s build the circuitry for writing the input signals into the array:
+The four Write [] modules will take care of storing the incoming audio values into the ar­
+ray. We now need some circuitry to read one of the 4 values. We suggest using Read [] 
+macro (Expert Macro > Memory > Read []):
+Arrays
+Building an Audio Signal Selector
+ 
+REAKTOR 5.5 - Core Reference - 151
+
+
+--- Page 152 ---
+
+This macro reads from an array element whose index is specified at the integer input in 
+the middle. The top input is the clock input for the read operation – it will send the read 
+value to the upper output of the module in response to an incoming event. The ports at the 
+bottom are, of course, the master and slave array connections.
+Now to what do we connect the master input? Obviously we cannot connect it directly to 
+the array module, because we need the read operation to be performed after all write oper­
+ations (otherwise, there might be an effective one-sample delay, or there might not be, all-
+in-all not very reliable). We also cannot connect it to any of the Write [] modules, because 
+that wouldn’t solve our problem. We suggest that, rather than connecting the Write [] mod­
+ules to the array module in a fan pattern, you connect them serially; then connect the 
+Read [] module to the output of the last Write [] module.
+Arrays
+Building an Audio Signal Selector
+ 
+REAKTOR 5.5 - Core Reference - 152
+
+
+--- Page 153 ---
+
+Now, what do we connect to the index input of the Read [] module? Because we want our 
+selection value to be in the range 1 to 4, we need to subtract 1 from the Sel input value. 
+Notice that we perform integer subtraction (and because Sel is just a control input we 
+don’t really need a modulation macro here):
+The last step is to clock the read module by the sampling-rate clock (because we are 
+building an audio selector):
+In general, you should also take care to clip the Sel input value to the correct range, but 
+for simplicity, we did not do that here.
+Here is the suggested test structure (the macro has been put into an audio core cell):
+Arrays
+Building an Audio Signal Selector
+ 
+REAKTOR 5.5 - Core Reference - 153
+
+
+--- Page 154 ---
+
+The Sel knob is set to switch between 4 values from 1 to 4.
+Now switch to the panel and look at different waveforms corresponding to the knob set­
+ting:
+Arrays
+Building an Audio Signal Selector
+ 
+REAKTOR 5.5 - Core Reference - 154
+
+
+--- Page 155 ---
+
+8.3
+Building a Delay
+ 
+Now that we have some experience with arrays, let’s build a simple audio-delay macro. 
+The module will look like this:
+Or even better, like this (to align the output port with the top input port, we need to go 
+into the macro and change its Port Alignment property to top):
+The T input expects the delay time in seconds.
+If you take a look at an analog tape delay device, you’ll see a tape loop combined with re­
+cord and playback heads. Strictly speaking there’s also an erase head, but for simplicity 
+we can imagine that the record head does both the jobs of erasing and recording.
+Arrays
+Building a Delay
+ 
+REAKTOR 5.5 - Core Reference - 155
+
+
+--- Page 156 ---
+
+If we want to simulate this in a digital form, we need some kind of digital tape loop. Be­
+cause of the discrete nature of digital, the digital tape loop will hold a finite number of 
+audio samples, and these samples will be recorded and read at the audio sampling rate:
+A natural choice for a digital tape loop would be an array, the size of the array being equal 
+to the number of samples recorded in the whole loop.
+In an analog tape delay, the delay time depends on the distance between the record and 
+playback heads and on the tape speed. Usually the distance between the heads is fixed 
+and the tape speed is variable. It is done that way for obvious technical reasons: it’s much 
+easier to vary the tape speed than the distance between the heads. In the digital case, it’s 
+just the opposite, because varying the tape speed means performing sampling-rate conver­
+sion between the digital tape and the output, while varying the distance between the 
+heads is relatively simple, so that is what we are going to do:
+Arrays
+Building a Delay
+ 
+REAKTOR 5.5 - Core Reference - 156
+
+
+--- Page 157 ---
+
+There’s also another difference: in the analog world the tape is moving. If we want to move 
+our digital tape we would need to copy all array elements to their neighbor positions at 
+each audio clock, which is quite CPU intensive. Instead, we will move the heads.
+From the preceding, we can conclude that we will need the following:
+▪
+array – to simulate our digital tape loop
+▪
+write index – this is our record head
+▪
+read index – this is our playback head
+The write and the read indices will be moving through the array sample by sample. When 
+either of them reaches the end of the array, it needs to be reset to the beginning of the 
+array (that corresponds to connecting the open ends of the tape into a loop). The differ­
+ence between the write and the read position corresponds to the delay time measured in 
+samples.
+This technique is quite common in programming and is called “circular buffer” or “ring buf­
+fer”.
+We start by programming the record head. It operates similarly to the sawtooth oscillator 
+we programmed earlier, except that the computations are done in integer mode. The value 
+increment is one per audio tick and the output value range is from 0 to N-1, where N is 
+the size of the array. Let’s put the circuitry for computing the write index into a RecordPos 
+macro:
+Arrays
+Building a Delay
+ 
+REAKTOR 5.5 - Core Reference - 157
+
+
+--- Page 158 ---
+
+The N input should receive the number of elements in the array and the Pos output will 
+carry the current writing position (index). Here is how this macro can be implemented 
+(compare this to the sawtooth oscillator implementation):
+Note that the comparison module is set to >=. That was unimportant for the sawtooth os­
+cillator, we could use >= or > there, but in integer computations the difference is in most 
+cases critical. Using >= condition ensures that the write index will never reach a value of 
+N (which would be out of range).
+On the top-level, we create an array module and connect it to the RecordPos through the 
+Size [] module (available in Built‑In Module > Memory > Size []), which reports the size of
+the array:
+The size property of the array can be set to 44,100. This will allow us as much as 1 sec­
+ond of delay (actually one sample less) at 44.1 kHz sampling rate:
+Arrays
+Building a Delay
+ 
+REAKTOR 5.5 - Core Reference - 158
+
+
+--- Page 159 ---
+
+Now we need to compute the read index, which we will do by building two macros. The 
+first macro will convert the requested delay time into the distance in samples:
+That can be done by multiplying the time in seconds by the sampling rate in Hz. We also 
+should not forget to clip the result, a clipping macro Expert Macro > Clipping >IClipMin­
+Max should be good for that:
+We clip to N-1 because that’s the maximum distance between two different array ele­
+ments. Note the conversion to integers, which is done after the multiplication.
+Arrays
+Building a Delay
+ 
+REAKTOR 5.5 - Core Reference - 159
+
+
+--- Page 160 ---
+
+Alternatively, we could have clipped the input value (to a different range, of course), and that 
+is generally a little bit better, because float values which are out of the range of integer repre­
+sentation can produce arbitrary integer values, in which case we would no longer get true clip­
+ping.
+Now, we use another macro to compute the read index from the RecordPos and Distance:
+Obviously, the playback position must be the Distance in samples behind the record posi­
+tion; therefore, we subtract one from the other:
+The distance value is latched because it is produced by a control signal input, which po­
+tentially can receive events at any time, and we do not want the subtraction happening at 
+times other than at audio-clock events.
+If we just subtract, the difference can turn out to be less than zero because our array is 
+not a loop; its ends are not connected together. So we need to wrap the result:
+▪
+-1 must become N-1,
+▪
+-2 must become N-2,
+▪
+-3 must become N-3,
+▪
+and so on.
+So we include another macro for wrapping:
+Arrays
+Building a Delay
+ 
+REAKTOR 5.5 - Core Reference - 160
+
+
+--- Page 161 ---
+
+Because we know that the difference cannot be smaller than –N+1 (because RecordPos is 
+between 0 and N‑1 and Distance is between 0 and N-1), wrapping can be implemented as
+simple addition of N:
+Let’s get back to our top level structure. Now that we have the write and read indices, we 
+just need to perform reading and writing:
+Note that reading is happening after writing and that it’s clocked by the sampling-rate 
+clock.
+Here’s a proposed test structure. Don’t forget to put an ms2sec converter into the Delay 
+core cell and to set the Delay core cell to monophonic mode:
+Arrays
+Building a Delay
+ 
+REAKTOR 5.5 - Core Reference - 161
+
+
+--- Page 162 ---
+
+Actually it’s a good idea to switch the delay to monophonic mode as soon as possible, be­
+cause each voice will consume about 200K of memory. 44,100 samples, using 4 bytes 
+(32 bit) each:
+▪
+44,100*4 = 176,400 bytes, which is a little bit more than 172K (a kilobyte has 
+1024 bytes).
+To test the above structure play notes on your midi keyboard and hear them delayed by the 
+amount of time specified by the Time knob.
+8.4
+Tables
+ 
+There’s another module similar to Array. The name of this module is Table and it can be 
+found in the Built‑In In Module > Memory submenu:
+The difference between a table and an array is that you can only read from a table; you 
+cannot write to it. The values in a table are pre-initialized using the module’s properties. 
+To get access to the list of the values press the button in the properties window:
+Arrays
+Tables
+ 
+REAKTOR 5.5 - Core Reference - 162
+
+
+--- Page 163 ---
+
+A new dialog will appear:
+What you currently see is an empty table. It consists of a single element with zero value. 
+You can type in new values manually, or you can import them from a file. If you go for the 
+manual option you have to click the button.
+Arrays
+Tables
+ 
+REAKTOR 5.5 - Core Reference - 163
+
+
+--- Page 164 ---
+
+The following dialog appears:
+There you need to select the type of values stored in the table, the table size (number of 
+elements in the table), and a value to initialize all elements of the table.
+Alternatively, you can import the table from a file. The file can be an audio file (WAV/
+AIFF), a text file (TXT/ASC), or a Native Table File (NTF). To import from a file press the 
+Open File button.
+A file dialog will appear asking you to select a file. After that another dialog will appear 
+asking you to select the data type for the table values.
+Let’s use a table. We are going to build a sine-oscillator macro using a table lookup ap­
+proach:
+Inside this macro we are going to create a table module:
+We initialize the table from the file sinetable.txt, which we’ve prepared for you in the Core 
+Tutorial Examples folder in your Reaktor installation. It’s a text file containing values for 
+one period and one sample of sine function. Import it as Float32 type values:
+Arrays
+Tables
+ 
+REAKTOR 5.5 - Core Reference - 164
+
+
+--- Page 165 ---
+
+You can also view the loaded values as a waveform display. The List and Waveform buttons 
+switch between the list and waveform view respectively.
+Press OK to close the dialog and commit the loaded values to the table.
+There’s also an FP Precision property setting in the properties window for the table. It 
+doesn’t really control the precision of the values in the table (that you should have select­
+ed when importing the file or manually creating a list of values), but rather it sets the for­
+mal precision type of the table module’s output. Generally, you would keep it set to de­
+fault:
+Arrays
+Tables
+ 
+REAKTOR 5.5 - Core Reference - 165
+
+
+--- Page 166 ---
+
+Now that we have the table, we can continue building the oscillator. At its core there will 
+be a phase oscillator generating a rising sawtooth ramp signal from 0 to the size of the 
+table minus one:
+The phase oscillator implementation is similar to the sawtooth oscillator and to the record­
+ing position in the delay:
+A Read [] module connected to the phase oscillator and clocked by the sampling-rate 
+clock will access the corresponding table element and output its value.
+Arrays
+Tables
+ 
+REAKTOR 5.5 - Core Reference - 166
+
+
+--- Page 167 ---
+
+Here’s the suggested test structure (don’t forget a P2F converter in the core cell):
+An this is the panel view:
+Of course, this is not a very clean sounding sine because we don’t have any interpolation 
+in there. We leave it up to you to build an interpolating version if you wish.
+Arrays
+Tables
+ 
+REAKTOR 5.5 - Core Reference - 167
+

@@ -338,3 +338,67 @@ def test_open_in_reaktor_missing_file():
     assert "not found" in result[0].text.lower()
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# call_reaktor_robot
+# ─────────────────────────────────────────────────────────────────────────────
+
+def test_call_reaktor_robot_missing_keyword():
+    result = run(call_tool("call_reaktor_robot", {}))
+    assert "Error" in result[0].text
+
+
+def test_call_reaktor_robot_no_server():
+    """When Reaktor is not running, should return an Error: response."""
+    import unittest.mock as mock
+    import xmlrpc.client
+
+    with mock.patch("xmlrpc.client.ServerProxy") as MockProxy:
+        MockProxy.return_value.run_keyword.side_effect = ConnectionRefusedError
+        result = run(call_tool("call_reaktor_robot", {"keyword": "Is Active"}))
+    assert "Error" in result[0].text
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# call_reaktor_robot — live integration (skipped unless Reaktor is running)
+# ─────────────────────────────────────────────────────────────────────────────
+
+import socket as _socket
+
+
+def _reaktor_robot_running():
+    """Return True if Reaktor's Robot XML-RPC server is reachable on port 8270."""
+    try:
+        s = _socket.create_connection(("127.0.0.1", 8270), timeout=1)
+        s.close()
+        return True
+    except OSError:
+        return False
+
+
+reaktor_robot_live = pytest.mark.skipif(
+    not _reaktor_robot_running(),
+    reason="Reaktor Robot server not running on port 8270",
+)
+
+
+@reaktor_robot_live
+def test_call_reaktor_robot_is_active_live():
+    """Live: Is Active should return True when Reaktor is running."""
+    result = run(call_tool("call_reaktor_robot", {"keyword": "Is Active"}))
+    assert "OK:" in result[0].text
+    assert "True" in result[0].text
+
+
+@reaktor_robot_live
+def test_call_reaktor_robot_get_version_live():
+    """Live: Get Version should return the Reaktor version string."""
+    result = run(call_tool("call_reaktor_robot", {"keyword": "Get Version"}))
+    assert "OK:" in result[0].text
+    assert "Reaktor" in result[0].text
+
+
+@reaktor_robot_live
+def test_call_reaktor_robot_is_edit_mode_live():
+    """Live: Is Edit Mode should return a boolean result."""
+    result = run(call_tool("call_reaktor_robot", {"keyword": "Is Edit Mode"}))
+    assert "OK:" in result[0].text

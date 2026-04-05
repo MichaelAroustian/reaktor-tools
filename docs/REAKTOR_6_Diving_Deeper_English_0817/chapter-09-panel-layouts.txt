@@ -1,0 +1,59 @@
+--- Page 90 ---
+
+9
+Panel Layouts
+ 
+If you are using an Ensemble that contains more than one Instrument, you can move these In-
+struments around into a setup that suits you.
+The REAKTOR 6 Getting Started document covers the A/B Views of an Instrument, but this
+section will look into altering the Panel View further.
+For the purposes of illustration, this document will use the Akkord Ensemble from the Factory
+Library, as it uses two Instruments (one for the sequencer, and one for the Synthesizer).
+1.
+To edit Panel Layouts, you must use REAKTOR in Edit Mode. To activate Edit More, click
+on the EDIT button in the Toolbar.
+2.
+Load the Akkord Ensemble from the Factory Library; it is located in the Sequenced Syn-
+thesizers section.
+Panel Layouts
+ 
+REAKTOR 6 - Diving Deeper - 90
+
+
+--- Page 91 ---
+
+3.
+Click on the Header of the Lower Instrument (the synthesizer).
+4.
+Drag it over the sequencer Instrument.
+Panel Layouts
+ 
+REAKTOR 6 - Diving Deeper - 91
+
+
+--- Page 92 ---
+
+5.
+Release the synthesizer and it will be placed above the sequencer.
+Notice that as you drag and drop the Instruments, they lock into place. This behavior is called 
+Automatic Layout, and can be deactivated.
+1.
+To deactivate Automatic Layout, right-click on an empty space in the Panel View.
+Panel Layouts
+ 
+REAKTOR 6 - Diving Deeper - 92
+
+
+--- Page 93 ---
+
+2.
+Uncheck the Automatic Layout option from the menu by clicking on it.
+3.
+This option is also found in the Settings menu as Automatic Panel Layout.
+→
+With this option unchecked, when you move an Instrument, it will remain wherever you
+drop it and will no longer lock into place.
+Panel Layouts
+ 
+REAKTOR 6 - Diving Deeper - 93
+

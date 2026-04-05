@@ -1,0 +1,327 @@
+--- Page 517 ---
+
+Index
+1-pole
+Jordan, 37, 278
+1-pole ﬁlter, 7, 199
+transposed, 30
+2-pole ﬁlter, 95
+4-pole ﬁlter, 133
+8-pole ladder ﬁlter, 158
+allpass ﬁlter, 29, 119
+SKF, 158
+TSK, 158
+allpass substitution, 92
+amplitude
+elliptic, 351
+of oscillations around ∞, 344
+amplitude response, 13, 51
+analytic ﬁlter, 453, 456
+analytic signal, 453
+antisaturator, 211
+arctangent scale, 313
+bandpass ﬁlter, 95, 293, 303
+barberpole, 502
+BIBO, 21
+bilinear transform, 57
+inverse, 58
+topology-preserving, 81
+unstable, 89
+bisection, 189
+BLT, 57
+BLT integrator, see trapezoidal inte-
+grator
+Butterworth ﬁlter, 103, 286, 294, 319
+1st kind of, 286
+2nd kind of, 294
+Butterworth transformation, 283, 285
+1st kind of, 286
+2nd kind of, 294
+canonical form, 79
+cascade decomposition, 275
+Chebyshev ﬁlter, 337, 344
+type I, 337
+type II, 344
+Chebyshev polynomial, 332
+double-reciprocated, 344
+renormalized, 335
+comb ﬁlter, 493
+complex exponential, 5
+complex impedances, 12
+complex sinusoid, 1
+controllable canonical form, 271
+coupled-form resonator, 253
+crossover, 437
+cutoﬀ, 8, 14
+of a pole, 109
+of a zero, 109
+parameterization of, 15, 275
+cutoﬀmodulation, 40, 264
+damping
+in SVF, 100
+of a pole, 109
+of a zero, 109
+DC oﬀset, 2
+degree
+of transformation, 383
+degree equation, 383
+delayless feedback, 73
+DF1, 79
+DF2, 79
+diagonal form, 247, 278
+diﬀerentiator, 91
+diode clipper, 208
+diode ladder ﬁlter, 164, 200
+Dirac delta, 4
+direct form, 79
+discrimination factor, 387
+eigenfunction, 9
+elliptic ﬁlter, 400
+minimum Q, 405
+505
+
+
+--- Page 518 ---
+
+506
+INDEX
+elliptic function, 351
+evaluation of, 374
+normalized, 363
+normalized-argument, 372
+elliptic modulus, 350
+elliptic rational function, 384
+normalized, 389
+renormalized, 394
+ellitic integral, 350
+EMQF, 405
+equiripple, 309
+equiripples, 332
+even roots/poles, 288, 322, 449
+ﬁlter
+1-pole, 7, 199
+2-pole, 95
+4-pole, 133
+allpass, 29, 119
+analytic, 453, 456
+bandpass, 95, 293, 303
+Butterworth, 103, 286, 294, 319
+comb, 493
+elliptic, 405
+highpass, 18, 95, 138, 292, 303
+highpass TSK, 154
+ladder, 133, 275, 305
+lowpass, 7, 95, 133, 290, 302
+lowpass SKF, 155
+lowpass TSK, 154
+multimode, 25, 95, 141, 276
+multinotch, 487
+normalized bandpass, 111
+notch, 119
+peaking, 121
+Sallen–Key, 152, 154
+shelving, 27, 118, 410
+SKF, 154
+stable, 21
+tilting, 410
+transposed, 30
+TSK, 152
+unit-gain bandpass, 111
+ﬁxed-point iteration, 184
+Fourier integral, 3
+Fourier series, 2
+Fourier transform, 3
+frequency response, 13, 51
+frequency shifter, 468
+gain element, 8
+generalized SVF, 271
+hard clipper, 177, 198
+harmonics, 2
+Hermitian, 3
+highpass ﬁlter, 18, 95, 138, 292, 303
+Hilbert transform, 453
+Hilbert transformer, 453, 456
+hyperbolic functions, 325
+imaginary Riemann circle, 312
+instantaneous gain, 75
+instantaneous oﬀset, 75
+instantaneous response, 75
+instantaneous smoother, 85
+instantaneously unstable
+feedback, 85
+integrator, 8
+BLT, see integrator, trapezoidal
+naive, 47
+trapezoidal, 53, 269
+integratorless feedback, 239
+Jacobian elliptic function, 351
+evaluation of, 374
+normalized, 363
+normalized-argument, 372
+Jordan 1-pole, 37, 278
+Jordan 2-pole, 253, 278
+Jordan cell, 256
+real, 259
+Jordan chain, 39, 257
+Jordan normal form, 256
+ladder ﬁlter, 133, 275
+2-pole allpass, 158
+8-pole, 158
+bandpass, 146
+diode, 164, 200
+generalized, 305
+highpass, 145
+modes of, 141
+OTA, 201
+transistor, 199
+Landen transformation, 374
+Laplace integral, 5
+Laplace transform, 5
+linearity, 11
+Linkwitz–Riley crossover, 439
+
+
+--- Page 519 ---
+
+INDEX
+507
+lowpass ﬁlter, 7, 14, 95, 133, 290, 302
+LP to BP substitution, 114, 294
+LP to BP transformation, 114
+LP to BS substitution, 117
+LP to HP substitution, 24
+LP to HP transformation, 24
+matrix exponential, 244
+maximum phase, 24
+MIMO
+SKF, 155
+minimax approximation, 472, 473
+minimum phase, 24
+minimum Q, 405
+modular angle, 350
+modulus
+ellitpic, 350
+multimode ﬁlter, 25, 95, 141, 276
+multinotch ﬁlter, 487
+N-th degree transformation, 383
+naive integrator, 47
+Newton–Raphson method, 186
+nonstrictly proper, 11
+normalized bandpass ﬁlter, 111
+notch ﬁlter, 119
+observable canonical form, 273
+odd roots/poles, 288, 322, 449
+OTA ladder ﬁlter, 201
+parallel representation, 278
+partial fraction expansion, 278
+partials, 2
+passband, 14, 97, 111
+peaking ﬁlter, 121
+phase response, 13, 51
+phase splitter, 468
+pole, 19, 35, 53
+cutoﬀof, 109
+damping of, 109
+preimage
+of a representation, 320
+prewarping, 62, 115
+prewarping point, 65
+principal values, 326
+quarter period
+imaginary, 354
+quarter-period, 353
+real diagonal form, 252, 278
+real Riemann circle, 310
+reference gain, 431
+Remez algorithm, 472
+representation, 320
+resonance, 100, 106
+Riemann circle
+imaginary, 312
+real, 310
+Riemann sphere, 309
+rotations of, 314
+rolloﬀ, 15, 21
+Sallen–Key
+highpass, 155
+lowpass, 155
+MIMO, 155
+Sallen–Key ﬁlter, 152, 154
+saturator, 174
+asymptotically linear, 176
+bounded, 175
+bounded-range, 175
+compact-range monotonic, 175
+slower than linear, 176
+unbounded, 176
+unbounded-range, 176
+selectivity factor, 387
+selfoscillation, 101, 128, 136, 180
+selfoscillation point, 129
+serial cascade, 275
+shelving band, 417
+shelving ﬁlter, 118, 410
+1-pole, 27
+SKF, 154
+allpass, 158
+highpass, 155
+lowpass, 155
+MIMO, 155
+soft clipper, 177
+spectrum, 2
+stability, 21, 35, 268
+time-varying, 42
+state space, 239
+state-space form, 237
+state-variable ﬁlter, 95
+steady state, 33
+steady-state response, 33
+stopband, 14, 97
+substitution
+LP to BP, 114, 294
+
+
+--- Page 520 ---
+
+508
+INDEX
+LP to BS, 117
+LP to HP, 24
+summator, 8
+SVF, 95
+generalized, 271
+tilting ﬁlter, 410
+time-invariant, 10
+time-varying system, 42
+topology, 42
+topology-preserving transform, 59, 81
+TPBLT, 81
+TPT, 59, 81
+transfer function, 11, 33, 50, 182
+transfer matrix, 242, 267
+transformation
+LP to BP, 114
+LP to HP, 24
+transient response, 33, 245, 268
+transistor ladder ﬁlter, 199
+transition band, 14, 97, 417
+transposition, 30, 243
+trapezoidal integrator, 53, 269
+trigonometric functions, 325
+TSK
+allpass, 158
+TSK ﬁlter, 152
+highpass, 154
+lowpass, 154
+uniform positiveness, 41
+uniformly positive function, 264
+unit delay, 48
+unit-gain bandpass ﬁlter, 111
+waveshaper, 173
+z-integral, 46
+z-transform, 46
+zero, 19, 53
+cutoﬀof, 109
+damping of, 109
+zero-delay feedback, 74, 183
+

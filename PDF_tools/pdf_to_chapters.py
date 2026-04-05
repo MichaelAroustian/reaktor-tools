@@ -132,13 +132,19 @@ def parse_toc(page):
                     continue
 
             # Format 2: section alone + title (possibly wrapped across lines) + page_num
-            # Find page number by scanning backwards for last purely numeric line
+            # Special case: if line[2] is a number and line[3] is a sub-section (e.g. "1.1"),
+            # the chapter page is at index 2 — don't scan backward past it.
             if len(lines) >= 3:
-                pn_idx = None
-                for j in range(len(lines) - 1, 0, -1):
-                    if re.match(r'^\d+$', lines[j]):
-                        pn_idx = j
-                        break
+                if (len(lines) > 3
+                        and re.match(r'^\d+$', lines[2])
+                        and re.match(r'^\d+\.\d+', lines[3])):
+                    pn_idx = 2
+                else:
+                    pn_idx = None
+                    for j in range(len(lines) - 1, 0, -1):
+                        if re.match(r'^\d+$', lines[j]):
+                            pn_idx = j
+                            break
                 if pn_idx and pn_idx >= 2:
                     title = clean_title(' '.join(lines[1:pn_idx]))
                     entries.append((section, title, int(lines[pn_idx])))

@@ -1,0 +1,99 @@
+--- Page 173 ---
+
+10
+Appendix A. Reaktor Core User Interface
+ 
+10.1
+A.1. Core Cells
+ 
+A core cell is can be created from a Reaktor primary-level structure (except the ensemble 
+structure) by right-clicking on the background and selecting Core Cell > New Audio or Core 
+Cell > New Event.
+Library core cells (from both the system and user libraries) are found in the same “Core 
+Cell” menu. You can also load core cells using Core Cell > Load… command.
+▪
+To delete a core cell, select it and press the Delete key, or right-click on the core cell 
+and select the Delete command. Deleting multiple selections is also possible.
+▪
+To save a core cell to a file, right-click on the core cell and select Save Core Cell As… 
+command.
+▪
+To edit the internal structure of a core cell, double-click on the core cell. To ascend 
+back to the previous level, double-click on the background.
+▪
+To edit the outside properties of the core cell, right-click on the cell and select Prop­
+erties. If the properties window is already open, it’s enough to just click on the cell.
+▪
+To edit its inside properties you have to go to the inside structure, right-click on the 
+background and select Owner Properties. If the properties window is already open, it’s 
+enough to just click on the background.
+10.2
+A.2. Core Modules/Macros
+ 
+▪
+To create a normal core module or a macro, right-click in the central (the largest) area 
+of the core structure and select one from the modules/macros from Built‑In Module,
+Expert Macro, Standard Macro, or User Macro menu. You can also load a module/
+macro by right-clicking on the background and selecting Load Module… command.
+▪
+An empty macro can be created from the Built‑In In Module menu.
+▪
+To save a core module/macro to a file, right-click on it and select Save As… com­
+mand.
+▪
+To delete a core module/macro, select it and press the Delete key, or right-click on it 
+and select the Delete command. Deleting multiple selections is also possible.
+Appendix A. Reaktor Core User Interface
+ 
+REAKTOR 5.5 - Core Reference - 173
+
+
+--- Page 174 ---
+
+▪
+To edit the internal structure of the core macro, double-click on the macro. To ascend 
+back to the previous level double-click on the background.
+▪
+To edit the properties of the core module/macro, you have to go to the inside struc­
+ture, right-click on the background, and select Owner Properties. If the properties 
+window is already open, it’s enough to just click on the background.
+▪
+You can also access the properties of the module/macro from the outside, by right-
+clicking on it and selecting Properties. If the properties window is already open, it’s 
+enough to just click on the module/macro.
+10.3
+A.3. Core Ports
+ 
+▪
+To create a core port right-click in the left (inputs) or the right (outputs) area of the 
+core structure and select one from the available types from the New submenu.
+▪
+To delete a core port, select it and press the Delete key, or right-click on it and select 
+the Delete command. Deleting multiple selections (including mixed module/port se­
+lections) is also possible.
+10.4
+A.4. Core Structure Editing
+ 
+▪
+To move a core module, click on it and drag to the desired location. The ports can 
+only be dragged vertically; their vertical order defines the order of their outside ap­
+pearance.
+▪
+To create a connection between an input of one module and an output of another 
+module, click on one of them and drag to the other.
+▪
+To remove a connection click on the connection wire to select it and press the Delete 
+key. Alternatively you can drag from the input to the structure background.
+▪
+To create a QuickConst, right-click on an input of a module and select Connect to 
+New QuickConst. To access QuickConst properties, click on the QuickConst.
+▪
+To create a QuickBus, right-click on an input or an output of a module and select 
+Connect to New QuickBus. To connect an input or an output of a module to an exist­
+ing QuickBus, right-click on the input or output and select one of the available busses 
+in the Connect to QuickBus menu.
+Appendix A. Reaktor Core User Interface
+A.3. Core Ports
+ 
+REAKTOR 5.5 - Core Reference - 174
+

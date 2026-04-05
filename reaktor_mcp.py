@@ -476,6 +476,35 @@ async def list_tools() -> list[Tool]:
                 "required": ["location", "filepath"],
             },
         ),
+        Tool(
+            name="call_reaktor_robot",
+            description=(
+                "Call a Robot Framework keyword on the running Reaktor 6 instance via its built-in "
+                "XML-RPC server on port 8270. Reaktor must be running with the Robot server enabled "
+                "(feature flag 5d4e071323382551707559765a3322d24e9e3fcd=1 in com.native-instruments.Reaktor 6 prefs). "
+                "Available keywords include: 'Is Active', 'Get Version', 'New Ensemble', 'New Rack', "
+                "'Save Project', 'Open Project', 'Get Project Name', 'Is Edit Mode', 'Is Touched', "
+                "'Create Instrument', 'Create Macro', 'Create Core Cell', 'Get Num Modules', "
+                "'Load Via Structure', 'Delete Module', 'Find Module By Label', 'Process File Load Requests'. "
+                "Use args for keyword arguments (e.g. a file path for 'Open Project')."
+            ),
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "keyword": {
+                        "type": "string",
+                        "description": "The Robot Framework keyword name to invoke on Reaktor.",
+                    },
+                    "args": {
+                        "type": "array",
+                        "items": {"type": "string"},
+                        "description": "Positional arguments for the keyword.",
+                        "default": [],
+                    },
+                },
+                "required": ["keyword"],
+            },
+        ),
     ]
 
 
@@ -880,6 +909,38 @@ async def call_tool(name: str, arguments: dict) -> list[TextContent]:
         except Exception as e:
             log.error("open_in_reaktor error: %s", e)
             return [TextContent(type="text", text=f"Error opening file: {e}")]
+
+    # ── call_reaktor_robot ────────────────────────────────────────────────────
+    elif name == "call_reaktor_robot":
+        import xmlrpc.client
+
+        keyword = arguments.get("keyword", "")
+        args = arguments.get("args", [])
+
+        if not keyword:
+            return [TextContent(type="text", text="Error: 'keyword' is required.")]
+
+        robot_url = "http://127.0.0.1:8270"
+        try:
+            proxy = xmlrpc.client.ServerProxy(robot_url, allow_none=True)
+            result = proxy.run_keyword(keyword, args, {})
+            log.info("call_reaktor_robot: %s(%s) → %s", keyword, args, result)
+            status = result.get("status", "UNKNOWN") if isinstance(result, dict) else str(result)
+            ret = result.get("return", "") if isinstance(result, dict) else ""
+            error = result.get("error", "") if isinstance(result, dict) else ""
+            if status == "PASS":
+                text = f"OK: {keyword}\nReturn: {ret}" if ret != "" else f"OK: {keyword}"
+            else:
+                text = f"FAIL: {keyword}\nError: {error}"
+            return [TextContent(type="text", text=text)]
+        except ConnectionRefusedError:
+            return [TextContent(type="text", text=(
+                "Error: Reaktor Robot server not reachable on port 8270. "
+                "Ensure Reaktor is running with the Robot feature enabled."
+            ))]
+        except Exception as e:
+            log.error("call_reaktor_robot error: %s", e)
+            return [TextContent(type="text", text=f"Error: {e}")]
 
     # ── unknown ────────────────────────────────────────────────────────────────
     log.error("Unknown tool: %s", name)

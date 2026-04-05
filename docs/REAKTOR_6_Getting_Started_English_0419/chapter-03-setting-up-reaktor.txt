@@ -1,0 +1,190 @@
+--- Page 28 ---
+
+3
+Setting Up REAKTOR
+ 
+In order to be able to send and receive audio as well as interact with the REAKTOR stand-
+alone application, you need to configure your audio and MIDI hardware devices (i.e. audio in-
+terface, MIDI keyboard) in REAKTOR’s Audio and MIDI Settings. When using the REAKTOR
+plug-in, these settings are taken over by the host software. In this case, REAKTOR automati-
+cally connects with the host software in order to send and receive audio and MIDI.
+When you first open the REAKTOR stand-alone application, the Audio and MIDI Settings win-
+dow appears, prompting you to make the required settings:
+The Audio and MIDI Settings window
+3.1
+Audio Settings
+ 
+The audio settings are located in the Audio and MIDI Settings window.
+1.
+To access the audio settings, open the File menu and select Audio and MIDI Settings…
+Setting Up REAKTOR
+Audio Settings
+ 
+REAKTOR 6 - Getting Started - 28
+
+
+--- Page 29 ---
+
+The first tab in the Audio and MIDI Settings window is the Audio tab, which contains the main
+audio preferences. This is where you select your audio interface and adjust its settings for use
+with REAKTOR.
+The Audio tab in the Audio and MIDI Settings window
+The options presented in this tab are ordered in such a way as to lead you through the audio
+set up process. Follow the steps below to set up your audio interface:
+1.
+Select the type of driver you want to use from the Driver drop-down menu. On computers
+running Windows, using ASIO is highly recommended. On computers running OS X, Core
+Audio is pre-selected.
+2.
+Select your audio interface from the Device drop-down menu. The devices available in
+this menu depend on your Driver type selection.
+3.
+Check the Status of your audio interface. If the hardware is connected and working, this
+area shows the message Running.
+4.
+Set the Sample Rate for your audio interface. Sample rates of 44100 and 48000 Hz are
+commonly used and recommended. If you are using an ASIO driver on a Windows system,
+click on the ASIO Config button to access the ASIO settings for your audio interface and
+set the sample rate.
+Setting Up REAKTOR
+Audio Settings
+ 
+REAKTOR 6 - Getting Started - 29
+
+
+--- Page 30 ---
+
+5.
+Set the Latency for your audio interface. Latency refers to the period of time the computer
+needs to process an audio signal. It is determined by the size of the audio buffer (in sam-
+ples). Buffer sizes of 128 and 256 samples are commonly used and recommend.
+If the computer is not able to provide the amount of processing power needed to com-
+plete all audio calculations in time, crackles and drop-outs in the audio playback might
+occur. In this case, gradually increase the size of the audio buffer until the playback is
+clean.
+Setting up the Audio Routing
+After you have completed setting up your audio interface in the Audio tab, you can then
+choose which audio inputs and outputs REAKTOR should use in the Routing tab. This is where
+you connect REAKTOR’s inputs and outputs to the inputs and outputs of your audio interface.
+The Routing tab in the Audio and MIDI Settings window
+The Routing tab has two pages:
+•
+Inputs: On this page you can manage the connection options for REAKTOR's inputs.
+•
+Outputs: On this page you can manage the connection options for REAKTOR's outputs.
+Setting Up REAKTOR
+Audio Settings
+ 
+REAKTOR 6 - Getting Started - 30
+
+
+--- Page 31 ---
+
+REAKTOR can have multiple inputs and outputs. Most of the time you will only need to use
+two of each (for the left and right stereo channels), but in some cases more outputs are re-
+quired. For example, an Ensemble hosting multiple Instruments can benefit from individual
+outputs for each of them.
+To set the audio inputs:
+1.
+Click on the Inputs tab.
+2.
+Click on the area labeled - not connected - beside the REAKTOR input you wish to define.
+3.
+Select the input you wish to use from the menu.
+Setting Up REAKTOR
+Audio Settings
+ 
+REAKTOR 6 - Getting Started - 31
+
+
+--- Page 32 ---
+
+To set the audio outputs:
+1.
+Click on the Outputs tab.
+2.
+Click on the area labeled - not connected - beside the REAKTOR output you wish to de-
+fine.
+3.
+Select the output you wish to use from the menu.
+Setting Up REAKTOR
+Audio Settings
+ 
+REAKTOR 6 - Getting Started - 32
+
+
+--- Page 33 ---
+
+1.
+Once you have completed the Audio settings as well as the Inputs and Outputs selection
+process, click the OK button to confirm your settings.
+3.2
+MIDI Settings
+ 
+The MIDI settings are located in the Audio and MIDI Settings window. To access the MIDI set-
+tings:
+1.
+Open the File menu and select Audio and MIDI Settings…
+2.
+Click on the MIDI tab.
+The MIDI tab contains the main MIDI preferences. This is where you enable your MIDI devices
+for use with REAKTOR, for example MIDI keyboards, USB MIDI controllers, or MIDI interfaces.
+Setting Up REAKTOR
+MIDI Settings
+ 
+REAKTOR 6 - Getting Started - 33
+
+
+--- Page 34 ---
+
+The MIDI tab in the Audio and MIDI Settings window
+The MIDI tab has two pages:
+•
+Inputs: On this page you can select the devices which REAKTOR receives MIDI data from.
+•
+Outputs On this page you can select the devices REAKTOR sends MIDI data to.
+Both of these pages show similar looking tables with the same columns:
+•
+Device name: This column shows a list of the MIDI devices connected to your computer.
+•
+Status: This column shows the current On/Off state of the device.
+To enable MIDI data being received from a MIDI device (for example a MIDI keyboard):
+1.
+Click on the Inputs tab.
+Setting Up REAKTOR
+MIDI Settings
+ 
+REAKTOR 6 - Getting Started - 34
+
+
+--- Page 35 ---
+
+2.
+Click on the Status of the device you wish to use.
+3.
+Select On from the menu.
+⇨REAKTOR now receives MIDI data from the MIDI device.
+You can test if the connection is working by sending MIDI data to REAKTOR (e.g. by
+pressing keys on your keyboard) and checking if the MIDI indicator in the Toolbar is
+blinking (see section ↑2.2, The Toolbar).
+To enable MIDI data being sent to a MIDI device (for example a MIDI-controlled synthesizer):
+1.
+Click on the Outputs tab.
+2.
+Click on the Status of the device you wish to use.
+Setting Up REAKTOR
+MIDI Settings
+ 
+REAKTOR 6 - Getting Started - 35
+
+
+--- Page 36 ---
+
+3.
+Select On from the menu.
+⇨REAKTOR now sends MIDI data to the MIDI device.
+Setting Up REAKTOR
+MIDI Settings
+ 
+REAKTOR 6 - Getting Started - 36
+

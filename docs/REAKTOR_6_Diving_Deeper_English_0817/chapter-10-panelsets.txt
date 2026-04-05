@@ -1,0 +1,129 @@
+--- Page 94 ---
+
+10
+Panelsets
+ 
+Panelsets are a way of saving and recalling REAKTOR Panel Layouts. They are especially use-
+ful when an Ensemble includes more than one Instrument, as they can be used to quickly cy-
+cle between different panel configurations of the Instruments.
+Panelsets can be viewed and edited from the Side Pane.
+►
+To view the Panelsets, click on the Panelset tab in the Side Pane.
+10.1
+Recalling Panelsets
+ 
+An Ensemble in the REAKTOR Factory Library that makes good use of the Panelsets is Vectory,
+so it will be used to illustrate how to recall Panelsets.
+►
+Load Vectory from the Grooveboxes section of the Reaktor Factory Library.
+Panelsets
+Recalling Panelsets
+ 
+REAKTOR 6 - Diving Deeper - 94
+
+
+--- Page 95 ---
+
+The Vectory Ensemble
+Vectory manipulates samples to produce its sound, but when you first load the Ensemble, it
+appears as if there is no way to load samples into the Ensemble from the interface.
+However, looking at the Panelsets, you will see that Vectory has two Panelsets: Mashup and
+Setup.
+Panelsets
+Recalling Panelsets
+ 
+REAKTOR 6 - Diving Deeper - 95
+
+
+--- Page 96 ---
+
+Vectory's Panelsets
+The initial view that loads with the Ensemble is the Mashup Panelset.
+►
+Click on the Setup entry in the Side Pane to load the Setup Panelset.
+Panelsets
+Recalling Panelsets
+ 
+REAKTOR 6 - Diving Deeper - 96
+
+
+--- Page 97 ---
+
+→
+The Panel changes to display different Instruments: a Sample Loader and a MIDI Control-
+ler Setup Instrument.
+Panelsets
+Recalling Panelsets
+ 
+REAKTOR 6 - Diving Deeper - 97
+
+
+--- Page 98 ---
+
+►
+You can also recall Panelsets from the Settings menu, by clicking on the relative entry in
+the Recall Panelset sub-menu.
+10.2
+Creating and Editing Panelsets
+ 
+In order to create or edit Panelsets, you need to have REAKTOR in Edit Mode.
+►
+To activate Edit Mode, click on the EDIT button in the Toolbar.
+In Edit Mode, there are three additional buttons below the Panelset list:
+The Panelset Buttons
+These buttons allow you to create, save or delete Panelsets.
+•
+New: Creates a new Panelset that stores the current Panel configuration.
+•
+Store: Overwrites the selected Panelset with the current Panel configuration.
+•
+Remove: Deletes the selected Panelset.
+Panelsets
+Creating and Editing Panelsets
+ 
+REAKTOR 6 - Diving Deeper - 98
+
+
+--- Page 99 ---
+
+Below the Panelset buttons you will see a list of the Instruments in the loaded Ensemble.
+The Instruments in Vectory
+To edit and store a Panelset:
+1.
+Show and hide Instruments by clicking on the buttons beside their name.
+2.
+You can then arrange the Instruments on the Panel.
+3.
+When you are finished, save the Panelset clicking on the New button.
+4.
+Rename the new Panelset by double-clicking on its name and typing a new name.
+5.
+Press [Enter] or click away to set the new name.
+→
+The newly created Panelset will be available for recall.
+Panelsets
+Creating and Editing Panelsets
+ 
+REAKTOR 6 - Diving Deeper - 99
+
+
+--- Page 100 ---
+
+Remember to save the Ensemble file to make these changes permanent.
+What is Stored in a Panelset
+Panelsets store the following information:
+•
+The visibility of each Instrument in the Ensemble.
+•
+The Header visibility of each Instrument and the Ensemble.
+•
+The A/B view selection and minimized/maximized state of the Instruments.
+•
+The positions of the Instruments on the Panel.
+•
+The Snap to Grid and Automatic Layout Panel settings.
+Panelsets
+Creating and Editing Panelsets
+ 
+REAKTOR 6 - Diving Deeper - 100
+

@@ -1,0 +1,168 @@
+--- Page 61 ---
+
+7
+Using Racks
+ 
+Racks facilitate analog-style modular synthesizer patching using pre-built modules in the
+Blocks format. In a Rack, you can arrange, connect, and control Blocks directly in the Panel.
+The patch is also mirrored in the Structure, allowing you to choose your preferred patching
+workflow.
+This chapter provides an overview of the Racks and explains how to manage them. If you want
+to learn more about Racks and all the available Blocks, refer to the following resources:
+•
+Learn how to patch using REAKTOR Blocks in a Rack by following the Quick Start Guide
+online: www.native-instruments.com/reaktor-blocks-quickstart
+•
+Learn all about the Blocks and their controls in the application by using REAKTOR’s Info
+Hints. For more information, refer to ↑7.1, Overview.
+7.1
+Overview
+ 
+The following overview shows you how a Rack is displayed in REAKTOR and where you can
+find the most important controls.
+Using Racks
+Overview
+ 
+REAKTOR 6 - Getting Started - 61
+
+
+--- Page 62 ---
+
+7
+8
+5
+6
+3
+1
+2
+4
+Overview of a Rack in REAKTOR
+(1) Library: This tab in the Browser shows all installed Blocks. They are organized in folders.
+The contents of the selected folder are shown in the lower section of the Browser. You can drag
+and drop the Blocks from the lower section into the Rack to build your patch.
+(2) View modes: These three buttons control the visibility of ports and wires in the Rack.
+•
+Compact View: All ports and wires are hidden. You can focus on tweaking the controls of
+the Blocks.
+•
+Ports View: Only the wires are hidden. You have a clear view of all controls while the ports
+are still visible, indicating connections in the patch by color coding.
+•
+Ports and Wires View: The full patch including ports and wires is visible and can be
+changed by making new connections or removing existing ones.
+Using Racks
+Overview
+ 
+REAKTOR 6 - Getting Started - 62
+
+
+--- Page 63 ---
+
+(3) Show Structure: This button shows or hides the additional Structure view (8). This is useful
+for creating and managing large patches. The Structure shows all connections even when Com-
+pact View or Ports View are selected.
+(4) Rack switching: The arrow buttons in the Rack menu switch between Racks in the selected
+category folder of the factory content. For more information, refer to ↑7.2, Loading Racks.
+(5) Panel view: Shows all Blocks in the Rack. You can change the controls on each Block to
+adjust its parameters. Inputs are located on the left side of a Block, while outputs are located
+on the right side. You can connect Blocks by clicking on an output and dragging a wire to an
+input. You can remove a wire by double-clicking on the connected input.
+(6) Info Hints: Enables or disables tooltips for all Blocks and their controls. When enabled, you
+can hover over the header of a Block to view general information. Hovering over a control shows
+detail information.
+(7) Search box: Press the Enter key on your computer keyboard to call up the search box. You
+can find Blocks by entering their function, family, or name. The search box can be used both
+in Panel and Structure views.
+(8) Structure view: Shows all Blocks in the Rack. Inputs are located on the left side of a Block,
+while outputs are located on the right side. You can connect Blocks by clicking on an output
+and dragging a wire to an input. You can click on a wire to select it and press Delete or Back-
+space on your computer keyboard to delete a wire.
+7.2
+Loading Racks
+ 
+Each Blocks product includes premade Racks as factory content. You can load these Racks
+from the Player tab in the Browser. Alternatively, you can open Racks saved on your hard drive.
+Loading Racks from a Blocks Product
+To load a Rack included in a Blocks product:
+Using Racks
+Loading Racks
+ 
+REAKTOR 6 - Getting Started - 63
+
+
+--- Page 64 ---
+
+1.
+Open the folder of the Blocks product in the Browser’s Player tab, select a category folder
+and load a Rack by double-clicking on it in the lower section.
+Once you have selected a category folder, you can also switch between Racks using the Rack
+menu in the toolbar.
+1.
+Click on the arrows in the Rack menu to switch between Racks in the selected category
+folder.
+Using Racks
+Loading Racks
+ 
+REAKTOR 6 - Getting Started - 64
+
+
+--- Page 65 ---
+
+Opening a Rack saved on the Hard Drive
+To open a Rack saved on the hard drive:
+1.
+Click on the drop-down menu next to the REAKTOR logo, go to the File menu and select
+Open.
+2.
+In the file dialog, browse to the Rack file you saved, select it, and click Open.
+⇨The Rack opens in REAKTOR and you can start using it.
+7.3
+Saving Racks
+ 
+When you have created a sound you like, you can save your Rack in a file. This way you can
+recall it later and share it with others.
+1.
+Click on the drop-down menu next to the REAKTOR logo, go to the File menu and select
+Save.
+2.
+In the file dialog, browse to a location of your choice, type in a name for your Rack, and
+click Save.
+Using Racks
+Saving Racks
+ 
+REAKTOR 6 - Getting Started - 65
+
+
+--- Page 66 ---
+
+When using REAKTOR as a plug-in, all settings including the arrangement of Blocks and
+the connections made between them are also saved and recalled with your host se-
+quencer project (host chunk saving).
+7.4
+Creating a New Rack
+ 
+When you want to create a Rack from scratch, you need to open a new Rack.
+1.
+Click on the drop-down menu next to the REAKTOR logo, go to the File menu and select
+New Rack.
+7.5
+Additional Settings
+ 
+Additional settings for Racks are available in REAKTOR’s side pane.
+•
+Panel Sets allow you to save different configurations of the Panel view in the same Rack
+file. You can show or hide Blocks (while they remain active) or switch between arrange-
+ments of Blocks for specific use cases. For more information, refer to the REAKTOR 6
+Diving Deeper document, chapter Panelsets.
+•
+You can assign any of the controls in the Rack to your MIDI controller. For more informa-
+tion, refer to ↑9, Controlling REAKTOR.
+•
+You can also use OSC to control your Rack, or route MIDI and OSC data from and to indi-
+vidual Blocks in the Rack. For more information, refer to the REAKTOR 6 Diving Deeper
+document, chapter Controlling REAKTOR with MIDI and OSC.
+Using Racks
+Creating a New Rack
+ 
+REAKTOR 6 - Getting Started - 66
+

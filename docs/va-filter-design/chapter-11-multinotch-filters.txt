@@ -1,0 +1,983 @@
+--- Page 499 ---
+
+Chapter 11
+Multinotch filters
+Multinotch ﬁlters have various uses. One of their most common applications
+is in phaser and ﬂanger eﬀects, which are built by modulating the parameters
+(in the simplest and the most common case just the cutoﬀ) of the respective
+multinotch by an LFO. The main diﬀerence between a phaser and a ﬂanger is
+that in the former the multinotch ﬁlter is based around a chain of diﬀerential
+allpass ﬁlters, while in the latter the allpass chain is replaced by a delay (thus
+making a comb ﬁlter).
+11.1
+Basic multinotch structure
+Let G(s) be an arbitrary allpass:
+|G(jω)| = 1
+arg G(jω) = ejϕ(ω)
+where ϕ(ω) is the allpass’s phase response, and consider the transfer function
+of the form
+H(s) = 1 + G(s)
+2
+(11.1)
+corresponding to the system in Fig. 11.1.
+•/
++
+ '!&"%#$
+G(s)
+/
+/
+MMMq
+q
+q/
+/
+x(t)
+y(t)
+1/2
+Figure 11.1: A basic multinotch. G(s) is an allpass.
+Writing out the amplitude response of H(s) we have
+|H(jω)|2 =
+
+1 + ejϕ
+2
+
+2
+=
+
+1 + cos ϕ + j sin ϕ
+2
+
+2
+=
+= (1 + cos ϕ)2 + sin2 ϕ
+4
+= 2 + 2 cos ϕ
+4
+= 1 + cos ϕ
+2
+= cos2 ϕ
+2
+487
+
+
+--- Page 500 ---
+
+488
+CHAPTER 11. MULTINOTCH FILTERS
+and
+|H(jω)| =
+cos ϕ(ω)
+2
+
+Thus
+|H(jω)| = 1
+⇐⇒
+ϕ = 2πn
+|H(jω)| = 0
+⇐⇒
+ϕ = π + 2πn
+(n ∈Z)
+The points |H(jω| = 1 where the amplitude response of H(s) is maximal are
+referred to as peaks and the points |H(jω| = 0 where the amplitude response
+of H(s) is minimal are referred to as notches. So the peaks occur where the
+phase response of the allpass G(s) is zero and the notches occur where the
+phase response of the allpass G(s) is 180◦. This is also fully intuitive: when
+the phase response of G(s) is zero, both mixed signals add together, when the
+phase response of G(s) is 180◦, both mixed signals cancel each other.
+The ﬁlters whose phase response contains several notches are referred to as
+multinotch ﬁlters. Apparently the ﬁlter in Fig. 11.1 is a multinotch.
+11.2
+1-pole-based multinotches
+The allpass G(s) can be arbitrary. However there are some commonly used op-
+tions. One of such options is to use a chain of identically tuned 1-pole allpasses:
+G(s) = GN
+1 (s)
+G1(s) = 1 −s
+1 + s
+The phase response of a 1-pole allpass according to (2.13) is
+arg G1(jω) = −2 arctan ω
+Respectively
+ϕ(ω) = arg G(jω) = N arg G1(jω) = −2N arctan ω
+(Fig. 11.2). The symmetry of the graph of ϕ(ω) in the logarithmic frequency
+scale is apparently due to the same symmetry of the phase response of the 1-pole
+allpass.
+So the peaks occur whenever
+ϕ = −2N arctan ω = −2πn
+⇐⇒
+ω = tan 2πn
+2N = tan πn
+N
+and the notches occur whenever
+ϕ = −2N arctan ω = −π −2πn
+⇐⇒
+ω = tan π + 2πn
+2N
+= tan
+π
+2 + πn
+N
+Or, combining peaks and notches together, we have
+ϕ = −2N arctan ω = −πn
+⇐⇒
+ω = tan πn
+2N
+Since we need 0 ≤ω ≤+∞, the range of values of n is obtained from
+0 ≤πn
+2N ≤π
+2
+
+
+--- Page 501 ---
+
+11.3. 2-POLE-BASED MULTINOTCHES
+489
+ω
+arg G(jω)
+ωc
+ωc/8
+8ωc
+0
+−π
+−2π
+−3π
+−4π
+−5π
+−6π
+Figure 11.2: Phase response of a chain of 6 identical 1-pole all-
+passes. Black dots correspond to multinotch’s peaks, white dots
+correspond to multinotch’s notches.
+giving
+0 ≤n ≤N
+Thus the total count of peaks plus notches is N + 1. Noticing that the peaks
+correspond to even values of n and notches correspond to odd values of n we
+have the following pictures:
+If N is even there are N/2 + 1 peaks (including the ones at ω = 0 and ω =
++∞) and N/2 notches. Figs. 11.3 and 11.4 illustrate.
+If N is odd there are (N +1)/2 peaks (starting at the one at ω = 0) and (N +
+1)/2 notches (the last notch occuring at ω = +∞). Fig. 11.5 illustrates.
+Odd counts are less commonly used due to unsymmetric shape of the amplitude
+response.
+11.3
+2-pole-based multinotches
+Instead of 1-pole allpasses we could use 2-pole allpasses:
+G(s) = GN
+2 (s)
+G2(s) = 1 −2Rs + s2
+1 + 2Rs + s2
+
+
+--- Page 502 ---
+
+490
+CHAPTER 11. MULTINOTCH FILTERS
+ω
+|H(jω)|
+ωc
+ωc/8
+8ωc
+1
+0.5
+0
+Figure 11.3: Amplitude response of a multinotch built around a
+chain of 4 identical 1-pole allpasses.
+ω
+|H(jω)|
+ωc
+ωc/8
+8ωc
+1
+0.5
+0
+Figure 11.4: Amplitude response of a multinotch built around a
+chain of 6 identical 1-pole allpasses.
+Note that at R = 1 we obtain an equivalent of a chain of 2N 1-pole allpasses.
+According to (4.24) and (4.5) the phase response of a 2-pole allpass is
+arg G2(jω) = −2 arccot ω−1 −ω
+2R
+or, in terms of logarithmic frequency scale (where we also use (4.6))
+arg G2(jex) = −2 arccot −sinh x
+R
+Thus
+ϕ(ω) = arg G(jω) = N arg G2(jω) = −2N arccot ω−1 −ω
+2R
+ϕ(ex) = arg G(jex) = N arg G2(jex) = −2N arccot −sinh x
+R
+
+
+--- Page 503 ---
+
+11.3. 2-POLE-BASED MULTINOTCHES
+491
+ω
+|H(jω)|
+ωc
+ωc/8
+8ωc
+1
+0.5
+0
+Figure 11.5: Amplitude response of a multinotch built around a
+chain of 5 identical 1-pole allpasses.
+Thus this time ϕ(ω) is going from 0 to −2πN, which means that we obtain only
+symmetric amplitude responses, similar to the ones which we were getting for
+even numbers of 1-pole allpasses. Fig. 11.6 illustrates. By adjusting the value
+of R we change the steepness of the phase response and thereby the distance
+between the notches.
+ω
+|H(jω)|
+R = 5
+R = 0.3
+R = 1
+ωc
+ωc/8
+8ωc
+1
+0.5
+0
+Figure 11.6: Amplitude response of a multinotch built around a
+chain of 2 identical 2-pole allpasses (at diﬀerent damping values).
+The ﬁrst notch occurs at ϕ = −π, that is
+−2N arccot −sinh x
+R
+= −π
+or
+sinh x = −R cot π
+2N
+from where we can obtain the logarithmic position of the ﬁrst notch
+x = −sinh−1 
+R cot π
+2N
+
+< 0
+
+
+--- Page 504 ---
+
+492
+CHAPTER 11. MULTINOTCH FILTERS
+The logarithmic position of the last notch is respectively −x and the logarith-
+mic bandwidth (in base e) is therefore −2x, while the respective bandwidth in
+octaves is −2x/ ln 2:
+∆=
+2
+ln 2 sinh−1 
+R cot π
+2N
+
+Notice the obvious similarly of the above formula to (4.19).
+11.4
+Inversion
+By multiplying an allpass ﬁlter’s output by −1 we obtain another allpass. At
+frequencies where the phase response was 0◦we thereby obtain 180◦and vice
+versa. This means that if such allpass is used as a core of the multinotch in
+Fig. 11.1, inverting the allpass’s output will swap the peak and notch positions
+(compare Fig. 11.7 vs. Fig. 11.4).
+ω
+|H(jω)|
+ωc
+ωc/8
+8ωc
+1
+0.5
+0
+Figure 11.7: Amplitude response of a multinotch built around a
+chain of 6 identical 1-pole allpasses with inversion (compare to
+Fig. 11.4).
+The structure of Fig. 11.1 can be modiﬁed as shown in Fig. 11.8 to accomo-
+date optional inversion.
+•/
++
+ '!&"%#$
+G(s)
+/
+MMMq
+q
+q/
+/
+MMMq
+q
+q/
+/
+x(t)
+y(t)
+1/2
+±1
+Figure 11.8: Multinotch from Fig. 11.1 with optional inversion.
+
+
+--- Page 505 ---
+
+11.5. COMB FILTERS
+493
+11.5
+Comb filters
+A delay is also an allpass. It is not a diﬀerential allpass, since it’s not based on
+integrators, but it is still an allpass. Indeed, taking the delay equation
+y(t) = x(t −T)
+where T is delay time and letting x(t) = Aest we have
+y(t) = Aes(t−T ) = e−sT · Aest = e−sT · x(t)
+Since the delay is linear (in the sense that a delayed linear combination of
+two signals is equal to the same linear combination of these signals delayed
+separately) we could apply (2.7) which means that the transfer function of the
+delay is
+H(s) = e−sT
+Apparently
+|H(jω)| = 1
+arg H(jω) = −ωT
+and thus the delay is an allpass.
+Therefore we can use the delay as the allpass core of the multnotch ﬁlter
+in Fig. 11.1.
+Letting G(s) = e−sT we have ϕ(ω) = −ωT (Fig. 11.9).
+The
+peak/notch equation is respectively
+−ωT = −πn
+from where
+ω = πn
+T = 2π · n
+2T
+or, in ordinary frequency scale
+f = n
+2T
+The peaks and notches are therefore harmonically spaced with a step of 1/2T
+Hertz (Fig. 11.10). The amplitude response in Fig. 11.10 looks like a comb.
+Hence this kind of multinotch ﬁlters are referred to as comb filters.
+Since the peaks and notches of the comb ﬁlter’s amplitude response occur at
+f = n/2T, the frequency 1/2T is the fundamental frequency of this harmonic
+series. It is convenient to use this frequency as comb’s ﬁlter formal cutoﬀfc =
+1/2T.
+If there is no inversion, then (excluding the DC peak at f = 0) the peaks of
+the amplitude response are located at frequencies 2fc, 4fc, 6fc, etc. This makes
+the perceived fundamental frequency of the comb ﬁlter (especially in the case of
+a strong resonance1) rather be 2fc. However in the case of inversion the peaks
+are located at fc, 3fc, 5fc, etc., giving an impression (which is stronger in the
+case of a strong resonance) of an odd-harmonics-only signal at frequency fc.
+1Resonating multinotches will be discussed later in this chapter.
+
+
+--- Page 506 ---
+
+494
+CHAPTER 11. MULTINOTCH FILTERS
+f
+arg G(jω)
+0
+1
+2T
+2
+2T
+3
+2T
+4
+2T
+5
+2T
+0
+−π
+−2π
+−3π
+−4π
+−5π
+Figure 11.9: Phase response of a delay. Black dots correspond to
+multinotch’s peaks, white dots correspond to multinotch’s notches.
+The frequency scale is linear!
+f
+|H(jω)|
+1
+2T
+3
+2T
+5
+2T
+7
+2T
+9
+2T
+1
+0.5
+0
+Figure 11.10: Amplitude response of a multinotch built around a
+delay (comb ﬁlter). The frequency scale is linear!
+
+
+--- Page 507 ---
+
+11.6. FEEDBACK
+495
+11.6
+Feedback
+Suppose we introduce feedback into the structure of Fig. 11.1 as shown Fig. 11.11.
+Now the output of the allpass G(s) is not anymore purely the allpassed input
+signal. Let’s introduce the notation ˜y(t) for the post-allpass signal (as shown
+in Fig. 11.11) and ˜G(s) for the respective transfer function (in the sense of
+˜y = G(s)x for complex exponential x). We also introduce the pre-allpass signal
+˜x(t), but we are not going to use it for now. Then we are having
+˜G(s) =
+G(s)
+1 −kG(s)
+•/
++
+ '!&"%#$
++
+ '!&"%#$
+/
+G(s)
+/
+•/
+/
+MMMq
+q
+q/
+/
+qqq
+M
+M
+M o
+O
+x(t)
+y(t)
+1/2
+˜x(t)
+k
+˜y(t)
+Figure 11.11: Multinotch from Fig. 11.1 with added feedback. Note
+that this ﬁgure is showing a poor mixing option.
+The transfer function of the entire multinotch thereby turns into
+H(s) = 1 + ˜G(s)
+2
+= 1
+2 · 1 −kG(s) + G(s)
+1 −kG(s)
+= 1
+2 · 1 + (1 −k)G(s)
+G(s)
+or, in frequency response terms
+H(jω) = 1
+2 · 1 + (1 −k)ejϕ
+1 −kejϕ
+We can immediately notice that as soon as k > 0 the numerator of the frequency
+response doesn’t turn to zero anymore, respectively we are not having fully deep
+notches in the amplitude response (Fig. 11.12).
+Instead of mixing ˜y(t) with x(t) let’s mix it with ˜x(t), as shown in Fig. 11.13.
+The transfer function corresponding to the signal ˜x(t) in Fig. 11.11 is
+˜G(s)
+G(s) =
+1
+1 −kG(s)
+and thus we obtain
+H(s) = 1
+2 ·
+
+1
+1 −kG(s) +
+G(s)
+1 −kG(s)
+
+= 1
+2 · 1 + G(s)
+1 −kG(s)
+This transfer funtion looks much better, since it preserves fully deep notches.
+The frequency response turns into
+H(jω) = 1
+2 · 1 + ejϕ
+1 −kejϕ
+
+
+--- Page 508 ---
+
+496
+CHAPTER 11. MULTINOTCH FILTERS
+ω
+|H(jω)|
+ωc
+ωc/8
+8ωc
+1.5
+1
+0.5
+0
+Figure 11.12: Amplitude response of the multinotch in Fig. 11.11
+built around a chain of 6 identical 1-pole allpasses at k = 0.5.
+Dashed curve corresponds to k = 0 (the same response as in
+Fig. 11.4).
++
+ '!&"%#$
+/
+•/
++
+ '!&"%#$
+G(s)
+/
+•/
+/
+MMMq
+q
+q/
+/
+qqq
+M
+M
+M o
+O
+x(t)
+y(t)
+1/2
+˜x(t)
+k
+˜y(t)
+Figure 11.13: Multinotch from Fig. 11.1 with added feedback and
+corrected mixing.
+which varies between
+H(jω) = 1
+2 · 1 + 1
+1 −k =
+1
+1 −k
+when ϕ = 2πn
+(11.2a)
+and
+H(jω) = 1
+2 · 1 −1
+1 −k = 0
+when ϕ = π + 2πn
+(11.2b)
+The amplitude response is then
+|H(jω)|2 = 1
+4 ·
+
+1 + ejϕ
+1 −kejϕ
+
+2 1
+4 ·
+
+1 + cos ϕ + j sin ϕ
+1 −k cos ϕ −jk sin ϕ
+
+2
+=
+= 1
+4 ·
+(1 + cos ϕ)2 + sin2 ϕ
+(1 −k cos ϕ)2 + k2 sin2 ϕ = 1
+4 ·
+2 + 2 cos ϕ
+1 + k2 −2k cos ϕ =
+= 1
+2 ·
+1 + cos ϕ
+1 + k2 + 2k −2k(1 + cos ϕ) =
+cos2 ϕ
+2
+(1 + k)2 −4k cos2 ϕ
+2
+
+
+--- Page 509 ---
+
+11.6. FEEDBACK
+497
+Again one can see that H(jω)| = 1/(1 −k) when cos2(ϕ/2) = 1 and H(jω) = 0
+when cos2(ϕ/2) = 0. Thus the eﬀect of the feedback in Fig. 11.13 is that the
+peaks become 1/(1 −k) times higher (given 0 < k < 1) and notches stay intact.
+Fig. 11.14 illustrates. Observe that the peaks become higher and narrower.2
+ω
+|H(jω)|
+ωc
+ωc/8
+8ωc
+2
+1.5
+1
+0.5
+0
+Figure 11.14: Amplitude response of the multinotch in Fig. 11.13
+built around a chain of 6 identical 1-pole allpasses at k = 0.5.
+Dashed curve corresponds to k = 0 (the same response as in
+Fig. 11.4).
+We could combine the feedback (Fig. 11.13) and the inversion (Fig. 11.8), as
+shown in Fig. 11.15. Apparently the inversion only adds another 180◦to ϕ(ω),
+swapping peaks and notches. Therefore the results of the previous discussion of
+Fig. 11.13 equally apply to Fig. 11.15.
++
+ '!&"%#$
+/
+•/
++
+ '!&"%#$
+G(s)
+/
+MMMq
+q
+q/
+•/
+/
+MMMq
+q
+q/
+/
+qqq
+M
+M
+M o
+O
+x(t)
+y(t)
+1/2
+˜x(t)
+±1
+k
+˜y(t)
+Figure 11.15: Multinotch with feedback and inversion.
+As we should recall from the discussion of ladder ﬁlters, the feedback be-
+comes unstable when the total gain across the feedback loop, computed at a
+2Since ˜x = x + k˜y, instead of simple averaging y = (˜x + ˜y)/2 we could have had
+y = x + k˜y + ˜y
+2
+= 1
+2 x + 1 + k
+2
+˜y
+however this doesn’t seem to give any benefits compared to the previous option, while we need
+to adjust the mixing coefficient for ˜y depending on the feedback amount, which is rather a
+drawback.
+
+
+--- Page 510 ---
+
+498
+CHAPTER 11. MULTINOTCH FILTERS
+frequency where the total phase shift across the feedback loop is zero, exceeds
+1. Apparently in the case of Fig. 11.15 the zero total phase shift is occurring
+exactly at the frequencies where the multinotch has peaks, while the total feed-
+back loop gain at these frequencies is simply k. Therefore the multinotch ﬁlter
+becomes unstable at k = 1 and the suggested range of k is 0 ≤k < 1.3 Note
+that the presence of the inversion doesn’t really change the stable range of k,
+since the allpass G(s) is anyway delivering all possible phase shifts across the
+frequency range 0 ≤ω < +∞, and there always will be frequencies at which the
+total feedback loop phase shift is zero (thereby producing amplitude response
+peaks), regardless of whether the inversion is on or oﬀ. Thus the feedback loop
+will be stable as long as |k| < 1.
+Feedback shaping
+Being essentially a ladder allpass, the multnotch in Fig. 11.15 can accomodate
+feedback shaping, as discussed in Section 5.4. Notably, as long as the amplitude
+responses of the shaping ﬁlters do not exceed 1, neither will the total feedback
+loop gain (since in the absence of shaping ﬁlters the feedback loop gain is exactly
+1 at all frequencies). This means that the stability of the feedback loop for
+|k| < 1 will not be destroyed, no matter what the phase responses of the shaping
+ﬁlters are.
+11.7
+Dry/wet mixing
+So far we have been mixing the allpass-processed signal and the input signal
+(or, if we are using feedback, the pre-allpass signal ˜x(t) with the post-allpass
+signal ˜y(t)) in equal amounts:
+y = ˜x + ˜y
+2
+Let’s crossfade the multinotch ﬁlter output signal with the input signal:
+y = a ˜x + ˜y
+2
++ (1 −a)x
+(11.3)
+If the multinotch is being used as a part of a phaser or ﬂanger eﬀect, the input
+signal is commonly referred to as the dry signal while the multinotch output
+signal (˜x + ˜y)/2 is referred to as the wet signal.4
+According to (11.2a) the phase response of the feedback multinotch at the
+peak is zero, therefore the peak, having the height 1/(1−k) should mix naturally
+with the input signal (correspoding to the transfer function equal to 1 every-
+where), producing a smooth crossfade between 1/(1−k) and 1 in the amplitude
+3Negative values of k lower the amplitude response peaks below 1, simultaneously making
+them wider and respectively making the notches narrower.
+Being narrower, such notches
+become less audible, even if we compensate for the amplitude loss by multiplying the signal
+by 1 −k, thus the case of k < 0 is less common.
+4Sometimes just the allpass output signal ˜y is referred to as the wet signal. Such termi-
+nology is however more appropriate for an effect such as e.g. chorus, where the main idea of
+the effect is pitch detuning produced by delay modulation. In comparison e.g. in a flanger
+the main idea of the effect is the appearance of the notches, while pitch detuning, if present
+at all, is rather a modulation artifact. Thus, in absence of strong modulation, the output of
+the flanger’s delay will be hardly distinguishable by ear from the dry signal, not really being
+“wet”.
+
+
+--- Page 511 ---
+
+11.7. DRY/WET MIXING
+499
+response at this frequency. This is indeed the case and the amplitude response
+of a multinotch will nicely crossfade into a unity gain response (Fig. 11.16). The
+respective structure is shown in Fig. 11.17.
+ω
+|H(jω)|
+ωc
+ωc/8
+8ωc
+2
+1.5
+1
+0.5
+0
+Figure 11.16: Amplitude response of the multinotch in Fig. 11.13
+built around a chain of 6 identical 1-pole allpasses at k = 0.5 with
+a dry/wet mixing ratio of 50%. Dashed curve corresponds to a
+dry/wet mixing ratio of 100% (same response as in Fig. 11.14).
+•/
++
+ '!&"%#$
+/
+•/
++
+ '!&"%#$
+G(s)
+/
+MMMq
+q
+q/
+•/
+/
+MMMq
+q
+q/
++
+ '!&"%#$
+/
+/
+qqq
+M
+M
+M o
+O
+111
+
+
+
+x(t)
+y(t)
+a/2
+1 −a
+˜x(t)
+±1
+k
+˜y(t)
+Figure 11.17: Multinotch with feedback, inversion and dry/wet
+mixing.
+Since ˜x = x + k˜y, we can rewrite (11.3) as
+y = ax + k˜y + ˜y
+2
++ (1 −a)x = a
+2(x + (1 + k)˜y) + (1 −a)x =
+=
+
+1 −a
+2
+
+x + a
+2(1 + k)˜y
+Thus, even though normally 0 ≤a ≤1, we could let a grow all the way to a = 2,
+in which case only the allpass output ˜y (albeit boosted by 1 +k) will be present
+in the output signal.
+
+
+--- Page 512 ---
+
+500
+CHAPTER 11. MULTINOTCH FILTERS
+11.8
+Barberpole notches
+Consider the frequency shifter in Fig. 10.31 and let’s replace ∆ω · t with some
+ﬁxed value ∆ϕ, obtaining a similar structure shown in Fig. 11.18.5
+•/
+H−1
++
+/
+MMMq
+q
+q/
++
+ '!&"%#$
+/
+H−
+/
+MMMq
+q
+q/
+−
+O
+/
+x(t)
+y(t)
+cos ∆ϕ
+sin ∆ϕ
+Figure 11.18:
+Barberpole allpass, obtained from the frequency
+shifter in Fig. 10.31.
+Across the supported bandwidth of the frequency shifter the phase diﬀerence
+between the allpasses H−1
++
+and H−is 90◦. That is
+ϕ+(ω) −ϕ−(ω) = 90◦
+where
+ϕ+(ω) = arg H−1
++ (jω)
+ϕ−(ω) = arg H−(jω)
+or simply
+H−(s) = −jH−1
++ (s)
+The frequency response of the structure in Fig. 11.18 (within the supported
+bandwidth of the frequency shifter) is thereby
+G(jω) = H−1
++ (jω) · cos ∆ϕ −H−(jω) · sin ∆ϕ =
+= H−1
++ (jω) · cos ∆ϕ + jH−1
++ (jω) · sin ∆ϕ =
+= H−1
++ (jω) · (cos ∆ϕ + j sin ∆ϕ) = ejΔϕ · H−1
++ (jω)
+from where we repsectively obtain
+|G(jω)| =
+ejΔϕ ·
+H−1
++ (jω)
+ = 1
+(11.4a)
+arg G(jω) = arg ejΔϕ + arg H−1
++ (jω) = arg H−1
++ (jω) + ∆ϕ
+(11.4b)
+That is, G(s) is an allpass and by varying ∆ϕ we can arbitrarily oﬀset its phase
+response! Of course, this holds only within the frequency shifter’s bandwidth,
+but nevertheless it’s a very remarkable property.
+But what does the phase response of G(s) actually look like? Apparently
+it depends on the details of H−1
++
+and H−implementations. If H−1
++
+and H−
+are built from 1-pole allpasses obtained by minimax optimization of the phase
+diﬀerence (e.g. by using formula eq:ellip:PhaseSplit:PolesZeros), the phase re-
+sponses of H−1
++
+and H−will look like the ones in Fig. 11.19, where we ﬁrst
+should concentrate on the phase responses shown by solid lines.
+5The author was introduced to the approach of using the frequency shifter structure to
+implement barberpole phasers and flangers by Dr. Julian Parker.
+
+
+--- Page 513 ---
+
+11.8. BARBERPOLE NOTCHES
+501
+ω
+arg G(jω)
+1
+1/32
+32
+0
+−π
+−2π
+−3π
+−4π
+−5π
+−6π
+Figure 11.19: Phase responses of H−1
++
+and H−(each consisting of
+six 1-pole allpasses). The frequency shifter bandwidth is 10 octaves
+(bounded by vertical dashed lines at ω = 1/32 and ω = 32). Black
+dots correspond to multinotch’s peaks arising out of H−1
++ , white
+dots correspond to the respective notches.
+Dashed curves show
+“aliased” phase responses.
+Aside from being 90◦apart across the frequency shifter bandwidth, the phase
+responses in Fig. 11.19 do not look much diﬀerent from the phase responses we
+have been using earlier, such as e.g. in Fig. 11.2. Thus H−1
++
+or H−will provide
+a decent allpass to be used in a multinotch. By using (11.4b) we can obtain an
+oﬀset phase response of H−1
++
+as the phase response of G(s), which will result in
+shifted peaks and notches of the multinotch (compared to their positions arising
+out of H+−1).
+However, recall that the phase is deﬁned modulo 360◦. That is a phase re-
+sponse of −20◦is exactly the same as the phase response of −380◦or of −740◦
+etc. This has been shown by the dashed curves in Fig. 11.19, they represent
+alternative interpretations or “aliased” versions of the “principal” (solid-line)
+phase responses. Notice how the black and white dots on the aliased responses
+of H−1
++
+correspond to exactly the same peak and notch frequencies as the ones
+arising out of the principal phase responses (reﬂecting the fact that it doesn’t
+matter if we use a principal or an aliased phase response to determine peak and
+notch positions). By oﬀsetting the phase response of H−1
++
+(visually this corre-
+sponds to a vertical shifting of the responses in Fig. 11.19) we simultaneously
+oﬀset all its aliases by the same amount.
+
+
+--- Page 514 ---
+
+502
+CHAPTER 11. MULTINOTCH FILTERS
+Imagine that ∆ϕ is increasing, thus the principal and aliased responses of
+H−1
++
+in Fig. 11.19 are continuously moving upwards, and the notches and peaks
+are continuously moving to the right.6 In turn, each of the peaks and notches
+will disappear on the right at ω = +∞simultaneously reappearing from the left
+at ω = 0. Thus the peaks and notches will move “endlessly” from left to the
+right. Respectively if ∆ϕ is decreasing, they will move from right to the left.
+This is the so-called barberpole effect.
+In reality, however, the peaks and notches will not move all the way to ω =
++∞or ω = 0. At some point they will leave the frequency shifter bandwidth, at
+which moment (11.4b) will no longer hold. Particularly, the amplitude response
+of G(s) will no longer stay allpass. At ω = 0 we have H−1
++ (0) = H−(0) = 1,
+which means that
+G(0) = 1 · cos ∆ϕ + 1 · sin ∆ϕ = cos ∆ϕ + sin ∆ϕ =
+√
+2 · cos
+
+∆ϕ −π
+4
+
+which means that the amplitude response of G(s) at ω = 0 can get as large as
+√
+2. The same situation occurs at ω = +∞. Respectively, if the multinotch
+contains feedback, it will explode at k = 1/
+√
+2. The explosion can be prevented
+by introducing low- and high-pass or -shelving ﬁlters into the feedback loop.7
+Thus, we have built a barberpole phaser, where the peaks and notches can
+move endlessly to the left or to the right. The same technique cannot be directly
+used to build a barberpole ﬂanger, since, while we have a phase splitter acting
+as a diﬀerential allpass, we do not have a phase splitter acting as a delay. This
+would not be even possible in theory, since the phase response of a delay must be
+proportional to the frequency (this is the property which ensures the harmonic
+spacing of comb ﬁlter’s peaks and notches), but adding any constant to such
+phase response will destroy this property. What is however possible is using an
+allpass arising out of a serial connection of a delay and a barberpole allpass in
+Fig. 11.18. This would destroy the perfect harmonic spacing of ﬂanger’s peaks
+and notches, but one gets a barberpole eﬀect in return, as the phase responses
+of the delay and the barberpole allpass add up.
+SUMMARY
+Multinotch ﬁlters can be build by mixing a signal with its allpassed version,
+where the allpass could be a diﬀerential allpass or a delay, the latter resulting in
+a comb ﬁlter. Inverting the allpass’s output swaps the peaks and the notches.
+Adding feedback makes the peaks more prominent.
+6In a practical implementation Δϕ would not be able to increase endlessly, as at some point
+it will leave the representable range of values. If floating point representation is used, precision
+losses will become intolerably large even before the value gets out of range. However, we don’t
+really need to increase or decrease Δϕ endlessly, since what matters in the end (according to
+Fig. 11.18) are the values of its sine and cosine. Thus we could wrap Δϕ to the range [−π, π],
+or work directly with sine and cosine values (in which case it’s convenient to treat them as
+real and imaginary parts of a complex number ejΔϕ).
+7Particularly, for the 1-pole lowpass (or any 1st kind Butterworth lowpass) we have
+|H(jω)| ≤1/
+√
+2 ∀ω ≥ωc, while outside of that range we still have |H(jω)| ≤1.
+There-
+fore such filter, placed at the upper boundary of the frequency shifter’s bandwidth, will be
+guaranteed to mitigate the unwanted amplitude response boost in the high frequency range.
+A highpass of the same kind placed at the lower boundary of the frequency shifter’s bandwidth
+will perform the same in the low frequency range.
+

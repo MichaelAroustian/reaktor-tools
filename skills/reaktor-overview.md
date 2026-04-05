@@ -53,6 +53,7 @@ PDF source links:
 - Reaktor 6 Building in Primary: https://www.native-instruments.com/fileadmin/ni_media/downloads/manuals/REAKTOR_6_Building_in_Primary_English_0419.pdf
 - Reaktor 6 Building in Core: https://www.native-instruments.com/fileadmin/ni_media/downloads/manuals/REAKTOR_6_Building_in_Core_English_0618.pdf
 - Reaktor 5.5 Core Reference: https://www.native-instruments.com/fileadmin/ni_media/downloads/manuals/Reaktor_5_Core_Reference_English.pdf
+- Reaktor 5 Modules and Macros Reference English: https://www.native-instruments.com/fileadmin/ni_media/downloads/manuals/Reaktor_5_Modules_and_Macros_Reference_English.pdf
 - VA Filter Design 2.1.0: https://www.native-instruments.com/fileadmin/ni_media/downloads/pdf/VAFilterDesign_2.1.0.pdf
 
 ---

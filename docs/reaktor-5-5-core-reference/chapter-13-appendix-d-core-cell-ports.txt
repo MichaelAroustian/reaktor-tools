@@ -1,0 +1,43 @@
+--- Page 180 ---
+
+13
+Appendix D. Core Cell Ports
+ 
+13.1
+D.1. In (Audio Mode)
+ 
+Provides access to the audio signal from the outside of the module. Sends regular events 
+at the sampling rate (synchronous to the SR.C global sampling rate clock).
+INITIALIZATION EVENT: sends an initialization event. The value is defined by the outside ini­
+tialization
+13.2
+D.2. Out (Audio Mode)
+ 
+Makes the values received at the input inside available to the outside of the module. For 
+any given time the last received value will be delivered to the outside.
+13.3
+D.3. In (Event Mode)
+ 
+Converts Reaktor primary-level events arriving from the outside into Reaktor Core events 
+and forwards them to the inside.
+INITIALIZATION EVENT: sends an initialization event if there’s an initialization event re­
+ceived on the outside
+13.4
+D.4. Out (Event Mode)
+ 
+Appendix D. Core Cell Ports
+ 
+REAKTOR 5.5 - Core Reference - 180
+
+
+--- Page 181 ---
+
+Converts Reaktor Core events arriving from the inside into Reaktor primary-level events and 
+forwards them to the outside. If several event mode outputs simultaneously receive Reak­
+tor Core events, the corresponding primary-level events will be sent in the order from upper 
+outputs to lower ones.
+Appendix D. Core Cell Ports
+D.4. Out (Event Mode)
+ 
+REAKTOR 5.5 - Core Reference - 181
+

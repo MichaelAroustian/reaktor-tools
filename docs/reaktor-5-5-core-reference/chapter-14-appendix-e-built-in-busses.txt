@@ -1,0 +1,20 @@
+--- Page 182 ---
+
+14
+Appendix E. Built-in Busses
+ 
+14.1
+E.1. SR.C
+ 
+Sends regular clock events at the sampling rate
+INITIALIZATION EVENT: always sends an initialization event
+14.2
+E.2. SR.R
+ 
+Provides the current sampling rate in Hz. Sends events with new values in response to 
+sampling-rate changes.
+INITIALIZATION EVENT: always sends an initialization event with initial sampling rate
+Appendix E. Built-in Busses
+ 
+REAKTOR 5.5 - Core Reference - 182
+

@@ -1,0 +1,998 @@
+--- Page 203 ---
+
+17
+Appendix H. Standard Macros
+ 
+17.1
+H.1. Audio Mix‑Am Amp > Amount
+ 
+Provides linear invertible control of the amount (amplitude) of an audio signal.
+▪
+A = 0 mutes the signal
+▪
+A = 1 leaves the signal intact
+▪
+A = -1 inverts the signal
+▪
+Typical usage: controlling audio feedback amount
+17.2
+H.2. Audio Mix‑Am Amp > Amp Mod
+ 
+Modulates the audio signal’s amplitude by a given amount (AM) in the linear scale.
+▪
+AM = 1 doubles the amplitude
+▪
+AM = 0 no change
+▪
+AM = -1 mutes the signal
+▪
+Typical usage: tremelo, AM.
+17.3
+H.3. Audio Mix‑Am Amp > Audio Mix
+ 
+Appendix H. Standard Macros
+ 
+REAKTOR 5.5 - Core Reference - 203
+
+
+--- Page 204 ---
+
+Mixes two audio signals together.
+17.4
+H.4. Audio Mix‑Am Amp > Audio Relay
+ 
+Switches between two input audio signals. If ‘x’ is greater than 0, picks up signal 1, other­
+wise signal 0.
+17.5
+H.5. Audio Mix‑Am Amp > Chain (amount)
+ 
+Changes the audio signal’s amplitude by a given linear amount (A) and mixes it with the 
+chained audio signal (>>).
+▪
+A = 0 signal is muted
+▪
+A = 1 signal is unchanged
+▪
+A = -1 signal is inverted
+▪
+Typical usage: audio mixing chains, audio feedback amount control
+17.6
+H.6. Audio Mix‑Am Amp > Chain (dB)
+ 
+Changes the audio signal’s amplitude by a given amount of dB and mixes it with the 
+chained audio signal (>>).
+Appendix H. Standard Macros
+H.4. Audio Mix-Amp > Audio Relay
+ 
+REAKTOR 5.5 - Core Reference - 204
+
+
+--- Page 205 ---
+
+▪
+Typical usage: audio mixing chains
+17.7
+H.7. Audio Mix‑Am Amp > Gain (dB)
+ 
+Changes the audio signal’s amplitude by a given amount in dB.
+▪
++6 dB doubles the amplitude
+▪
+0 dB no change
+▪
+-6 dB halves the amplitude
+▪
+Typical usage: signal volume control in dB scale
+17.8
+H.8. Audio Mix‑Am Amp > Invert
+ 
+Inverts the polarity of the audio signal
+17.9
+H.9. Audio Mix‑Amp Amp > Mixer 2 … 4
+ 
+Mixes the incoming audio signals (In 1, In 2, …) attenuating their levels by the specified 
+amounts in dB (Lvl 1, Lvl 2, …).
+Appendix H. Standard Macros
+H.7. Audio Mix-Amp > Gain (dB)
+ 
+REAKTOR 5.5 - Core Reference - 205
+
+
+--- Page 206 ---
+
+17.10 H.10. Audio Mix‑Am Amp > Pan
+ 
+Pans the incoming audio signal using a parabolic curve.
+▪
+-1 hard left
+▪
+0 center
+▪
+1 hard right
+17.11 H.11. Audio Mix‑Amp > Ring‑Amp 
+Amp Mod
+ 
+The carrier audio signal (at the upper input) is modulated by the audio signal at the Mod 
+input. The type of the modulation is controlled by the R/A input, which smoothly morphs 
+between ring and amplitude modulation.
+▪
+R/A = 0 ring modulation
+▪
+R/A = 1 amplitude modulation
+(For true amplitude modulation the modulator amplitude should not exceed 1)
+17.12 H.12. Audio Mix‑Am Amp > Stereo Amp
+ 
+Appendix H. Standard Macros
+H.10. Audio Mix-Amp > Pan
+ 
+REAKTOR 5.5 - Core Reference - 206
+
+
+--- Page 207 ---
+
+Amplifies a monophonic audio signal by a given amount in dB and pans it to the specified 
+position. The pan position is defined as:
+▪
+-1 hard left
+▪
+0 center
+▪
+1 hard right
+17.13 H.13. Audio Mix‑Amp Amp > Stereo Mixer 2 … 4
+ 
+Mixes the input audio signals (In 1, In 2, …), attenuating their levels by the specified 
+amounts of dB (Lvl 1, Lvl 2, …) and panning them to the specified positions (Pan 1, Pan 
+2, …). The pan positions are defined as:
+▪
+-1 hard left
+▪
+0 center
+▪
+1 hard right
+17.14 H.14. Audio Mix‑Am Amp > VCA
+ 
+Audio amplifier with direct linear control for the amplitude.
+▪
+A = 0 mutes the signal
+▪
+A = 1 leaves the signal unchanged
+▪
+Typical usage: connect the amplitude envelope to the A input.
+▪
+Note: for invertible amplification use the Audio Amount module.
+Appendix H. Standard Macros
+H.13. Audio Mix-Amp > Stereo Mixer 2 … 4
+ 
+REAKTOR 5.5 - Core Reference - 207
+
+
+--- Page 208 ---
+
+17.15 H.15. Audio Mix‑Am Amp > XFade (lin)
+ 
+Audio crossfade with linear curve.
+▪
+x = 0 only signal 0 is heard
+▪
+x = 0.5 equal mix of both signals
+▪
+x = 1 only signal 1 is heard
+▪
+Note: a parabolic crossfade usually gives better sounding results.
+17.16 H.16. Audio Mix‑Am Amp > XFade (par)
+ 
+Audio crossfade with parabolic curve. Usually gives better sounding results than linear 
+crossfade.
+▪
+x = 0 only signal 0 is heard
+▪
+x = 0.5 equal mix of both signals
+▪
+x = 1 only signal 1 is heard
+Appendix H. Standard Macros
+H.15. Audio Mix-Amp > XFade (lin)
+ 
+REAKTOR 5.5 - Core Reference - 208
+
+
+--- Page 209 ---
+
+17.17 H.17. Audio Shaper > 1+2+3 Shaper
+ 
+Provides audio-signal controllable shaping of 2nd and 3rd order. The 1st input specifies 
+the amount of the original signal in the output (1=unchanged, 0=none). The 2nd and 3rd 
+inputs specify the amounts of the 2nd and 3rd order distortion. respectively.
+17.18 H.18. Audio Shaper > 3-1-2 Shaper
+ 
+Audio signal shaper with variable amount of 2nd and 3rd order distortion. The distortion 
+amount and type is controlled by the Shp input:
+▪
+Shp = 0 no shaping
+▪
+Shp > 0 3rd order shaping
+▪
+Shp < 0 2nd order shaping
+17.19 H.19. Audio Shaper > Broken Par Sat
+ 
+Broken parabolic saturator. Has a linear segment around the zero level.
+Appendix H. Standard Macros
+H.17. Audio Shaper > 1+2+3 Shaper
+ 
+REAKTOR 5.5 - Core Reference - 209
+
+
+--- Page 210 ---
+
+▪
+L: Input specifies the output level for the “full saturation” (typical value = 1).
+▪
+H: Input specifies the hardness (range 0…1). Larger values correspond to a larger lin­
+ear segment in the middle.
+▪
+S: Input controls the symmetry of the shaping curve (range –1…1). At 0 the curve is 
+symmetric.
+17.20 H.20. Audio Shaper > Hyperbol Sat
+ 
+Simple hyperbolic saturator. The L input specifies the full saturation output level (default 
+= 1). However the full saturation is never reached with this type of saturator.
+17.21 H.21. Audio Shaper > Parabol Sat
+ 
+Simple parabolic saturator. The L input specifies the full saturation output level (default = 
+1).
+Note: the full saturation is reached at the input level equal to 2L.
+17.22 H.22. Audio Shaper > Sine Shaper 4 / 8
+ 
+4th / 8th order sine shaper. The 8th order shaper has a better sine approximation but 
+takes more CPU.
+Appendix H. Standard Macros
+H.20. Audio Shaper > Hyperbol Sat
+ 
+REAKTOR 5.5 - Core Reference - 210
+
+
+--- Page 211 ---
+
+17.23 H.23. Control > Ctl Amount
+ 
+Linear invertible control of the amount (amplitude) of the control signal.
+▪
+A = 0 turns off the signal
+▪
+A = 1 leaves the signal unchanged
+▪
+A = -1 inverts the signal
+Typical usage: controlling modulation amount
+17.24 H.24. Control > Ctl Amp Mod
+ 
+Modulates the control signal’s amplitude by a given amount (AM) in linear scale.
+▪
+AM = 1 doubles the amplitude
+▪
+AM = 0 no change
+▪
+AM = -1 mutes the signal
+17.25 H.25. Control > Ctl Bi2Uni
+ 
+Changes a –1…1 bipolar signal into a unipolar one. The a input controls the amount of 
+change, at 0 there’s no change, at 1 there is 100% change (default is 1).
+Typical usage: connect immediately after an LFO to adjust the polarity of the modulation.
+Appendix H. Standard Macros
+H.23. Control > Ctl Amount
+ 
+REAKTOR 5.5 - Core Reference - 211
+
+
+--- Page 212 ---
+
+17.26 H.26. Control > Ctl Chain
+ 
+Changes the control signal’s amplitude by a given linear amount A and mixes it to the 
+chained control signal >>.
+▪
+A = 0 signal is turned off
+▪
+A = 1 signal is unchanged
+▪
+A = -1 signal is inverted
+Typical usage: control mixing chains
+17.27 H.27. Control > Ctl Invert
+ 
+Inverts the control signal’s polarity
+17.28 H.28. Control > Ctl Mix
+ 
+Mixes two control signals.
+Appendix H. Standard Macros
+H.26. Control > Ctl Chain
+ 
+REAKTOR 5.5 - Core Reference - 212
+
+
+--- Page 213 ---
+
+17.29 H.29. Control > Ctl Mixer 2
+ 
+Mixes two control signals In 1, In 2 together using the specified gain factors A 1, A 2.
+▪
+A = 0 no signal
+▪
+A = 1 unchanged
+▪
+A = -1 inverted
+17.30 H.30. Control > Ctl Pan
+ 
+“Pans” a control signal using a parabolic curve.
+▪
+Pos = -1 hard left
+▪
+Pos = 0 center
+▪
+Pos = 1 hard right
+17.31 H.31. Control > Ctl Relay
+ 
+Switches between two control signals. If x > 0 picks up signal 1, else picks up signal 0.
+Appendix H. Standard Macros
+H.29. Control > Ctl Mixer 2
+ 
+REAKTOR 5.5 - Core Reference - 213
+
+
+--- Page 214 ---
+
+17.32 H.32. Control > Ctl XFade
+ 
+Crossfades between two control signals using a linear curve.
+▪
+x = 0 only signal 0 comes through
+▪
+x = 0.5 equal mix of both signals
+▪
+x = 1 only signal 1 comes through
+17.33 H.33. Control > Par Ctl Shaper
+ 
+Applies a double parabolic curve to a controller signal. The input signal must be in –
+1..0..1 range. The output signal will also have the range of –1..0..1. The amount of bend­
+ing is controlled by the b input (the range is also –1..0..1).
+▪
+b = 0 no bend (linear curve)
+▪
+b = -1 max possible bend “towards” X axis
+▪
+b = 1 max possible bend “towards” Y axis
+You can also use this shaper for signals whose range is 0..1, in which case only half of the 
+curve will be used.
+Typical use: velocity and other controllers shaping
+17.34 H.34. Convert > dB2AF
+ 
+Converts a control signal from dB scale to linear amplitude gain factor.
+Appendix H. Standard Macros
+H.32. Control > Ctl XFade
+ 
+REAKTOR 5.5 - Core Reference - 214
+
+
+--- Page 215 ---
+
+▪
+0 dB  1.0
+▪
+-6 dB  0.5
+▪
+etc.
+17.35 H.35. Convert > dP2FF
+ 
+Converts a control signal from an interval in pitch scale (pitch difference in semitones) to 
+a frequency ratio.
+▪
+12 semitones  2
+▪
+-12 semitones  -2
+▪
+etc.
+17.36 H.36. Convert > logT2sec
+ 
+Converts Reaktor primary-level logarithmic time (used for envelopes) to seconds.
+▪
+0 translates to 0.001 sec
+▪
+60 translates to 1 sec
+▪
+etc.
+17.37 H.37. Convert > ms2Hz
+ 
+Converts time period in milliseconds into corresponding frequency in Hz.
+E.g. 100ms translates to 10 Hz.
+17.38 H.38. Convert > ms2sec
+ 
+Appendix H. Standard Macros
+H.35. Convert > dP2FF
+ 
+REAKTOR 5.5 - Core Reference - 215
+
+
+--- Page 216 ---
+
+Converts the time specified in milliseconds into time specified in seconds. E.g. 500ms 
+translates to 0.5 sec.
+17.39 H.39. Convert > P2F
+ 
+Converts a control signal from pitch scale to frequency scale.
+E.g. pitch 69 translates to 440 Hz.
+17.40 H.40. Convert > sec2Hz
+ 
+Converts time period in seconds into corresponding frequency in Hz.
+E.g. 0.1sec translates to 10 Hz.
+17.41 H.41. Delay > 2 / 4 Tap Delay 4p
+ 
+2/4-tap delay with 4 point interpolation. T1…T4 inputs specify the delay time in seconds 
+for each of the taps.
+The maximum delay time defaults to 44,100 samples which is 1sec at 44.1kHz. To adjust 
+the time change the size of the array in the delay macro.
+Appendix H. Standard Macros
+H.39. Convert > P2F
+ 
+REAKTOR 5.5 - Core Reference - 216
+
+
+--- Page 217 ---
+
+17.42 H.42. Delay > Delay 1p / 2p / 4p
+ 
+1-point (non-interpolated)/2-point interpolated/4-point interpolated delay. T input speci­
+fies the delay time in seconds.
+The maximum delay time defaults to 44100 samples which is 1sec at 44.1kHz. To adjust 
+the time change the size of the array in the delay macro.
+Use interpolated versions of delays for modulated delays. For non-modulated (fixed time) 
+delays non-interpolated version is normally better.
+17.43 H.43. Delay > Diff Delay 1p / 2p / 4p
+ 
+1-point (non-interpolated)/2-point interpolated/4-point interpolated diffusion delay. T in­
+put specifies the delay time in seconds. The Dffs input sets the diffusion factor.
+The maximum delay time defaults to 44,100 samples which is 1sec at 44.1kHz. To adjust 
+the time change the size of the array in the delay macro.
+Appendix H. Standard Macros
+H.42. Delay > Delay 1p / 2p / 4p
+ 
+REAKTOR 5.5 - Core Reference - 217
+
+
+--- Page 218 ---
+
+17.44 H.44. Envelope > ADSR
+ 
+Generates an ADSR Envelope.
+▪
+A, D, R specify attack, decay and release times in seconds
+▪
+S specifies sustain level (range 0..1, at 1 sustain level is equal to the peak level)
+▪
+G gate input. Positive incoming events (re-)start the envelope. Zero or negative events 
+close the envelope
+▪
+GS gate sensitivity. At zero sensitivity the envelope peak has always amplitude of 1. 
+At sensitivity equal to one, the peak level is equal to the positive gate level.
+▪
+RM retrigger mode. Selects between analog/digital mode and between retrigger/legato 
+mode. In “digital” mode the envelope always restarts from zero while in “analog” 
+mode the envelope restarts from its current output level. In “retrigger” mode consecu­
+tive positive gate events will restart the envelope, while in “legato” mode it restarts 
+only when the gate changes from negative/zero to positive. The allowed RM values are 
+following:
+– RM = 0 analog retrigger (default)
+– RM = 1 analog legato
+– RM = 2 digital retrigger
+– RM = 3 digital legato
+Appendix H. Standard Macros
+H.44. Envelope > ADSR
+ 
+REAKTOR 5.5 - Core Reference - 218
+
+
+--- Page 219 ---
+
+17.45 H.45. Envelope > Env Follower
+ 
+Outputs a control signal which “follows” the envelope of the incoming audio signal. The A 
+and D inputs specify the follow attack and decay time parameters in seconds.
+17.46 H.46. Envelope > Peak Detector
+ 
+Outputs the “last” peak level of the incoming audio as a control signal. The D input speci­
+fies the output level decay time parameter in seconds.
+17.47 H.47. EQ > 6dB LP/HP EQ
+ 
+1-pole (6dB/octave) lowpass/highpass EQ. The F input specifies the cutoff frequency (in 
+Hz) for both LP and HP outputs.
+Appendix H. Standard Macros
+H.45. Envelope > Env Follower
+ 
+REAKTOR 5.5 - Core Reference - 219
+
+
+--- Page 220 ---
+
+17.48 H.48. EQ > 6dB LowShelf EQ
+ 
+1-pole low-shelving EQ. The dB input specifies the low frequency boost in dB (negative 
+values will cut the frequencies), the F input specifies the transition mid-frequency in Hz.
+17.49 H.49. EQ > 6dB HighShelf EQ
+ 
+1-pole high-shelving EQ. The dB input specifies the high frequencies boost in dB (nega­
+tive values will cut the frequencies), the F input specifies the transition mid-frequency in 
+Hz.
+17.50 H.50. EQ > Peak EQ
+ 
+2-pole peak/notch EQ. The F input specifies the center frequency in Hz, the BW input 
+specifies the EQ bandwidth in octaves and dB input specifies the peak height (negative 
+values produce a notch).
+Appendix H. Standard Macros
+H.48. EQ > 6dB LowShelf EQ
+ 
+REAKTOR 5.5 - Core Reference - 220
+
+
+--- Page 221 ---
+
+17.51 H.51. EQ > Static Filter > 1‑po pole static HP
+ 
+1-pole static highpass filter. The F input specifies the cutoff frequency in Hz.
+17.52 H.52. EQ > Static Filter > 1‑po pole static HS
+ 
+1-pole static high-shelving filter. The F input specifies the cutoff frequency in Hz and the 
+B input specifies the high frequency boost in dB.
+17.53 H.53. EQ > Static Filter > 1‑po pole static LP
+ 
+1-pole static lowpass filter. The F input specifies the cutoff frequency in Hz.
+17.54 H.54. EQ > Static Filter > 1‑po pole static LS
+ 
+Appendix H. Standard Macros
+H.51. EQ > Static Filter > 1-pole static HP
+ 
+REAKTOR 5.5 - Core Reference - 221
+
+
+--- Page 222 ---
+
+1-pole static low-shelving filter. The F input specifies the cutoff frequency in Hz and the B 
+input specifies the low frequency boost in dB.
+17.55 H.55. EQ > Static Filter > 2‑po pole static AP
+ 
+2-pole static allpass filter. The F input specifies the cutoff frequency in Hz and the Res 
+input specifies the resonance (0..1).
+17.56 H.56. EQ > Static Filter > 2‑po pole static BP
+ 
+2-pole static bandpass filter. The F input specifies the cutoff frequency in Hz and the Res 
+input specifies the resonance (0..1).
+17.57 H.57. EQ > Static Filter > 2‑po pole static BP1
+ 
+2-pole static bandpass filter. The F input specifies the cutoff frequency in Hz and the Res 
+input specifies the resonance (0..1). The amplification at cutoff frequency is always 1 re­
+gardless of the resonance.
+Appendix H. Standard Macros
+H.55. EQ > Static Filter > 2-pole static AP
+ 
+REAKTOR 5.5 - Core Reference - 222
+
+
+--- Page 223 ---
+
+17.58 H.58. EQ > Static Filter > 2‑po pole static HP
+ 
+2-pole static highpass filter. The F input specifies the cutoff frequency in Hz and the Res 
+input specifies the resonance (0..1).
+17.59 H.59. EQ > Static Filter > 2‑po pole static HS
+ 
+2-pole static high-shelving filter. The F input specifies the cutoff frequency in Hz, the Res 
+input specifies the resonance (0..1), and the B input specifies the high frequency boost in 
+dB.
+17.60 H.60. EQ > Static Filter > 2‑po pole static LP
+ 
+2-pole static lowpass filter. The F input specifies the cutoff frequency in Hz and the Res 
+input specifies the resonance (0..1).
+Appendix H. Standard Macros
+H.58. EQ > Static Filter > 2-pole static HP
+ 
+REAKTOR 5.5 - Core Reference - 223
+
+
+--- Page 224 ---
+
+17.61 H.61. EQ > Static Filter > 2‑po pole static LS
+ 
+2-pole static low-shelving filter. The F input specifies the cutoff frequency in Hz, the Res 
+input specifies the resonance (0..1), and the B input specifies the low frequency boost in 
+dB.
+17.62 H.62. EQ > Static Filter > 2‑po pole static N
+ 
+2-pole static notch filter. The F input specifies the cutoff frequency in Hz and the Res in­
+put specifies the resonance (0..1).
+17.63 H.63. EQ > Static Filter > 2‑po pole static Pk
+ 
+2-pole static peak filter. The F input specifies the cutoff frequency in Hz, the Res input 
+specifies the resonance (0..1), and the B input specifies the center frequency boost in dB.
+Appendix H. Standard Macros
+H.61. EQ > Static Filter > 2-pole static LS
+ 
+REAKTOR 5.5 - Core Reference - 224
+
+
+--- Page 225 ---
+
+17.64 H.64. EQ > Static Filter > Integrator
+ 
+Integrates the incoming audio signal using the rectangular sum method. An event at the 
+Rst input resets the integrator output to the value of this event.
+17.65 H.65. Event Processing > Accumulator
+ 
+Computes the sum of the values at the upper input. An event at the Set input resets the 
+output to the value of this event. The lower output value is the sum of all previous events, 
+the upper output value is the sum of all previous event except the last one.
+17.66 H.66. Event Processing > Clk Div
+ 
+Clock frequency divider. The clock events arriving at the upper input will be filtered, allow­
+ing only 1st, N+1th, 2N+1th etc. events to come through (N is the value at the lower in­
+put and specifies the division ratio).
+17.67 H.67. Event Processing > Clk Gen
+ 
+Generates clock events at the rate specified by the input (in Hz). This module works only 
+inside audio core cells.
+Appendix H. Standard Macros
+H.64. EQ > Static Filter > Integrator
+ 
+REAKTOR 5.5 - Core Reference - 225
+
+
+--- Page 226 ---
+
+17.68 H.68. Event Processing > Clk Rate
+ 
+Estimates the rate and the period of the incoming clock events. The F output is the rate in 
+Hz and the T output is the period in seconds. This module works only inside audio core 
+cells.
+The initial period value is zero and the rate is a very large value. You get reasonable output 
+only after the second clock event.
+17.69 H.69. Event Processing > Counter
+ 
+Counts the number of events at the upper input. An event at the Set input resets the out­
+put to the value of this event. The lower output value is the count of all previous events, 
+the upper output value is the count of all previous events except the last one.
+17.70 H.70. Event Processing > Ctl2Gate
+ 
+Converts a control (or audio) signal at the upper input to the gate signal with an amplitude 
+defined by the lower input. Positive zero crossings open the gate, negative zero crossings 
+close the gate.
+Appendix H. Standard Macros
+H.68. Event Processing > Clk Rate
+ 
+REAKTOR 5.5 - Core Reference - 226
+
+
+--- Page 227 ---
+
+17.71 H.71. Event Processing > Dup Flt / IDup Flt
+ 
+Filters out events with duplicate values (only events with values different from the previous 
+one will be let through).
+17.72 H.72. Event Processing > Impulse
+ 
+Generates a one sample impulse of amplitude 1 in response to an incoming event. This 
+module works only inside audio core cells.
+17.73 H.73. Event Processing > Random
+ 
+Generates random numbers in response to the incoming clocks. The output range is –1..1. 
+An event at the Seed input will “reseed” the generator with the value of this event.
+17.74 H.74. Event Processing > Separator / ISeparator
+ 
+Events at the upper input with the values larger than the Thld value will be routed to the 
+Hi output. The rest will be routed to the Lo output.
+Appendix H. Standard Macros
+H.71. Event Processing > Dup Flt / IDup Flt
+ 
+REAKTOR 5.5 - Core Reference - 227
+
+
+--- Page 228 ---
+
+17.75 H.75. Event Processing > Thld Crossing
+ 
+Whenever a rising signal at the upper input crosses the threshold specified by the lower 
+input, an event will be sent from the Up output. Whenever a falling signal crosses the 
+threshold, an event will be sent from the Dn output.
+17.76 H.76. Event Processing > Value / IValue
+ 
+Changes the value of an incoming event at the upper input to the value available at this 
+time at the lower input.
+17.77 H.77. LFO > MultiWave LFO
+ 
+Outputs several phase-locked low-frequency waveforms simultaneously. The F input speci­
+fies the rate in Hz, the W input controls the pulse width (range –1..0..1, affects pulse out­
+put only), the events at the Rst input restart the LFO at the phase specified by the event 
+value (range 0..1).
+Appendix H. Standard Macros
+H.75. Event Processing > Thld Crossing
+ 
+REAKTOR 5.5 - Core Reference - 228
+
+
+--- Page 229 ---
+
+17.78 H.78. LFO > Par LFO
+ 
+Generates a parabolic low-frequency control signal. The F input specifies the rate in Hz, 
+the events at the Rst input restart the LFO at the phase specified by the event value (range 
+0..1).
+17.79 H.79. LFO > Random LFO
+ 
+Generates a random low-frequency stepped control signal (“random sample-and-hold”). 
+The F input specifies the rate in Hz, the events at the Rst input restart the LFO at the 
+phase specified by the event value (range 0..1).
+17.80 H.80. LFO > Rect LFO
+ 
+Generates a rectangular low-frequency control signal. The F input specifies the rate in Hz, 
+the W input controls the pulse width (range –1..0..1), the events at the Rst input restart 
+the LFO at the phase specified by the event value (range 0..1).
+Appendix H. Standard Macros
+H.78. LFO > Par LFO
+ 
+REAKTOR 5.5 - Core Reference - 229
+
+
+--- Page 230 ---
+
+17.81 H.81. LFO > Saw(down) LFO
+ 
+Generates a falling sawtooth low-frequency control signal. The F input specifies the rate in 
+Hz, the events at the Rst input restart the LFO at the phase specified by the event value 
+(range 0..1).
+17.82 H.82. LFO > Saw(up) LFO
+ 
+Generates a rising sawtooth low-frequency control signal. The F input specifies the rate in 
+Hz, the events at the Rst input restart the LFO at the phase specified by the event value 
+(range 0..1).
+17.83 H.83. LFO > Sine LFO
+ 
+Generates a sine-shaped low-frequency control signal. The F input specifies the rate in Hz, 
+the events at the Rst input restart the LFO at the phase specified by the event value (range 
+0..1).
+Appendix H. Standard Macros
+H.81. LFO > Saw(down) LFO
+ 
+REAKTOR 5.5 - Core Reference - 230
+
+
+--- Page 231 ---
+
+17.84 H.84. LFO > Tri LFO
+ 
+Generates a triangular low-frequency control signal. The F input specifies the rate in Hz, 
+the events at the Rst input restart the LFO at the phase specified by the event value (range 
+0..1).
+17.85 H.85. Logic > AND
+ 
+Performs a conjunction of two logical signals (the output is 1 only if both inputs are 1). 
+For input values other than 0 or 1 the result is undefined.
+17.86 H.86. Logic > Flip Flop
+ 
+The output is flipped between 0 and 1 each time the clock input receives an event.
+17.87 H.87. Logic > Gate2L
+ 
+Converts gate signal to logic signal. Open gate produces output value 1, closed gate produ­
+ces output value 0.
+Appendix H. Standard Macros
+H.84. LFO > Tri LFO
+ 
+REAKTOR 5.5 - Core Reference - 231
+
+
+--- Page 232 ---
+
+17.88 H.88. Logic > GT / IGT
+ 
+Compares the two incoming float/integer values and outputs 1 if the upper value is greater 
+than the lower value, otherwise outputs 0.
+17.89 H.89. Logic > EQ
+ 
+Compares the two incoming integer values and outputs 1 if both values are equal, other­
+wise outputs 0.
+17.90 H.90. Logic > GE
+ 
+Compares the two incoming integer values and outputs 1 if the upper value is greater or 
+equal to the lower value, otherwise outputs 0.
+17.91 H.91. Logic > L2Clock
+ 
+Converts a logic signal into the clock signal. Switching the input signal from 0 to 1 sends 
+the clock event. For input values other than 0 or 1 the functionality is undefined.
+Appendix H. Standard Macros
+H.88. Logic > GT / IGT
+ 
+REAKTOR 5.5 - Core Reference - 232
+
+
+--- Page 233 ---
+
+17.92 H.92. Logic > L2Gate
+ 
+Converts a logic signal to a gate signal. Switching the input signal from 0 to 1 opens the 
+gate, switching back closes the gate. The open gate level is defined by the value at the 
+lower input (default = 1). For input values other than 0 or 1 the functionality is undefined.
+17.93 H.93. Logic > NOT
+ 
+Converts 1 to 0 and vice versa. For input values other than 0 or 1 the result is undefined.
+17.94 H.94. Logic > OR
+ 
+Performs a disjunction of two logical signals (the output is 1 if at least one of the inputs is 
+1). For input values other than 0 or 1 the result is undefined.
+17.95 H.95. Logic > XOR
+ 
+Performs an exclusive disjunction of two logical signals (the output is 1 if one of the in­
+puts is equal to 1 and the other equal to 0). For input values other than 0 or 1 the result 
+is undefined.
+Appendix H. Standard Macros
+H.92. Logic > L2Gate
+ 
+REAKTOR 5.5 - Core Reference - 233
+
+
+--- Page 234 ---
+
+17.96 H.96. Logic > Schmitt Trigger
+ 
+Switches the output to 1 if the input value becomes larger than L+ (default 0.67), 
+switches the output to 0 if the input value becomes less than L- (default 0.33).
+17.97 H.97. Oscillators > 4‑Wa Wave Mst
+ 
+Generates 4 phase-locked audio waveforms. The frequency is specified by the F input (in 
+Hz). The pulse width is specified by the pw input (range –1..0..1, affects only the pulse 
+waveform).
+This oscillator can oscillate at negative frequencies and additionally offers a synchroniza­
+tion output for 4‑Wa Wave Slv oscillator.
+Appendix H. Standard Macros
+H.96. Logic > Schmitt Trigger
+ 
+REAKTOR 5.5 - Core Reference - 234
+
+
+--- Page 235 ---
+
+17.98 H.98. Oscillators > 4‑Wa Wave Slv
+ 
+Generates 4 phase-locked audio waveforms. The frequency is specified by the F input (in 
+Hz). The pulse width is specified by the pw input (range –1..0..1, affects only the pulse 
+waveform).
+This oscillator can oscillate at negative frequencies and can be synchronized to another 
+4‑Wave Mst/Slv oscillator. The SncH input controls the synchronization hardness (0 = no
+sync, 1 = hard sync, 0…1 = various degrees of soft sync). A synchronization output for 
+another 4‑Wa Wave Slv oscillator is also provided.
+17.99 H.99. Oscillators > Binary Noise
+ 
+Binary white noise generator. Outputs randomly alternating values of 1 and –1. An incom­
+ing event at the Seed input would (re-)initialize the internal random generator with a given 
+seed value.
+17.100 H.100. Oscillators > Digital Noise
+ 
+Appendix H. Standard Macros
+H.98. Oscillators > 4-Wave Slv
+ 
+REAKTOR 5.5 - Core Reference - 235
+
+
+--- Page 236 ---
+
+Digital white noise generator. Outputs random values in the range –1..1 An incoming event 
+at the Seed input would (re-)initialize the internal random generator with a given seed val­
+ue.
+17.101 H.101. Oscillators > FM Op
+ 
+Classical FM operator. Outputs a sine wave whose frequency is defined by the F input (in 
+Hz). The sine can be phase-modulated by the PhM input (in radians). An incoming event 
+at the Rst input would restart the oscillator to the phase specified by the value of this 
+event (range 0..1).
+17.102 H.102. Oscillators > Formant Osc
+ 
+Generates a waveform with a fundamental frequency specified by the F input (in Hz) and 
+the formant frequency specified by the Fmt input (in Hz).
+17.103 H.103. Oscillators > MultiWave Osc
+ 
+Appendix H. Standard Macros
+H.101. Oscillators > FM Op
+ 
+REAKTOR 5.5 - Core Reference - 236
+
+
+--- Page 237 ---
+
+Generates 4 phase-locked audio waveforms. The frequency is specified by the F input (in 
+Hz). The pulse width is specified by the ‘pw’ input (range –1..0..1, affects only the pulse 
+waveform).
+This oscillator cannot oscillate at negative frequencies.
+17.104 H.104. Oscillators > Par Osc
+ 
+Generates a parabolic audio waveform. The F input specifies the frequency in Hz.
+17.105 H.105. Oscillators > Quad Osc
+ 
+Generates a pair of phase-locked sine waveforms with a phase shift of 90 degrees. The F 
+input specifies the frequency in Hz.
+17.106 H.106. Oscillators > Sin Osc
+ 
+Generates a sine wave. The F input specifies the frequency in Hz.
+Appendix H. Standard Macros
+H.104. Oscillators > Par Osc
+ 
+REAKTOR 5.5 - Core Reference - 237
+
+
+--- Page 238 ---
+
+17.107 H.107. Oscillators > Sub Osc 4
+ 
+Generates 4 phase-locked subharmonics. The fundamental frequency is specified by the F 
+input (in Hz). The subharmonic numbers are specified by S1..S4 inputs (range 1..120). 
+The Tbr input controls the harmonic content of the output waveform (range 0..1).
+17.108 H.108. VCF > 2 Pole SV
+ 
+2-pole state-variable filter. The F input specifies the cutoff in Hz and the Res input speci­
+fies the resonance (range 0..0.98).
+The HP/BP/LP outputs produce highpass, bandpass and lowpass signals respectively.
+17.109 H.109. VCF > 2 Pole SV C
+ 
+Appendix H. Standard Macros
+H.107. Oscillators > Sub Osc 4
+ 
+REAKTOR 5.5 - Core Reference - 238
+
+
+--- Page 239 ---
+
+2-pole state-variable filter (compensated version). Offers an improved behavior at high cut­
+off settings. The F input specifies the cutoff in Hz and the Res input specifies the reso­
+nance (range 0..0.98). You also can use negative resonance values which will smear the 
+slope further.
+The HP/BP/LP outputs produce highpass, bandpass and lowpass signals respectively.
+17.110 H.110. VCF > 2 Pole SV (x3) S
+ 
+2-pole state-variable filter with optional oversampling (x3 version) and saturation. The F 
+input specifies the cutoff in Hz, the Res input specifies the resonance (range 0..1), the 
+Sat input specifies the saturation level (typical range 8..32).
+The HP/BP/LP outputs produce highpass, bandpass and lowpass signals respectively.
+17.111 H.111. VCF > 2 Pole SV T (S)
+ 
+2-pole state-variable filter with table compensation and optional saturation (S version). Of­
+fers an improved behavior at high cutoff settings, but slightly different from the 2 Pole SV 
+C version. The F input specifies the cutoff in Hz, the Res input specifies the resonance 
+(range 0..1), the Sat input specifies the saturation level (typical range 8..32).
+The HP/BP/LP outputs produce highpass, bandpass and lowpass signals respectively.
+Appendix H. Standard Macros
+H.110. VCF > 2 Pole SV (x3) S
+ 
+REAKTOR 5.5 - Core Reference - 239
+
+
+--- Page 240 ---
+
+17.112 H.112. VCF > Diode Ladder
+ 
+Diode-ladder filter linear emulation. The F input specifies the cutoff in Hz and the Res in­
+put specifies the resonance (range 0..0.98).
+17.113 H.113. VCF > D/T Ladder
+ 
+Ladder filter linear emulation, can be morphed between diode and transistor ladder behav­
+ior. The F input specifies the cutoff in Hz, the Res input specifies the resonance (range 
+0..0.98), the D/T input morphs between diode and transistor (0=diode, 1=transistor).
+17.114 H.114. VCF > Ladder x3
+ 
+An emulation of saturating transistor ladder filter (x3 times oversampled). The F input 
+specifies the cutoff in Hz, the Res input specifies the resonance (range 0..1), the SatL in­
+put specifies the saturation level (typical range 1..32).
+Appendix H. Standard Macros
+H.112. VCF > Diode Ladder
+ 
+REAKTOR 5.5 - Core Reference - 240
+
+
+--- Page 241 ---
+
+The outputs 1-4 are taken from the corresponding taps of the emulated ladder. Take the 
+4th tap for the ‘classic’ ladder filter sound.
+Appendix H. Standard Macros
+H.114. VCF > Ladder x3
+ 
+REAKTOR 5.5 - Core Reference - 241
+

@@ -55,8 +55,57 @@ R6 manual → R5 manual → in-app info hints (screenshots) → general knowledg
 
 ---
 
-### Next Steps (to continue)
-- Add amplitude envelope (gate-triggered)
-- Add MIDI pitch control (Note Pitch module → P inputs)
-- Consider a filter after the crossfader
-- Consider LFO modulation of FM depth for evolving timbres
+---
+
+## Session 2 — 2026-04-05
+
+### Inspiration
+Based on the work of Éliane Radigue — specifically *Geelriandre* — and a YouTube video by La Synthèse Humaine inspired by Daniel Silliman's work on the same subject.
+
+### Patch: Extended to Dual Cross-FM + AM + Filters + Reverb
+
+#### Full signal chain
+```
+Pair A/B (cross-FM) ──► Crossfader (X-Fade control)
+Pair C/D (cross-FM) ──►
+
+Crossfader Out ──► Multiply (× Osc B) → Pro-52 Filter A → Level ──► Mixer → Springtime Reverb → Out
+               └──► Multiply (× Osc D) → Pro-52 Filter B → Level ──►
+```
+
+- **Osc B and D** used as AM modulators (ring modulation — bipolar)
+- **Osc A and C** are the FM carriers, blended via crossfader
+- Two **parallel** AM branches, each filtered independently, then mixed
+- **Springtime** spring reverb (from NI Reaktor User Library, boscomac) added after mixer
+
+#### AM / Ring modulation
+- Bipolar (full ring mod) — carrier signal disappears, only sidebands remain
+- Each branch modulated by one sub-audio oscillator (Osc B or D at pitch ~-30 to -5)
+- Sub-audio AM creates slow amplitude beating — the "breathing" quality of Radigue's work
+
+#### Pro-52 Filter
+- `P` input used for cutoff (logarithmic, range 20–120)
+- `Res` input exposed as control
+- One filter per AM branch for independent timbral shaping
+- `F` input available for audio-rate cutoff modulation (not yet wired)
+
+#### Spectrum 2048 and Scope
+Both added to the output for visual feedback.
+
+#### Available Studio Effects (Library > 06 - Studio Effects)
+3-Band EQ, Auto Pan, Chorus, Fbk Delay, Flanger, Frequency Shift, Overdrive, Phaser, Tape-ish Delay, Tremolo.
+No built-in spring reverb — used Reaktor User Library instead.
+
+#### Reaktor User Library search pattern
+```
+https://www.native-instruments.com/de/reaktor-community/reaktor-user-library/<category>/all/all/all/<keyword>/latest/1/<version>/
+```
+version: `3` = R6, `1` = R5. Fetch search page for entry IDs, then fetch each `entry/show/<id>/` for details.
+
+---
+
+### Next Steps
+- Explore modulating Pro-52 `F` input with a sub-audio oscillator for slow filter sweeps
+- Consider MIDI pitch input for the oscillators
+- LFO modulation of FM depth for evolving timbres
+- Mix Osc B into crossfader properly (currently unconnected)

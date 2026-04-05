@@ -1,0 +1,353 @@
+--- Page 101 ---
+
+11
+An Introduction to Building
+ 
+The following sections will introduce you to the Structure View, giving you grounding in the
+skills needed to start building in REAKTOR.
+If you are interested in learning to build instruments and effects in REAKTOR, it is suggested
+that you read these sections and then move on to the REAKTOR 6 Building in Primary docu-
+ment available from the Help menu.
+All of the following sections require REAKTOR to be in Edit Mode.
+Building in REAKTOR is done in the Structure View.
+In the Structure View you can view the building blocks of a REAKTOR Ensemble (called Mac-
+ros, Modules, and Core Cells). These building blocks are connected by wires.
+A REAKTOR Structure
+REAKTOR's programming environment is analogous to a signal flow diagram, in which the
+blocks represent functions and the wires represent signals going into or coming out of these
+functions.
+In simple terms, REAKTOR works a little like a modular system, or a rack. You can create an
+oscillator, which you then connect to a filter via a wire. A keyboard can be connected to the
+oscillator via another wire, and so on.
+An Introduction to Building
+ 
+REAKTOR 6 - Diving Deeper - 101
+
+
+--- Page 102 ---
+
+11.1
+Navigating the Structure View
+ 
+Navigating a structure in REAKTOR is almost always accomplished by double-clicking.
+1.
+Load an Ensemble (for the purposes of illustration, this document will show the Junatik
+Ensemble from the Factory Library)
+2.
+[Ctrl] + [Shift] + double-click ([Cmd] + [Shift] + double-click on OS X) on a blank space
+in the Panel View.
+→
+The first level of the Ensemble Structure will be displayed in the Structure View.
+In the first level of the Ensemble Structure you will see Instruments as blocks. These Instru-
+ments contain deeper levels of the Structure.
+Instruments can usually be identified by the keyboard icon.
+►
+Double-click on an Instrument to view its Structure.
+An Introduction to Building
+Navigating the Structure View
+ 
+REAKTOR 6 - Diving Deeper - 102
+
+
+--- Page 103 ---
+
+The StereoTDelay Instrument Structure
+Holding [Ctrl] + [Shift] or [Cmd] + [Shift] when double-clicking is only necessary to enter the
+first level of the structure, after that all navigation between levels only requires a double-click.
+In the next level down you will see more blocks, with wires running between them. These are
+Macros and Modules.
+•
+Modules are the lowest level in REAKTOR Primary Structures, they cannot be edited and
+thus you cannot enter them.
+•
+Macros are containers that can hold any number of Modules and other Macros. The con-
+tents of a Macro can be edited.
+Macros are usually identified by their cube icon.
+A Macro
+In some cases this cube can be replaced by another icon, though that doesn't occur in
+the Factory Library.
+►
+Double-click on the Macro to enter its Structure.
+Alternatively, you can enter Macro structures using the right-click menu:
+An Introduction to Building
+Navigating the Structure View
+ 
+REAKTOR 6 - Diving Deeper - 103
+
+
+--- Page 104 ---
+
+1.
+Right-click on a Macro to open the menu.
+2.
+Click on the Structure option.
+→
+The Structure of the Macro will be displayed in the Structure View.
+You can continue to navigate deeper and deeper in the Structure View using these methods
+until you reach a Macro that contains only Modules.
+►
+To return one level higher, double-click on an empty space in the structure.
+►
+There are also some shortcuts to enter specific places in the Ensemble Structure.
+1.
+Return to the Panel View of the Ensemble.
+An Introduction to Building
+Navigating the Structure View
+ 
+REAKTOR 6 - Diving Deeper - 104
+
+
+--- Page 105 ---
+
+2.
+Right-click on a knob to open the menu.
+The menu contains the following entries that relate to navigation:
+•
+Show in Structure: Opens the Structure View at the level in which the Knob Module can
+be found. The Knob Module will be highlighted.
+•
+Show in Structure in Other Pane: Functions like Show in Structure; only this option acti-
+vates the Screen Split and opens the Structure View in the Other Pane, allowing you to
+view the Panel and the Structure at the same time.
+11.2
+Navigation Tools
+ 
+11.2.1
+Split Screen
+ 
+Having read the previous section, you have already been introduced to the Split Screen.
+The Split Screen allows you to see two parts of the Ensemble Structure at the same time by
+dividing the screen into two panes.
+►
+Activate Split Screen by clicking on either of the rectangle icons to the top right of the
+Structure View.
+An Introduction to Building
+Navigation Tools
+ 
+REAKTOR 6 - Diving Deeper - 105
+
+
+--- Page 106 ---
+
+•
+The left icon splits the screen horizontally.
+•
+The right icon splits the screen vertically.
+An Introduction to Building
+Navigation Tools
+ 
+REAKTOR 6 - Diving Deeper - 106
+
+
+--- Page 107 ---
+
+When Split Screen is active, you can swap the contents of the Panes, alter the split point, and
+close the Split Screen:
+►
+Click on the arrow icon to swap the Panes.
+►
+Click and drag the central column to alter the split point.
+►
+Click on the X to the top right of a Pane to close that Pane and thus close the Split
+Screen.
+These Split Screen options can also be found in the View menu.
+Split Screen options in the View menu.
+You can also open the Split Screen, or navigate between the Panes, by using the right-click
+menus:
+1.
+Right-click on a Macro or Instrument.
+An Introduction to Building
+Navigation Tools
+ 
+REAKTOR 6 - Diving Deeper - 107
+
+
+--- Page 108 ---
+
+2.
+Select Structure in other Pane.
+→
+The Structure of the Macro or Instrument will be displayed in the other Pane.
+Inside a Macro, you can also navigate upwards in this way:
+1.
+In a Macro Structure, right-click on an empty space.
+2.
+Select Parent in Other Pane.
+An Introduction to Building
+Navigation Tools
+ 
+REAKTOR 6 - Diving Deeper - 108
+
+
+--- Page 109 ---
+
+→
+The Structure of the level above the current Macro Structure will be displayed in the oth-
+er Pane.
+11.2.2
+Breadcrumbs
+ 
+Breadcrumbs give you a map to your current location in the Structure. They show you the
+names of all of the Instruments and Macros you have entered to get to your current location.
+Breadcrumbs are located in the bar above the structure view.
+Breadcrumbs
+Your current location will be underlined.
+►
+Click on a Breadcrumb to jump to that location in the Structure.
+11.2.3
+Bookmarks
+ 
+Bookmarks allow you to save your current location to recall later. If you find yourself navigating
+back and forth between the same locations in the Structure, Bookmarks can make this process
+a lot easier.
+Bookmarks also save the Split Screen settings, so they can be used to save and recall
+workspace setups.
+Bookmarks are located above the Breadcrumbs.
+►
+Click on a Bookmark to recall its location settings.
+An Introduction to Building
+Navigation Tools
+ 
+REAKTOR 6 - Diving Deeper - 109
+
+
+--- Page 110 ---
+
+►
+Click on the star icon to create a new Bookmark of your current location settings.
+→
+A new Bookmark will appear in the Bookmark bar.
+►
+Right-click on a Bookmark to edit it.
+The Bookmark menu contains three options:
+•
+Rename: Selecting this option will open a text box, into which you can enter a new name
+for the Bookmark.
+•
+Overwrite: Saves the current location settings in the selected Bookmark.
+•
+Delete: Removes the selected Bookmark.
+Bookmark options can also be found in the View menu in the Bookmarks sub-menu.
+An Introduction to Building
+Navigation Tools
+ 
+REAKTOR 6 - Diving Deeper - 110
+
+
+--- Page 111 ---
+
+The Bookmarks sub-menu
+The options available mostly mirror those available in the Bookmark bar:
+•
+Append: Creates a new Bookmark, like clicking on the star icon.
+•
+Recall: Opens a sub-menu from which you can select a Bookmark to recall.
+•
+Overwrite: Opens a sub-menu from which you can select a Bookmark to overwrite with the
+current location.
+•
+Next Bookmark: Recalls the Bookmark after the last Bookmark you recalled.
+•
+Previous Bookmark: Recalls the Bookmark in the list before the last Bookmark you recal-
+led.
+•
+Back: Returns to your previous location settings.
+11.3
+Loading and Connecting Instruments
+ 
+An Ensemble can be made up of multiple Instruments, which can be connected together or
+just run side by side in a single instance of REAKTOR.
+In the following section you will learn how to load and connect Instruments in an Ensemble.
+1.
+Load a Synthesizer Ensemble. For the purposes of illustration, this document will use Car-
+bon 2 from the Factory Library.
+An Introduction to Building
+Loading and Connecting Instruments
+ 
+REAKTOR 6 - Diving Deeper - 111
+
+
+--- Page 112 ---
+
+2.
+Enter the Ensemble Structure by [Ctrl] + [Shift] + double-clicking ([Cmd] + [Shift] + dou-
+ble-click on OS X) on an empty space outside the Instrument Panel.
+3.
+Open the Library Browser in the Side Pane by clicking on the Library tab.
+4.
+Open the Primary folder to view its contents.
+5.
+Select the 06 - Studio Effects folder.
+6.
+Drag and Drop one of the ism (Instrument) files from the lower half of the Browser into
+the Structure.
+An Introduction to Building
+Loading and Connecting Instruments
+ 
+REAKTOR 6 - Diving Deeper - 112
+
+
+--- Page 113 ---
+
+→
+The selected effect Instrument will appear as an object in the structure.
+The Ensemble now contains two Instruments, one synthesizer and one effect. The next step
+will be to connect them.
+1.
+Move the Instrument you just loaded by clicking on it and dragging it to where you want
+it.
+2.
+To connect two ports, click on one port and drag a wire to the port you want to connect it
+to.
+3.
+Inputs are located on the left side of any object in the structure, and outputs are on the
+right side. Connect the L and R output ports of the synthesizer to the L and R input ports
+of the effect.
+An Introduction to Building
+Loading and Connecting Instruments
+ 
+REAKTOR 6 - Diving Deeper - 113
+
+
+--- Page 114 ---
+
+4.
+Connect the output ports of the effect to the main output Modules of the Ensemble (the
+two objects labelled Out on the right side of the Structure).
+→
+The structure should now look something like this.
+When you return to the Panel View, you will see the effect you loaded below the synthesizer.
+An Introduction to Building
+Loading and Connecting Instruments
+ 
+REAKTOR 6 - Diving Deeper - 114
+
+
+--- Page 115 ---
+
+Carbon 2 with the Overdrive effect
+You can also import Ensembles as Instruments by dragging them from the Browser into
+the Structure.
+11.4
+Learning More
+ 
+If you are interested in learning more about building in REAKTOR read the REAKTOR 6 Build-
+ing in Primary document available from the Help menu. It contains tutorials for creating instru-
+ments and effects that teach the fundamentals of building, as well as guides to the advanced
+features of REAKTOR.
+An Introduction to Building
+Learning More
+ 
+REAKTOR 6 - Diving Deeper - 115
+
+
+--- Page 116 ---
+
+After working through that document, and if you are interested in diving deeper into building,
+you can move on to the REAKTOR 6 Building in Core document. The Core level of REAKTOR is
+a programming environment for building your own algorithms.
+An Introduction to Building
+Learning More
+ 
+REAKTOR 6 - Diving Deeper - 116
+

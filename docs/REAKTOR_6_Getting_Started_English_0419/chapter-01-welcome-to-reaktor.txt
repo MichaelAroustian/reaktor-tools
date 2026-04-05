@@ -1,0 +1,197 @@
+--- Page 6 ---
+
+1
+Welcome to REAKTOR
+ 
+REAKTOR is a visual programming environment based on modules and wires, allowing you to
+create any musical tool imaginable. Its many uses include music creation, digital art, instru-
+ment and effects building, as well as scientific applications. REAKTOR 6 builds on a long his-
+tory of legendary software including NI’s first product, GENERATOR.
+Welcome to REAKTOR 6
+Known for its unrivalled sound quality, REAKTOR is the complete toolkit for creating instru-
+ments and effects with high-quality DSP components. The included content allows you to look
+behind the curtain and explore the state-of-the-art technology at the core of many of our prod-
+ucts. REAKTOR Racks facilitate analog-style modular patching with Blocks—the perfect intro-
+duction to using modules and wires to create your own instruments.
+Welcome to REAKTOR
+ 
+REAKTOR 6 - Getting Started - 6
+
+
+--- Page 7 ---
+
+From playing and combining pre-built instruments and effects to building your own tools with
+its extensive Library or creating custom DSP algorithms, REAKTOR suits musicians, builders,
+and programmers alike. Based on a hierarchical structure with a coherent interface, REAKTOR
+is optimized to facilitate all of these use cases. This means that you can approach REAKTOR
+level by level, making yourself familiar with its deep functionality one step at a time.
+The REAKTOR 6 documentation adapts this approach, guiding you through the different levels
+of functionality in a clear and comprehensible manner. The Getting Started and Diving Deeper
+documents cover all basic functions and settings in REAKTOR, while the tutorials and instruc-
+tions provided in Building in Primary and Building in Core make creating your own musical tools
+more accessible than ever before.
+REAKTOR is fortunate to be supported by a large community of experienced users who actively
+share their Ensembles in the REAKTOR User Library on our website. There are thousands of
+REAKTOR Ensembles available, ready to be played, combined and modified—a great source of
+inspiration, both musically and technologically. We invite you to join this vibrant community
+and are looking forward to seeing and hearing your new creations!
+1.1
+System Requirements
+ 
+Your computer system needs to meet certain requirements in order to run REAKTOR.
+For the latest REAKTOR system requirements and compatibility information visit:
+www.native-instruments.com/reaktor6specifications
+1.2
+REAKTOR Modes: Full, Player and Demo
+ 
+What you can do with the REAKTOR version installed on your computer depends on which
+mode REAKTOR is running in. This mode depends on the license you are using:
+•
+Full mode: If you have already installed and activated REAKTOR, as a single product or as
+part of a bundle like KOMPLETE, you are using it in Full mode. In Full mode, all func-
+tionality is available without restrictions.
+Welcome to REAKTOR
+System Requirements
+ 
+REAKTOR 6 - Getting Started - 7
+
+
+--- Page 8 ---
+
+•
+Player mode: You have installed and activated any of the KOMPLETE instruments and ef-
+fects for REAKTOR and the free REAKTOR Player. In Player mode you can play Instru-
+ments and change their settings, but cannot edit their internal structure. Play mode also
+allows you to patch and play with Blocks in Racks. All Instrument settings are saved with
+your host project when using REAKTOR as a plug-in.
+•
+Demo mode: You installed REAKTOR and a number of KOMPLETE Instruments as demo
+versions, but did not activate any of the products yet. In this case you are using the demo
+license for REAKTOR, and REAKTOR is running in Demo mode. In Demo mode, you have
+all functionality but the application will stop generating sound after 30 minutes. Further-
+more, storing is disabled.
+1.3
+The REAKTOR 6 Documentation
+ 
+The REAKTOR documentation is accessible from the Help menu
+The documentation for REAKTOR 6 is divided into five separate documents, guiding you from
+loading and playing pre-built Ensembles to building your own Instruments.
+•
+REAKTOR 6 What Is New is written for users who are already familiar with previous versions
+of REAKTOR and only describes the latest features in brief.
+Welcome to REAKTOR
+The REAKTOR 6 Documentation
+ 
+REAKTOR 6 - Getting Started - 8
+
+
+--- Page 9 ---
+
+•
+REAKTOR 6 Getting Started is for new users. It is the only document needed for users who
+intend to use REAKTOR for loading and playing pre-built REAKTOR instruments and ef-
+fects.
+•
+REAKTOR Blocks Quick Start Guide is an online resource showing you how to use REAKTOR
+Blocks in the Rack format. Find it here: www.native-instruments.com/reaktor-blocks-
+quickstart
+•
+REAKTOR 6 Diving Deeper expands on the concepts introduced in the Getting Started docu-
+ment. It provides more detail on subjects like Snapshots (REAKTOR's preset system), and
+introduces advanced topics like OSC control and combining multiple Instruments in one
+Ensemble.
+•
+REAKTOR 6 Building in Primary shows you how to build your own Instruments in REAK-
+TOR’s Primary level. It focuses on a series of tutorials that guide you through building
+your first synthesizers, effects, and sequencers.
+•
+REAKTOR 6 Building in Core describes the Core level of REAKTOR with its low-level build-
+ing features, which can be used for implementing custom DSP algorithms. It includes ref-
+erence information about the Core Macro Library, an comprehensive collection of DSP
+building blocks.
+With the exception of the What Is New document, each of the documents listed above builds
+on the knowledge of the previous documents. While it is not necessary to read all of every
+document, some of the more advanced documents, like Building in Primary, assume knowl-
+edge from the previous documents.
+In-depth information about using REAKTOR Blocks in Ensembles can be found in the
+REAKTOR Blocks Manual. To learn about opening manuals for REAKTOR content, refer
+to ↑1.4, REAKTOR Content Documentation.
+1.4
+REAKTOR Content Documentation
+ 
+REAKTOR comes with a comprehensive Factory Library, including many pre-built instruments
+and effects, as well as Blocks, a new modular synthesizer framework that brings the experience
+of patching an analog modular synthesizer to REAKTOR. The manuals for this content, as well
+as any REAKTOR-based KOMPLETE instruments or effects you have installed, can be ac-
+cessed from the Browser in REAKTOR’s Side Pane.
+Welcome to REAKTOR
+REAKTOR Content Documentation
+ 
+REAKTOR 6 - Getting Started - 9
+
+
+--- Page 10 ---
+
+To open the manuals for REAKTOR content:
+1.
+Click on the Browser icon in the Side Pane to open the Browser.
+2.
+Select the Player tab.
+Welcome to REAKTOR
+REAKTOR Content Documentation
+ 
+REAKTOR 6 - Getting Started - 10
+
+
+--- Page 11 ---
+
+3.
+Double-click on the folder of the content you wish to view the manual for.
+4.
+Select the Documentation subfolder. The manual shows up as a PDF file in the lower sec-
+tion of the Browser.
+5.
+Double-click on the PDF file.
+⇨The manual will open in your standard PDF reader.
+Welcome to REAKTOR
+REAKTOR Content Documentation
+ 
+REAKTOR 6 - Getting Started - 11
+
+
+--- Page 12 ---
+
+1.5
+Manual Conventions
+ 
+This section introduces you to the signage and text highlighting used in this manual.
+•
+Text appearing in (drop-down) menus (such as Open…, Save as… etc.) and paths to loca-
+tions on your hard disk or other storage devices is printed in italics.
+•
+Text appearing elsewhere (labels of buttons, controls, text next to checkboxes etc.) is
+printed in blue. Whenever you see this formatting applied, you will find the same text ap-
+pearing somewhere on the screen.
+•
+Important names and concepts are printed in bold.
+•
+References to keys on your computer’s keyboard you’ll find put in square brackets (e.g.,
+“Press [Shift] + [Enter]”).
+1.
+Single instructions are introduced by this play button type arrow.
+⇨Results of actions are introduced by this smaller arrow.
+An indented, gray paragraph contains additional, contextual information.
+Furthermore, this manual uses particular formatting to point out special facts and to warn you
+of potential issues. The icons introducing these notes let you see what kind of information is to
+be expected:
+The speech bubble icon indicates a useful tip that may often help you to solve a task
+more efficiently.
+The exclamation mark icon highlights important information that is essential for the giv-
+en context.
+The red cross icon warns you of serious issues and potential risks that require your full
+attention.
+Welcome to REAKTOR
+Manual Conventions
+ 
+REAKTOR 6 - Getting Started - 12
+

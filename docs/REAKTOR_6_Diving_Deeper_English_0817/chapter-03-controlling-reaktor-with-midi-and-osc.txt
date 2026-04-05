@@ -1,0 +1,494 @@
+--- Page 15 ---
+
+3
+Controlling REAKTOR with MIDI and OSC
+ 
+REAKTOR can use two standards for sending and receiving control messages:
+•
+MIDI: Musical Instrument Digital Interface - a standard communication protocol for musi-
+cal instruments created in the early 80s that is still commonly used today. Virtually all
+keyboard controllers will use MIDI to communicate with your computer.
+•
+OSC: Open Sound Control - a more modern protocol that offers faster data rates, higher
+resolutions, and a more flexible architecture when compared to MIDI. However, OSC is
+less common and requires a little more technical knowledge to set up.
+Setting up MIDI and the assigning MIDI controllers is covered in the REAKTOR 6 Get-
+ting Started Document. Therefore the following sections will mainly focus on the OSC
+protocol.
+Controlling REAKTOR with MIDI and OSC
+ 
+REAKTOR 6 - Diving Deeper - 15
+
+
+--- Page 16 ---
+
+3.1
+Configuring OSC Settings
+ 
+►
+To open the OSC Settings window, enter the File menu and select OSC Settings…
+ 
+Controlling REAKTOR with MIDI and OSC
+Configuring OSC Settings
+ 
+REAKTOR 6 - Diving Deeper - 16
+
+
+--- Page 17 ---
+
+The OSC Settings Window
+The OSC Settings uses tabs to navigate between the three different sections:
+•
+Receive: Here you can set up communication from an OSC Device to REAKTOR.
+•
+Send: Here you can set up communication from REAKTOR to other OSC Devices.
+•
+Sync: This tab contains the OSC sync options.
+►
+In order to use OSC in REAKTOR, check the OSC Activate check box in the top left cor-
+ner of the OSC Settings window.
+Controlling REAKTOR with MIDI and OSC
+Configuring OSC Settings
+ 
+REAKTOR 6 - Diving Deeper - 17
+
+
+--- Page 18 ---
+
+OSC Receive
+The OSC Receive Tab
+The Receive tab contains three main areas:
+At the top is the Receive on Port value display. This is where you can view or edit REAKTOR’s
+OSC input Port number. The Port number is important for use in setting up communication
+from your OSC device. REAKTOR only receives OSC messages via this Port, so the number has
+to match the Port number set on your OSC device.
+►
+To change the Port number, double-click on the value displayed, and enter a new value.
+Below this you will see a display of the Local IP Address currently accessed by REAKTOR.
+These addresses are not editable from REAKTOR, but are displayed for use when setting up
+your OSC device.
+The large area at the bottom of the window is the Incoming OSC Monitor.
+Controlling REAKTOR with MIDI and OSC
+Configuring OSC Settings
+ 
+REAKTOR 6 - Diving Deeper - 18
+
+
+--- Page 19 ---
+
+The Incoming OSC Monitor
+This displays all of the incoming OSC messages received by REAKTOR, and is primarily used
+for checking your connection is working correctly.
+►
+To clear the monitor contents, click on the Clear button at the bottom right of the monitor
+display.
+OSC Send
+Controlling REAKTOR with MIDI and OSC
+Configuring OSC Settings
+ 
+REAKTOR 6 - Diving Deeper - 19
+
+
+--- Page 20 ---
+
+This area is used for entering the details of your OSC device(s) to enable communication with
+REAKTOR.
+To enter the OSC target’s information:
+1.
+Click on the New button below the OSC Targets window. A new target will then appear in
+the window with default information.
+2.
+Enter the relevant information into the fields by clicking on the field and typing the set-
+tings from your OSC device.
+3.
+When all information is entered correctly, you can send a test message by clicking the
+Test button.
+4.
+The test message will be sent out to all of the OSC targets in the list. If your OSC control-
+ler has an OSC input indicator or monitor, it should show activity when the test message
+is sent.
+You can also automatically search for other OSC enabled instances of REAKTOR:
+1.
+Click the Scan button. REAKTOR will send a 'ping' message and listen for a 'pong'.
+ 
+A list of devices that sent a 'pong' reply to REAKTOR will appear in the OSC Targets list.
+2.
+Remove any targets that you do not wish to use by clicking on the target name in the list
+to select it, and then clicking the trashcan icon to remove them.
+Controlling REAKTOR with MIDI and OSC
+Configuring OSC Settings
+ 
+REAKTOR 6 - Diving Deeper - 20
+
+
+--- Page 21 ---
+
+Note that Scan only scans between port ranges 10000 and 10015.
+OSC Sync
+The OSC Sync Tab
+The OSC Sync tab contains options for how REAKTOR should use OSC Sync messages.
+To change the OSC Sync setting:
+1.
+Click on the dropdown menu.
+2.
+Select the Sync setting you wish to use from the list:
+•
+No Sync: REAKTOR will not send, or respond to OSC Sync messages.
+•
+Enable Sync as Master: REAKTOR will send OSC Sync messages to any device connected
+in the OSC Send tab.
+Controlling REAKTOR with MIDI and OSC
+Configuring OSC Settings
+ 
+REAKTOR 6 - Diving Deeper - 21
+
+
+--- Page 22 ---
+
+•
+Enable Sync as Slave: REAKTOR will slave to OSC Sync messages sent from any device
+connected in the OSC Receive tab.
+If you enable OSC Sync, additional options will become available.
+The first additional option is always the Select Sync Type menu.
+The Select Sync Type Menu
+It contains two options: ##CORRECT? DOUBLE CHECK!##
+•
+Time Sync: This option sends/receives transport messages (start/stop/continue) as well as
+tempo information. This can be thought of as song position sync.
+•
+Clock Sync: This option sends/receives transport messages only. So in this case, the OSC
+messages can start and stop playback, but they do not ensure that the tempo of the OSC
+devices are in sync.
+If you selected the Enable Sync as Master option, then another control becomes available: De-
+lay messages by (ms)
+Delay messages by (ms) Parameter
+Changing the value of this parameter will delay the OSC Sync messages so that they are sent a
+select number of milliseconds after REAKTOR has generated them.
+3.2
+Making OSC Connections
+ 
+3.2.1
+MIDI and OSC Learn
+ 
+The easiest way to make an OSC connection is via the MIDI & OSC Learn function.
+1.
+Right-click the control on the interface to which you want to connect.
+Controlling REAKTOR with MIDI and OSC
+Making OSC Connections
+ 
+REAKTOR 6 - Diving Deeper - 22
+
+
+--- Page 23 ---
+
+2.
+Select MIDI & OSC Learn.
+3.
+Move the OSC controller you want to use.
+→
+The OSC controller will now be connected to the REAKTOR Ensemble control.
+3.2.2
+Connection Manager
+ 
+The Connection Manager is located in the Side Pane. It allows you to manage the MIDI and
+OSC connections in the loaded Ensemble.
+►
+To view the Connection Manager, click on the Side Pane tab with the controller icon.
+The Connection Manager has two tabs, one for MIDI and one for OSC. Even though they use
+the different protocols, both tabs work in a very similar way, although the MIDI tab has a few
+more options than the OSC tab.
+Controlling REAKTOR with MIDI and OSC
+Making OSC Connections
+ 
+REAKTOR 6 - Diving Deeper - 23
+
+
+--- Page 24 ---
+
+•
+The current connections appear at the top of the list (they will be identifiable by the infor-
+mation present in the Target column).
+•
+Recently received messages appear below the current connections (by default, this list
+will only be refreshed each time you open the tab).
+•
+For MIDI, controller messages will appear above note messages.
+►
+To view incoming messages in real-time, activate the Auto button below the list. Not only
+will this re-populate the list in real-time, but it will also highlight currently used messag-
+es.
+►
+To clear the unconnected controllers in the table, click on the Clean button below the
+list.
+Controlling REAKTOR with MIDI and OSC
+Making OSC Connections
+ 
+REAKTOR 6 - Diving Deeper - 24
+
+
+--- Page 25 ---
+
+Creating and Deleting Connections
+You can make MIDI and OSC connections from the Connection Manager by drag and drop:
+1.
+Click on the arrow icon next to the OSC control you want to use.
+2.
+While holding the mouse, drag the control over the interface parameter you want to con-
+trol.
+3.
+Once you are over the parameter, release the mouse.
+→
+A connection will be made between the OSC control and the REAKTOR Ensemble con-
+trol.
+You can also activate MIDI and OSC Learn from the Connection Manager:
+1.
+Click on the MIDI port icon to activate MIDI and OSC Learn.
+2.
+Click on the REAKTOR control to which you want to connect.
+3.
+Move the MIDI or OSC controller you want to use.
+→
+A connection will be made between the MIDI/OSC control and the REAKTOR Ensemble
+control.
+You can also use the Connection Manager to remove OSC connections:
+1.
+Select the connection you want to remove by clicking on it in the list.
+Controlling REAKTOR with MIDI and OSC
+Making OSC Connections
+ 
+REAKTOR 6 - Diving Deeper - 25
+
+
+--- Page 26 ---
+
+2.
+Click on the trashcan icon below the list or press the [delete] key on your keyboard.
+→
+The selected connection will be removed.
+3.3
+Connect Properties
+ 
+Every item in REAKTOR that can be connected to MIDI or OSC will have a Connect tab in their
+Properties.
+To access the Connect Properties:
+1.
+Click on the EDIT button in the Toolbar to activate Edit Mode.
+2.
+Right- click on the control you want to edit.
+3.
+Select "<control name>" Properties.
+4.
+The Properties for this control will open in the Side Pane.
+5.
+Click on the Connect tab to view the Connect Properties.
+Controlling REAKTOR with MIDI and OSC
+Connect Properties
+ 
+REAKTOR 6 - Diving Deeper - 26
+
+
+--- Page 27 ---
+
+The Connect Properties for a control contains a number of sections, but this document will on-
+ly cover the MIDI and OSC related sections. The other sections will be covered in the REAK-
+TOR 6 Building in Primary document available from the Help menu
+The MIDI and OSC sections of the Connect Properties
+It is possible to set up MIDI and OSC connections both into and out of REAKTOR from the
+Connect Properties.
+Controlling REAKTOR with MIDI and OSC
+Connect Properties
+ 
+REAKTOR 6 - Diving Deeper - 27
+
+
+--- Page 28 ---
+
+3.3.1
+MIDI Properties
+ 
+The MIDI sections feature the following controls:
+•
+MIDI
+◦Type: Select the MIDI message type that the control will listen for.
+◦Note/CC Number: Select the MIDI Number (if MIDI Type is set to Controller) or MIDI
+Note (if the MIDI Type is set to Note or Poly Aftertouch)
+•
+MIDI IN
+◦On: Activates MIDI to control the selected object.
+◦Soft Takeover: Activates smoothing between the MIDI input and the Panel control, so
+that values do not suddenly jump when a new MIDI message arrives.
+◦Incremental: Some dials and rotary knobs can be turned continuously — they do not
+have fixed lowest and highest positions. Such MIDI controllers send increment mes-
+sages rather than absolute MIDI controller values. If you are operating your Panel con-
+trol with such a MIDI controller, activate this option.
+•
+MIDI OUT
+◦On: When active, the Panel control will send MIDI messages when you interact with it
+from the interface.
+◦Remote Thru: Forwards the incoming MIDI messages directly to the output.
+3.3.2
+OSC Properties
+ 
+OSC Messages use Address Patterns to identify different controls. These Address Patterns are
+written similarly to website locations or file locations: strings of text separated by /
+For example, an Address Pattern could be /Page1/Cutoff
+The Address Pattern is then followed by the control value.
+OSC can also send arrays of values (i.e. several values in one packet) in a single Address Pat-
+tern.
+Controlling REAKTOR with MIDI and OSC
+Connect Properties
+ 
+REAKTOR 6 - Diving Deeper - 28
+
+
+--- Page 29 ---
+
+OSC Receive
+The OSC Receive Properties
+You can connect an OSC control to a REAKTOR control via the OSC RECEIVE section of the
+Connect Properties.
+1.
+Click on the Add Source menu.
+2.
+Select New…
+3.
+A new OSC source will be added to the table above.
+4.
+Enter the Address Pattern of the OSC control.
+5.
+If the OSC control sends data as an array of values, enter an index value in the Index col-
+umn, otherwise leave it at 0.
+Controlling REAKTOR with MIDI and OSC
+Connect Properties
+ 
+REAKTOR 6 - Diving Deeper - 29
+
+
+--- Page 30 ---
+
+6.
+Alternatively, select from the Recently Received sub-menu to automatically enter the Ad-
+dress Pattern of a recently received OSC message.
+→
+The OSC control will be connected to the REAKTOR control.
+►
+If the Recently Received sub-menu list is too cluttered, click on the Clear Recent List to
+clear the OSC control addresses shown in the sub-menu.
+To delete an OSC connection:
+1.
+Select the OSC connection you want to delete from the table.
+2.
+Click on the trashcan icon below the table.
+→
+The OSC connection will be removed.
+Controlling REAKTOR with MIDI and OSC
+Connect Properties
+ 
+REAKTOR 6 - Diving Deeper - 30
+
+
+--- Page 31 ---
+
+OSC Send
+The OSC SEND Properties
+The OSC SEND section works in a different manner when compared to the OSC RECEIVE sec-
+tion.
+To make an OSC Send connection:
+1.
+Select an OSC Device from the Add Target menu.
+2.
+Enter a Send Address Pattern. By default this will be the Panel control's name, but you
+can change this by selecting the text and entering new text. Send Address Patterns should
+always begin with a /
+→
+The OSC send connection has been created.
+It is a good idea to create both an OSC Receive and an OSC Send connection for a con-
+trol. This enables bidirectional communication, so that moving the REAKTOR control
+will update the OSC control and vice versa, keeping both controls at the same value.
+Controlling REAKTOR with MIDI and OSC
+Connect Properties
+ 
+REAKTOR 6 - Diving Deeper - 31
+
+
+--- Page 32 ---
+
+3.3.3
+Ensemble and Instrument Properties
+ 
+The Connect Properties for Instruments and Ensembles look different to those of Panel con-
+trols.
+These Properties deal with more general settings for controlling the Ensemble or Instrument.
+Controlling REAKTOR with MIDI and OSC
+Connect Properties
+ 
+REAKTOR 6 - Diving Deeper - 32
+
+
+--- Page 33 ---
+
+MIDI In Settings
+There are a number of MIDI In settings, which control how the Ensemble/Instrument will react
+to incoming MIDI messages.
+•
+External: If you have multiple MIDI devices connected to REAKTOR, you can select which
+device will control the Ensemble/Instrument.
+◦Select All if you want the Ensemble to accept MIDI messages from all the MIDI devi-
+ces.
+◦Select None if you do not want the Ensemble to accept MIDI message from any de-
+vice.
+•
+Channel: Select which MIDI channel to connect to the Ensemble.
+•
+Internal: MIDI messages can be passed from Instruments within REAKTOR. From this
+menu you can select an Instrument from which the current Instrument will receive MIDI
+messages. This is a useful option for connecting a sequencer Instrument (like Spiral) to a
+synthesizer or sampler.
+•
+Upper Limit: Sets the upper keyboard limit. MIDI notes above this limit will be ignored.
+•
+Lower Limit: Sets the lower keyboard limit. MIDI notes below this limit will be ignored.
+•
+Note Shift: Incoming MIDI notes will be transposed by this amount.
+•
+Sustain Ctrl: Selects which MIDI CC messages will be used to control sustain pedal be-
+havior. The General MIDI standard for this is MIDI CC 64.
+•
+Sustain Ctrl Active: Toggles the sustain pedal behavior on or off.
+•
+Hold Ctrl: Selects which MIDI CC messages will be used to control hold pedal behavior.
+The General MIDI standard for this is MIDI CC 66.
+•
+Hold Ctrl Active: Toggles the hold pedal behavior on or off.
+•
+Morph Ctrl: Selects a MIDI CC to connect to the Snapshot Morph Slider (see section ↑5.6,
+Morph and Randomfor more information on this feature).
+•
+Morph Ctrl Active: Toggles the MIDI control of the Snapshot Morph Slider on or off.
+MIDI Out Settings
+There are three options for an Ensemble's MIDI output:
+Controlling REAKTOR with MIDI and OSC
+Connect Properties
+ 
+REAKTOR 6 - Diving Deeper - 33
+
+
+--- Page 34 ---
+
+•
+External: If you have multiple MIDI devices connected to REAKTOR, you can select to
+which device the Ensemble will send MIDI messages.
+◦Select All if you want the Ensemble to send MIDI messages to all of the MIDI devices.
+◦Select None if you do not want the Ensemble to send any MIDI messages.
+•
+Channel: Select on which MIDI channel the Ensemble will send its MIDI messages.
+•
+Internal: MIDI messages can be passed from Instruments within REAKTOR. From this
+menu you can select an Instrument to which the current Instrument will send MIDI mes-
+sages. This is a useful option for connecting a sequencer Instrument (like Spiral) to a syn-
+thesizer or sampler.
+Controlling REAKTOR with MIDI and OSC
+Connect Properties
+ 
+REAKTOR 6 - Diving Deeper - 34
+

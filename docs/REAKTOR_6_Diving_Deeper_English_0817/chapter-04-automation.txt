@@ -1,0 +1,114 @@
+--- Page 35 ---
+
+4
+Automation
+ 
+Like other plug-ins, controls in REAKTOR Ensembles can be automated by a host sequencer.
+Instruments and effects from Native Instruments (like MONARK or THE FINGER) already have
+their automation settings set up to function correctly.
+However, some Ensembles downloaded from other sources (including the REAKTOR User Li-
+brary) might not be correctly set up, in which case you will need to fix the Automation IDs of
+the Ensemble.
+If you are combining multiple Instruments in an Ensemble, you will also need to manage the
+automation settings.
+Automation IDs
+Every control in REAKTOR is given an Automation ID, which it compiles into a list to send to
+the host sequencer, telling it how many automatable parameters the REAKTOR plug-in con-
+tains.
+Automation IDs are automatically generated, but are not always automatically updated.
+•
+Removing controls will not update the automation list. If you add two controls to your En-
+semble, and then delete the first one you added, a hole will be left in the automation list.
+•
+Removing Instruments will update the Ensemble automation list. If you create an Ensem-
+ble with two Instruments, and delete the first one you added, the Automation IDs of the
+second Instrument will be moved up to fill the gap. Note that this behavior will not fill any
+gaps in the automation list of the Instrument.
+In some cases, this should not be a problem, especially if you are using REAKTOR in stand-
+alone. However there are cases in which you will need to manage the Automation IDs, and this
+can be done from the Automation Properties.
+4.1
+Automation Properties
+ 
+The settings related to automation can be found in the Properties for an Ensemble or Instru-
+ment, under the Connect tab in a section labelled AUTOMATION.
+Automation
+Automation Properties
+ 
+REAKTOR 6 - Diving Deeper - 35
+
+
+--- Page 36 ---
+
+The Automation Properties
+The following settings are available:
+•
+Show Name: This checkbox selects whether or not the Instrument name will be included
+in the Automation Name of the control. Note that this option is not present in the Ensem-
+ble Automation Properties.
+Automation
+Automation Properties
+ 
+REAKTOR 6 - Diving Deeper - 36
+
+
+--- Page 37 ---
+
+•
+Base ID: Displays the lowest Automation ID in use by the Instrument/Ensemble. This dis-
+play can be used to show where an Instrument is positioned in the Ensemble's main Auto-
+mation ID list.
+•
+Max ID: This option selects the number of Automation IDs needed by the Instrument/En-
+semble. Most of the time, this can be set to the same value as the Max ID in use display.
+•
+Max ID in use: Displays the highest Automation ID of all the Modules inside the Instru-
+ment/Ensemble that can be automated.
+•
+ID Actions: From this menu you can select several functions to perform on the Automation
+IDs in the Instrument/Ensemble:
+◦Instrument Up: Moves the Instrument higher in the Ensemble's main Automation ID
+list, reducing its Base ID value.
+◦Instrument Down: Moves the Instrument lower in the Ensemble's main Automation ID
+list, increasing its Base ID value.
+◦Compress IDs: Select this option to compress the Automation ID list, effectively re-
+moving any gaps in the Automation ID list by changing the Automation IDs of the con-
+trols.
+◦Sort and Compress IDs: Similar to the function above, but the controls are sorted in
+alphabetical order and given new Automation IDs accordingly.
+4.2
+Common Issues
+ 
+If you are using REAKTOR Ensembles in a host sequencer and find that automation is not
+working as expected, there are often common causes that can be fixed quite easily.
+The Max ID Setting Is Not High Enough.
+If you are trying to automate a control and nothing is happening, try the following for each In-
+strument in the Ensemble and for the Ensemble itself:
+1.
+Use the Compress IDs function to remove any gaps in the Automation ID list.
+2.
+Increase the Max ID setting so that it is equal to the Max ID in use value.
+Automation
+Common Issues
+ 
+REAKTOR 6 - Diving Deeper - 37
+
+
+--- Page 38 ---
+
+If you find that automation for the control still does not work, then it is possible that
+automation has been blocked for that control by the builder of the Ensemble, which
+usually means that automating this control might cause problems.
+The List of Automatable Controls in the Host Sequencer is Difficult to Read.
+If you are trying to locate a control in the Automation ID list of your host sequencer, but find
+the Automation ID list difficult to read, try to following:
+1.
+Use the Sort and Compress IDs function to arrange the Automation IDs in alphabetical or-
+der, and to remove any gaps in the Automation ID list.
+2.
+Uncheck the Show Name option to remove excess text from the Automation Names.
+Automation
+Common Issues
+ 
+REAKTOR 6 - Diving Deeper - 38
+

@@ -1,0 +1,2310 @@
+--- Page 107 ---
+
+Chapter 4
+State variable filter
+After having discussed 1-pole ﬁlters, we are going to instroduce a 2-pole ﬁlter.
+With 2-pole ﬁlters there is more freedom in choosing the ﬁlter topology than
+with 1-poles, where any implementation of the latter would essentially be based
+on a feedback loop around an integrator. A 2-pole topology of fundamental
+importance and high usability is a classical analog model, commonly referred to
+as state-variable filter (SVF). It can also serve as a basis for building arbitrary
+2-pole ﬁlters by means of modal mixture.
+4.1
+Analog model
+The block diagram of the state-variable ﬁlter is shown in Fig. 4.1. The three
+outputs are the highpass, bandpass and lowpass signals. As usual, one can apply
+transposition to obtain a ﬁlter with highpass, bandpass and lowpass inputs
+(Fig. 4.2).
++
+ '!&"%#$
+/
+•/
+R
+/
+•/
+R
+/
+•/
+111
+
+
++
+ '!&"%#$ o
+−
+O
+/
+/
+/
+x(t)
+yLP(t)
+2R
+yHP(t)
+yBP(t)
+Figure 4.1: 2-pole multimode state-variable ﬁlter.
+The diﬀerential equations implied by Fig. 4.1 are
+yHP = x −2RyBP −yLP
+˙yBP = ωc · yHP
+˙yLP = ωc · yBP
+(4.1)
+95
+
+
+--- Page 108 ---
+
+96
+CHAPTER 4. STATE VARIABLE FILTER
+•
+o
++
+ '!&"%#$
+o
+R
+o
++
+ '!&"%#$
+o
+R
+o
++
+ '!&"%#$
+o
+111
+
+O
+•
+O
+O
+MMMq
+q
+q
+/
+/
+o
+
+
+y(t)
+xLP(t)
+2R
+−1
+xHP(t)
+xBP(t)
+Figure 4.2: Transposed 2-pole multimode state-variable ﬁlter.
+Rewriting them in terms of the lowpass signal y = yLP and combining them
+together we obtain
+¨y
+ωc
+2
++ 2R ˙y
+ωc
++ y = x
+(4.2)
+or
+¨y + 2Rωc ˙y + ω2
+cy = ω2
+cx
+(4.3)
+In a similar fashion one can easily obtain the transfer functions for the output
+signals in Fig. 4.1. Assuming unit cutoﬀand complex exponential signals, we
+have
+yHP = x −2RyBP −yLP
+yBP = 1
+syHP
+yLP = 1
+syBP
+from where
+yHP = x −2R · 1
+syHP −1
+s2 yHP
+from where
+
+1 + 2R
+s + 1
+s2
+
+yHP = x
+and
+HHP(s) = yHP
+x
+=
+1
+1 + 2R
+s + 1
+s2
+=
+s2
+s2 + 2Rs + 1
+Thus
+HHP(s) =
+s2
+s2 + 2Rs + 1 =
+s2
+s2 + 2Rωcs + ω2c
+(ωc = 1)
+HBP(s) =
+s
+s2 + 2Rs + 1 =
+ωcs
+s2 + 2Rωcs + ω2c
+(ωc = 1)
+HLP(s) =
+1
+s2 + 2Rs + 1 =
+ω2
+c
+s2 + 2Rωcs + ω2c
+(ωc = 1)
+
+
+--- Page 109 ---
+
+4.1. ANALOG MODEL
+97
+Notice that yLP(t)+2RyBP(t)+yHP(t) = x(t), that is, the input signal is split
+into lowpass, bandpass and highpass components. The same can be expressed
+in the transfer function form:
+HLP(s) + 2RHBP(s) + HHP(s) = 1
+(4.4)
+Amplitude responses
+The amplitude responses of the state-variable ﬁlter are plotted in Figs. 4.3, 4.4
+and 4.5. The pass-, stop- and transition bands of the low- and high-pass ﬁlters
+are deﬁned in the same manner as for the 1-poles, where the transition band now
+can contain a peak in the amplitude response. For the bandpass the passband is
+located in the middle (around the cutoﬀ), and there is a stop- and a transition
+band on each side of the cutoﬀ. The slope rolloﬀspeed is obviously −12dB/oct
+for the low- and high-pass, and −6dB/oct for the bandpass.
+ω
+|H(jω)|, dB
+R = 1
+R = 0.1
+ωc
+ωc/8
+8ωc
+0
+-6
+-12
+-18
++6
++12
+Figure 4.3: Amplitude response of a 2-pole lowpass ﬁlter.
+One could observe that the highpass response is a mirrored version of the
+lowpass response, while the bandpass response is symmetric by itself. The sym-
+metry between the lowpass and the highpass amplitude responses has a clear
+algebraic explanation: applying the LP to HP substitution to a 2-pole lowpass
+produces a 2-pole highpass and vice versa. The symmetry of the bandpass am-
+plitude response has the same explanation: applying the LP to HP substitution
+to the 2-pole bandpass converts it into itself.
+Since
+|s2 + 2Rs + 1|
+
+s=j
+= | −1 + 2Rj + 1| = 2R
+the amplitude response at the cutoﬀis 1/2R for all three ﬁlter types. Except
+for the bandpass, the cutoﬀpoint ω = 1 is not exactly the peak location but it’s
+
+
+--- Page 110 ---
+
+98
+CHAPTER 4. STATE VARIABLE FILTER
+ω
+|H(jω)|, dB
+R = 1
+R = 0.1
+ωc
+ωc/8
+8ωc
+0
+-6
+-12
+-18
++6
++12
+Figure 4.4: Amplitude response of a 2-pole highpass ﬁlter.
+ω
+|H(jω)|, dB
+R = 1
+R = 0.1
+ωc
+ωc/8
+8ωc
+0
+-6
+-12
+-18
++6
++12
+Passband
+Stopband
+Stopband
+Transition
+band
+Transition
+band
+Figure 4.5: Amplitude response of a 2-pole bandpass ﬁlter.
+pretty close (the smaller the value of R, the closer is the true peak to ω = 1).
+
+
+--- Page 111 ---
+
+4.1. ANALOG MODEL
+99
+Phase responses
+The phase response of the lowpass is
+arg HLP(jω) = arg
+1
+1 + 2Rjω −ω2 = −arg(1 + 2Rjω −ω2) =
+= −arctan 2Rω
+1 −ω2 = −arccot 1 −ω2
+2Rω
+= −arccot ω−1 −ω
+2R
+(4.5)
+where we had to switch from arctan to arccot, since the principal value of arctan
+gives wrong results for ω > 1. Fig. 4.6 illustrates.
+ω
+arg H(jω)
+R = 5
+R = 0.2
+R = 1
+ωc
+ωc/8
+8ωc
+0
+−π/2
+−π
+Figure 4.6: Phase response of a 2-pole lowpass ﬁlter. Bandpass
+and highpass responses are the same, except that they are shifted
+by +90◦and 180◦respectively.
+We could notice the 2-pole phase response has the same kind of symmetry
+around the cutoﬀpoint in the logarithmic frequency scale as the 1-pole ﬁlters.
+This property can be explained from (4.5) by noticing that the substitution
+ω ←1/ω changes the sign of the argument of arccot and by using the property
+of arccot
+arccot x + arccot(−x) = π
+We also could notice that the steepness of the phase response is aﬀected by the
+parameter R. Explicitly writing the phase response in a logarithmic frequency
+scale we have
+arg HLP(jex) = −arccot e−jx −ejx
+2R
+= −arccot −sinh x
+R
+(4.6)
+thus R simply scales the argument of arccot which results in stretching or shrink-
+ing of the phase response.
+The bandpass phase response is a +90◦-shifted lowpass response:
+arg HBP(jω) = arg
+jω
+1 + 2Rjω −ω2 = π
+2 + arg HLP(s)
+
+
+--- Page 112 ---
+
+100
+CHAPTER 4. STATE VARIABLE FILTER
+The bandpass phase response is a 180◦-shifted lowpass response:
+arg HHP(jω) = arg
+(jω)2
+1 + 2Rjω −ω2 = π + arg HLP(s)
+The phase response at the cutoﬀis −90◦for the lowpass:
+arg HLP(j) = arg
+1
+1 + 2Rj −1 = arg
+1
+2Rj = −π
+2
+respectively giving 0◦for the bandpass and +90◦for the highpass.
+It can be also observed in Fig. 4.6 that the lowpass phase response is close
+to zero in the passband, the same as for the 1-pole lowpass.
+As we shuld
+have expected, the same also holds for the highpass’s passband.
+Somewhat
+remarkably, as we just established by evaluating the bandpass phase response
+at the cutoﬀ, the same property also holds for the bandpass’s passpand, although
+at small values of R the phase will be close to zero only in a small neighborhood
+of the cutoﬀ.
+4.2
+Resonance
+With a 1-pole lowpass or highpass ﬁlter, the only parameter to control was the
+ﬁlter cutoﬀ, shifting the amplitude response to the left or to the right in the
+logarithmic frequency scale. With 2-pole ﬁlters there is an additional parameter
+R, which, as the reader could have noticed from Figs. 4.3, 4.4 and 4.5 controls
+the height of the amplitude response peak occuring closely to ω = ωc. A narrow
+peak in the amplitude response is usually referred to as resonance. Thus, we
+can say that the R parameter controls the amount of resonance in the ﬁlter.
+On the other hand, from the same ﬁgures we can notice that the resonance
+increases (the peak becomes higher and more narrow) as R decreases. It is easy
+to verify that at R = 0 the resonance peak becomes inﬁnitely high. A little bit
+later we will also establish the fact that the state variable ﬁlter is stable if and
+only if R > 0. Thus, the parameter R actually has the function of decreasing
+or damping the resonance.
+For that reason we refer to the R parameter as
+the damping.1 By controlling the damping parameter we eﬀectively control the
+ﬁlter’s resonance.2
+Damping and selfoscillation
+At R = 0 and x(t) ≡0 the equation (4.3) turns into
+¨y = −ω2
+cy
+1A more correct term, used in theory of harmonic oscillations, is damping ratio, where the
+commonly used notation for the same parameter is ζ.
+2The “resonance” control for the SVF filter can be introduced in a number of different
+ways. One common approach is to use the parameter Q = 1/2R, however this doesn’t allow
+to go easily into the selfoscillation range in the nonlinear versions of this filter, also the
+math is generally more elegant in terms of R than in terms of Q. Another option is using
+r = 1−R, which differs from the resonance control parameter k of SKF/TSK filters (discussed
+in Section 5.8) just by a factor of 2, the selfoscillation occuring at r = 1.
+Other, more
+sophisticated mappings, can be used for a “more natural feel” of the resonance control.
+
+
+--- Page 113 ---
+
+4.2. RESONANCE
+101
+which is eﬀectively a spring-mass equation
+m¨y = −ky
+or
+¨y = −k
+my
+where respectively ωc =
+p
+k/m.
+Starting from a non-zero initial state such
+system will oscillate around the origin inﬁnitely long. Thus, in the absence of
+the damping signal path (Fig. 4.7), the ﬁlter will be constantly selfoscillating.3
+Notably, the selfoscillation is appearing at the setting R = 0 where the resonance
+peak is getting inﬁnitely high. This is a general property of resonating ﬁlters
+and has to do with the relationship between the ﬁlter poles and the ﬁlter’s
+transient response, both covered later in this chapter and additionally and in a
+more general form in Chapter 7.
++
+ '!&"%#$
+/
+•/
+R
+/
+•/
+R
+/
+•/
+−
+O
+/
+/
+/
+x(t)
+yLP(t)
+yHP(t)
+yBP(t)
+Figure 4.7:
+2-pole multimode state-variable ﬁlter without the
+damping path (selfoscillating).
+The introduction of the damping signal
+¨y = −ω2
+cy −2R ˙y
+reduces the amount of resonance in the ﬁlter, which in terms of a spring-mass
+system works as a 1st-order energy dissipation term:
+m¨y = −ky −2c ˙y
+This should give a better idea of why the R parameter is referred to as damping.
+By further adding an external force to the spring-mass system one eﬀectively
+adds the input signal.4
+3The selfoscillating state at R = 0 is a marginally stable state. As mentioned earlier, due
+to the noise present in the system (such as numerical errors in a digital implementation),
+we shouldn’t expect to be able to exactly hold a system in a marginally stable state.
+In
+order to have reliable selfoscillation one usually needs to introduce nonlinear elements into
+the system. E.g. by introducing the saturating behavior one would be able to lower R below
+0, thereby increasing the resonance even further, without making the filter explode.
+So,
+while selfoscillation formally appears at R = 0, it is becoming reliable at R < 0, given that
+nonlinearities prevent the filter from exploding.
+4Thereby the differential equation becomes formally equivalent to an SVF, but there still
+is an essential difference. The state of a spring-mass system consists of a position y(t) and a
+velocity ˙y(t). Changes to the system parameters will therefore directly change the kinetic and
+potential energies, which can result in a sudden increase or reduction of the amplitude of the
+
+
+--- Page 114 ---
+
+102
+CHAPTER 4. STATE VARIABLE FILTER
+Resonance peak
+We can ﬁnd the exact position and the height of the resonance peak by looking
+for the local maximum of the (squared) amplitude response. E.g. for the lowpass
+amplitude response:
+|HLP(jω)|2 =
+1
+|(jω)2 + 2Rjω + 1|2 =
+1
+(1 −ω2)2 + 4R2ω2
+Instead of looking for the maximum of |HLP(jω)|2 we can look for the minumum
+of the reciprocal function:
+|HLP(jω)|−2 = ω4 + 2(2R2 −1)ω2 + 1
+Clearly, |HLP(jω)|−2 is a quadratic polynomial in ω2 with the minimum at
+ω2 = 1 −2R2. The resonance peak position is thus
+ωpeak =
+p
+1 −2R2
+where for R ≥1/
+√
+2 (we are considering only positive values of R) there is no
+minimum at ω2 > 0 and respectively no resonance peak. Note that the peak
+thereby starts at ω = 0 at R = 1/
+√
+2 and, as R decreases to zero, moves towards
+ω = 1.
+The resonance peak height is simply the value of the amplitude response
+evaluated at ωpeak:
+|HLP(jωpeak)|2 =
+1
+(1 −(1 −2R2))2 + 4R2(1 −2R2) =
+1
+4R4 + 4R2 −8R4 =
+=
+1
+4R2 −4R4 =
+1
+4R2(1 −R2)
+(R < 1/
+√
+2)
+and
+|HLP(jωpeak)| =
+1
+2R
+√
+1 −R2
+(R < 1/
+√
+2)
+Thus at R = 1/
+√
+2 the peak height is formally |HLP(jωpeak)| = 1, correspond-
+ing to the amplitude response not having the peak yet. At R →0 we have
+|HLP(jωpeak)| ∼1/2R. The above expression also allows us to ﬁnd the value of
+R given a desired peak height A. Starting from
+A =
+1
+2R
+√
+1 −R2
+(4.7)
+we have
+2R
+p
+1 −R2 = A−1
+R2(1 −R2) = A−2
+4
+R4 −R2 + A−2
+4
+= 0
+swinging. In comparison, in the SVF the system state consists of the “lowpass” integrator’s
+state y(t) and “bandpass” integrator’s state, which according to (4.1) is ˙y(t)/ωc.
+In this
+case changes to the filter parameters will affect the filter’s output in a more gradual way.
+Particulary, according to (2.28), changes to the cutoff will not affect the output amplitude at
+all.
+
+
+--- Page 115 ---
+
+4.3. POLES
+103
+R2 = 1 ±
+√
+1 −A−2
+2
+Taking into account the allowed range of R (which is 0 < R < 1/
+√
+2), we obtain
+R =
+s
+1 −
+√
+1 −A−2
+2
+(A ≥1)
+(4.8)
+Recalling that the amplitude response of the 2-pole highpass is simply a
+symmetrically ﬂipped amplitude response of the 2-pole lowpass, we realize that
+the same considerations apply to the 2-pole highpass, except that the expres-
+sion for ωpeak needs to be reciprocated. For the bandpass ﬁlter the amplitude
+response peak is always exactly at the cutoﬀ.
+Butterworth filter
+The threshold value R = 1/
+√
+2 at which the resonance peak starts to appear has
+another interesting property. At this setting the (logarithmic frequency scale)
+amplitude responses of the 2-pole lowpass and highpass are shrunk horizontally
+two times around the cutoﬀpoint, as compared to those of 1-poles (the phase
+response is transformed in a more complicated way, which is of little interest to
+us here). This is a particular case of a Butterworth filter. Butterworth ﬁlters
+will be discussed in a generalized form in Chapter 8, but we can also show this
+shrinking property explicitly here. Indeed, for R = 1/
+√
+2 we have
+s2 +
+√
+2 · s + 1
+
+2
+
+s=jω
+=
+1 −ω2 + j
+√
+2 · ω
+
+2
+= (1 −ω2)2 + 2ω2 =
+= 1 + ω4 =
+1 + jω22 = |1 + s|2
+
+s=jω2
+Now, the substitution ω ←ω2 corresponds to the two times shrinking in the
+logarithmic frequency scale: log ω ←2 log ω. Thus, for the lowpass 2-pole we
+have
+
+1
+s2 +
+√
+2 · s + 1
+
+
+s=jω
+=
+
+1
+1 + s
+
+
+s=jω2
+and for the highpass ﬁlter we have
+
+s2
+s2 +
+√
+2 · s + 1
+
+
+s=jω
+=
+
+s
+1 + s
+
+
+s=jω2
+The readers can refer to Fig. 8.13 for the illustration of the shrinking eﬀect.
+Since for R < 1/
+√
+2 the amplitude response obtains a resonance peak, the
+Butterworth 2-pole ﬁlter is the one with the “sharpest” possible cutoﬀamong
+all non-resonating 2-poles.
+4.3
+Poles
+Solving s2 + 2Rs + 1 = 0 we obtain the poles of the ﬁlter at
+p1,2 = −R ±
+p
+R2 −1 =
+(
+−R ±
+√
+R2 −1
+if |R| ≥1
+−R ± j
+√
+1 −R2
+if −1 ≤R ≤1
+
+
+--- Page 116 ---
+
+104
+CHAPTER 4. STATE VARIABLE FILTER
+Thus, the poles are located in the left semiplane if and only if R > 0. As with
+1-poles, the location of the poles in the left semiplane is suﬃcient and necessary
+for the ﬁlter to be stable.5
+For |R| ≤1 the poles are located on the unit circle
+(Re p)2 + (Im p)2 = (−R)2 + (
+p
+1 −R2)2 = 1
+This also implies that R is equal to the cosine of the angle between the negative
+real axis and the direction to the pole (Fig. 4.8).
+α
+−α
+−1
+1
+−j
+j
+0
+Re s
+Im s
+cos α = R
+Figure 4.8: Poles of a resonating 2-pole ﬁlter (ωc = 1).
+As R is getting close to zero, the poles are getting close to the imaginary
+axis.
+By deﬁnition of a pole, the transfer function is inﬁnitely large at the
+poles, which means it is also having large values on the imaginary axis close to
+the poles. This corresponds to the resonance peak appearing in the amplitude
+response. At R = 0 the poles are located right on the imaginary axis and the
+ﬁlter selfoscillates.
+At |R| ≥1 the poles are real and mutually reciprocal:6
+(−R −
+p
+R2 −1) · (−R +
+p
+R2 −1) = 1
+(Fig. 4.9). The ﬁlter thus “falls apart” into a serial combination of two 1-pole
+ﬁlters:
+HLP(s) =
+1
+s2 + 2Rs + 1 =
+1
+s −p1
+·
+1
+s −p2
+5Later we will discuss the transient response of the SVF and the respective effects of the
+poles position on the stability.
+6Actually, the poles are mutually reciprocal at any R (since their product should be equal
+to the constant term of the denominator). For complex poles the reciprocal property manifests
+itself as conjugate symmetry of the poles, since the poles are lying on the unit circle and the
+reciprocation does not change their absolute magnitude.
+
+
+--- Page 117 ---
+
+4.3. POLES
+105
+HBP(s) =
+s
+s2 + 2Rs + 1 =
+s
+s −p1
+·
+1
+s −p2
+HHP(s) =
+s2
+s2 + 2Rs + 1 =
+s
+s −p1
+·
+s
+s −p2
+where p1p2 = 1.7 These 1-pole ﬁlters become visible in the amplitude responses
+at suﬃciently large R as two diﬀerent “cutoﬀpoints” (Fig. 4.10).
+p1
+p2
+−1
+1
+−j
+j
+0
+Re s
+Im s
+p1p2 = 1
+Figure 4.9: Poles of a non-resonating 2-pole ﬁlter (ωc = 1).
+ω
+|H(jω)|, dB
+ω = ωc(R +
+√
+R2 −1)
+ω = ωc(R −
+√
+R2 −1)
+ωc
+ωc/8
+8ωc
+0
+-12
+-24
+-36
+-48
+Figure 4.10: Amplitude response of a non-resonating 2-pole low-
+pass ﬁlter.
+7Of course the same decomposition is formally possible for complex poles, but a 1-pole
+filter with a complex pole cannot be implemented as a real system.
+
+
+--- Page 118 ---
+
+106
+CHAPTER 4. STATE VARIABLE FILTER
+Resonance redefined
+The pole positions can give us another way of deﬁning the point where we
+consider the resonance to appear. Previously we have found that the resonance
+peak appears at R < 1/
+√
+2. However, the amplitude response peak is only one
+manifestation of the resonance eﬀect. Another aspect of resonance is that, as we
+shall see later, the transient response of the ﬁlter contains sinusoidal oscillation,
+which occurs whenever the poles are complex. Therefore, using the presence of
+transient oscillations as the alternative deﬁnition of the resonance, we can say
+that the resonance occurs when R < 1.
+Similarly to R = 1/
+√
+2, the threshold setting R = 1 has a special property.
+At this setting both poles are located at s = −1 and the transfer function of the
+2-pole lowpass becomes equal to the transfer function of two serially connected
+1-pole lowpasses:
+1
+s2 + 2s + 1 =
+
+1
+s + 1
+2
+while the transfer function of the 2-pole highpass becomes equal to the transfer
+function of two serially connected 1-pole highpasses:
+s2
+s2 + 2s + 1 =
+
+s
+s + 1
+2
+This means that at this value of R the (decibel-scale) amplitude responses of
+the 2-pole lowpass and highpass are stretched vertically two times compared to
+those of the 1-pole lowpass and highpass (Fig. 4.11), and the same holds for the
+phase responses (Fig. 4.12).
+ω
+|H(jω)|, dB
+ωc
+ωc/8
+8ωc
+0
+-6
+-12
+-18
+Figure 4.11: Amplitude response of the 2-pole lowpass ﬁlter at
+R = 1 (solid line) compared to the amplitude response of the 1-
+pole lowpass ﬁlter (dashed line).
+Non-unit cutoff
+If ωc ̸= 1 then the transfer function denominator becomes s2 + 2Rωcs + ω2
+c (or
+(s/ωc)2 + 2Rs/ωc + 1, if no simpliﬁcations are performed on the entire transfer
+
+
+--- Page 119 ---
+
+4.3. POLES
+107
+ω
+arg H(jω)
+ωc
+ωc/8
+8ωc
+0
+−π/2
+−π
+Figure 4.12: Phase response of the 2-pole lowpass ﬁlter at R =
+1 (solid line) compared to the amplitude response of the 1-pole
+lowpass ﬁlter (dashed line).
+function) and the formula for the poles becomes
+p1,2 = ωc · (−R ±
+p
+R2 −1) =
+(
+ωc · (−R ±
+√
+R2 −1)
+if |R| ≥1
+ωc · (−R ± j
+√
+1 −R2)
+if −1 ≤R ≤1
+(4.9)
+The formula (4.9) can be obtained either by directly solving the quadratic equa-
+tion or by noticing that the cutoﬀsubstitution s ←s/ωc scales the poles ac-
+cording to p ←pωc. Complex poles are therefore located on the circle of radius
+ωc (Fig. 4.13), while real poles have a geometric mean equal to ωc (Fig. 4.14).
+−1
+1
+−j
+j
+α
+−α
+−ωc
+ωc
+−jωc
+jωc
+0
+Re s
+Im s
+cos α = R
+Figure 4.13: Poles of a resonating 2-pole ﬁlter (ωc ̸= 1).
+
+
+--- Page 120 ---
+
+108
+CHAPTER 4. STATE VARIABLE FILTER
+−1
+1
+−j
+j
+p1
+p2
+−ωc
+ωc
+−jωc
+jωc
+0
+Re s
+Im s
+p1p2 = ω2
+c
+Figure 4.14: Poles of a non-resonating 2-pole ﬁlter (ωc ̸= 1).
+Transfer function in terms of poles
+Writing the lowpass transfer funtion in terms of poles we have for ωc = 1
+HLP(s) =
+1
+s2 + 2Rs + 1 =
+1
+s −p1
+·
+1
+s −p2
+=
+1
+s2 −(p1 + p2)s + 1
+and for an arbitrary ωc respectively
+HLP(s) =
+ω2
+c
+s2 + 2Rωcs + ω2c
+=
+p1p2
+s2 −(p1 + p2)s + p1p2
+Respectively
+−(p1 + p2) = 2Rωc
+(4.10a)
+p1p2 = ω2
+c
+(4.10b)
+from where
+ωc = √p1p2
+(4.11a)
+R = −p1 + p2
+2ωc
+= −(p1 + p2)/2
+√p1p2
+(4.11b)
+In terms of ω1 = −p1 and ω2 = −p2 the same turns into
+ω1 + ω2 = 2Rωc
+ω1ω2 = ω2
+c
+and
+ωc = √ω1ω2
+(4.12a)
+
+
+--- Page 121 ---
+
+4.4. DIGITAL MODEL
+109
+R = ω1 + ω2
+2ωc
+= (ω1 + ω2)/2
+√ω1ω2
+(4.12b)
+Notice that thereby ωc is a geometric mean of the 1-pole cutoﬀs, and R is a
+ratio of their arithmetic and geometric means. Equations (4.12) can be used to
+represent a series of two 1-poles with given cutoﬀs by an SVF.8
+Pole cutoff and damping
+A pair of complex poles of an SVF must be a conjugate pair, therefore we have
+|p1| = |p2|, Re p1 = Re p2 and Im p1 = −Im p2. The equations (4.10) in this
+case turn into
+−2 Re pn = 2Rωc
+|pn|2 = ω2
+c
+(n = 1, 2)
+These relationships motivate the introduction of the notion of the “associated
+cutoﬀand damping” of an arbitrary pair of conjugate poles p and p∗, where we
+would have
+−2 Re p = 2Rωc
+|p|2 = ω2
+c
+(n = 1, 2)
+and
+ωc = |p|
+R = −Re p
+|p|
+(n = 1, 2)
+(4.13)
+(Fig. 4.13 can serve as an illustration).
+This idea is particularly convenient, if we imply that a particular high-order
+transfer function is to be implemented as a cascade of 2-poles (further discussed
+in Section 8.2), in which case (4.13) gives us ready formulas for the computation
+of the cutoﬀand damping of the respective 2-pole. Also, unless the high-order
+transfer function is having coinciding complex poles, the separation of complex
+poles into pairs of conjugate poles is unambiguous.
+The same can be done for real poles, if desired, where we can use (4.11)
+instead of (4.13) but this would work only under the restriction that both poles
+are having the same sign (Fig. 4.14 can serve as an illustration).9
+Also the
+grouping of such poles into pairs can be done in diﬀerent ways.
+Sometimes the same terminology is also convenient for zeros. Even though
+formally it is not correct, since zeros are not directly associated with a cutoﬀor
+damping, it is sometimes handy to treat a pair of zeros as roots of a polynomial
+s2 + 2Rωcs + ω2
+c.
+4.4
+Digital model
+Skipping the naive implementation, which the readers should be perfectly capa-
+ble of creating and analyzing themselves by now, we proceed with the discussion
+of the TPT model.
+8Apparently, (4.12) defines only the denominator of the SVF’s transfer function.
+The
+numerator would need to be computed separately.
+9Apparently (4.11) can be used all the time, regarless of whether the poles are complex
+or real. It’s just that in case of complex poles we have simpler and more intuitive formulas
+(4.13).
+
+
+--- Page 122 ---
+
+110
+CHAPTER 4. STATE VARIABLE FILTER
+Assuming gξ+sn instantaneous responses for the two trapezoidal integrators
+one can redraw Fig. 4.1 to obtain the discrete-time model in Fig. 4.15.
++
+ '!&"%#$
+/
+•/
+gξ + s1
+/
+•/
+gξ + s2
+/
+•/
+111
+
+
++
+ '!&"%#$ o
+−
+O
+/
+/
+/
+x[n]
+yLP[n]
+2R
+yHP[n]
+yBP[n]
+Figure 4.15: TPT 2-pole multimode state-variable ﬁlter in the in-
+stantaneous response form.
+Picking yHP as the zero-delay feedback equation’s unknown10 we obtain from
+Fig. 4.15:
+yHP = x −2R(gyHP + s1) −g(gyHP + s1) −s2
+from where
+ 1 + 2Rg + g2
+yHP = x −2Rs1 −gs1 −s2
+from where
+yHP = x −(2R + g)s1 −s2
+1 + 2Rg + g2
+(4.14)
+Apparently (4.14) has the form (3.37), where the total instantaneous gain of
+the zero-delay feedback loop in Fig. 4.15 is G = −(2Rg + g2) and thus the
+instantaneously unstable case occurs when the denominator of (4.14) is negative.
+However, as long as g > 0 and R > −1, the denominator of (4.14) is always
+positive:
+1 + 2Rg + g2 > 1 + 2 · (−1) · g + g2 = (1 −g)2 ≥0
+thus under these conditions the ﬁlter in not becoming instantaneously unstable.
+Using yHP we can proceed deﬁning the remaining signals in the structure,
+in the same way as we did for the 1-pole in Section 3.9. Assuming that we are
+using trasposed direct form II integrators (Fig. 3.11), sn are the states of the z−1
+elements in the respective integrators and g = ωcT/2 (prewarped). Therefore
+by precomputing the values 1/(1+2Rg+g2) and 2R+g in advance, the formula
+(4.14) can be computed in 2 subtractions and 2 multiplications. What remains
+is the processing of both integrators. A transposed direct form II integrator
+can be computed in 1 multiplication and 2 additons.
+Thus, the entire SVF
+processing routine needs 4 multiplications and 6 additions/subtractions:
+// perform one sample tick of the SVF
+HP := (x-g1*s1-s2)*d; // g1=2R+g, d=1/(1+2Rg+g^2)
+10The state-variable filter has two feedback paths sharing a common path segment. In order
+to obtain a single feedback equation rather than an equation system we should pick a signal
+on this common path as the unknown variable.
+
+
+--- Page 123 ---
+
+4.5. NORMALIZED BANDPASS FILTER
+111
+v1 := g*HP; BP := v1+s1; s1 := BP+v1; // first integrator
+v2 := g*BP; LP := v2+s2; s2 := LP+v2; // second integrator
+If we are not interested in the highpass signal, we could obtain a more optimal
+implementation by solving for yBP instead:
+yBP = g(x −2RyBP −gyBP −s2) + s1
+(1 + 2Rg + g2)yBP = g(x −s2) + s1
+yBP = g(x −s2) + s1
+1 + 2Rg + g2
+This gives us:
+// perform one sample tick of the SVF BP/LP
+BP := (g*(x-s2)+s1)*d; // d=1/(1+2Rg+g^2)
+v1 := BP-s1; s1 := BP+v1; // first integrator
+v2 := g*BP; LP := v2+s2; s2 := LP+v2; // second integrator
+This implementation has 3 multiplications and 6 additions/subtractions.
+If we need only the BP signal, then we could further transform the expres-
+sions used to update the integrators:
+// perform one sample tick of the SVF BP
+BP := (g*(x-s2)+s1)*d; // d=1/(1+2Rg+g^2)
+BP2 := BP+BP; s1 := BP2-s1; // first integrator
+v22 := g*BP2; s2 := s2+v22; // second integrator
+That’s 3 multiplications and 5 additions/subtractions.
+4.5
+Normalized bandpass filter
+By multiplying the bandpass ﬁlter’s output by 2R:
+HBP1(s) = 2RHBP(s) =
+2Rs
+s2 + 2Rs + 1
+(4.15)
+we obtain a bandpass ﬁlter which has a unit gain (and zero phase response) at
+the cutoﬀ:
+HBP1(j) =
+2Rj
+j2 + 2Rj + 1 = 1
+For that reason this version of the 2-pole bandpass ﬁlter is referred to as a
+unit-gain or normalized bandpass. Fig. 4.16 illustrates the amplitude response.
+The normalized bandpass has a better deﬁned passband than the ordinary
+bandpass, since here we can deﬁne the frequency range where |HBP1(jω)| ≈1 as
+the passband. Notably, in Fig. 4.16 one observes that the width of the passband
+grows with R. At the same time from Fig. 4.6 one can notice that the width
+of the band where the bandpass phase response is close to zero also grows with
+R. Thus, the phase response of the normalized bandpass ﬁlter is close to zero
+in the entire passband of the ﬁlter, regardless of R.11
+11This can be confirmed in a more rigorous manner by the fact (which we establish in
+Section 4.6) that the frequency response of the 2-pole normalized bandpass filter can be
+obtained from the frequency response of the 1-pole lowpass filter by a frequency axis mapping.
+
+
+--- Page 124 ---
+
+112
+CHAPTER 4. STATE VARIABLE FILTER
+ω
+|H(jω)|, dB
+R = 5
+R = 1
+R = 0.1
+ωc
+ωc/8
+8ωc
+0
+-6
+-12
+-18
+Figure 4.16: Amplitude response of a 2-pole unit gain bandpass
+ﬁlter.
+Rewriting (4.4) in terms of the normalized bandpass we get
+HLP(s) + HBP1(s) + HHP(s) = 1
+that is
+x(t) = yLP(t) + yBP1(t) + yHP(t)
+Topology
+Notice that the unit gain bandpass signal can be directly picked up at the output
+of the 2R gain element as shown in Fig. 4.17.
++
+ '!&"%#$
+/
+•/
+R
+/
+•/
+R
+/
+•
+111
+
+
+•
++
+ '!&"%#$ o
+−
+O
+/
+/
+/
+/
+x(t)
+yLP(t)
+2R
+yBP1(t)
+yHP(t)
+yBP(t)
+Figure 4.17: State-variable ﬁlter with a normalized bandpass out-
+put.
+If the damping parameter is to be modulated at high rate, rather than
+multiplying the bandpass output by 2R, it might be better to multiply the
+
+
+--- Page 125 ---
+
+4.5. NORMALIZED BANDPASS FILTER
+113
+ﬁlter’s input by 2R:
+MMMq
+q
+q/
+HBP(s)
+/
+/
+2R
+The reasoning is pretty much the same as for positioning the cutoﬀgains before
+the integrators or for preferring the transposed (multi-input) ﬁlters for modal
+mixing: we let the integrator smooth the jumps or quick changes in the signal.
+This will be given for granted if we use the transposed version of Fig. 4.17.
+Instead of using the transposed version, we could inject the input signal into
+the Fig. 4.17 ﬁlter structure as shown in Fig. 4.18. However, by multplying
+the input rather than the output by 2R we have not only changed the “BP”
+output signal to normalized bandpass, we have also changed the amplitudes of
+the LP and HP outputs. Notably, Fig. 4.18 is essentially the transposed version
+of Fig. 4.17, except for the relative placement of the second integrator and an
+invertor.
+R
+/
+•/
+R
+/
++
+ '!&"%#$
+−
+
+111
+
+
++
+ '!&"%#$
+−
+o
+/
+/
+x(t)
+yBP1(t)
+2R
+Figure 4.18: Normalized bandpass state-variable ﬁlter with pre-
+ﬁlter 2R gain.
+Prewarping
+The standard application of the bilinear transform prewarping technique implies
+that we want the cutoﬀpoint to be positioned exactly at ωc on the digital
+frequency axis. However with the normalized bandpass ﬁlter the positioning
+of the left and right transition band slopes is more important than the exact
+positioning of the cutoﬀ. At the same time, the damping parameter doesn’t
+seem to have much (or any) vertical eﬀect on the amplitude response, mainly
+controlling the distance between the slopes. Thus we have two degrees of control
+freedom (the cutoﬀand the damping) which we could attempt to use to position
+the two slopes as exactly as possible. Instead of developing the corresponding
+math just for the normalized bandpass ﬁlter, though, we are going to do this in
+a more general manner in Section 4.6.
+
+
+--- Page 126 ---
+
+114
+CHAPTER 4. STATE VARIABLE FILTER
+4.6
+LP to BP/BS substitutions
+The 2-pole unit gain bandpass response can be obtained from the lowpass re-
+sponse 1/(1 + s) by the so-called LP to BP (lowpass to bandpass) substitution:
+s ←1
+R · s + s−1
+2
+(4.16)
+We will also occasionally refer to the LP to BP substitution as the LP to BP
+transformation, making no particular disctinction between both terms.
+Since s and 1/s are used symmetrically within the right-hand side of (4.16),
+it immediately follows that the result of the substitution is invariant relative
+to the LP to HP substitution s ←1/s. Therefore the result of the LP to BP
+substitution has an amplitude response which is symmetric in the logarithmic
+frequency scale.
+Using s = jω, we obtain
+jω ←1
+R · jω + 1/jω
+2
+or
+ω ←1
+R · ω −ω−1
+2
+Denoting the new ω as ω′ we write
+ω = 1
+R · ω′ −ω′−1
+2
+(4.17)
+Instead of trying to understand the mapping of ω to ω′ it is easier to understand
+the inverse mapping from ω′ to ω, as explicitly speciﬁed by (4.17). Furthermore,
+it is more illustrative to express ω′ in the logarithmic scale:
+ω = 1
+R · eln ω′ −e−ln ω′
+2
+= 1
+R sinh ln ω′
+if ω > 0
+ω = −1
+R · eln |ω′| −e−ln |ω′|
+2
+= −1
+R sinh ln |ω′|
+if ω < 0
+Thus
+ω = 1
+R sinh (sgn ω′ · ln |ω′|)
+(4.18)
+Since ln |ω′| takes up the entire real range of values in each of the cases ω > 0
+and ω < 0 and respectively, so does sinh(sgn ω′ · ln |ω′|),
+ω′ ∈(0, +∞)
+⇐⇒
+ω ∈(−∞, +∞)
+ω′ ∈(−∞, 0)
+⇐⇒
+ω ∈(−∞, +∞)
+This means that the entire range ω ∈(−∞, +∞) is mapped once onto the
+positive frequencies ω′ and once onto the negative frequencies ω′. Furthermore,
+the mapping and its inverse are strictly increasing on each of the two segments
+ω > 0 and ω < 0, since dω/dω′ > 0. The unit frequencies ω′ = ±1 are mapped
+from ω = 0.
+Since we are often dealing with unit-cutoﬀtransfer functions (ωc = 1), it’s
+interesting to see to which frequencies ω′
+c the unit cutoﬀis mapped. Recalling
+
+
+--- Page 127 ---
+
+4.6. LP TO BP/BS SUBSTITUTIONS
+115
+that the entire bipolar range of ω is mapped to the positive range of ω′, we need
+to include the negative cutoﬀpoint (ωc = −1) into our transformation. On the
+other hand, we are interested only in positive ω′
+c, since the negative-frequency
+range of the amplitude response is symmetric to the positive-frequency range
+anyway. Under these reservations, from (4.18) we have:
+1
+R sinh ln ω′
+c = ±1
+from where ln ω′
+c = ± sinh−1 R, or, changing the logarithm base:
+log2 ω′
+c = ±sinh−1 R
+ln 2
+Note that the above immediately implies that the two points ω′
+c are located at
+mutually reciprocal positions.
+The distance in octaves between the two ω′
+c points can be deﬁned as the
+bandwidth of the transformation:
+∆=
+2
+ln 2 sinh−1 R
+(4.19)
+Since the points ω′
+c are mutually reciprocal, they are located at ±∆/2 octaves
+from ω = 1.
+Inverting (4.19) we can obtain the damping, given the bandwidth ∆:
+R = sinh ∆· ln 2
+2
+= 2Δ/2 −2−Δ/2
+2
+(4.20)
+Frequency axis warping and parameter prewarping
+An important consequence of the fact that the LP to BP substitution can be
+seen as a mapping of the ω axis is that the only eﬀect of the variation of the R
+parameter is the warping of the frequency axis. This means that (like in the bi-
+linear transform) the amplitude and phase responses are warped identically and
+the relationship between amplitude and phase responses is therefore preserved
+across the entire range of ω.
+If LP to BP substitution is involved, the resulting frequency response has
+two points of interest which are the images ω′
+1 of the original point at ω1 = 1,
+which often is the cutoﬀpoint of the original frequency response.12 Given a
+digital implementation of such LP to BP substitution’s result, we can prewarp
+the R parameter of the substitution in such a way that the distance between the
+ω′
+1 points in the digital frequency response is identical to the distance between
+those in analog frequency response.
+Indeed, given the original value of R, we can use (4.19) to compute the
+distance ∆between the ω′
+1 points.
+We know that the points are positioned
+at ±∆/2 octaves from ω = 1, or, if the substitution result has its own cutoﬀ
+parameter, from ωc. That is
+ω′
+1 = ωc · 2±Δ/2
+12We are using ω1 and ω′
+1 instead of previously used ω′
+c and ωc notation for the respective
+point, since we are going to need ωc to denote the substitution result’s cutoff.
+
+
+--- Page 128 ---
+
+116
+CHAPTER 4. STATE VARIABLE FILTER
+So, these are the frequencies at which the unit frequency’s image points would
+be normally located on an analog ﬁlter’s response and where we want them to
+be located on the digital ﬁlter’s response. If ω′
+1 are the points on the digital
+frequency response, then by (3.10) the corresponding analog points should be
+located at
+˜ω′
+1 = µ(ω′
+1) = µ
+
+ωc · 2±Δ/2
+At unit cutoﬀ˜ωc the points ˜ω′
+1 would have been mutually reciprocal. If the
+cutoﬀis not unity, then it must be equal to the geometric mean of ˜ω′
+1:
+˜ωc =
+q
+µ
+ ωc · 2Δ/2
+· µ
+ ωc · 2−Δ/2
+while the bandwidth is simply the logarithm of the ratio of ˜ω′
+1:
+˜∆= log2
+µ
+ ωc · 2Δ/2
+µ
+ ωc · 2−Δ/2
+Given ˜∆, we obtain ˜R from (4.20).
+So, we have obtained the prewarped parameters ˜ωc and ˜R, which can be used
+to control a bilinear transform-based digital implementation of an LP to BP
+substitution’s result, thereby ensuring the correct positioning of the ω′
+1 points.
+Particularly, treating the normalized bandpass ﬁlter as the result of LP to BP
+substitution’s application to a 1-pole lowpass 1/(1 + s), we could prewarp the
+bandpass ﬁlter’s parameters to have exact positioning of the −3dB points on
+the left and right slopes (since these are the images of the 1-pole lowpass’s unit
+cutoﬀpoint).
+In principle, any other two points could have been chosen as prewarping
+points, where the math is much easier if these two points are located symmet-
+rically relatively to the cutoﬀin the logarithm frequency scale. We will not go
+into further detail of this, as the basic ideas of deriving the respective equations
+are exactly the same.
+Poles and stability
+The transformation of the poles and zeros by the LP to BP transformation can
+be obtained from
+s = 1
+R · s′ + s′−1
+2
+(4.21)
+resulting in
+s′ = Rs ±
+p
+R2s2 −1
+Regarding the stability preservation consider that the sum (s′ + 1/s′) in
+(4.21) is located in the same complex semiplane (left or right) as s′. Therefore,
+as long as R > 0, the original value s is located in the same semiplane as its
+images s′. which implies that the stability is preserved. On the other hand,
+negative values of R “ﬂip” the stability.
+Topological LP to BP substitution
+As for performing the LP to BP substitution in a block diagram, diﬀerently from
+the LP to HP substitution, here we don’t need diﬀerentiators. The substitution
+
+
+--- Page 129 ---
+
+4.7. FURTHER FILTER TYPES
+117
+can be performed by replacing all (unit-cutoﬀ) integrators in the system with
+the structure in Fig. 4.19, thereby substituting 2Rs/(s2 + 1) for 1/s, which is
+algebraically equivalent to (4.16).13
+MMMq
+q
+q/
++
+ '!&"%#$
+/
+R
+/
+•/
+R o
+−O
+/
+2R
+Figure 4.19: “LP to BP” integrator.
+LP to BS substitution
+The LP to BS (lowpass to bandstop) substitution14 is obtained as a series of
+LP to HP substitution followed by an LP to BP substitution. Indeed, applying
+the LP to BP substitution to a 1-pole highpass, we obtain the 2-pole notch
+(“bandstop”) ﬁlter. Therefore, applying a series of LP to HP and LP to BP
+substitutions to a 1-pole lowpass we also obtain the 2-pole notch ﬁlter.
+Combining the LP to HP and LP to BP substitutions expressions in the
+mentioned order gives an algebraic expression for the LP to BS substitution:
+1
+s ←1
+R · s + s−1
+2
+(4.22)
+The bandwidth considerations of the LP to BS substitution are pretty much
+equivalent to those of LP to BP substitution and can be obtained by considering
+the LP to BS substitution as an LP to BP substitution applied to a result of
+the LP to HP substitution.
+The block-diagram form of the LP to BS substitution can be obtained by
+directly implementing the right-hand expression in (4.22) as a replacement for
+the integrators. This however requires a diﬀerentiator for the implementation
+of the s term of the sum.
+4.7
+Further filter types
+By mixing the lowpass, bandpass and highpass outputs one can obtain further
+ﬁlter types. We are now going to discuss some of them.
+Often it will be convenient to also include the input signal and the normalized
+bandpass signal into the set of the mixing sources.
+Apparently this doesn’t
+bring any new possibilities in terms of the obtained transfer functions, since the
+input signal can be obtained as a linear combination of LP, BP and HP signals.
+However the mixing coeﬃcients might look simpler in certain cases. One can
+13For a differentiator, a similar substitution structure (containing an integrator and a dif-
+ferentiator) is trivially obtained from the right-hand side of (4.16).
+14Notice that BS here stands for “bandstop” and not for “band-shelving”. The alternative
+name for the substitution could have been “LP to notch”, but “LP to bandstop” seems to be
+commonly used, so we’ll stick to that one.
+
+
+--- Page 130 ---
+
+118
+CHAPTER 4. STATE VARIABLE FILTER
+also go further and consider using diﬀerent topologies implementing a given 2-
+pole transfer function. Such topologies could diﬀer not only in which speciﬁc
+signals are mixed, but also whether certain mixing coeﬃcients are used at the
+input or at the output, whether transposed or non-transposed SVF is being
+used, etc. We won’t go here into addressing this kind of detail, however the
+discussion of the topological aspects of the normalized bandpass in Section 4.5
+could serve as an example.
+Band-shelving filter
+By adding/subtracting the unit gain bandpass signal to/from the input signal
+one obtains the band-shelving ﬁlter (Fig. 4.20):
+HBS(s) = 1 + K · HBP1(s) = 1 + 2RKHBP(s) = 1 +
+2RKs
+s2 + 2Rs + 1
+As with 1-pole shelving we can also specify the shelving boost in decibel:
+GdB = 20 log10(K + 1)
+ω
+|H(jω)|, dB
+ωc
+ωc/8
+8ωc
+0
+-6
+-12
+-18
++6
++12
+Figure 4.20: Amplitude response of a 2-pole band-shelving ﬁlter
+for R = 1 and varying K.
+The immediately noticeable problem in Fig. 4.20 is that the bandwidth of
+the ﬁlter varies with the shelving boost K. A way to address this issue will be
+described in Chapter 10.
+Low- and high-shelving filters
+Attempting to obtain 2-pole low- and high-shelving ﬁlters in a straightforward
+fashion:
+HLS(s) = 1 + K · HLP(s)
+HHS(s) = 1 + K · HHP(s)
+
+
+--- Page 131 ---
+
+4.7. FURTHER FILTER TYPES
+119
+we notice that the amplitude responses of such ﬁlters have a strange dip (for
+K > 0) or peak (for K < 0) even at a non-resonating setting of R = 1 (Fig. 4.21).
+This peak/dip is due to a steeper phase response curve of the 2-pole lowpass
+and highpass ﬁlters compared to 1-poles. A way to build 2-pole low- and high-
+shelving ﬁlters, which do not have this problem, is described in Chapter 10.
+ω
+|H(jω)|, dB
+ωc
+ωc/8
+8ωc
+0
+-6
+-12
+-18
++6
+Figure 4.21: Amplitude response of a naive 2-pole low-shelving
+ﬁlter for R = 1 and varying K.
+Notch filter
+At K = −1 the band-shelving ﬁlter turns into a notch (or bandstop) ﬁlter
+(Fig. 4.22):
+HN(s) = 1 −HBP1(s) = 1 −2RHBP(s) =
+s2 + 1
+s2 + 2Rs + 1
+Allpass filter
+At K = −2 the band-shelving ﬁlter turns into an allpass ﬁlter (Fig. 4.23):
+HAP(s) = 1 −2HBP1(s) = 1 −4RHBP(s) = s2 −2Rs + 1
+s2 + 2Rs + 1
+(4.23)
+It is not diﬃcult to show that for purely imaginary s the absolute magin-
+tudes of the transfer function’s numerator and denominator are equal and thus
+|HAP(jω)| = 1.
+We could also notice that the phase respose of the 2-pole allpass is simply
+the doubled 2-pole lowpass phase response:
+arg HAP(jω) = arg 1 −2Rjω −ω2
+1 + 2Rjω −ω2 =
+= arg(1 −2Rjω −ω2) −arg(1 + 2Rjω −ω2) =
+
+
+--- Page 132 ---
+
+120
+CHAPTER 4. STATE VARIABLE FILTER
+ω
+|H(jω)|
+R = 5
+R = 0.2
+R = 1
+ωc
+ωc/8
+8ωc
+1
+0.5
+0
+Figure 4.22: Amplitude response of a 2-pole notch ﬁlter.
+The
+amplitude scale is linear.
+ω
+arg H(jω)
+R = 5
+R = 0.2
+R = 1
+ωc
+ωc/8
+8ωc
+0
+−π
+−2π
+Figure 4.23: Phase response of a 2-pole allpass ﬁlter.
+= −2 arg(1 + 2Rjω −ω2) = 2 arg HLP(jω)
+(4.24)
+Thus the allpass phase response has the same symmetry around the cutoﬀpoint
+and the damping parameter has a similar eﬀect on the phase response slope.
+At R ≥1 the 2-pole allpass can be decomposed into the product of 1-pole
+allpasses:
+HAP(s) = s −ω1
+s + ω1
+· s −ω2
+s + ω2
+= ω1 −s
+ω1 + s · ω2 −s
+ω2 + s
+where ωn = −pn. At R = 1 we have ω1 = ω2 = 1 and the ﬁlter turns into the
+squared 1-pole allpass:
+HAP(s) =
+s −1
+s + 1
+2
+=
+1 −s
+1 + s
+2
+
+
+--- Page 133 ---
+
+4.7. FURTHER FILTER TYPES
+121
+Peaking filter
+By subtracting the highpass signal from the lowpass signal (or also vice versa)
+we obtain the peaking ﬁlter (Fig. 4.24):
+HPK(s) = HLP(s) −HHP(s) =
+1 −s2
+s2 + 2Rs + 1
+ω
+|H(jω)|, dB
+R = 0.2
+R = 5
+R = 1
+ωc
+ωc/8
+8ωc
+0
+-6
+-12
+-18
++6
++12
+Figure 4.24: Amplitude response of a 2-pole peaking ﬁlter.
+The peaking ﬁlter is a special kind of bandshelving ﬁlter. However, as one
+can see from Fig. 4.24, the bandwidth of the ﬁlter varies drastically with R,
+which often may be undesired. A “properly built” bandshelving ﬁlter allows to
+avoid this problem. This topic is further discussed in Chapter 10.
+Arbitrary 2-pole transfer functions
+It’s easy to see that the state-variable ﬁlter can be used to implement any 2nd-
+order stable diﬀerential ﬁlter. Indeed, consider the generic 2nd-order transfer
+function
+H(s) = b2s2 + b1s + b0
+s2 + a1s + a0
+where we assume a0 > 0.15 Then
+H(s) =
+b2s2 + b1s + b0
+s2 + 2 a1
+2√a0
+√a0s + √a0
+2 = b2s2 + b1s + b0
+s2 + 2Rωcs + ω2c
+=
+15If a0 = 0, this means that either one or both of the poles of H(s) are at s = 0. If a0 < 0
+this means that we are having two real poles of opposite signs. Both situations correspond to
+pretty exotic unstable cases.
+
+
+--- Page 134 ---
+
+122
+CHAPTER 4. STATE VARIABLE FILTER
+= b2
+s2
+s2 + 2Rωcs + ω2c
++ b1
+ωc
+·
+ωcs
+s2 + 2Rωcs + ω2c
++ b0
+ω2c
+·
+ω2
+c
+s2 + 2Rωcs + ω2c
+=
+= b2HHP(s) + b1
+ωc
+HBP(s) + b0
+ω2c
+HLP(s)
+where we introduced ωc = √a0 and R = a1/ωc.
+4.8
+Transient response
+In the transient response analysis of the state-variable ﬁlter we will concentrate
+on the lowpass output. The bandpass and highpass can be obtained from the
+lowpass using (4.1):
+yBP = ˙yLP/ωc
+(4.25a)
+yHP = ˙yBP/ωc = ¨yLP/ω2
+c
+(4.25b)
+Using (4.10) we rewrite (4.3) in terms of poles, obtaining
+¨y −(p1 + p2) ˙y + p1p2 = p1p2x
+(4.26)
+where y = yLP. Let16
+u1 = ˙y −p2y
+(4.27a)
+u2 = ˙y −p1y
+(4.27b)
+Therefore
+˙u1 = ¨y −p2 ˙y
+˙u2 = ¨y −p1 ˙y
+and
+( ˙u1 + ˙u2) −(p1u1 + p2u2) = (2¨y −(p1 + p2) ˙y) −((p1 + p2) ˙y −2p1p2y) =
+= 2¨y −2(p1 + p)2) ˙y + 2p1p2y
+(4.28)
+Noticing that the last expression is simply the doubled left-hand side of (4.26)
+we obtain an equivalent form of (4.26):
+( ˙u1 + ˙u2) −(p1u1 + p2u2) = 2p1p2x
+(4.29)
+Splitting the latter in two halves we have:
+˙u1 −p1u1 = p1p2x
+(4.30a)
+˙u2 −p2u2 = p1p2x
+(4.30b)
+Adding both equations (4.30) back together, we obtain (4.29), which is equiva-
+lent to (4.26). This means that if u1 and u2 are solutions of (4.30) then using
+(4.27) we can ﬁnd y from u1 and u2, which will be the solution of (4.26).
+16The substitution (4.27) can be obtained, knowing in advance the transient response form
+y = C1ep1t + C2ep2t and expressing epnt via y and ˙y.
+Alternatively, it can be found by
+diagonalizing the state-space form.
+
+
+--- Page 135 ---
+
+4.8. TRANSIENT RESPONSE
+123
+Now, each of the equations (4.30) is a Jordan 1-pole with input signal p1p2x.
+Applying (2.22) we obtain
+un(t) = un(0)epnt + p1p2
+Z t
+0
+epn(t−τ)x(τ) dτ
+(n = 1, 2)
+or, for x(t) = X(s)est, we have from (2.23):
+un(t) = Hn(s)x(t) +
+ un(0) −Hn(s)x(0)
+
+epnt = usn(t) + utn(t)
+(4.31)
+where
+Hn(s) =
+p1p2
+s −pn
+and where usn(t) and utn(t) denote the steady-state and transient response
+parts of un(t) respectively. Expressing y via un from (4.27) we have
+y = u1 −u2
+p1 −p2
+(4.32)
+For the steady-state response we therefore obtain from (4.31):
+ys(t) = us1 −us2
+p1 −p2
+= H1(s) −H2(s)
+p1 −p2
+x(t) = H(s)x(t)
+where
+H(s) = H1(s) −H2(s)
+p1 −p2
+=
+p1p2
+s −p1
+−p1p2
+s −p2
+p1 −p2
+=
+=
+p1p2
+p1 −p2
+·
+(s −p2) −(s −p1)
+s2 −(p1 + p2)s + p1p2s =
+=
+p1p2
+s2 −(p1 + p2)s + p1p2s =
+ω2
+c
+s2 + 2Rωc + ω2c
+(4.33)
+is the familiar 2-pole lowpass transfer function. The steady-state response ys(t)
+is therefore having the same form H(s)x(t) for a complex exponential x(t) =
+X(s)est as in case of the 1-pole ﬁlter. For signals of general form we respectively
+obtain the same formula (2.20a) as for 1-poles.
+For the transient response we have
+yt(t) = ut1 −ut2
+p1 −p2
+=
+= ˙y(0) −p2y(0) −H1(s)x(0)
+p1 −p2
+· ep1t −˙y(0) −p1y(0) −H2(s)x(0)
+p1 −p2
+· ep2t =
+= ˙y(0) −p2(y(0) −G1(s)x(0))
+p1 −p2
+· ep1t −˙y(0) −p1(y(0) −G2(s)x(0))
+p1 −p2
+· ep2t
+(4.34)
+where we introduce the ordinary (except that pn may be complex) 1-pole lowpass
+transfer functions
+Gn(s) =
+−pn
+s −pn
+
+
+--- Page 136 ---
+
+124
+CHAPTER 4. STATE VARIABLE FILTER
+Provided Re p1,2 < 0 we are having a sum of two exponentially decaying
+terms.
+Since y(0) = ys(0) + yt(0), the initial value of this sum is yt(0) =
+y(0) −ys(0), the same as in the 1-pole case, so we’re having an exponentially
+decaying discrepancy between the output signal and the steady-state response.
+However the decaying is now being “distributed” between two exponents ep1t
+and ep2t. Also notice that while in the 1-pole case the decaying was only aﬀected
+by the initial state y(0), in the 2-pole case ˙y(0) is also a part of the initial state
+and therefore also aﬀects the decaying shape. Apparently, y(0) is the state of
+the second (“lowpass”) integrator of the SVF, while, according to (4.25a), ˙y(0)
+is essentially the state of the ﬁrst (“bandpass”) integrator.
+At Re p1,2 > 0 the transient response grows inﬁnitely and the ﬁlter explodes.
+Steady-state response
+In regards to the choice of the steady-state response, there is a similar ambiguity
+arising out of evaluating the inverse Laplace transform of H(s)X(s) to the left
+or to the right of the poles of H(s). We won’t speciﬁcally go into the analysis
+of this situation for the real poles occurring in the case |R| > 1. Complex poles
+occurring in the case |R| < 1 deserve some specical attention.
+Apparently Re p1 = Re p2 in this case, and we wish to know how much does
+the inverse Laplace transform change when we switch the integration path from
+Re s < Re pn to Re s > Re pn. By the residue theorem this change will be equal
+to the sum of the residues of H(s)X(s)est at s = p1 and s = p2 respectively,
+which is
+Res
+s=p1 H(s)X(s)est + Res
+s=p2 H(s)X(s)est =
+p1p2
+p1 −p2
+ X(p1)ep1t −X(p2)ep2t
+(4.35)
+(where we have used (4.33)). That is we are again obtaining the terms which
+already exist in the transient response and the integration path choice only
+aﬀects the amplitudes of the transient response partials, as long as we are staying
+within the region of convergence of X(s).
+The case of coinciding poles requires a separate analysis which can be done
+as a limiting case R →±1. The respective discussion is occurring later in this
+section. Even though we don’t speciﬁcally address the question of evaluation of
+the inverse Laplace transform in the steady-state response there, it should be
+clear what the principles would be.
+Continuity
+Since the input signal of an SVF passes through two integrators on the way to
+the lowpass output, the lowpass signal should not only always be continuous but
+should also always have a continuous 1st derivative. Therefore the appearance
+of ˙y(0) besides y(0) in the transient response expression must have somehow
+taken care of that. Let’s verify that this is indeed the case.
+Evaluating (4.34) at t = 0 using we obtain
+yt(0) = ˙y(0) −p2y(0) −H1(s)x(0)
+p1 −p2
+−˙y(0) −p1y(0) −H2(s)x(0)
+p1 −p2
+=
+= y(0) −H1(s) −H2(s)
+p1 −p2
+x(0) = y(0) −H(s)x(0) = y(0) −ys(0)
+
+
+--- Page 137 ---
+
+4.8. TRANSIENT RESPONSE
+125
+where we have used (4.33). Evaluating the derivative of (4.34) at t = 0 we
+obtain
+˙yt(0) = p1
+˙y(0) −p2y(0) −H1(s)x(0)
+p1 −p2
+−p2
+˙y(0) −p1y(0) −H2(s)x(0)
+p1 −p2
+=
+= ˙y(0) + −p1H1(s) + p2H2(s)
+p1 −p2
+· p1p2x(0) =
+= ˙y(0) +
+−p1
+s −p1
+−−p2
+s −p2
+p1 −p2
+· p1p2x(0) =
+= ˙y(0) + (−p1)(s −p2) −(−p2)(s −p1)
+p1 −p2
+·
+p1p2
+(s −p1)(s −p2)x(0) =
+= ˙y(0) −
+p1p2 · s
+s2 −(p1 + p2)s + p1p2
+x(0) = ˙y(0) −
+ω2s
+s2 + 2Rωc + ω2c
+x(0) =
+= ˙y(0) −
+ω2
+s2 + 2Rωc + ω2c
+· sX(s)est
+t=0 = ˙y(0) −˙ys(0)
+which conﬁrms our expectations.
+Complex vs. real poles
+If p1,2 are complex we have
+epnt = et Re pn · (cos(t Im pn) + j sin(t Im pn))
+The mutual conjugate property of poles will ensure that the two terms of (4.34)
+are mutually conjugate as well, therefore the addition result is purely real and
+has the form
+yt(t) = a · et Re p1 · cos (| Im p1| · t + ϕ) =
+= a · et Re p2 · cos (| Im p2| · t + ϕ) =
+= a · e−Rωct · cos
+
+ωc
+p
+1 −R2 · t + ϕ
+
+(4.36)
+The transient response therefore is a sinusoidal oscillation of frequency | Im pn|
+decaying (or exploding) as et Re pn. Fig. 4.25 illustrates.
+For purely real poles the transient response contains just two real exponents
+of the form epnt, thereby having no oscillations. However, it can still contain
+one “swing” at certain combinations of the amplitudes of the transient partials
+ep1t and ep2t (Fig. 4.26).
+Strong resonance case
+The decay speed of the transient response oscillation (4.36) gets slower as R
+decreases, which leads to an increased perceived duration of the transient in
+the output signal. Therefore at high resonance settings a transient in the input
+signal will produce audible ringing at resonance frequency, even if the steady-
+state signal doesn’t contain it.
+
+
+--- Page 138 ---
+
+126
+CHAPTER 4. STATE VARIABLE FILTER
+y(0)−ys(0)
+t
+yt(t)
+0
+Figure 4.25: Transient response of a resonating 2-pole lowpass ﬁlter
+(dashed line depicts the unstable case).
+y(0)−ys(0)
+t
+yt(t)
+0
+Figure 4.26: Transient response of a non-resonating 1-pole lowpass
+ﬁlter (for the case of a single zero-crossing).
+A pretty characteristic and easy to analyse case occurs if we suddenly switch
+oﬀthe ﬁlter’s input signal. At this moment the steady-state response instanta-
+neously turns to zero and (4.34) turns into
+yt(t) = ˙y(0) −p2y(0)
+p1 −p2
+· ep1t −˙y(0) −p1y(0)
+p1 −p2
+· ep2t =
+= ˙y(0) −p∗
+1y(0)
+2j Im p1
+· ep1t −˙y(0) −p1y(0)
+2j Im p1
+· ep∗
+1t =
+= ˙y(0) −p∗
+1y(0)
+2j Im p1
+· ep1t + ˙y(0) −p1y(0)
+2j∗Im p1
+· ep∗
+1t =
+
+
+--- Page 139 ---
+
+4.8. TRANSIENT RESPONSE
+127
+= 2 Re
+ ˙y(0) −p∗
+1y(0)
+2j Im p1
+ep1t
+
+= Re
+ ˙y(0) −p∗
+1y(0)
+j Im p1
+ep1t
+
+Therefore
+y(t) = ys(t) + yt(t) = 0 + yt(t) = Re
+ ˙y(0) −p∗
+1y(0)
+j Im p1
+ep1t
+
+Unless both y(0) = 0 and ˙y(0) = 0, the signal y(t) will have a non-zero ampli-
+tude and according to (4.36) we are having a sinusoid of frequency ωc
+√
+1 −R2
+decaying as e−Rωct.
+The opposite situation of a signal being turned on is a kind of a dual case
+of turning a signal oﬀ. Indeed, let x0(t) be some inﬁnitlely long (that is t ∈
+(−∞, ∞)) steady input signal and let y0(t) be the respective output signal.
+Assuming that the ﬁlter is stable and that the initial time moment was at
+t = −∞, by any ﬁnite time moment t the transient response component of y0(t)
+has decayed to zero, and y0(t) consists solely of the steady-state response. Let
+x1(t) =
+(
+x0(t)
+if t < 0
+0
+if t ≥0
+be another inﬁnitely long signal decribing the case of the signal x0(t) being
+turned oﬀand let y1(t) be the respective output signal. The signal x1(t) contains
+a transient at t = 0, thus y1(t) contains a non-zero transient response component
+for t ≥0. The case of x0(t) being turned on is respectively described by
+x2(t) = x0(t) −x1(t) =
+(
+0
+if t < 0
+x0(t)
+if t ≥0
+and we let y2(t) denote the corresponding output signal. Since the system is
+linear, the output signals are related in the same way as the input signals:
+y2(t) = y0(t) −y1(t)
+However y0(t) doesn’t contain any transient response, therefore the only tran-
+sient response present in y2(t) is coming from y1(t), simply having the opposite
+sign.
+The eﬀect of the transient response is particularly remarkable if the input
+signal is a sinusoid of the same frequency ωc
+√
+1 −R2 as the transient response.
+First considering the case of turning such sinusoid oﬀwe take
+x0(t) = ain cos(ωc
+p
+1 −R2 · t + ϕin)
+x1(t) =
+(
+x0(t)
+if t < 0
+0
+if t ≥0
+We must have the same sinusoid at the output:
+y0(t) = aout cos(ωc
+p
+1 −R2 · t + ϕout)
+y1(t) =
+(
+aout cos(ωc
+√
+1 −R2 · t + ϕout)
+if t < 0
+ate−Rωct · cos(ωc
+√
+1 −R2 · t + ϕt)
+if t ≥0
+
+
+--- Page 140 ---
+
+128
+CHAPTER 4. STATE VARIABLE FILTER
+where the transient response’s amplitude and phase at and ϕt may diﬀer from
+the steady-state response’s aout and ϕout due to the additional factor e−Rωct
+appearing in the signal. However from the requirement of continuity of y1(t)
+and ˙y1(t) at t = 0 we may conclude that at →aout and ϕt →ϕout for R →0.
+Now let’s consider the case of turning the signal on. We let x2(t) = x0(t) −
+x1(t). Since we already know that y2(t) = 0 for t < 0, we are interested only in
+y2(t) for t ≥0 where we have
+y2(t) = y0(t) −y1(t) =
+= aout cos(ωc
+p
+1 −R2 · t + ϕout) −ate−Rωct · cos(ωc
+p
+1 −R2 · t + ϕt)
+Since at R ≈0 we have at ≈aout and ϕt ≈ϕout, we may in this case rewrite
+the above as
+y2(t) ≈(1 −e−Rωct) · aout cos(ωc
+p
+1 −R2 · t + ϕout)
+(R ≈0)
+That is the sinusoid in the output signal is exponentially fading in as 1−e−Rωct.
+Eﬀectively the transient response is suppressing the steady state signal in the
+beginning and then slowly lets it fade in (Fig. 4.27).
+t
+y(t)
+0
+Figure 4.27: Initial suppression of the steady-state signal at ω =
+ωc
+√
+1 −R2 by the transient response.
+Selfoscillation
+At R = 0 the transient response oscillates at a constant amplitude, the frequency
+of the oscillation being ωc and coinciding with the inﬁnitely high peak of the
+amplitude response.
+Thus, if in the absence of the input signal the system
+is somehow in a non-zero state, it will stay in this state forever, producing a
+sinusoid of frequency ωc. Such state of oscillating without an input signal is
+referred to as selfoscillation.
+At R < 0 the transient response turns into an inﬁnitely growing signal,
+while the oscillation frequency becomes lower than ωc according to (4.36). In
+nonlinear ﬁlters at −1 < R < 0 the growing amplitude of the oscillating transient
+
+
+--- Page 141 ---
+
+4.8. TRANSIENT RESPONSE
+129
+response will be limited by the saturation, which thereby prevents the ﬁlter
+from exploding. In either case, apparently it is the transient response which is
+responsible for the selfoscillation of the ﬁlter.
+We can therefore refer to −1 < R ≤0 as the selfoscillation range of the
+ﬁlter. The boundary R = 0 at which the selfoscillation appears may be referred
+to as selfoscillation point.17
+At the selfoscillation point the poles of the system are located right on the
+imaginary axis and we can “hit” them with an input sinusoidal signal of fre-
+quency ωc. Since H(±jωc) = ∞, the steady-state response H(s)X(s)est be-
+comes inﬁnite too and we need a diﬀerent choice of the steady-state response
+signal.
+A real sinusoidal signal of frequency ωc consists of two complex sinusoidal
+signals of frequencies ±ωc. Each of these two signals hits the respective complex
+pole of the system at p1,2 = ±jωc. As we should recall from the discussion in
+Section 2.15, when a system pole p is hit by an input ept, the output of the
+system consists of a linear combination of partials ept and tept, where we cannot
+unambigously select the steady-state response part. From two conjugate poles
+p1 and p2 we’ll get a linear combination of ep1t and tep1t and another one of
+ep2t and tep2t. After these signals are further combined by (4.32) we’ll get a
+real signal of the form
+y(t) = a1 · cos(ωct + ϕ1) + a2 · t cos(ωct + ϕ2)
+Thus, the output signal is a sinusoid of frequency ωc with the amplitude asymp-
+totically growing as a linear function of time.18 Clearly, this is a marginal case
+between the sinusoidal output stabilizing with time if R > 0, as e.g. shown in
+Fig. 4.27, and exponentially exploding if R < 0.
+Coinciding poles
+A special situation occurs if R = ±1 and thus p1 = p2. The denominator p1 −p2
+therefore turns to zero, but we can treat this as a limiting case of R →±1. Let
+p1,2 = p ± ∆(where p1,2 →p and ∆→0). Noticing that
+G1(s) →
+−p
+s −p
+G2(s) →
+−p
+s −p
+we can replace Gn(s) in (4.34) with −p/(s −p) before taking the limit:
+yt(t) =
+˙y(0) −p2(y(0) −−p
+s−px(0))
+p1 −p2
+· ep1t −
+˙y(0) −p1(y(0) −−p
+s−px(0))
+p1 −p2
+· ep2t =
+= ˙y(0) · ep1t −ep2t
+p1 −p2
++
+
+y(0) −−p
+s −px(0)
+
+· −p2ep1t + p1ep2t
+p1 −p2
+(4.37)
+In the ﬁrst term of (4.37) we have
+ep1t −ep2t
+p1 −p2
+= eΔt −e−Δt
+2∆
+· ept =
+17The other boundary R = −1 is hardly ever being reached, therefore we won’t introduce a
+special name for it.
+18Notice that as the ratio of the amplitudes of the two sinusoids changes, the phase of their
+sum (which in principle is a sinusoid of the same frequency but of a different amplitude and
+phase) will slightly drift.
+
+
+--- Page 142 ---
+
+130
+CHAPTER 4. STATE VARIABLE FILTER
+= eΔt −e−Δt
+2∆t
+· tept = sinh ∆t
+∆t
+· tept →tept
+(∆→0)
+and in the second term respectively
+−p2ep1t + p1ep2t
+p1 −p2
+= −(p −∆)eΔt + (p + ∆)e−Δt
+2∆
+· ept =
+= −peΔt −e−Δt
+2∆
+· ept + ∆eΔt + e−Δt
+2∆
+· ept =
+= −psinh ∆t
+∆t
+· tept + cosh ∆t · ept →−ptept + ept
+(∆→0)
+and (4.37) at ∆= 0 can be rewritten as
+yt(t) = ˙y(0) · tept +
+
+y(0) −−p
+s −px(0)
+
+· (−ptept + ept) =
+=
+
+y(0) −−p
+s −px(0)
+
+· ept +
+
+˙y(0) −p ·
+
+y(0) −−p
+s −px(0)
+
+· tept
+Thus, in the case of p1 = p2 the terms contained in the transient response are
+having the form ept or tept.
+The change (4.35) in the inverse Laplace transform in the steady-state re-
+sponse as we take the integral to the left or to the right of the poles of H(s)
+respectively becomes
+Res
+s=p+Δ H(s)X(s)est + Res
+s=p−Δ H(s)X(s)est ∼
+∼p2
+2∆
+
+X(p + ∆)e(p+Δ)t −X(p −∆)e(p−Δ)t
+=
+= p2 X(p + ∆)e(p+Δ)t −X(p −∆)e(p−Δ)t
+2∆
+→
+→p2 X′(p)ept + X(p)tept + X′(p)ept + X(p)tept
+2
+=
+= p2  X′(p)ept + X(p)tept
+(∆→0)
+where we have used l’Hˆopital’s rule.19 Thus, the change is again solely in the
+amplitudes of the transient response partials.
+It is important to realize that the diﬀerent form of the transient response
+components at R = ±1 doesn’t imply that the ﬁlter behavior is abruptly
+switched at this point. The switching of the mathematical expression is solely
+due to the limitations of the mathematical notation, but doesn’t correspond to
+a jump in any of the signals.
+The same result could have been obtained formally by introducing the helper
+variables u1 and u2 diﬀerently:20
+u1 = ˙y −py
+19More rigorously speaking, we have used l’H^opital’s rule as a short way to express the
+following: we expand X(p ± Δ) and e(p±Δ)t into Taylor series with respect to Δ, followed by
+expanding the respective products and cancelling the terms containing Δ with the denomi-
+nator. One also could expand just X(p ± Δ) into Taylor series with respect to Δ and then
+convert e(p±Δ)t into sinh and cosh in the same way as in the transient response derivation.
+20This corresponds to using Jordan normal form in the state space representation.
+
+
+--- Page 143 ---
+
+SUMMARY
+131
+u2 = y
+(where p = p1 = p2) thereby obtaining the equations
+˙u1 −pu1 = p2x
+˙u2 −pu2 = u1
+which can be solved using 1-pole techniques. Since u2 is the input signal for u1
+we have a serial connection of 1-poles, building up a Jordan chain. As we should
+remember from the discussion of Jordan chains in Section 2.15, the transient
+response will consist of the partials of the form ept and tept. However, due to a
+completely diﬀerent substitution of variables, we wouldn’t have known, whether
+the output is changing in a continuous way as R crosses the point R = 1. On
+the other hand, obtaining the result as a limiting case, as we did earlier, gives
+an answer to that question.
+Bandpass and highpass
+Notice that (4.25) can be applied separately to steady-state and transient re-
+sponses (in the sense that the results will still give correct separation of the
+signal into the steady-state and transient parts). Indeed, e.g. applying (4.25a)
+to a complex exponential yLP = Y (s)est we obtain
+˙yLP/ωc = sY (s)est/ωc = yLP · s/ωc
+which matches HBP(s) = s/ωc · HLP(s). Therefore ˙yLP/ωc, when applied to a
+lowpass steady-state response yLPs(t), will give bandpass steady-state response,
+etc.
+This means that the transient response for the bandpass and highpass signals
+can be obtained by diﬀerentiating the lowpass transient response according to
+(4.25), resulting in a sum of the same kind of exponential terms ep1t and ep2t (or
+ept and tept in case p1 = p2). We won’t write the resulting expressions explicitly
+here.
+SUMMARY
+The state-variable ﬁlter has the structure shown in Fig. 4.1. Contrarily to the
+ladder ﬁlter, the resonance strength in the SVF is controlled by controlling the
+damping signal. The multimode outputs have the transfer functions
+HHP(s) =
+s2
+s2 + 2Rs + 1
+HBP(s) =
+s
+s2 + 2Rs + 1
+HLP(s) =
+1
+s2 + 2Rs + 1
+and can be combined to build further ﬁlter types.
+
+
+--- Page 144 ---
+
+132
+CHAPTER 4. STATE VARIABLE FILTER
+

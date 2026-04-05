@@ -33,6 +33,7 @@ Gives Claude Desktop access to your Reaktor file libraries, manuals, OSC control
 | `search_user_library` | Search the NI Reaktor User Library (returns browser URL if site blocks access) |
 | `list_templates` | List available template `.ens` files in `templates/` |
 | `open_in_reaktor` | Open an ensemble in Reaktor 6 (launches Reaktor if not running) |
+| `call_reaktor_robot` | Call a Robot Framework keyword on the running Reaktor via XML-RPC (port 8270) |
 
 ---
 

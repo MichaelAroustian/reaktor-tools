@@ -1,0 +1,43 @@
+--- Page 515 ---
+
+History
+The revision numbering is major.minor.bugﬁx.
+Pure bugﬁx updates are not
+listed here.
+1.0.2
+(May 18, 2012)
+ﬁrst public revision
+1.1.0
+(June 7, 2015)
+- TSK ﬁlters
+- frequency shifters
+- further minor changes
+2.0.0alpha
+(May 28, 2018)
+- redone: TSK/SKF ﬁlters
+- 8-pole ladder ﬁlters
+- expanded: nonlinearities
+- expanded: phasers and ﬂangers (now found under the title multinotch
+filters)
+- Butterworth transformations of the 1st and 2nd kinds
+- classical signal processing ﬁlters (Butterworth, Chebyshev, elliptic)
+- redone: shelving ﬁlters
+- redone: Hilbert transformers
+- crossovers
+- state-space form
+- transient responses
+- many further smaller changes
+503
+
+
+--- Page 516 ---
+
+504
+HISTORY
+2.1.0
+(October 28, 2018)
+- generalized ladder ﬁlters
+- elliptic ﬁlters of order 2N (discussed as order-2N elliptic rational functions)
+- elliptic shelving ﬁlter (and elliptic rational function) midslope steepness
+derivation
+

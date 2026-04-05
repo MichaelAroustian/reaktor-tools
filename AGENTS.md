@@ -70,6 +70,7 @@ All Reaktor files (`.ens`, Core/Primary modules) are **binary format** and canno
 | `search_user_library` | network | Search the NI Reaktor User Library website (returns browser URL if blocked) |
 | `list_templates` | read | List available template `.ens` files in the local `templates/` folder |
 | `open_in_reaktor` | local | Open an ensemble file in Reaktor 6 (launches Reaktor if not running) |
+| `call_reaktor_robot` | local | Call a Robot Framework keyword on the running Reaktor via XML-RPC (port 8270) |
 
 ---
 
@@ -89,7 +90,60 @@ All Reaktor files (`.ens`, Core/Primary modules) are **binary format** and canno
 
 ---
 
-## Ensemble File Formats (binary — read-only)
+## Reaktor Robot Server (XML-RPC on port 8270)
+
+The retail Reaktor 6.5.0 binary includes a built-in Robot Framework XML-RPC server that exposes full GUI-automation keywords. It is gated by a feature flag and disabled by default.
+
+### One-time setup (persists across reboots)
+
+```bash
+# Feature flag: SHA1("ReaktorRobot") must be written as an integer (not bool)
+defaults write "com.native-instruments.Reaktor 6" "5d4e071323382551707559765a3322d24e9e3fcd" -int 1
+
+# Serial number — 391 = Reaktor Full product ID (enables Full-flavour keywords)
+defaults write "com.native-instruments.Reaktor 6" "RobotSNO" -string "391"
+```
+
+After writing these keys, **restart Reaktor**. Port 8270 should be listening within a few seconds.
+
+### Verify
+
+```bash
+lsof -i :8270   # should show Reaktor LISTEN
+python3 -c "import xmlrpc.client; print(xmlrpc.client.ServerProxy('http://127.0.0.1:8270').run_keyword('Is Active', [], {}))"
+```
+
+### Why it works
+
+- `NI::GP::Features::init("Reaktor 6", toggles)` reads **integer** (not bool) values from `com.native-instruments.Reaktor 6` user plist.
+- The Robot feature key is `SHA1("Reaktor" + "Robot") = 5d4e071323382551707559765a3322d24e9e3fcd`.
+- `NI::GP::Registry::initSystemAndUser("Reaktor 6", ...)` maps to `com.native-instruments.Reaktor 6` via `openNIProductKey`.
+- `RobotSNO` is the serial number used by `reaktor::robot::Activation` to determine product flavour (Full/Player/Demo).
+
+### Available keywords (partial list)
+
+| Keyword | Args | Description |
+|---------|------|-------------|
+| `Is Active` | — | Returns `True` if Reaktor is running |
+| `Get Version` | — | Returns `"Reaktor 6.5.0 (R0)"` |
+| `New Ensemble` | — | Create a fresh ensemble |
+| `Save Project` | — | Save current project |
+| `Open Project` | `filename` | Open a `.ens` or `.nksr` file |
+| `Get Project Name` | — | Returns the filename of current project |
+| `Is Edit Mode` | — | Returns `True` if in edit mode |
+| `Is Touched` | — | Returns `True` if there are unsaved changes |
+| `Get Num Modules` | `path[]` | Count modules at a structure path |
+| `Create Instrument` | `parentPath[]` | Insert a new Primary instrument |
+| `Create Macro` | `parentPath[]` | Insert a new Primary macro |
+| `Create Core Cell` | `parentPath[]` | Insert a new Core cell |
+| `Load Via Structure` | `files[], path[]` | Drop `.ens`/`.ism`/`.mdl` into structure view |
+| `Delete Module` | `path[]` | Delete a module by path |
+| `Find Module By Label` | `parentPath[], label` | Find a module by its label string |
+| `Process File Load Requests` | — | Flush any pending file-load queue |
+
+The `call_reaktor_robot` MCP tool wraps these via XML-RPC — no `xmlrpc.client` import needed in Claude.
+
+---
 
 All Reaktor file types are proprietary binary formats. They cannot be read or written as text.
 

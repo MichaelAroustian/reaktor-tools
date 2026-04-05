@@ -12,8 +12,21 @@ uv run python reaktor_mcp.py        # start server manually
 uv run python -m pytest tests/      # run all tests
 uv sync --extra pdf-tools           # add optional PDF deps (pymupdf)
 tail -f reaktor_mcp.log             # watch logs (stdout is off-limits)
-git --no-pager log --oneline -10    # always use --no-pager for git
+git --no-pager log --oneline -10    # ALWAYS --no-pager — git opens less otherwise
+git --no-pager diff --stat          # same for diff, show, etc.
 ```
+
+**Git commit messages must be written to a file** — never use a multi-line shell string, it leaves the terminal in dquote mode:
+```bash
+cat > /tmp/msg.txt << 'EOF'
+Subject line
+
+Body here.
+EOF
+git commit -F /tmp/msg.txt
+```
+
+The repo also has `core.pager=cat` set in `.git/config` as a safety net.
 
 ## Architecture
 

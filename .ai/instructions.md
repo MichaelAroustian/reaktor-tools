@@ -1,8 +1,8 @@
-# AGENTS.md — reaktor-tools
+# reaktor-tools — Project Instructions
 
 ## What This Is
 
-Single-file Python MCP server (`reaktor_mcp.py`) that gives Claude Desktop access to Native Instruments Reaktor 6. Transport is **stdio** — stdout is the MCP wire protocol, never write there. All logging goes to `reaktor_mcp.log` via the `log` logger (`logging.getLogger(__name__)`).
+Single-file Python MCP server (`reaktor_mcp.py`) that gives AI assistants access to Native Instruments Reaktor 6. Transport is **stdio** — stdout is the MCP wire protocol, never write there. All logging goes to `reaktor_mcp.log` via the `log` logger (`logging.getLogger(__name__)`).
 
 ## Commands
 
@@ -28,7 +28,6 @@ git commit -F /tmp/msg.txt
 
 **`gh pr create` bodies must also use `--body-file`** — same dquote trap applies. Never use `--body "..."` or inline heredocs with `gh`:
 ```bash
-# Write body first (use create_file tool, not heredoc in shell)
 gh pr create --base main --head my-branch \
   --title "PR title here" \
   --body-file /tmp/pr_body.md
@@ -88,7 +87,7 @@ assert "Error" in result[0].text
 
 **Docs search:** `docs/` holds chapter-by-chapter `.txt` files extracted from PDFs. `search_docs` does case-insensitive substring search across them; `read_doc_chapter` uses substring matching on filenames (`"filter"` matches `chapter-10-filter.txt`).
 
-**Session memory:** `write_session_note` appends timestamped entries to `skills/session-notes.md`. Use it to persist findings across sessions.
+**Session memory:** `write_session_note` appends timestamped entries to `.ai/skills/session-notes.md`. Use it to persist findings across sessions.
 
 ## Key Files
 
@@ -97,10 +96,23 @@ assert "Error" in result[0].text
 | `reaktor_mcp.py` | Entire server: path config, helpers, `list_tools()`, `call_tool()` |
 | `tests/test_tools.py` | All unit tests; import `call_tool` directly and run with `asyncio.run()` |
 | `templates/blank.ens` | Minimal binary template for new ensembles |
-| `skills/session-notes.md` | Persistent session log |
-| `skills/maxmsp-mcp-research.md` | Comparative research: Max/MSP MCP projects and lessons for Reaktor |
-| `skills/reaktor-robot-skill.md` | Complete Robot XML-RPC keyword reference (source-verified) |
-| `skills/reaktor-codebase-skill.md` | Reaktor C++ codebase architecture, build system, conventions |
+| `.ai/skills/session-notes.md` | Persistent session log |
+| `.ai/skills/maxmsp-mcp-research.md` | Comparative research: Max/MSP MCP projects and lessons for Reaktor |
+| `.ai/skills/reaktor-robot-skill.md` | Complete Robot XML-RPC keyword reference (source-verified) |
+| `.ai/skills/reaktor-codebase-skill.md` | Reaktor C++ codebase architecture, build system, conventions |
 | `KOM-Reaktor/` (local) | Reaktor 6 source at `/Users/michael.aroustian/Documents/_dev/repos/_NI/Komplete/KOM-Reaktor` |
 | `docs/` | Manual `.txt` files for `search_docs` / `read_doc_chapter` |
 | `pyproject.toml` | `uv` project; `pdf-tools` extra adds `pymupdf` |
+
+## Skill Files
+
+Load from `.ai/skills/` when the context requires it:
+
+| File | When to load |
+|---|---|
+| `reaktor-overview.md` | Architecture, file formats, docs index, community links |
+| `reaktor-primary-skill.md` | Building in Primary: modules, wiring, patch patterns |
+| `reaktor-core-skill.md` | Building in Core: cells, buses, DSP patterns |
+| `reaktor-robot-skill.md` | Robot XML-RPC keyword reference |
+| `maxmsp-mcp-research.md` | Comparative research: Max/MSP MCP lessons |
+| `session-notes.md` | Persistent session log — read for context, write via `write_session_note` |

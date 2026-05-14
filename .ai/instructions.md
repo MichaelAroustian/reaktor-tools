@@ -4,6 +4,18 @@
 
 Single-file Python MCP server (`reaktor_mcp.py`) that gives AI assistants access to Native Instruments Reaktor 6. Transport is **stdio** — stdout is the MCP wire protocol, never write there. All logging goes to `reaktor_mcp.log` via the `log` logger (`logging.getLogger(__name__)`).
 
+## Git & PR Workflow
+
+- **Never push directly to `main`, `master`, or `develop`** — all changes must go via a PR.
+- **Never force push to any branch** unless the user explicitly approves it for that specific case.
+- **Commit and PR messages must be confirmed by the user** before pushing or merging.
+- Always use `--body-file` for `gh pr create` (never inline `--body`); write the body to a temp file first.
+- Branch heads are auto-deleted after merge.
+- All PR review conversations must be resolved before merging.
+- Linear history only — no merge commits (squash or rebase).
+
+These rules are enforced via GitHub rulesets (`protected-branches` and `no-force-push`). Admin bypass exists for the repo owner only.
+
 ## Commands
 
 ```bash

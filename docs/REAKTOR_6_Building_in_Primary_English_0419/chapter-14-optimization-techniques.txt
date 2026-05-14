@@ -1,0 +1,157 @@
+--- Page 201 ---
+
+14
+Optimization Techniques
+ 
+14.1
+Reduce the Number of Voices
+ 
+Although a single oscillator with 8 voices will not be as heavy on the CPU as 8 monophonic
+oscillators, the general principal still applies: More voices leads to a greater load on the CPU.
+If the instrument you are creating does not need a high level of polyphony, try setting the num-
+ber of voices to just the number you need.
+1.
+Reduce the number of Voices in the Ensemble Properties.
+14.1.1
+Automatic Voice Reduction
+ 
+Automatic Voice Reduction reduces the number of voices in an Ensemble until the CPU level
+is below the Max CPU value (which is defined in the Preferences window).
+1.
+Click on the Automatic Voice Reduction option in the Ensemble Properties to activate Au-
+tomatic Voice Reduction.
+⇨REAKTOR will reduce the number of Voices until the CPU level drops below the Maximum
+threshold. It will continue to do this until the Automatic Voice Reduction option is un-
+checked.
+Optimization Techniques
+Reduce the Number of Voices
+ 
+REAKTOR 6 - Building In Primary - 201
+
+
+--- Page 202 ---
+
+14.1.2
+Use Monophonic Processing
+ 
+You should only use polyphonic Modules when it is a necessity. If you are building an FX unit,
+or a mono-synth, you do not need 16 voices all doing the same thing. And even for a poly-
+synth, you may only need the oscillators, envelopes and filters to be polyphonic; any LFOs or
+effects could be processed as mono signals.
+See section ↑2.4, Mono and Poly Modes ↑2.4, Mono and Poly Modes for more informa-
+tion about polyphony.
+14.2
+Use Events Rather than Audio signals
+ 
+When processing at the audio rate, calculations are made constantly at the sampling rate.
+Events are only processed when a value is triggered, and are also processed at a slower rate. If
+the process you are performing does not directly interact with the audio stream, consider proc-
+essing with events.
+14.3
+Eliminate Superfluous Events
+ 
+In REAKTOR it is sometimes possible to generate Events even if the value is not changing, or
+to generate multiple Events from a single process.
+14.3.1
+Filtering Duplicate Values
+ 
+If you see an area in which this could occur, try using a Step Filter Module.
+The Step Filter Module
+Optimization Techniques
+Reduce the Number of Voices
+ 
+REAKTOR 6 - Building In Primary - 202
+
+
+--- Page 203 ---
+
+This Module blocks all Events which carry a value that is within a certain tolerance interval
+from the value carried by the last Event at its input. The tolerance interval is set at the Tol
+input port. With the value 0 at the Tol input port, the Step Filter Module blocks all Events that
+carry the same value as the previous Event.
+14.3.2
+Triggering Values
+ 
+Another way to filter unwanted Events is to use a combination of the Order Module and the
+Value Module.
+In the following Structure, moving the Knob will produce two Events at the Multiply Module's
+output.
+By adding an Order Module and a Value Module as illustrated below, you can effectively block
+the output of the Multiply Module until it has finished its calculations.
+14.4
+Use the Display Clock
+ 
+If your ensemble has a complex display element that updates frequently, it can be beneficial
+to use the Display Clock.
+REAKTOR's GUI processes function at around 25 frames per second (though this value can
+fluctuate depending on the instrument that is loaded). This means that, at most, the panel up-
+dates itself 25 times in a second.
+Optimization Techniques
+Eliminate Superfluous Events
+ 
+REAKTOR 6 - Building In Primary - 203
+
+
+--- Page 204 ---
+
+The System Info Module includes an output called DClk (Display Clock) that sends an Event
+before each display update. You can use this clock to trigger any GUI processes in your struc-
+ture, thereby only calculating them when necessary.
+An Example of Using the Display Clock
+In the example above, the LFO is driving a display process, but this process does not need to
+happen at the Audio Rate at which the LFO runs. The Display Clock is used to effectively
+down-sample the LFO value at the Display Rate, making the display process more efficient.
+14.5
+Reduce the Control Rate
+ 
+The Control Rate is the rate at which Events are processed. By default this is set to 400Hz
+(400 times a second). Reducing the Control Rate means that Event signals will be processed
+more slowly, reducing the strain on your CPU.
+Optimization Techniques
+Reduce the Control Rate
+ 
+REAKTOR 6 - Building In Primary - 204
+
+
+--- Page 205 ---
+
+1.
+You can reduce the Control Rate from the Settings Menu:
+14.6
+Use Multipliers Instead of Dividers
+ 
+Division is a more expensive process for a CPU to handle than a multiplication. For example, it
+would be a lot more efficient to multiply by 0.5 rather than divide by 2, even though the result
+is the same.
+14.7
+Avoid unnecessary use of Send/Receive Modules
+ 
+Send and Receive Modules can be used to make wireless connections in your structure. This
+can be appealing for many uses, including improving the readability of your structure.
+The Send and Receive Modules
+However, overusing these Modules can cause your Ensemble to have a long loading time. They
+also make it difficult to debug your structure, so use them where necessary, but try not to use
+them frivolously.
+Optimization Techniques
+Use Multipliers Instead of Dividers
+ 
+REAKTOR 6 - Building In Primary - 205
+
+
+--- Page 206 ---
+
+14.8
+Use the Modulo Module instead of Wrap options
+ 
+Some Modules that use indices (like the Multi Display or the Event Table) contain an option in
+their properties to wrap indices that are out of bounds. So if you had an Event Table with a
+table of 5 elements, and you sent an index value of 6 to the RX input, the Module would wrap
+this value around to become a 1.
+In some cases, like a step sequencer, this behavior is desired. Unfortunately, this process is
+CPU Intensive and it is much more efficient to use the Modulo Module instead.
+The Event Table and the Audio Table both have the wrap option selected by default.
+Optimization Techniques
+Use the Modulo Module instead of Wrap options
+ 
+REAKTOR 6 - Building In Primary - 206
+

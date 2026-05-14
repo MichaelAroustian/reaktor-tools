@@ -1,0 +1,163 @@
+--- Page 52 ---
+
+6
+The Player and Recorder
+ 
+The Player and Recorder utilities allow you to play back and record audio files.
+►
+Click on the tape icon in the Toolbar to open the Player and Recorder.
+→
+The Player and Recorder bar will open below the Toolbar, with the Player on the left and
+the Recorder on the right.
+6.1
+The Player
+ 
+The File Player
+The File Player enables you to route the Audio signal from an audio file (*.wav, *.aif, or *.aiff)
+into your REAKTOR Structure. The output of the File Player is sent directly to the first two Au-
+dio Inputs of the top-level Ensemble. This is particularly useful for testing when building an
+effect.
+When the File Player is playing, all other signals that would otherwise arrive at the first two
+Audio Inputs are overridden in favor of the File Player's output signal.
+If the Ensemble contains no audio inputs, then no sound will be heard when you use the
+File Player.
+There are three ways to load an audio file into the Player:
+•
+The first way is to double-click on any audio file in the Files tab of the Browser in the
+Side Pane. This action opens the Player/Recorder Bar (if not already open), loads the file
+into the Player and automatically starts the file playback.
+The Player and Recorder
+The Player
+ 
+REAKTOR 6 - Diving Deeper - 52
+
+
+--- Page 53 ---
+
+•
+Alternatively, you can drag and drop audio files into the text field of the File Player (when
+first opened, this will say Select File). In addition to dragging and dropping from the
+Browser, you can fetch files from other places like from the Desktop of your operating sys-
+tem. Again, after you have performed this action the File Player automatically starts the
+file playback.
+•
+The third way is to press the AUTO button of the File Player. This activates the Player's
+Auto Mode. A single click on any file audio file in the Browser results in the file being
+loaded and played back in the File Player.
+The Player has three playback controls. They are (from left to right):
+•
+Reset play position to zero. This control is only visible after a file has been played.
+•
+Play/pause audio playback.
+•
+Loop mode on/off.
+►
+If you have a file loaded in the Player, you can use the anchor icon to drag and drop this
+file to another location. For example, you could drag the file into REAKTOR's Sample
+Map Editor.
+►
+Click on the magnifying glass icon to the far right of the Player to open the Files tab of
+the Browser in the Side Pane.
+The Magnifying glass icon is only visible if the Files Browser is not visible.
+6.2
+The Recorder
+ 
+The File Recorder
+The File Recorder enables you to record an Ensemble's audio output from its first two Audio
+Outputs. The recorded audio signal is written to an audio file on your disk.
+The Player and Recorder
+The Recorder
+ 
+REAKTOR 6 - Diving Deeper - 53
+
+
+--- Page 54 ---
+
+Windows systems record *.wav files and OS X systems record *.aif files.
+6.2.1
+Recording Audio
+ 
+To record a new audio file with the File Recorder:
+1.
+Click on the Folder icon in the File Recorder.
+2.
+Select a location, name, and format (wav or aiff) for the audio file in the dialog window.
+3.
+Click Save to create the audio file.
+4.
+Click on the Record Arm circle to activate record mode.
+5.
+When you are ready to record, click on the Play button.
+6.
+Click on the Stop button to stop recording.
+→
+The recorded audio will be saved in the audio file you created in steps 2 and 3.
+If you do not specify a file name and location as directed in steps 1 to 3 above, then the
+audio file you record into will be located in the Audio Files sub-folder of the User Library
+location.
+The recorded audio file will be a 16bit uncompressed wav or aiff file. The sample rate of the
+audio file will be the same as the sample rate REAKTOR was running at when the recording
+took place.
+It is also possible to trigger the recording process via other means. These options are located in
+the Recorder Settings, which are described in the following section.
+The Player and Recorder
+The Recorder
+ 
+REAKTOR 6 - Diving Deeper - 54
+
+
+--- Page 55 ---
+
+6.2.2
+Recorder Settings
+ 
+►
+You can access the Recorder's settings by pressing the Recorder Settings button (the cog/
+gear icon).
+→
+The Recorder Settings dialog window will be displayed.
+The Recorder Settings
+The Recorder Settings has 5 options available:
+•
+Record Start By: This menu allows you to select a recording method (when the Recorder
+is armed). The options available are:
+◦Manual: Recording can only be started by pressing the Recorder Start button.
+◦Clock Start: Recording starts when the REAKTOR Clock is started with the Start Clock
+button in the Main Toolbar.
+◦Note On: You can also start recording by a MIDI Note On event, i.e. when a key is
+pressed on your MIDI or computer keyboard.
+•
+Start Offset: In this edit field you can specify a time delay in bars before the recording
+starts after a “record” event (specified in the Record Start By menu) has arrived.
+•
+Record Stop By: This menu allows you to choose under which conditions the recording
+process is stopped:
+The Player and Recorder
+The Recorder
+ 
+REAKTOR 6 - Diving Deeper - 55
+
+
+--- Page 56 ---
+
+◦Manual Only: You can only stop the recording process using the Recorder Stop button.
+◦Clock Stop: Recording stops when the REAKTOR Clock is stopped with the Stop Clock
+button in the Main Toolbar.
+◦Note Off: You can also stop recording by a MIDI Note Off event, i.e. when a key is
+released on your MIDI or computer keyboard.
+◦Loop Length: The File Recorder stops recording when the loop length duration, as
+specified by the Loop Length edit field in bars, has been reached.
+•
+Loop Length: This edit field lets you specify the duration of the recording in bars. This
+value is only used when the Loop Length option in the Record Stop By menu has been
+selected.
+•
+Slave Player Controls to Recorder: With this checkbox you can cause the Player transport
+controls to follow those of the Recorder. This can be useful when you want to use the
+Player to send an audio file through a REAKTOR effect Instrument and simultaneously re-
+cord the result at the output using the Recorder.
+The Player and Recorder
+The Recorder
+ 
+REAKTOR 6 - Diving Deeper - 56
+

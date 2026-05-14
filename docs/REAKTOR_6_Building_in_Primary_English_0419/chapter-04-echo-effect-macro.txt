@@ -1,0 +1,526 @@
+--- Page 55 ---
+
+4
+Echo Effect Macro
+ 
+4.1
+Overview
+ 
+Macros are a very useful way of containing sections of a larger Instrument or Ensemble project.
+This tutorial will lead you through the process of building your own Macros with Built-In Mod-
+ules, using an echo effect as the example.
+4.1.1
+Previous Knowledge
+ 
+This tutorial assumes you have read the previous chapters of this document, and so are famili-
+ar with the following concepts:
+•
+How to navigate REAKTOR's Structure View.
+•
+The difference between Audio and Event signals.
+•
+Polyphony in REAKTOR.
+•
+How to create wires between ports.
+4.1.2
+The Theory
+ 
+In its most simple form, an echo effect takes an audio signal and adds a time delay to it; this
+delayed signal is then mixed with the original signal to produce something resembling an echo.
+A signal flow diagram of this effect is as follows:
+Echo Effect Macro
+Overview
+ 
+REAKTOR 6 - Building In Primary - 55
+
+
+--- Page 56 ---
+
+The Signal Flow Diagram of a Basic Echo Effect
+It is then possible to add repeating, decaying echoes by feeding the delayed signal back into
+the delay input, like this:
+The Signal Flow Diagram of an Echo Effect with Feedback
+This tutorial will guide you through the process of building the simple echo effect using a delay
+module, before modifying it to include feedback and tempo-sync options.
+4.2
+Tutorial
+ 
+4.2.1
+Setting Up
+ 
+For this tutorial you will need to start with an empty Ensemble:
+Echo Effect Macro
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 56
+
+
+--- Page 57 ---
+
+1.
+Create a new empty Ensemble by entering the File menu and selecting New Ensemble.
+2.
+Alternatively, you can use the shortcut [Ctrl] + [N] ([Cmd] + [N] on OSX)
+Next you can create an empty Macro inside which you will build your echo effect.
+To create an empty macro:
+1.
+Right-click in the Ensemble Structure to open the Context Menu.
+2.
+Click on New Macro.
+⇨You have now created a new empty Macro.
+Your structure should now look something like this:
+Echo Effect Macro
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 57
+
+
+--- Page 58 ---
+
+How your structure should currently look
+In order for the Macro to receive and send audio signals, you will need to create input and out-
+put ports.
+You can create ports in two ways:
+1.
+Enter the Macro by double-clicking on it.
+2.
+Press [Enter] to open the Searchbox.
+3.
+Type "In Port" into the Searchbox.
+4.
+Press [Enter] to create an In Port Module. This Module also creates an input port on the
+Macro container.
+5.
+Repeat steps 2, 3, and 4, only this time enter "Out Port" into the Searchbox.
+⇨The Macro will now have one input port and one output port.
+Alternatively, you can create ports without even entering the Macro:
+1.
+If you are not already there, navigate to the top level of the Ensemble structure.
+2.
+Click on the output of the top In Module.
+3.
+While holding down both the mouse button and the [Ctrl] key on your keyboard (or [Cmd]
+key for OSX), drag a cable to the left side of the Macro.
+Echo Effect Macro
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 58
+
+
+--- Page 59 ---
+
+4.
+When you reach the edge of the Macro, an In port should appear.
+5.
+When this happens, release the mouse button and then release the [Ctrl]/[Cmd] key. This
+will create a wire from the output of the In Module to a new In port on the Macro.
+6.
+Repeat this process, only this time drag the wire from the input of the top Out Module to
+the right edge of the Macro.
+⇨The Macro will now have an input port, and output port, and wires connecting these ports
+to the Ensemble's first audio inputs and outputs.
+1.
+With the Macro's ports created, Wire them to the Ensemble inputs and outputs like this:
+To keep things organized, re-name the Macro:
+1.
+Double-click on the Macro's name.
+2.
+Type in a logical name, like "Echo FX"
+3.
+Press [Enter] or click away from the Macro to set these changes.
+While working on an Ensemble's structure, it is often a good idea to deactivate the audio en-
+gine while you work. If your computer is connected to speakers and an active microphone, cre-
+ating an effect could cause feedback between them.
+Echo Effect Macro
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 59
+
+
+--- Page 60 ---
+
+1.
+Deactivate REAKTOR's audio engine by clicking on the power button to the top right.
+4.2.2
+Building the Simple Echo Effect
+ 
+1.
+If you aren't already in the Echo FX Macro's structure, enter it now by double-clicking on
+the Macro.
+Since REAKTOR is a visual programming environment, you can use the signal flow diagram
+from earlier as a template for what you will need to build in the structure:
+The Echo Effect Signal Flow Diagram
+To build this structure you will need three Modules: Single Delay, Multiply, and Add.
+The Multiply Module will be used to set the volume level of the delayed signal and the Add
+Module will be used to add the input signal to the delayed signal.
+1.
+Right-click to open the Context Menu.
+2.
+Navigate to Built-In Module and then select Delay.
+Echo Effect Macro
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 60
+
+
+--- Page 61 ---
+
+3.
+Select and click on Single Delay to create a Single Delay Module.
+4.
+Open the menu again and navigate to Built-in Module followed by Math.
+5.
+Click on Add.
+6.
+Return to the Math section of the menu and click on Multiply.
+⇨You now have all the basic Modules you need to build the echo.
+Alternatively you can open the Searchbox by pressing the [Enter] key, and then type
+"single delay" to locate the module directly. You can also search for mathematic mod-
+ules by typing the corresponding symbol into the Searchbox, so you can type * to find
+the Multiply Module, and type + to find the Add Module.
+If you haven't done so already, now is a good time to deactivate REAKTOR's audio en-
+gine, or mute the main output.
+Echo Effect Macro
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 61
+
+
+--- Page 62 ---
+
+1.
+Wire the Modules together like this:
+Adding Controls
+You will need two knobs for this effect, one to control the delay time, and one for the delay
+output level.
+You can create knobs in the same way you created the other Modules, either through the menu
+or the Searchbox, but there is also a shortcut:
+1.
+right-click on the Dly port of the Single Delay and select Create Control.
+⇨A Knob Module has been created with a logical name and useful minimum and maximum
+values.
+Although the properties of this newly created Knob Module are good for most cases, you may
+want to change the resolution of the knob to get more precise delay times.
+1.
+Select the Delay Knob Module.
+2.
+Navigate to the Properties window.
+3.
+Select the Function tab.
+4.
+In the RANGE section, check the Step Size parameter.
+Echo Effect Macro
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 62
+
+
+--- Page 63 ---
+
+5.
+Double-click on this value to edit it.
+6.
+Set it to 1.
+⇨This has decreased the step size of the control from 10ms to 1ms.
+1.
+Use the same technique with the empty port of the Multiply Module.
+Since the Multiply module ports can have many uses with many possible value ranges, the
+Knob Module we have been given here is less suited to our purposes, but we can change that.
+First, re-name it to "Level":
+Echo Effect Macro
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 63
+
+
+--- Page 64 ---
+
+1.
+Double -click on the knob and type "Level" as the new name.
+2.
+Press [Enter] or click away from the knob to accept these changes.
+Fortunately, the Max, Min, and Step Size parameters for this Knob Module are all set to values
+that work for this tutorial, so they do not need to be changed.
+Finally, you'll need to arrange these controls on the Instrument Panel. Return to the Panel view
+and have a look at your work…
+The Current Look of the Ensemble Panel
+All of the knobs are stacked on top of each other, which makes them rather difficult to use.
+You need to move the knobs to make them user-friendly:
+1.
+Unlock the Panel by clicking on the padlock button.
+2.
+Move the knobs so they are no longer overlapping.
+Echo Effect Macro
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 64
+
+
+--- Page 65 ---
+
+3.
+When you have finished positioning the knobs where you want them, lock the panel by
+clicking on the padlock button again.
+Testing the Effect
+The easiest way to test an effect is to use REAKTOR's File Player.
+If you do not know how to use the File Player, you can read the relevant chapter in the REAKTOR
+6 Diving Deeper document to learn more about it.
+1.
+Load an audio file (wav or aiff format) into the File Player (ideally something short and
+looped).
+2.
+Select the loop option.
+3.
+Press the play button.
+4.
+If you deactivated the audio engine, or muted the main output, you will now need to reac-
+tivate the audio engine and/or unmute the main output.
+⇨You should be able to hear the audio file you loaded with a delayed signal added on top.
+As the audio plays, you will be able to edit the parameters of the echo effect by using the two
+knobs you created:
+•
+Move the Delay knob to control the delay time (the time between the input signal and the
+delayed signal).
+•
+Move the Level knob to control the output level of the delayed signal.
+4.2.3
+Adding Feedback
+ 
+Your echo effect is currently a simple slap-back style single delay, which is good for some
+uses, but by adding a feedback loop you can create repeating echoes.
+Rather than introducing more Multiply and Add Modules, you can save space and keep a tidier
+structure by using the Mult/Add, a*b+c Module.
+The Mult/Add Module outputs the result of the formula (a*b)+c, with the three input
+ports corresponding to the variables a, b, and c. The top port is the a value, and the bot-
+tom port is the c value.
+Echo Effect Macro
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 65
+
+
+--- Page 66 ---
+
+Remember that when you are editing the structure, it is advised that you deactivate the
+audio engine, or mute the main output.
+You can easily replace the Multiply and Add Modules in your current echo effect with a single
+Mult/Add Module:
+1.
+Enter the structure view of the Echo FX Macro.
+2.
+Select the Multiply and Add Modules.
+3.
+Press the [Delete] key to remove them.
+4.
+Create a Mult/Add Module either by using the menu or the Searchbox.
+5.
+Wire the Mult/Add Module into the structure like this:
+Looking back to the signal flow diagram from earlier, you can see the modifications that need
+to happen to your current effect in order to add a feedback loop:
+The Feedback Signal Flow Diagram
+You will need to take the delayed signal, multiply it by a level control, add it to the input, and
+then feed the resulting signal back into the delay module. You can do this easily with another
+Mult/Add and a Knob:
+1.
+Create a Mult/Add Module and a Knob Module and wire them into the structure like this:
+Echo Effect Macro
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 66
+
+
+--- Page 67 ---
+
+Do not worry about the Z over the input of the Mult/Add Module, this just shows that
+there is feedback in the structure, and a 1 sample delay has automatically been added
+because of it.
+2.
+To keep things readable, rename the new knob to "Feedback".
+3.
+Return to the panel view and move the newly created knob so that it is no longer sitting
+on top of any other controls:
+⇨You have added a feedback path to your echo effect.
+The newly added Feedback knob will control the amount of signal fed from the output of the
+delay back into its input. This effectively controls the number of repeating echoes in the effect.
+Before you test the updated echo effect, make sure the feedback knob is not set too
+high, otherwise the effect could overload.
+4.2.4
+Adding Tempo Sync
+ 
+Currently, you can only set the delay time of your effect in milliseconds, but for a lot of crea-
+tive echo effects the user is able to sync the delay to the host tempo. In order to do this, you
+will need to retrieve the tempo information somehow. Fortunately, REAKTOR includes a Built-
+in Module that allows you to do exactly that: the Tempo Info Module.
+The Tempo Info Module outputs the host tempo in Beats per Second (BPS). You will need to
+convert this to Milliseconds per Beat (µPB) using the following formula:
+µPB = 1000/BPS
+1.
+Create a Tempo Info Module.
+2.
+Create a Constant Module.
+3.
+Enter the Constant Module's properties and set the value to 1000.
+Echo Effect Macro
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 67
+
+
+--- Page 68 ---
+
+4.
+You can also set the value of a Constant by double-clicking on it, much like how you re-
+name Macros and Knobs.
+5.
+Create a Divide Module.
+6.
+Re-create this formula in REAKTOR by using these Modules to build the following struc-
+ture:
+7.
+Connect the output of the Divide Module to the Dly input of the Single Delay Module, re-
+placing the Delay knob.
+⇨The echo time is now synched to the length of a quarter note.
+Although the echo is tempo-synched, it is fixed at a single length.
+You can create a delay that uses multiples of 16th note lengths quite easily:
+1.
+Take the µPB value and multiply it by 0.25 to get the milliseconds per 16th note value.
+Echo Effect Macro
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 68
+
+
+--- Page 69 ---
+
+The Multiply Module can have more than two inputs. You can attach another wire to this Mod-
+ule using the same technique described at the start of this tutorial, in which you used the
+[Ctrl]/[Cmd] keys to create ports while dragging wires.
+Modules and Macros that can have extra inputs created in this way are identified by the
+ellipsis (three dots) below its bottom input port.
+If you play with the effect now, you may notice that the delay time does not change when you
+set the Delay knob to a value above 8. This is because the Single Delay Module has a maxi-
+mum delay time buffer, which is 1000ms by default (equivalent to 2 beats at 120bpm).
+As the delay essentially records the audio in order to play it back later as the delayed
+signal, the delay buffer assigns a section of memory for this recording. Larger buffer
+sizes can be useful for longer delay times, but will take up more RAM. The maximum
+setting for the delay buffer is 1000000ms (a little under 16.7 minutes) which equates
+to about 96MB of RAM for 16bit/48kHz audio.
+You can change the buffer setting in the Single Delay's Properties:
+1.
+In the Single Delay's properties, under the Function tab, find the BUFFER section.
+2.
+In this section locate the Max Delay (ms) parameter.
+3.
+Double-click the parameter's value and set it to 2000.
+4.
+Press [Enter] to set this change.
+Congratulations, you have just created a tempo-synced echo effect in REAKTOR!
+4.2.5
+Saving and Loading the Macro
+ 
+You can export your echo effect for use in other Ensembles by saving it as a Macro.
+Before you save it, you'll need to make sure it remains as a monophonic structure, even in pol-
+yphonic Ensembles. To do this:
+1.
+Navigate to the top level of your Ensemble.
+Echo Effect Macro
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 69
+
+
+--- Page 70 ---
+
+2.
+Select the echo Macro and right-click on it.
+3.
+Select the Mono option from the menu.
+⇨All Modules inside the Macro have been set to monophonic, so even when you load the
+Macro into a polyphonic Instrument, the echo effect will remain mono.
+Next, export the effect by saving it as a Macro:
+1.
+Select the echo Macro.
+2.
+Right-click the Macro and select Save Macro As …
+3.
+Select a save location for the Macro file (saving it to the default location makes it easier
+to locate in REAKTOR later).
+4.
+Give it a unique name like "My First Echo".
+5.
+Click Save.
+Echo Effect Macro
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 70
+
+
+--- Page 71 ---
+
+⇨You can now load your echo effect like any other Macro.
+Using the subtractive synthesizer from the previous tutorial as an example, you can load and
+connect your echo effect like this:
+1.
+Load the Ensemble you wish to use and enter its structure.
+2.
+Rick-click on an empty space in the structure and select Library.
+3.
+If you saved your effect in the default location, it should appear at the bottom of this
+menu.
+4.
+If you saved it somewhere else you can locate it by clicking on Load …
+5.
+Since the echo effect is monophonic, it will need to be placed after any Audio Voice
+Combiners in the structure, like this:
+4.3
+Going Further
+ 
+The delay effect is the basis for a few other effects including flanger and chorus.
+Echo Effect Macro
+Going Further
+ 
+REAKTOR 6 - Building In Primary - 71
+
+
+--- Page 72 ---
+
+You can create a flanger/chorus by modulating the delay time with an LFO:
+The structure of a simple chorus/flanger effect.
+You could also create a vintage style delay by adding filters to the delay output/feedback chain,
+and slow, subtle modulation to the delay time:
+The structure of a vintage style echo effect.
+You can make any of these effects stereo by duplicating the macro structure:
+Echo Effect Macro
+Going Further
+ 
+REAKTOR 6 - Building In Primary - 72
+
+
+--- Page 73 ---
+
+The structure of a basic stereo delay.
+4.3.1
+Related Factory Content
+ 
+The following REAKTOR 6 Factory Library Ensembles were all built using simple delay units at
+their core. With what you have learnt here, you should be able to reverse engineer these En-
+sembles to take your knowledge further.
+The following delay based Ensembles can be found in the Effects section of the Factory Library.
+Although it features LFOs and EQs, the Echomania Ensemble is ultimately driven by two Sin-
+gle Delay Modules.
+Echo Effect Macro
+Going Further
+ 
+REAKTOR 6 - Building In Primary - 73
+
+
+--- Page 74 ---
+
+The two Single Delay Modules in Echomania
+Longflow is another effect that ultimately comes down to two Single Delay Modules.
+The Single Delay Modules in Longflow
+Echo Effect Macro
+Going Further
+ 
+REAKTOR 6 - Building In Primary - 74
+

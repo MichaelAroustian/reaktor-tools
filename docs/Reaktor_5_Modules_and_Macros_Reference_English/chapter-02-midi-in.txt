@@ -1,0 +1,1714 @@
+--- Page 151 ---
+
+2
+MIDI In
+ 
+MIDI In Modules route MIDI messages from external MIDI devices (and other Instruments) 
+REAKTOR from external MIDI devices. There are separate Modules for various MIDI data 
+types including MIDI notes, note velocity, Pitchbend, Mono and Poly Aftertouch, control­
+lers, program changes, and MIDI clock. REAKTOR also generates separate gate messages 
+for MIDI note events and there are Modules for that. Some MIDI In Modules can also be 
+used in an IC or OSC connection.
+2.1
+Note Pitch
+ 
+Fig. 2.1 A Note Pitch Module
+2.1.1
+Overview
+ 
+The Note Pitch Module is a Polyphonic Event source for the pitch value of MIDI Note On 
+events. Each Polyphonic Voice that has received a Note On Event from the parent Instru­
+ment's MIDI In channel carries the pitch value of that note in the MIDI pitch scale. The 
+range of the output values of this Module is set Function page. The resolution of the out­
+put values is such that 128 steps fit in this interval. A MIDI Note Off event has no effect 
+on the output of the Note Pitch Module.
+Application
+Use the Note Pitch Module to inform your Oscillator, Sampler, and other Modules which 
+keys have been pressed on your MIDI or computer keyboard. Usually you connect the out­
+put of the Note Pitch Module to the "P" (pitch) input ports of the aforementioned Modules.
+When using the default range of Min = 0 to Max = 127 and controlling an oscillator’s "P" 
+(pitch) input port you will play in the common equal tempered tuning. One unit corre­
+sponds to one semitone and middle C is at 60. By setting "Min" and "Max" in the Function 
+page to different values, pitch can be skewed or scaled, e.g. for playing in quarter tones.
+Please refer to section 9.4 in the Application Reference for more information on the different 
+scales in REAKTOR.
+MIDI In
+Note Pitch
+ 
+REAKTOR 5.5 - Module Reference - 151
+
+
+--- Page 152 ---
+
+2.1.2
+Ports
+ 
+▪
+(Out) "Out" is the Polyphonic Event output port for the MIDI pitch values of the incom­
+ing MIDI notes.
+2.1.3
+Properties: Function Page
+ 
+Setting the Range of Output Values
+The range of the output signal is scaled to the range [Min … Max]. The values for "Min" 
+and "Max" are set with the corresponding edit fields in the Function page of the Module's 
+Properties.
+Fig. 2.2 The “Min”, “Max”, “Lower Limit”, and “Upper Limit” values can be set in the corresponding edit fields of the Note 
+Pitch Module's Function page.
+Setting the Range of Input Values
+The range of incoming MIDI notes over which the output range [Min … Max] is scaled, can 
+also be limited with the Lower Limit and Upper Limit edit fields. These edit fields are shown 
+above in the screenshot of the Function page. The output values of the Note Pitch Module 
+are limited to “Min” for incoming MIDI values below “Lower Limit” and to “Max” for in­
+coming MIDI values above “Upper Limit”. The range between the two limits is interpolated 
+linearly between “Min” and “Max” (see below).
+MIDI In
+Note Pitch
+ 
+REAKTOR 5.5 - Module Reference - 152
+
+
+--- Page 153 ---
+
+Fig. 2.3 The x-axis of the graph shows the incoming MIDI values whereas the y-axis shows the outgoing values from the Note 
+Pitch Module. The values are interpolated linearly between “Min” and “Max.”
+The values for the Lower Limit and Upper Limit edit fields lie in the range [0 … 127]. Also, the 
+value for Upper Limit edit field must be greater than that set in the Lower Limit edit field. How­
+ever, the value in the Max edit field can be smaller than the value in the Min edit field to 
+achieve inverted operation. If opposite characteristics are set for two sources, a crossfade 
+effect can be programmed (see below).
+MIDI In
+Note Pitch
+ 
+REAKTOR 5.5 - Module Reference - 153
+
+
+--- Page 154 ---
+
+Fig. 2.4 The x-axis of the graph shows the incoming MIDI values whereas the y-axis shows the outgoing values from the Note 
+Pitch Module. Setting opposite characteristics for two sources creates a crossfade effect between them, going from low to 
+high MIDI note values.
+A switch with an adjustable threshold level can be emulated by setting the Lower Limit and 
+Upper Limit edit fields to neighboring MIDI values, for example, “63” and “64”. When the 
+input value to such a source is “64”, the value in the Min edit field will be output. Other­
+wise, the output value is the value in the Max edit field.
+2.1.4
+Example: Sampler with Trigger Button
+ 
+The simplest sampler Instrument can be built using the Sampler Module (↑7.1, Sam­
+pler)which receives its pitch input from the Note Pitch Module (↑2.1, Note Pitch) and its 
+trigger signal from a Button Module (↑1.2, Button). The pitch values of incoming MIID 
+Notes are forwarded from the Note Pitch Module's output to the Sampler Module's "P" 
+(pitch) input port. The Sampler Module's amplitude can be controlled from the Instrument 
+Panel using a Knob Module (↑1.1, Fader/Knob) labeled "Ampl", as shown in the Structure 
+below. Note that you can create a Knob Module (or sometimes a Button or Fader Module) 
+for an input port with the right range and resolution simply by right-clicking the input port 
+and choosing the Create Control menu entry. Make sure that the Button at the "Trig" (trig­
+ger) input port has been set to Trigger Mode in its Function page.
+MIDI In
+Note Pitch
+ 
+REAKTOR 5.5 - Module Reference - 154
+
+
+--- Page 155 ---
+
+Please refer to subsection 6.2.1 in the Application Reference for more information on load­
+ing samples into the Sampler Module's Sample Map.
+Fig. 2.5 The Structure for a simple sampler Instrument.
+2.2
+Pitchbend
+ 
+Fig. 2.6 A Pitchbend Module
+2.2.1
+Overview
+ 
+The Pitchbend Module is a Monophonic Event source for MIDI Pitchbend (pitchwheel 
+change) events. The range of the output values of this Module is set Function page. The 
+resolution of the output values is such that 16384 steps fit in this interval. When the 
+pitchbend controller is in its neutral position, the output value is always "0".
+Application
+The Pitchbend Module lets you program your Instrument in such a way that it may recog­
+nize incoming MIDI messages that stem from your MIDI controller's pitch wheel. Add the 
+output of this Module to the pitch value received from a Note Pitch Module and feed it, for 
+example, to an oscillator's "P" (pitch) input port. The range of the output values for upward 
+or downward pitchbend can be set independently in the Function page. This means that 
+with a range of Min = -1 to Max = 1 you can then change the pitch with the pitchbend 
+controller up or down one semitone. On the other hand, a range defined by Min = -12 and 
+Max = 12 means you can pitchbend ±12 semitones which corresponds to ±1 octave.
+2.2.2
+Ports
+ 
+▪
+(Out) "Out" is the Monophonic Event output port for the pitchbend values that are in 
+the range [Min … Max], set in the Module's Function page.
+MIDI In
+Pitchbend
+ 
+REAKTOR 5.5 - Module Reference - 155
+
+
+--- Page 156 ---
+
+2.2.3
+Properties: Function Page
+ 
+The output values of the Pitchbend Module are scaled to the range [Min … Max].
+► To set the "Min" and "Max" values, to the Module's Function page and enter the desired 
+values into the Min and Max edit fields, respectively.
+2.2.4
+Example: Note Pitch with Pitchbend
+ 
+For a simple implementation of the Pitchbend parameter, refer to the Structure shown in 
+the figure below. The "Min" and "Max" values for the Pitchbend Module have been set to 
+"-2" and "2", respectively. As a result, the outgoing pitch values can be "bent" up to 2 sem­
+itones above or below the incoming pitch from the Note Pitch Module (↑2.1, Note Pitch).
+Fig. 2.7 A simple implementation of MIDI Pitchbend.
+2.3
+Gate
+ 
+Fig. 2.8 A Gate Module
+2.3.1
+Overview
+ 
+The Gate Module is a Polyphonic Event source for MIDI Note On and Note Off events. A 
+Note On event sets the output to a value determined by the key velocity. The range of the 
+output values to which the incoming range of MIDI velocities (from no velocity (Note Off) 
+to maximum velocity) is scaled, is set with the Min and Max edit fields in the Function page. 
+The resolution is such that 128 steps fit into the interval set in the Function page, [Min 
+…. Max]. When a Note Off event arrives at the parent Instrument's MIDI In, the Gate Mod­
+MIDI In
+Pitchbend
+ 
+REAKTOR 5.5 - Module Reference - 156
+
+
+--- Page 157 ---
+
+ule sends an Event with the value "0" (a Gate Off Event), independent of the "Min" and 
+"Max" settings in the Function page. If velocity sensitivity of your Instrument is to be disa­
+bled, the "Min" and "Max" values should be set to the same value.
+Application
+The Gate Module is a key Module in every synthesizer that reacts to incoming MIDI key­
+board signals. In the simplest implementation, the Gate Module is connected to the "G" 
+(gate) input port of an Envelope Module. The output of the Envelope Module is then multi­
+plied with the oscillator source signal which is then sent to the output, perhaps after fur­
+ther signal processing with filters and effects. In such a case pressing a key on your MIDI 
+or Computer keyboard triggers the envelope, "letting through" the oscillator signal to the 
+next part of the Structure. Releasing the key releases the envelope, "closing" the path of 
+the oscillator signal to the next part of the Structure. The Gate Module is also used in 
+sampler instruments to trigger Sampler Modules.
+2.3.2
+Ports
+ 
+▪
+(Out) "Out" is the Polyphonic Event output port for the Gate On and Gate Off Events. 
+The Gate On Events carry the value of the velocity with which the key was pressed. 
+These values are scaled to fit the range [Min … Max] set in the Function page. Gate 
+Off Events carry the value "0."
+2.3.3
+Properties: Function Page
+ 
+Setting the Range of Output Values
+The range of the output signal is mapped to the interval [Min … Max]. The values for 
+"Min" and "Max" are set with the corresponding edit fields in the Function page of the 
+Module's Properties.
+Fig. 2.9 The “Min”, “Max”, “Lower Limit”, and “Upper Limit” values can be set in the corresponding edit fields of the Gate 
+Module's Function page.
+MIDI In
+Gate
+ 
+REAKTOR 5.5 - Module Reference - 157
+
+
+--- Page 158 ---
+
+Setting the Range of Input Values
+The range of incoming velocities to which the output values [Min … Max] are scaled, can 
+also be limited with the Lower Limit and Upper Limit edit fields (shown in the Function page 
+screenshot above). The velocity output value of the Gate Module is limited to “Min” for 
+incoming MIDI values below “Lower Limit” and to “Max” for incoming MIDI values above 
+“Upper Limit”. The range between the two limits is interpolated linearly between “Min” 
+and “Max” (see below).
+Fig. 2.10 The x-axis of the graph shows the incoming MIDI values whereas the y-axis shows the outgoing velocity values from 
+the Gate Module. The values are interpolated linearly between “Min” and “Max”.
+The values for the Lower Limit and Upper Limit edit fields lie in the range [0 … 127]. Also, the 
+value for Upper Limit edit field must be greater than that set in the Lower Limit edit field. How­
+ever, the value in the Max edit field can be smaller than the value in the Min edit field to 
+achieve inverted operation. If opposite characteristics are set for two sources, a crossfade 
+effect can be programmed (see below).
+MIDI In
+Gate
+ 
+REAKTOR 5.5 - Module Reference - 158
+
+
+--- Page 159 ---
+
+Fig. 2.11 The x-axis of the graph shows the incoming MIDI values whereas the y-axis shows the outgoing velocity values from 
+the Gate Module. Setting opposite characteristics for two sources creates a crossfade effect between them, going from low to 
+high MIDI velocity values.
+A switch with an adjustable threshold level can be emulated by setting the Lower Limit and 
+Upper Limit edit fields to neighboring MIDI velocity values, for example, “63” and “64”. 
+When the input value to such a source is “64”, the value in the Min edit field will be out­
+put. Otherwise, the output value is the value in the Max edit field.
+2.3.4
+Example: Loop Sampler
+ 
+This example illustrates a sample Instrument with frequency modulation and variable 
+(loop) starting position and loop length. As can be seen in the figure below, the Sampler 
+Loop Module (↑7.3, Sampler Loop) has been used. It receives its pitch input from the 
+Note Pitch Module (↑2.1, Note Pitch) and its trigger signal from the Gate Module. When a 
+key on your computer or MIDI keyboard is pressed, a Gate On signal is sent from the Gate 
+Module, carried by the Polyphonic Voice assigned to the key. As a result sample playback 
+is started for this Voice until the key is released. When the key is released, a Gate Off sig­
+nal is sent from the Gate Module and stops the sample playback (at the "G" (gate) input 
+port. Its amplitude can be controlled from the Instrument Panel using a Knob Module 
+(↑1.1, Fader/Knob) labeled "Ampl", as shown in the Structure below. Note that you can 
+MIDI In
+Gate
+ 
+REAKTOR 5.5 - Module Reference - 159
+
+
+--- Page 160 ---
+
+create a Knob Module (or sometimes a Button or Fader Module) for an input port with the 
+right range and resolution simply by right-clicking the input port and choosing the Create 
+Control menu entry.
+A sine oscillator has been used as the frequency modulation signal. The pitch and ampli­
+tude of this signal can be controlled at the corresponding input ports of its source, the 
+Sine Module (↑6.14, Sine Oscillator). The starting position of sample playback, starting 
+position of the loop and loop length can also be controlled using Knob Modules (↑1.1, 
+Fader/Knob) labeled "St", "LS", and "LL", respectively. All three knobs have the range [0 … 
+1]. This range is multiplied by the length of the currently loaded sample, retrieved from 
+the "Len" (length) output port, and is then forwarded to the corresponding input port. This 
+way the three parameters at the input ports are always in the range of the currently loaded 
+sample.
+Please refer to subsection 6.2.1 in the Application Reference for more information on load­
+ing samples into a Sampler Module's Sample Map.
+Fig. 2.12 The Structure for a frequency modulated loop sampler Instrument.
+2.4
+Single Trig Gate
+ 
+Fig. 2.13 Single Trig Gate Module
+MIDI In
+Single Trig Gate
+ 
+REAKTOR 5.5 - Module Reference - 160
+
+
+--- Page 161 ---
+
+2.4.1
+Overview
+ 
+The Single Trig Gate Module is a Monophonic Event source for MIDI Note On and Note Off 
+events. A Note On event sets the output to a value determined by the key velocity. The 
+range of the output values to which the incoming range of MIDI velocities (from no velocity 
+(Note Off) to maximum velocity) is scaled, is set with the Min and Max edit fields in the 
+Function page. The resolution is such that 128 steps fit into the interval set in the Func­
+tion page, [Min …. Max]. When all keys on the MIDI or computer keyboard are released, 
+the Note Off event from the last key release causes the Single Trig Gate Module to send an 
+Event with the value "0" (a Gate Off Event) from its output port, independent of the "Min" 
+and "Max" settings in the Function page. If velocity sensitivity of your Instrument is to be 
+disabled, the "Min" and "Max" values should be set to the same value.
+The difference between this Module and the Gate Module (↑2.3, Gate) is that for the Sin­
+gle Trig Module only the first note produces an Event and thus triggers (or retriggers) a con‐
+nected envelope, sample, or similar. A new note that is started while the previous one is 
+still held (legato play) does not generate an Event at this Module's output port and there­
+fore does not retrigger any envelopes, samplers, or similar.
+Application
+The Single Trig Gate Module should be applied in the same way as the Gate Module (↑2.3, 
+Gate). However, use the Single Trig Gate Module for your Gate signals if you want to use 
+the legato style of playing. Most synthesizers offer different modes of playing within their 
+networks. This means that when you choose the "legato play" option from the Instrument 
+Panel, most likely the internal Structure of the Instrument is rerouted such that Gate sig­
+nals are received from the Single Trig Gate Module, instead of the Gate Module (↑2.3, 
+Gate).
+2.4.2
+Ports
+ 
+▪
+(Out) "Out" is the Monophonic Event output port for the Gate On and Gate Off Events. 
+These Events are only sent when no other key is pressed. The Gate On events carry the 
+value of the velocity with which the new key was pressed. The values are scaled to fit 
+the range [Min … Max] set in the Function page. The Gate Off Events carry the value 
+"0".
+MIDI In
+Single Trig Gate
+ 
+REAKTOR 5.5 - Module Reference - 161
+
+
+--- Page 162 ---
+
+2.4.3
+Properties: Function Page
+ 
+Setting the Range of Output Values
+The range of the velocity output signal is scaled to the interval [Min … Max]. The values 
+for "Min" and "Max" are set with the corresponding edit fields in the Function page of the 
+Module's Properties.
+Fig. 2.14 The “Min”, “Max”, “Lower Limit”, and “Upper Limit” values can be set in the corresponding edit fields of the 
+Single Trig Gate Module's Function page.
+Setting the Range of Input Values
+The range of incoming velocities to which the output values [Min … Max] are scaled, can 
+also be limited with the Lower Limit and Upper Limit edit fields (shown in the Function page 
+screenshot above). The output velocity value of the Single Trig Gate Module is limited to 
+“Min” for incoming MIDI values below “Lower Limit” and to “Max” for incoming MIDI val­
+ues above “Upper Limit”. The range between the two limits is interpolated linearly be­
+tween “Min” and “Max” (see below).
+MIDI In
+Single Trig Gate
+ 
+REAKTOR 5.5 - Module Reference - 162
+
+
+--- Page 163 ---
+
+Fig. 2.15 The x-axis of the graph shows the incoming MIDI values whereas the y-axis shows the outgoing velocity values from 
+the Single Trig Gate Module. The values are interpolated linearly between “Min” and “Max.”
+The velocity values for the Lower Limit and Upper Limit edit fields lie in the range [0 … 127]. 
+Also, the value for Upper Limit edit field must be greater than that set in the Lower Limit edit 
+field. However, the value in the Max edit field can be smaller than the value in the Min edit 
+field to achieve inverted operation. If opposite characteristics are set for two sources, a 
+crossfade effect can be programmed (see below).
+MIDI In
+Single Trig Gate
+ 
+REAKTOR 5.5 - Module Reference - 163
+
+
+--- Page 164 ---
+
+Fig. 2.16 The x-axis of the graph shows the incoming MIDI values whereas the y-axis shows the outgoing velocity values from 
+the Single Trig Gate Module. Setting opposite characteristics for two sources creates a crossfade effect between them, going 
+from low to high MIDI velocity values.
+A switch with an adjustable threshold level can be emulated by setting the Lower Limit and 
+Upper Limit edit fields to neighboring MIDI velocity values, for example, “63” and “64”. 
+When the input value to such a source is “64”, the value in the Min edit field will be out­
+put. Otherwise, the output value is the value in the Max edit field.
+2.4.4
+Example: Note to Chord
+ 
+The To Voice Modules (↑14.11, To Voice) give you direct access to the values carried by 
+each Voice. A handy application is to generate chords from incoming Monophonic MIDI 
+Notes. The Structure that implements this feature is shown in the figure below for an In­
+strument that has its number of Polyphonic Voices set to "3". The chord that is played 
+when a key is pressed is the minor chord: the incoming MIDI Note is assigned to the first 
+Voice, the minor third to the second Voice, and the perfect fifth to the third Voice. As can 
+be seen in the Structure below, Add Modules (↑4.2, Add, +) and the consequent To Voice 
+Modules are used to assign each Voice the corresponding transposed MIDI Note. The out­
+put of each To Voice Module carries a Polyphonic signal where each Voice, except the one 
+MIDI In
+Single Trig Gate
+ 
+REAKTOR 5.5 - Module Reference - 164
+
+
+--- Page 165 ---
+
+specified by the "V" input port, is zero. The outputs of the To Voice Modules (↑14.11, To 
+Voice) are added together to result in a Polyphonic signal where each Voice has a defined 
+value.
+To get the base note of the chord, the "Nr" output port of the Channel Message Module 
+(↑2.17, Channel Message) is used. Although this output can send values other than MIDI 
+Notes, triggering the value to be used only when a Gate On Event from the Single Trig 
+Gate Module arrives, ensures that only MIDI Note values are used. The Separator Module 
+(↑13.14, Separator), on the other hand, ensures that only Gate On Events trigger the note 
+number to be forwarded to the chord generation algorithm.
+Fig. 2.17 The Structure to create a chord from an incoming Monophonic MIDI Note.
+2.5
+Sel Note Gate
+ 
+Fig. 2.18 A Sel Note Gate Module
+2.5.1
+Overview
+ 
+The Sel Note Gate Module is a Monophonic event source for selected Note On and Note 
+Off events. A Note On event which has the MIDI note number selected in the Function 
+page sets the output to a value determined by the key velocity. The range of the output 
+values to which the incoming range of MIDI velocities (from no velocity (Note Off) to maxi­
+mum velocity) is scaled, is set with the Min and Max edit fields in the Function page. The 
+resolution is such that 128 steps fit into the interval set in the Function page, [Min …. 
+Max]. When a Note Off event arrives at the parent Instrument's MIDI In, the Sel Note Gate 
+Module sends an Event with the value "0" (a Gate Off Event), independent of the "Min" 
+and "Max" settings in the Function page. If velocity sensitivity of your Instrument is to be 
+disabled, the "Min" and "Max" values should be set to the same value.
+MIDI In
+Sel Note Gate
+ 
+REAKTOR 5.5 - Module Reference - 165
+
+
+--- Page 166 ---
+
+Application
+Whereas the Gate and Single Trig Gate Modules (↑2.4, Single Trig Gate) respond to all 
+MIDI note values, the Sel Gate Module only responds to one MIDI note value. You could 
+use a number of Sel Gate Module's to build a highly customized live Instrument where 
+each key triggers a different sampler or envelope.
+2.5.2
+Ports
+ 
+▪
+(Out) "Out" is the Monophonic Event output port for the Gate On Events. These Events 
+are only sent when the MIDI note value of the incoming MIDI note is equal to the one 
+set in the Module's Function page. The velocity values of such a MIDI note are scaled 
+to fit the range [Min … Max] set in the Function page.
+2.5.3
+Properties: Function Page
+ 
+Setting the Incoming MIDI Note Value
+The Sel Note Gate Module only outputs Gate On Events of MIDI notes that are the same 
+pitch as defined by the Note edit field in the Module's Function page.
+► To change the MIDI note to which the Sel Note Gate Module should react, go to the 
+Module's Function page and enter the corresponding note value in the MIDI scale into the 
+Note edit field (shown in the screenshot below).
+Setting the Range of Output Values
+The range of the output signal is mapped to the interval [Min … Max]. The values for 
+"Min" and "Max" are set with the corresponding edit fields in the Function page of the 
+Module's Properties.
+Fig. 2.19 The “Min”, “Max”, “Lower Limit”, and “Upper Limit” values can be set in the corresponding edit fields of the Sel 
+Note Gate Module's Function page.
+MIDI In
+Sel Note Gate
+ 
+REAKTOR 5.5 - Module Reference - 166
+
+
+--- Page 167 ---
+
+Setting the Range of Input Values
+The range of incoming velocities to which the output values [Min … Max] are scaled, can 
+also be limited with the Lower Limit and Upper Limit edit fields (shown in the Function page 
+screenshot above). The output value of Sel Note Gate Module is limited to “Min” for in­
+coming MIDI values below “Lower Limit” and to “Max” for incoming MIDI values above 
+“Upper Limit”. The range between the two limits is interpolated linearly between “Min” 
+and “Max” (see below).
+Fig. 2.20 The x-axis of the graph shows the incoming MIDI values whereas the y-axis shows the outgoing values from the Sel 
+Note Gate Module. The values are interpolated linearly between “Min” and “Max.”
+The values for the Lower Limit and Upper Limit edit fields lie in the range [0 … 127]. Also, the 
+value for Upper Limit edit field must be greater than that set in the Lower Limit edit field. How­
+ever, the value in the Max edit field can be smaller than the value in the Min edit field to 
+achieve inverted operation. If opposite characteristics are set for two sources, a crossfade 
+effect can be programmed (see below).
+MIDI In
+Sel Note Gate
+ 
+REAKTOR 5.5 - Module Reference - 167
+
+
+--- Page 168 ---
+
+Fig. 2.21 The x-axis of the graph shows the incoming MIDI values whereas the y-axis shows the outgoing values from the Sel 
+Note Gate Module. Setting opposite characteristics for two sources creates a crossfade effect between them, going from low 
+to high MIDI velocity values.
+A switch with an adjustable threshold level can be emulated by setting the Lower Limit and 
+Upper Limit edit fields to neighboring MIDI velocity values, for example, “63” and “64”. 
+When the input value to such a source is “64”, the value in the Min edit field will be out­
+put. Otherwise, the output value is the value in the Max edit field.
+2.5.4
+Example: Tapedeck Playback
+ 
+This example shows how you could use a single key on your computer or MIDI keyboard to 
+trigger an action inside the Structure. In this case, the gate signal from the Sel Note Gate 
+Module has been used to serve as the Gate signal for tapedeck playback at the Tapedeck 1 
+Channel Module (↑14.1, Tapedeck 1 Channel). Note you choose in the Sel Note Gate 
+Module's Function page the MIDI Note for which a Gate signal is forwarded.
+For a Sampler Module playback of different samples according to the MIDI Note that is 
+played is achieved using the Sample Map.
+MIDI In
+Sel Note Gate
+ 
+REAKTOR 5.5 - Module Reference - 168
+
+
+--- Page 169 ---
+
+Fig. 2.22 Using the Sel Note Gate Module to have exactly one MIDI Note send the Gate signal for tapedeck playback.
+2.6
+On Velocity
+ 
+Fig. 2.23 On Velocity Module
+2.6.1
+Overview
+ 
+The On Velocity Module is a Polyphonic Event source for the velocity of MIDI Note On 
+events. A Note On event sets the output to a value determined by the key velocity. The 
+range of the output values to which the incoming range of MIDI velocities (from no velocity 
+(Note Off) to maximum velocity) is scaled, is set with the Min and Max edit fields in the 
+Function page. The resolution is such that 128 steps fit into the interval set in the Func­
+tion page, [Min …. Max]. If velocity sensitivity of your Instrument is to be disabled, the 
+"Min" and "Max" values should be set to the same value.
+Application
+The On Velocity Module is useful when you want to quasi-statically scale certain signals 
+according to the velocity. The difference between the On Velocity Module and the Gate 
+Module is that upon receiving a Note Off Event, the On Velocity Module does not send a 
+zero-valued Event from its output port. That's why you would need the On Velocity Module 
+when you want your scaling characteristic to extend beyond the Note Off event (and not be 
+abruptly cut off by a zero valued Gate Off Event).
+2.6.2
+Ports
+ 
+▪
+(Out) "Out" is the Polyphonic Event output port for the Gate On Events. These Events 
+carry the value of the velocity with which the key was pressed. The values are scaled to 
+fit the range [Min … Max] set in the Function page.
+MIDI In
+On Velocity
+ 
+REAKTOR 5.5 - Module Reference - 169
+
+
+--- Page 170 ---
+
+2.6.3
+Properties: Function Page
+ 
+Setting the Range of Output Values
+The range of the output signal is mapped to the interval [Min … Max]. The values for 
+"Min" and "Max" are set with the corresponding edit fields in the Function page of the 
+Module's Properties.
+Fig. 2.24 The “Min”, “Max”, “Lower Limit”, and “Upper Limit” values can be set in the corresponding edit fields of the On 
+Velocity Module's Function page.
+Setting the Range of Input Values
+The range of incoming velocities to which the output values [Min … Max] are scaled, can 
+also be limited with the Lower Limit and Upper Limit edit fields (shown in the Function page 
+screenshot above). The velocity output value of the On Velocity Module is limited to “Min” 
+for incoming MIDI values below “Lower Limit” and to “Max” for incoming MIDI values 
+above “Upper Limit”. The range between the two limits is interpolated linearly between 
+“Min” and “Max” (see below).
+MIDI In
+On Velocity
+ 
+REAKTOR 5.5 - Module Reference - 170
+
+
+--- Page 171 ---
+
+Fig. 2.25 The x-axis of the graph shows the incoming MIDI values whereas the y-axis shows the outgoing velocity values from 
+the On Velocity Module. The values are interpolated linearly between “Min” and “Max.
+The values for the Lower Limit and Upper Limit edit fields lie in the range [0 … 127]. Also, the 
+value for Upper Limit edit field must be greater than that set in the Lower Limit edit field. How­
+ever, the value in the Max edit field can be smaller than the value in the Min edit field to 
+achieve inverted operation. If opposite characteristics are set for two sources, a crossfade 
+effect can be programmed (see below).
+MIDI In
+On Velocity
+ 
+REAKTOR 5.5 - Module Reference - 171
+
+
+--- Page 172 ---
+
+Fig. 2.26 The x-axis of the graph shows the incoming MIDI values whereas the y-axis shows the outgoing velocity values from 
+the On Velocity Module. Setting opposite characteristics for two sources creates a crossfade effect between them, going from 
+low to high MIDI velocity values.
+A switch with an adjustable threshold level can be emulated by setting the Lower Limit and 
+Upper Limit edit fields to neighboring MIDI velocity values, for example, “63” and “64”. 
+When the input value to such a source is “64”, the value in the Min edit field will be out­
+put. Otherwise, the output value is the value in the Max edit field.
+2.6.4
+Example: 6-Step Pitch Sequencer
+ 
+This example shows how to use a 6-Step Sequencer Module (↑8.1, 6-Step Sequencer) to 
+create a sequencer of pitch values along with a Gate signal of uniform velocity. To start, 
+insert a 6-Step Sequencer Module and a Sync Pulse Module (↑2.15, Sync Pulse) into the 
+Structure, as shown in the figure below. For the Sequencer Module's input ports from "S1" 
+to "S6", create controls simply by right-clicking the input ports and choosing the Create 
+Control menu entry. Knobs with the standard MIDI range and resolution are created, per­
+fectly suitable for sequencing pitch values to an oscillator, for example. Next, use the Cre­
+ate Control menu entry to create a Button Module (↑1.2, Button) at the "Rst" (reset) input 
+port. This enables you to reset the sequencer position. Insert an On Velocity Module (↑2.6, 
+MIDI In
+On Velocity
+ 
+REAKTOR 5.5 - Module Reference - 172
+
+
+--- Page 173 ---
+
+On Velocity), set it to Monophonic Mode, and connect it to the "GA" (gate amplitude) input 
+port. This lets you set the velocity of Gate On signals (outgoing at the "G" output port) to 
+the velocity with which the last MIDI or computer keyboard key was pressed.
+Fig. 2.27 The Structure for a 6-step pitch value sequencer.
+Next, connect the Sync Pulse Module (↑2.15, Sync Pulse) to the "Clk" (clock) input port of 
+the Sequencer Module (↑8.1, 6-Step Sequencer). Go to the Sync Pulse Module's Function 
+page and choose the rate at which the sequencer runs from the Rate drop-down menu, 
+shown in the figure below. The duration in this case does not make a difference. The rate 
+will be synchronized to the MIDI Clock and clock Events will only be output to the Se­
+quencer Module if the MIDI Clock is running. The setup shown in this example has the 
+following functionality. When the MIDI Clock is running, the Sequencer Module will go 
+through each step at the rate determined by the Sync Pulse Module. At each step, the 
+"Out" output port will send an Event carrying the value as determined by the knob con­
+nected to the input port of the corresponding step, as well as a Gate On signal that carries 
+the velocity value set by the velocity of the last pressed MIDI key.
+Note that you could also use the Clock Module (↑2.14, Clock) and to get the desired rate 
+using the Event Frequency Divider Module (↑13.4, Event Frequency Divider). The advantage 
+of that method is that you can choose the frequency from the Instrument Panel.
+Fig. 2.28 Use the Rate drop-down menu in the Sync Pulse Module's Function page to choose the rate of clock Events sent 
+to the Sequencer Module.
+MIDI In
+On Velocity
+ 
+REAKTOR 5.5 - Module Reference - 173
+
+
+--- Page 174 ---
+
+2.7
+Off Velocity
+ 
+Fig. 2.29 Off Velocity Module
+2.7.1
+Overview
+ 
+The Off Velocity Module is a Polyphonic event source for the velocity of MIDI Note Off 
+events. A Note Off event sets the output to a value determined by the key release velocity. 
+The range of output values to which the incoming range of MIDI release velocities (from no 
+velocity to maximum velocity) is scaled, is set with the Min and Max edit fields in the 
+Function page. The resolution is such that 128 steps fit into the interval set in the Func­
+tion page, [Min … Max].
+Application
+The Off Velocity Module is necessary if you with to scale (probably release relevant) pa­
+rameters in your Structure to the release velocity of your MIDI keyboard. Note however, 
+that only very few keyboards actually send MIDI key release velocity messages so in most 
+cases this Module will not receive the necessary information from your MIDI controller.
+2.7.2
+Ports
+ 
+▪
+(Out) "Out" is the Polyphonic Event output port for the key release velocity Events. 
+These Events are sent when the key is released and carry the value of the release ve­
+locity with which the key was released. The values are scaled to fit the range [Min … 
+Max] set in the Function page.
+2.7.3
+Properties: Function Page
+ 
+Setting the Range of Output Values
+The range of the output signal is mapped to the interval [Min … Max]. The values for 
+"Min" and "Max" are set with the corresponding edit fields in the Function page of the 
+Module's Properties.
+MIDI In
+Off Velocity
+ 
+REAKTOR 5.5 - Module Reference - 174
+
+
+--- Page 175 ---
+
+Fig. 2.30 The “Min”, “Max”, “Lower Limit”, and “Upper Limit” values can be set in the corresponding edit fields of the Off 
+Velocity Module's Function page.
+Setting the Range of Input Values
+The range of incoming release velocities to which the output values [Min … Max] are 
+scaled, can also be limited with the Lower Limit and Upper Limit edit fields (shown in the 
+Function page screenshot above). The velocity output value of the Off Velocity Module is 
+limited to “Min” for incoming MIDI values below “Lower Limit” and to “Max” for incoming 
+MIDI values above “Upper Limit”. The range between the two limits is interpolated linearly 
+between “Min” and “Max” (see below).
+Fig. 2.31 The x-axis of the graph shows the incoming MIDI values whereas the y-axis shows the outgoing release velocity 
+values from the Off Velocity Module. The values are interpolated linearly between “Min” and “Max.
+MIDI In
+Off Velocity
+ 
+REAKTOR 5.5 - Module Reference - 175
+
+
+--- Page 176 ---
+
+The values for the Lower Limit and Upper Limit edit fields lie in the range [0 … 127]. Also, the 
+value for Upper Limit edit field must be greater than that set in the Lower Limit edit field. How­
+ever, the value in the Max edit field can be smaller than the value in the Min edit field to 
+achieve inverted operation. If opposite characteristics are set for two sources, a crossfade 
+effect can be programmed (see below).
+Fig. 2.32 The x-axis of the graph shows the incoming MIDI values whereas the y-axis shows the outgoing release velocity 
+values from the Off Velocity Module. Setting opposite characteristics for two sources creates a crossfade effect between 
+them, going from low to high MIDI velocity values.
+A switch with an adjustable threshold level can be emulated by setting the Lower Limit and 
+Upper Limit edit fields to neighboring MIDI velocity values, for example, “63” and “64”. 
+When the input value to such a source is “64”, the value in the Min edit field will be out­
+put. Otherwise, the output value is the value in the Max edit field.
+2.7.4
+Example: Gate Off with Off Velocity
+ 
+This example shows a Structure with which you can send the Off Velocity value when a 
+Gate Off Event is received. Use the Separator Module (↑13.14, Separator) to sort out the 
+Gate Off Event (and block the Gate On Event) by connecting the "Lo" output port with Thld 
+= 0. Let this signal be used as the trigger signal for the Value Module (↑13.15, Value) 
+which then sends the Off Velocity, retrieved from the Off Velocity Module.
+MIDI In
+Off Velocity
+ 
+REAKTOR 5.5 - Module Reference - 176
+
+
+--- Page 177 ---
+
+Fig. 2.33 The Structure for sending a Gate Off Event with Velocity Off value.
+2.8
+Controller
+ 
+Fig. 2.34 Controller Module
+2.8.1
+Overview
+ 
+The Controller Module is a Monophonic Event source for MIDI Controller events. This Mod­
+ule "listens" only to MIDI signals with a certain CC value, set in the Function page. A MIDI 
+event with the set CC value, incoming at the parent Instruments MIDI In, sets the Control­
+ler Module's output to a value determined by the position of the controller (e.g. modulation 
+wheel). The range of the output values to which the incoming range of MIDI controller val­
+ues (in the range [0 … 127]) is scaled, is set with the Min and Max edit fields in the Func­
+tion page. The resolution of the output signal is determined by the Step Size edit field in the 
+Function page.
+The current position of all MIDI controllers (and faders) of an Instrument can be stored in 
+a Snapshot from where it can be recalled at a later time. If the Snap Isolate checkbox is en­
+gaged, the Controller Module’s output value will not respond to Snapshot recall.
+Application
+Use the Controller Module to tie certain MIDI messages from certain controllers such as 
+faders or knobs to specific processes in your Instrument's Structure. For example, the 
+MIDI modulation wheel has the CC value "1". You could then set the Controller/Note edit field 
+to "1" and use the Controller Module's output to control the vibrato amount or some other 
+modulation parameter.
+MIDI In
+Controller
+ 
+REAKTOR 5.5 - Module Reference - 177
+
+
+--- Page 178 ---
+
+2.8.2
+Ports
+ 
+▪
+(Out) "Out" is the Monophonic Event output port for the values of the selected MIDI 
+controller messages. The values are scaled to fit the range [Min … Max] set in the 
+Function page.
+2.8.3
+Properties: Function Page
+ 
+Setting the Range of Output Values
+The range of the output signal is mapped to the interval [Min … Max]. The values for 
+"Min" and "Max" are set with the corresponding edit fields in the Function page of the 
+Module's Properties.
+Fig. 2.35 The “Min”, “Max”, “Lower Limit”, and “Upper Limit” values can be set in the corresponding edit fields of the 
+Controller Module's Function page.
+Setting the Range of Input Values
+The range of incoming release velocities to which the output values [Min … Max] are 
+scaled, can also be limited with the Lower Limit and Upper Limit edit fields (shown in the 
+Function page screenshot above). The output value of the Controller Module is limited to 
+“Min” for incoming MIDI values below “Lower Limit” and to “Max” for incoming MIDI val­
+ues above “Upper Limit”. The range between the two limits is interpolated linearly be­
+tween “Min” and “Max” (see below).
+MIDI In
+Controller
+ 
+REAKTOR 5.5 - Module Reference - 178
+
+
+--- Page 179 ---
+
+Fig. 2.36 The x-axis of the graph shows the incoming MIDI values whereas the y-axis shows the outgoing release velocity 
+values from the Controller Module. The values are interpolated linearly between “Min” and “Max.
+Setting the Step Size of the Output Values
+► To set the resolution of the output values in the range [Min … Max], enter the corre­
+sponding increment (step size) value into the Step Size edit field, shown in the screenshot 
+below.
+Setting the CC Value of the Forwarded MIDI Message
+The Controller Module "listens" to MIDI messages with a set CC value.
+► To set the CC value of the MIDI messages that reach the Controller Module, enter the 
+desired value into the Controller/Note edit field shown in the screenshot below.
+The CC values of some standard MIDI controllers are:
+▪
+1 Modulation Wheel
+MIDI In
+Controller
+ 
+REAKTOR 5.5 - Module Reference - 179
+
+
+--- Page 180 ---
+
+▪
+2 Breath Controller
+▪
+7 Volume
+▪
+10 Panpot
+▪
+64 Sustain Switch
+▪
+65 Portamento Switch
+▪
+66 Hold Switch (Sostenuto)
+See your MIDI keyboard’s MIDI implementation chart to find out which controllers it can 
+transmit.
+Activating Soft Takeover
+When the Controller Module's output value is operated by an external MIDI controller, it 
+normally jumps straight to the received controller value. Such a jump can be quite notice­
+able in the sound, depending on the controlled parameter (for example, amplifier level). 
+Thus, such jumps can be undesirable. You can avoid such behavior with the Soft Takeover 
+feature. It causes the control to only move when the value received via MIDI reaches or 
+goes past the current position.
+► To activate Soft Takeover, engage the Soft Takeover checkbox, shown in the figure above.
+Keeping the Controller Value Isolated from the Snapshot
+The current position of all MIDI controllers (and faders) of an Instrument can be stored in 
+a Snapshot from where it can be recalled at a later time.
+► To keep the controller value from being saved with Snapshots, go to the Function page 
+and engage the Snap Isolate checkbox. This way the Controller Module’s output value will 
+not respond to Snapshot recall.
+Please refer to section 4.1in the Application Reference for more information on Snapshot re­
+call.
+MIDI In
+Controller
+ 
+REAKTOR 5.5 - Module Reference - 180
+
+
+--- Page 181 ---
+
+2.8.4
+Example: Master Volume
+ 
+This example shows how to control the Ensemble's master volume level using the MIDI 
+Controller that is usually assigned for such a task, MIDI CC 7. The Structure for this func­
+tionality is shown in the figure below. The Controller Module's output signal is per default 
+in the range [0 … 1]. This range needs to be converted to the logarithmic scale for the 
+Master Tune/Level Module's (↑14.16, Master Tune/Level) "Lvl" input port. Use the Log (A-
+to-Lvl) Module (↑4.17, Log (A-to-Lvl)) for this task (shown in the Structure below).
+Fig. 2.37 The Controller Module can be used to send specific MIDI Controller messages to parts of your Structure, such as 
+the "Lvl" input port of the Master Tune/Level Module.
+Last, you need to set the CC value from which the Controller Module receives its messag­
+es. This is done with the Controller/Note edit field in the Controller Module's Function page, 
+shown in the figure below. The standard MIDI Controller number for the volume is "7", as 
+reflected by the edit field shown below.
+Fig. 2.38 Use the Controller/Note edit field to set the CC number of the MIDI Controller from which the Controller Module is 
+to receive its messages.
+2.9
+Channel Aftertouch
+ 
+Fig. 2.39 A Channel Aftertouch Module
+2.9.1
+Overview
+ 
+The Channel Aftertouch Module is a Monophonic Event source for MIDI Channel After­
+touch events. An incoming MIDI Channel Aftertouch event sets the output to a value de­
+termined by the pressure on all keys. The range of output values to which the incoming 
+MIDI In
+Controller
+ 
+REAKTOR 5.5 - Module Reference - 181
+
+
+--- Page 182 ---
+
+range of Aftertouch values [0 … 127] is scaled, is set with the Min and Max edit fields in 
+the Function page. The resolution is such that 128 steps fit into the interval set in the 
+Function page, [Min … Max].
+Application
+If you wish your Instrument to be able to receive Channel Aftertouch messages from your 
+MIDI keyboard, placing this Module into the Instrument's Structure is necessary. You 
+could use Channel Aftertouch messages to modulate the cutoff frequency or resonance of 
+a filter, or even the modulation index of an FM synth. Note that not all MIDI keyboards 
+send Channel Aftertouch messages.
+2.9.2
+Ports
+ 
+▪
+(Out) "Out" is the Monophonic Event output port for Channel Aftertouch values. These 
+Events are sent after keys are pressed. The values are scaled to fit the range [Min … 
+Max] set in the Function page.
+2.9.3
+Properties: Function Page
+ 
+Setting the Range of Output Values
+The range of the output signal is mapped to the interval [Min … Max]. The values for 
+"Min" and "Max" are set with the corresponding edit fields in the Function page of the 
+Module's Properties.
+Fig. 2.40 The “Min”, “Max”, “Lower Limit”, and “Upper Limit” values can be set in the corresponding edit fields of the 
+Channel Aftertouch Module's Function page.
+Setting the Range of Input Values
+The range of incoming Aftertouch values to which the output values [Min … Max] are 
+scaled, can also be limited with the Lower Limit and Upper Limit edit fields (shown in the 
+Function page screenshot above). The output value of the Channel Aftertouch Module is 
+MIDI In
+Channel Aftertouch
+ 
+REAKTOR 5.5 - Module Reference - 182
+
+
+--- Page 183 ---
+
+limited to “Min” for incoming MIDI values below “Lower Limit” and to “Max” for incoming 
+MIDI values above “Upper Limit”. The range between the two limits is interpolated linearly 
+between “Min” and “Max” (see below).
+Fig. 2.41 The x-axis of the graph shows the incoming MIDI Channel Aftertouch values whereas the y-axis shows the outgoing 
+values from the Channel Aftertouch Module. The values are interpolated linearly between “Min” and “Max."
+2.9.4
+Example: Channel Aftertouch for Filter Cutoff
+ 
+The example Structure below shows how you could use the Mult/Add Module (↑4.6, Mult/
+Add (a * b + c), X+) to modulate the filter cutoff pitch with the signal from a Channel Af­
+tertouch Module. Just multiply the output of the Channel Aftertouch Module with the val­
+ue which determines the amount of Aftertouch modulation for the cutoff signal and add it 
+to the regular cutoff pitch value, received from the "P Cutoff" Knob Module (↑1.1, Fader/
+Knob). Feed the result to the Filter Module's "P" (pitch) input port. Note that the final 
+modulation amount also depends on the "Min" and "Max" settings in the Channel After­
+touch Module's Function page. For the Channel Aftertouch Module, the modulation is ap­
+plied to all Voices.
+MIDI In
+Channel Aftertouch
+ 
+REAKTOR 5.5 - Module Reference - 183
+
+
+--- Page 184 ---
+
+Fig. 2.42 The Structure for modulating a filter cutoff pitch with a Monophonic MIDI Aftertouch signal.
+2.10
+Poly Aftertouch
+ 
+Fig. 2.43 A Poly Aftertouch Module
+2.10.1
+Overview
+ 
+The Poly Aftertouch Module is a Polyphonic Event source for MIDI Channel Aftertouch 
+events. An incoming MIDI Channel Aftertouch event sets the output value of a Polyphonic 
+Voice to a value determined by the pressure on the corresponding key. The range of output 
+values to which the incoming range of Aftertouch values [0 … 127] is scaled, is set with 
+the Min and Max edit fields in the Function page. The resolution is such that 128 steps fit 
+into the interval set in the Function page, [Min … Max].
+Application
+If you wish your Instrument to be able to receive Polyphonic Channel Aftertouch messages 
+from your MIDI keyboard, placing this Module into the Instrument's Structure is necessary. 
+You could use Polyphonic Channel Aftertouch messages to modulate the cutoff frequency 
+or resonance of a filter, or even the modulation index of an FM synth for each Polyphonic 
+Voice separately. Note that only very few MIDI keyboards send Polyphonic Channel After­
+touch messages.
+2.10.2
+Ports
+ 
+▪
+(Out) "Out" is the Polyphonic Event output port for Channel Aftertouch values. These 
+Events are sent after each key is pressed. The values are scaled to fit the range [Min … 
+Max] set in the Function page.
+MIDI In
+Poly Aftertouch
+ 
+REAKTOR 5.5 - Module Reference - 184
+
+
+--- Page 185 ---
+
+2.10.3
+Properties: Function Page
+ 
+Setting the Range of Output Values
+The range of the output signal is mapped to the interval [Min … Max]. The values for 
+"Min" and "Max" are set with the corresponding edit fields in the Function page of the 
+Module's Properties.
+Fig. 2.44 The “Min”, “Max”, “Lower Limit”, and “Upper Limit” values can be set in the corresponding edit fields of the 
+Poly Aftertouch Module's Function page.
+Setting the Range of Input Values
+The range of incoming Aftertouch values to which the output values [Min … Max] are 
+scaled, can also be limited with the Lower Limit and Upper Limit edit fields (shown in the 
+Function page screenshot above). The output value of the Poly Aftertouch Module is limit­
+ed to “Min” for incoming MIDI values below “Lower Limit” and to “Max” for incoming 
+MIDI values above “Upper Limit”. The range between the two limits is interpolated linearly 
+between “Min” and “Max” (see below).
+MIDI In
+Poly Aftertouch
+ 
+REAKTOR 5.5 - Module Reference - 185
+
+
+--- Page 186 ---
+
+Fig. 2.45 The x-axis of the graph shows the incoming MIDI Channel Aftertouch values whereas the y-axis shows the outgoing 
+values from the Poly Aftertouch Module. The values are interpolated linearly between “Min” and “Max.
+2.10.4
+Example: Poly Aftertouch for Filter Cutoff
+ 
+The example Structure below shows how you could use the Mult/Add Module (↑4.6, Mult/
+Add (a * b + c), X+) to modulate the filter cutoff pitch with the signal from a Poly After­
+touch Module. Just multiply the output of the Poly Aftertouch Module with the value 
+which determines the amount of Aftertouch modulation for the cutoff signal and add it to 
+the regular cutoff pitch value, received from the "P Cutoff" Knob Module (↑1.1, Fader/
+Knob). Feed the result to the Filter Module's "P" (pitch) input port. Note that the final 
+modulation amount also depends on the "Min" and "Max" settings in the Poly Aftertouch 
+Module's Function page. For the Poly Aftertouch Module, the modulation is applied only to 
+the Voice whose corresponding key receives the Aftertouch messages.
+MIDI In
+Poly Aftertouch
+ 
+REAKTOR 5.5 - Module Reference - 186
+
+
+--- Page 187 ---
+
+Fig. 2.46 The Structure for modulating a filter cutoff pitch with a Polyphonic MIDI Aftertouch signal.
+2.11
+Sel. Poly Aftertouch
+ 
+Fig. 2.47 Sel Poly Aftertouch Module
+2.11.1
+Overview
+ 
+The Sel Poly Aftertouch Module is a Monophonic Event source for selected MIDI Poly Af­
+tertouch events. An Aftertouch message from a pressed key with the MIDI note number se­
+lected in the Function page sets the output to a value determined by the pressure on the 
+key. The range of output values to which the incoming range of Aftertouch values [0 … 
+127] is scaled, is set with the Min and Max edit fields in the Function page. The resolution 
+of the output signal is determined by the Step Size edit field in the Function page.
+The current position of the Aftertouch value of the Instrument can be stored in a Snapshot 
+from where it can be recalled at a later time. If the Snap Isolate checkbox is engaged, the 
+Controller Module’s (↑2.8, Controller) output value will not respond to Snapshot recall.
+There are very few keyboards that generate Poly Aftertouch events.
+Application
+Whereas the Poly Aftertouch Module responds to Aftertouch messages from all MIDI notes, 
+the Sel Poly Aftertouch Module only responds to Aftertouch messages from one MIDI note. 
+You could use a number of Sel Poly Aftertouch Module's to build a highly customized live 
+Instrument where the Aftertouch signals of different keys have a different modulation ef­
+fect in your Instrument's Structure.
+MIDI In
+Sel. Poly Aftertouch
+ 
+REAKTOR 5.5 - Module Reference - 187
+
+
+--- Page 188 ---
+
+2.11.2
+Ports
+ 
+▪
+(Out) "Out" is the Monophonic Event output port for the values of the selected MIDI 
+note's Aftertouch messages. The values are scaled to fit the range [Min … Max] set in 
+the Function page.
+2.11.3
+Properties: Function Page
+ 
+Setting the Range of Output Values
+The range of the output signal is mapped to the interval [Min … Max]. The values for 
+"Min" and "Max" are set with the corresponding edit fields in the Function page of the 
+Module's Properties.
+Fig. 2.48 The “Min”, “Max”, “Lower Limit”, and “Upper Limit” values can be set in the corresponding edit fields of the Sel 
+Poly Aftertouch Module's Function page.
+Setting the Range of Input Values
+The range of incoming Aftertouch values to which the output values [Min … Max] are 
+scaled, can also be limited with the Lower Limit and Upper Limit edit fields (shown in the 
+Function page screenshot above). The output value of the Sel Poly Aftertouch Module is 
+limited to “Min” for incoming MIDI values below “Lower Limit” and to “Max” for incoming 
+MIDI values above “Upper Limit”. The range between the two limits is interpolated linearly 
+between “Min” and “Max” (see below).
+MIDI In
+Sel. Poly Aftertouch
+ 
+REAKTOR 5.5 - Module Reference - 188
+
+
+--- Page 189 ---
+
+Fig. 2.49 The x-axis of the graph shows the incoming MIDI Channel Aftertouch values whereas the y-axis shows the outgoing 
+values from the Sel Poly Aftertouch Module. The values are interpolated linearly between “Min” and “Max."
+Setting the Step Size of the Output Values
+► To set the resolution of the output values in the range [Min … Max], enter the corre­
+sponding increment (step size) value into the Step Size edit field, shown in the screenshot 
+below.
+Setting the MIDI Note Value of the Forwarded Aftertouch Message
+The Sel Poly Aftertouch Module "listens" to MIDI messages from a key with a specific MIDI 
+Note value.
+► To set the MIDI Note value of the MIDI messages that reach the Sel Poly Aftertouch 
+Module, enter the desired value into the Controller/Note edit field shown in the screenshot 
+below.
+MIDI In
+Sel. Poly Aftertouch
+ 
+REAKTOR 5.5 - Module Reference - 189
+
+
+--- Page 190 ---
+
+Activating Soft Takeover
+When the Sel Poly Aftertouch Module's output value is operated by an external MIDI con­
+troller, it normally jumps straight to the received controller value. Such a jump can be 
+quite noticeable in the sound, depending on the controlled parameter (for example, ampli­
+fier level). Thus, such jumps can be undesirable. You can avoid such behavior with the 
+Soft Takeover feature. It causes the control to only move when the value received via MIDI 
+reaches or goes past the current position.
+► To activate Soft Takeover, engage the Soft Takeover checkbox, shown in the figure above.
+Keeping the Aftertouch Value Isolated from the Snapshot
+The current value of the Aftertouch message can be stored in a Snapshot from where it 
+can be recalled at a later time.
+► To keep the Aftertouch value from being saved with Snapshots, go to the Function page 
+and engage the Snap Isolate checkbox. This way the Sel Poly Aftertouch Module’s output val­
+ue will not respond to Snapshot recall.
+Please refer to section 4.1in the Application Reference for more information on Snapshot re­
+call.
+2.11.4
+Example: Sel Poly Aftertouch for Filter Cutoff
+ 
+The example Structure below shows how you could use the Mult/Add Module (↑4.6, Mult/
+Add (a * b + c), X+) to modulate the filter cutoff pitch with the signal from a Sel Poly Af­
+tertouch Module. Just multiply the output of the Sel Poly Aftertouch Module with the val­
+ue which determines the amount of Aftertouch modulation for the cutoff signal and add it 
+to the regular cutoff pitch value, received from the "P Cutoff" Knob Module (↑1.1, Fader/
+Knob). Feed the result to the Filter Module's "P" (pitch) input port. Note that the final 
+modulation amount also depends on the "Min" and "Max" settings in the Sel Poly After­
+touch Module's Function page. For the Sel Poly Aftertouch Module, the modulation is ap­
+plied only to the Voice that carries the MIDI Note specified by the Controller/Note edit field in 
+the Sel Poly Aftertouch Module's Function page.
+MIDI In
+Sel. Poly Aftertouch
+ 
+REAKTOR 5.5 - Module Reference - 190
+
+
+--- Page 191 ---
+
+Fig. 2.50 The Structure for modulating a filter cutoff pitch with a Polyphonic MIDI Aftertouch signal received from only one 
+specific MIDI key.
+2.12
+Program Change
+ 
+Fig. 2.51 A Program Change Module
+2.12.1
+Overview
+ 
+The Program Change Module is a Monophonic Event source for MIDI Program Change 
+messages. A MIDI Program Change event sets the Module’s output to the value deter­
+mined by the transmitted program number. The range of output values to which the in­
+coming range of Aftertouch values [0 … 127] is scaled, is set with the Min and Max edit 
+fields in the Function page. The resolution is such that 128 steps fit into the interval set 
+in the Function page, [Min … Max].
+Application
+The Program Change Module is very useful when you want to use MIDI Program Change 
+messages to change the settings of specific parts of the Structure instead of recalling a 
+whole Instrument (or Ensemble) Snapshot. When using this Module, you probably want to 
+disengage the Recall by MIDI checkbox in the parent Instrument's Function page so that the 
+MIDI Program Change events do not also recall the parent Instrument's Snapshots.
+2.12.2
+Ports
+ 
+▪
+(Out) "Out" is the Monophonic Event output port for Program Change messages. The 
+values are scaled to fit the range [Min … Max] set in the Function page.
+MIDI In
+Program Change
+ 
+REAKTOR 5.5 - Module Reference - 191
+
+
+--- Page 192 ---
+
+2.12.3
+Properties: Function Page
+ 
+Setting the Range of Output Values
+The range of the output signal is mapped to the interval [Min … Max]. The values for 
+"Min" and "Max" are set with the corresponding edit fields in the Function page of the 
+Module's Properties.
+Fig. 2.52 The “Min”, “Max”, “Lower Limit”, and “Upper Limit” values can be set in the corresponding edit fields of the 
+Program Change Module's Function page.
+Setting the Range of Input Values
+The range of incoming MIDI Program Change values to which the output values [Min … 
+Max] are scaled, can also be limited with the Lower Limit and Upper Limit edit fields (shown in 
+the Function page screenshot above). The output value of the Program Change Module is 
+limited to “Min” for incoming MIDI values below “Lower Limit” and to “Max” for incoming 
+MIDI values above “Upper Limit”. The range between the two limits is interpolated linearly 
+between “Min” and “Max” (see below).
+MIDI In
+Program Change
+ 
+REAKTOR 5.5 - Module Reference - 192
+
+
+--- Page 193 ---
+
+Fig. 2.53 The x-axis of the graph shows the incoming MIDI Program Change values whereas the y-axis shows the outgoing 
+values from the Program Change Module. The values are interpolated linearly between “Min” and “Max."
+2.12.4
+Example: Snapshot Recall and Program Change
+ 
+This example illustrates how to forward MIDI Program Change messages to the Snapshot 
+Module (↑14.23, Snapshot) to recall REAKTOR Snapshots and conversely, how to have 
+REAKTOR Snapshot recall operations trigger MIDI Program Change messages to be sent 
+from REAKTOR. The Structure that achieves this is shown in the Structure below.
+The Program Change Module should send a value in the range [1 … 128] to address one 
+of the 128 Snapshots in the active Bank to be recalled. For that, go to the Program 
+Change Module's Function page and set the "Min" and "Max" values to "1" and "128", re­
+spectively. Use the Order Module (↑13.12, Order) to first specify at the "Snp" input port 
+the Snapshot number to be recalled (upon receiving a Program Change Event) and only 
+then trigger the Snapshot recall operation at the "Recl" input port. Similarly, Use the Value 
+Module (↑13.15, Value) to send the Event carrying the recalled Snapshot number to the 
+Program Change Out Module (↑3.7, Program Change Out) when a Snapshot recall opera­
+tion takes place. The "Min" and "Max" values in the Program Change Out Module's (↑3.7, 
+Program Change Out) Function page should also be set to "1" and "128", respectively.
+MIDI In
+Program Change
+ 
+REAKTOR 5.5 - Module Reference - 193
+
+
+--- Page 194 ---
+
+Fig. 2.54 You can use the Program Change (Out) and Snapshot Modules to link Snapshot operations to external MIDI devi­
+ces.
+2.13
+Start/Stop
+ 
+Fig. 2.55 Start/Stop Module
+2.13.1
+Overview
+ 
+The Start/Stop Module is a Monophonic Event source for MIDI Clock Start and Stop 
+events. The output Events serve to synchronize processes in your Structure (like LFOs, Se­
+quencers, etc.) with external MIDI devices or the internal Master Clock. The Start/Stop 
+Module's "G" (gate) output port sends a Monophonic Gate signal. Gate On corresponds to a 
+running clock and Gate Off corresponds to a stopped clock. The Gate On value can be set 
+with the Output Value edit field in the Function page. The output signal jumps to the Output 
+value when the Run button in the Main Toolbar is pressed or when a MIDI Start event is 
+received at the parent Instruments MIDI In. The signal jumps back to zero when the Stop 
+button is pressed or when a MIDI Stop event is received.
+Please refer to subsection 3.3.3 in the Application Reference for more information on oper­
+ating the Run and Stop buttons.
+MIDI In
+Start/Stop
+ 
+REAKTOR 5.5 - Module Reference - 194
+
+
+--- Page 195 ---
+
+Application
+The Start/Stop Module is typically connected to the reset input of sequencers and Event 
+dividers which are synchronized with the MIDI Clock to force a synchronized start. In more 
+rare cases you might want to synchronize an LFO or an oscillator to MIDI Clock Start 
+events. Use a Separator Module (↑13.14, Separator) to separate Clock start Events from 
+Clock Stop Events.
+2.13.2
+Ports
+ 
+▪
+(G) "G" (gate) is the Monophonic Event output port for a MIDI Clock Start and MIDI 
+Clock Stop messages. The output is set to the value specified in the Function page 
+when the MIDI Clock is running and to zero when the Clock is stopped.
+▪
+(Rst) "Rst" (reset) is the Monophonic Event output port for MIDI Clock Reset messages. 
+An Event with the value "1" is sent when the Clock starts from the beginning of the 
+song (i.e. not when the Clock starts running again after being paused). Use this output 
+port to reset sequencers, for example.
+2.13.3
+Properties: Function Page
+ 
+Setting the Gate On Output Value
+► To set the value of the Event at the "G" (gate) output port when the Clock is running, go 
+the Function page and enter the desired value into the Output Value edit field, as shown in 
+the figure below.
+2.13.4
+Example: Multiplex Sequencer
+ 
+This example shows how to build a sequencer with variable length, but with a maximum of 
+16 steps. The first part of the Structure is shown in the figure below. There you see that 
+the core of the sequencer is a Multiplex 16 Module and the values of the steps are re­
+ceived from Knob Modules (↑1.1, Fader/Knob) at the input ports "0" to "15". The se­
+quence length of the step at which the sequencer "folds back" to the first step, is set with 
+the knob labeled "Length" at the "Len" input port. The actual position of the sequencer is 
+MIDI In
+Start/Stop
+ 
+REAKTOR 5.5 - Module Reference - 195
+
+
+--- Page 196 ---
+
+received at the "Pos" (position) input port in the form of a regular Events with incremental 
+values. The value of the Event determines the sequencer position where values greater 
+than "Len" are "folded back" to the set sequencer range.
+Fig. 2.56 16 step sequencer
+In this example, the "Pos" values are ultimately received from the Sync Clock Module 
+(↑2.15, Sync Pulse) which sends clock Events at regular time intervals, synchronized to 
+the MIDI Clock. The rate of outgoing Events can be set at the Sync Clock Module's (↑2.15, 
+Sync Pulse) Function page, with the Rate drop-down menu. In order to get regular Events 
+carrying incremental values, the Counter Module (↑13.2, Counter) has been used. Each 
+Event from the Sync Clock Module (↑2.15, Sync Pulse) increments the output of the 
+Counter Module (↑13.2, Counter) by one, which then ends up being used as the "Pos" val­
+ue for the Multiplex 16 Module. At the Counter Module's "Set" input port you should have 
+a Button Module (↑1.2, Button). In its Function page, set the Button Module to Trigger 
+Mode and its "Max" value to zero. This enables you to reset the sequencer to its first posi­
+tion from the Instrument Panel.
+As an additional feature, the XY Module (↑1.14, XY) has been used to graphically track the 
+current sequencer position. The final Structure with this implemented is shown in the first 
+figure at the end of the example and the final Panel representation of the sequencer is 
+shown at the last figure at the end of the example. Please look at that figure to see where 
+we are headed with the XY Module. The XY Module should be configured to draw a rectan­
+gle from the coordinates (Step, 0) to (Step + 1, 1). This corresponds to going to its View 
+MIDI In
+Start/Stop
+ 
+REAKTOR 5.5 - Module Reference - 196
+
+
+--- Page 197 ---
+
+page and choosing the Rectangle menu entry from the Object Type drop-down menu (shown 
+in the figure below). Also, you don't need a cursor and therefore choose the None menu 
+entry from the Cursor Type drop-down menu (also shown in the figure below). While you are 
+already in the XY Module's View page, disengage the Show Label and Show Value checkboxes 
+and set the Height and Width edit fields so that the XY Module's Panel representation looks 
+similar to what is depicted in the last figure of this example.
+Fig. 2.57 To draw a rectangle from (X1, Y1) to (X2, Y2), choose the Rectangle menu entry from the Object Type drop-down 
+menu.
+The rectangle object type causes the XY Module's Panel representation to draw a rectangle 
+from the coordinates (X1, Y1) to the coordinates (X2, Y2). We want to turn the XY Module 
+(↑1.14, XY) into a row of 16 "imaginary" rectangles, each corresponding to one of the 16 
+steps in the sequencer. This is done the easiest when each box has the dimensions 1 by 
+1. For this reason, it is necessary to set the range of displayed values correctly in the XY 
+Module's Function page. Set the "Min" and "Max" values for the X coordinate to "0" and 
+"16", respectively. "Min" and "Max" for the Y coordinate should be "0" and "1", respective­
+ly. This is shown in the figure below.
+Fig. 2.58 Use the Min and Max edit fields to set the range for the X and Y coordinates to [0 … 16] and [0 … 1], respective­
+ly.
+Now that you have configured the XY Module (↑1.14, XY), you just need to feed the cor­
+rect values from the Multiplex 16 Module to the input ports for the corresponding coordi­
+nates. Remember you wish to draw a rectangle from the coordinates (Step, 0) to (Step + 
+1, 1). As shown in the Structure depicted below, connect the "Stp" (step) output port off 
+the Multiplex 16 Module to the "X1" input port of the XY Module, and the value Step + 1 
+(using an Add Module, see also ↑4.2, Add, +) to the "X2" input port. Furthermore, connect 
+the constant value "1" to the "Y2" input port. Your resulting Structure should look like the 
+first figure below and its Instrument Panel counterpart should look similar to what is 
+MIDI In
+Start/Stop
+ 
+REAKTOR 5.5 - Module Reference - 197
+
+
+--- Page 198 ---
+
+shown in the second figure below. Numeric Display Modules (↑1.8, Meter) have been add­
+ed at the "Stp" and "Bar" output ports to give you quantitative visual access to the step and 
+bar positions of the sequencer.
+Fig. 2.59 The Structure for a simple sequencer with variable length and a simple step position display.
+An additional feature to add would be that resetting the MIDI Clock also causes the se­
+quencer position to be reset as well. Let's use the Start/Stop Module as that source of "re­
+set" Events. For this, a reset operation should send the value "0" to the Counter Module's 
+(↑13.2, Counter) "Set" input port. Since the "Rst" output port sends an Event with value 
+"1", use a Value Module (↑13.15, Value) to change the Event's value to "0" and the a 
+Merge Module to merge this reset signal with that received from the "Reset" button.
+Fig. 2.60The Instrument Panel of the simple sequencer.
+MIDI In
+Start/Stop
+ 
+REAKTOR 5.5 - Module Reference - 198
+
+
+--- Page 199 ---
+
+2.14
+Clock
+ 
+Fig. 2.61 Clock Module
+2.14.1
+Overview
+ 
+The Clock Module is a Monophonic Event source for a clock signal which corresponds to 
+the external MIDI Clock or the internal Master Clock. For each 96th note an Event is sent 
+from the output port. The value of that Event can be set with the Output Value edit field in 
+the Function page.
+Application
+Usually you would use the Clock Module to run sequencers (Sequencer Modules, ↑8, Se­
+quencer, for example). In some cases your sequencers use 96th note increments. In most 
+cases, however, you want to use sixteenth notes, eighth notes, quarter notes, half notes, 
+and so on. To get Clock Events at these rates you need to feed the output of the Clock 
+Module into the "Trig" (trigger) input port of an Event Frequency Divider Module (↑13.4, 
+Event Frequency Divider). This is the difference between the Clock Module and the Sync 
+Pulse Module: with the help of the Event Frequency Divider Module (↑13.4, Event Fre­
+quency Divider) you can extract Events that run at arbitrary rates from the Clock Module 
+whereas the repetition rate of the Sync Pulse Module is set in its Function page.
+2.14.2
+Ports
+ 
+▪
+(Out) "Out" is the Monophonic output port for the Events which come at a rate of 96th 
+notes synchronized to the MIDI Clock. The values of these Events are set in the Func­
+tion page.
+MIDI In
+Clock
+ 
+REAKTOR 5.5 - Module Reference - 199
+
+
+--- Page 200 ---
+
+2.14.3
+Properties: Function Page
+ 
+Setting the Output Value
+► To set the value of the 96th note Events at the output port, go the Function page and 
+enter the desired value into the Output Value edit field, as shown in the figure below.
+2.14.4
+Example: 1/16th Notes Event Source
+ 
+The Clock Module is a source of Events that run at a constant rate of 96th notes, synced 
+to the MIDI Clock. To get arbitrary note divisions, combine the Clock Module with the Fre­
+quency Divider Module (↑13.4, Event Frequency Divider). As shown in the Structure be­
+low, connect the Clock Module to the Frequency Divider Module's "Trig" input port. To get 
+a Gate On Events (followed by Gate Off Events) running at the rate of sixteenth notes, send 
+the value "6" to the "N" input port. This is because 96 / 6 = 16. To allocate an equal time 
+interval for the Gate On values as to the Gate Off values at the Frequency Divider Module's 
+(↑13.4, Event Frequency Divider) output, send the value "0.5" to the "W" (width) input 
+port.
+Fig. 2.62 Use the Frequency Divider Module to get arbitrary note divisions from the Clock Module.
+2.15
+Sync Pulse
+ 
+Fig. 2.63 Sync Pulse Module
+MIDI In
+Clock
+ 
+REAKTOR 5.5 - Module Reference - 200
+
+
+--- Page 201 ---
+
+2.15.1
+Overview
+ 
+The Sync Pulse Module is a Monophonic Event source for a clock signal which is derived 
+from an external MIDI Clock or the internal Master Clock. The output of the Sync Pulse 
+Module is a Monophonic Gate signal. The Gate On value can be set with Output Value edit 
+field in the Function page. The Gate Off value is zero. At each beat the output signal 
+jumps to the Gate On value and back to zero after a certain time interval (duration). The 
+rate of beats and the duration are set in the Function page. The Module is activated and 
+deactivated by MIDI Start and MIDI Stop Events, respectively.
+Application
+Use the Sync Pulse Module to drive sequencers at a static rate. You can also connect the 
+output port to the "G" (gate) input port of any Sampler or Envelope Module to trigger these 
+Modules at a static rate. Of course, triggering happens in synch to the MIDI Clock and only 
+when the MIDI Clock is running.
+2.15.2
+Ports
+ 
+▪
+(Out) "Out" is the Monophonic Event output port for the Gate On and Gate Off signals 
+which are synchronized to the MIDI Clock and take place with a rate and duration set 
+in the Function page.
+2.15.3
+Properties: Function Page
+ 
+Setting the Value of the Gate On Events
+► To set the value of the Gate On Events at the output port, go the Function page and 
+enter the desired value into the Output Value edit field, as shown in the figure below.
+Setting the Rate and Duration of the Gate On Events
+► To set the rate of the clock signal (quarter, eighth, sixteenth notes, etc.), choose the 
+desired rate from the Rate drop-down menu (shown in the figure below).
+MIDI In
+Sync Pulse
+ 
+REAKTOR 5.5 - Module Reference - 201
+
+
+--- Page 202 ---
+
+► To set the duration of the Gate signal (eighth, sixteenth note, etc.), choose the desired 
+duration from the Duration drop-down menu (shown in the figure below).
+2.15.4
+Example: 6-Step Pitch Sequencer
+ 
+This example shows how to use a 6-Step Sequencer Module (↑8.1, 6-Step Sequencer) to 
+create a sequencer of pitch values along with a Gate signal of uniform velocity. To start, 
+insert a 6-Step Sequencer Module and a Sync Pulse Module into the Structure, as shown 
+in the figure below. For the Sequencer Module's input ports from "S1" to "S6", create con­
+trols simply by right-clicking the input ports and choosing the Create Control menu entry. 
+Knobs with the standard MIDI range and resolution are created, perfectly suitable for se­
+quencing pitch values to an oscillator, for example. Next, use the Create Control menu entry 
+to create a Button Module (↑1.2, Button) at the "Rst" (reset) input port. This enables you 
+to reset the sequencer position. Insert an On Velocity Module (↑2.6, On Velocity), set it to 
+Monophonic Mode, and connect it to the "GA" (gate amplitude) input port. This lets you 
+set the velocity of Gate On signals (outgoing at the "G" output port) to the velocity with 
+which the last MIDI or computer keyboard key was pressed.
+Fig. 2.64 The Structure for a 6-step pitch value sequencer.
+Next, connect the Sync Pulse Module to the "Clk" (clock) input port of the Sequencer 
+Module. Go to the Sync Pulse Module's Function page and choose the rate at which the 
+sequencer runs from the Rate drop-down menu, shown in the figure below. The duration in 
+this case does not make a difference. The rate will be synchronized to the MIDI Clock and 
+clock Events will only be output to the Sequencer Module (↑8, Sequencer) if the MIDI 
+MIDI In
+Sync Pulse
+ 
+REAKTOR 5.5 - Module Reference - 202
+
+
+--- Page 203 ---
+
+Clock is running. The setup shown in this example has the following functionality. When 
+the MIDI Clock is running, the Sequencer Module (↑8, Sequencer) will go through each 
+step at the rate determined by the Sync Pulse Module. At each step, the "Out" output port 
+will send an Event carrying the value as determined by the knob connected to the input 
+port of the corresponding step, as well as a Gate On signal that carries the velocity value 
+set by the velocity of the last pressed MIDI key.
+Note that you could also use the Clock Module (↑2.14, Clock) and to get the desired rate 
+using the Event Frequency Divider Module (↑13.4, Event Frequency Divider). The advantage 
+of that method is that you can choose the frequency from the Instrument Panel.
+Fig. 2.65 Use the Rate drop-down menu in the Sync Pulse Module's Function page to choose the rate of clock Events sent 
+to the Sequencer Module.
+2.16
+Song Position
+ 
+Fig. 2.66 Song Position Module
+2.16.1
+Overview
+ 
+The Song Position Module acts as a source for the song position value, counted in 96th 
+notes from the song start. The song position is determined with the MIDI Clock which is 
+either an incoming external MIDI Clock signal or the internal Master Clock. When you ini­
+tially press the Run button in the Main Toolbar, the song position starts running from zero. 
+Pressing the Run button again pauses the Clock and the song position stays put. Press the 
+Run button a third time to continue running the song position from the current position. If 
+instead you press the Stop button, you reset the song position to zero.
+MIDI In
+Song Position
+ 
+REAKTOR 5.5 - Module Reference - 203
+
+
+--- Page 204 ---
+
+Application
+Use the Song Position Module in a sequencer that plays back patterns that are dependent 
+on the song position. This way you can arrange whole songs within REAKTOR and without 
+the help of a host sequencer.
+Typically you connect either output signal to the "A" input port of the Modulo Module 
+(↑4.9, Modulo) and a Constant (↑4.1, Constant) of "6" to the "B input port, yielding a 16th 
+note count at the "Div" (divide) output port.
+2.16.2
+Ports
+ 
+Output Ports
+▪
+(96) "96" is the Event output port for the integer count of 96th notes (that’s 24 Events 
+per quarter note). Use the Modulo Module (↑4.9, Modulo) to get counts of other de­
+nominations.
+▪
+(96a) "96a" is the Audio output port for the sample-accurate fractional song position 
+measured in 96th notes (24 per quarter note).
+2.16.3
+Example: Beat and Bar Counter
+ 
+The example, shown in the Structure below, keeps track of the number of measures from 
+the song start and the current count, in the 4/4 time signature. The "96" output port of the 
+Song Position outputs Events with the song position value in 96th notes from the song 
+start. To get the number of quarter notes from the song start, use the Modulo Module 
+(↑4.9, Modulo) with the value "24" at its "B" input port (since 96 / 24 = 4). This outputs 
+the number of quarter notes from the song start at the first Modulo Module's "Div" output 
+port. Use another Modulo Module (↑4.9, Modulo), this time with "4" at the "B" input port, 
+to calculate the number of measures (bars) from the song start. The value "4" at the "B" 
+input port is because in our time signature we have four beats per bar. The number of bars 
+from the song start is then output at the "Div" output port and the current beat in quarter 
+notes ("0", "1", "2", or "3") is given at the "Mod" output port.
+MIDI In
+Song Position
+ 
+REAKTOR 5.5 - Module Reference - 204
+
+
+--- Page 205 ---
+
+Fig. 2.67 Use the Song Position Module in conjunction with Modulo Modules to keep track of the beat and measure count.
+2.17
+Channel Message
+ 
+Fig. 2.68 Channel Message Module
+2.17.1
+Overview
+ 
+The Channel Message Module is a Monophonic Event source for incoming MIDI channel 
+messages from an external MIDI device (keyboard or sequencer etc.), or internally from 
+other Instruments within the Ensemble. The output order of the output ports (see below) is 
+strictly defined, from top to bottom. This ensures that the message type (e.g. control 
+change) and message source (e.g. controller 7 on channel 1) are always reported before 
+the actual value.
+Application
+The Channel Message Module gives you an overview of what is happening at the parent 
+Instrument's MIDI In port. You could, for example, use the MIDI Channel value at the "Ch" 
+output port to route MIDI messages from different MIDI channels to different parts of the 
+Structure, even different Instruments in an Ensemble. You can also use the Channel Mes­
+sage Module as a replacement for several Controller Modules (↑2.8, Controller). This way 
+you only need one Module to monitor incoming MIDI controller messages.
+MIDI In
+Channel Message
+ 
+REAKTOR 5.5 - Module Reference - 205
+
+
+--- Page 206 ---
+
+2.17.2
+Ports
+ 
+Output Ports
+▪
+(St) "St" is the Event output port which reports the type of MIDI message received. 0 = 
+Note Off, 1 = Note On, 2 = Poly Aftertouch, 3 = Control Change, 4 = Program Change, 
+5 = Channel Aftertouch, and 6 = Pitchbend.
+▪
+(Ch) "Ch" (MIDI channel number) is the Event output port that sends the MIDI channel 
+number of the incoming messages. The channel values are in the range [1 … 16].
+▪
+(Nr) "Nr" (MIDI note number) is the Event output port that sends the MIDI note num­
+ber, CC (Control Change) number, or Program Change value of the incoming MIDI mes­
+sage. The range of these value is [0 … 127].
+▪
+(Val) "Val" (value) is the Event output port that sends the velocity value of a note, the 
+pressure value of an Aftertouch message, or the value of a CC (Control Change) or 
+Pitchbend message. For external MIDI messages, the values are 7-bit quantized (14-
+bit for Pitchbend). For internal MIDI messages, the messages are sent as 32-bit float­
+ing-point values.
+2.17.3
+Properties: Function Page
+ 
+Setting the Range of Output Values
+The range of the output signal is mapped to the interval [Min … Max]. The values for 
+"Min" and "Max" are set with the corresponding edit fields in the Function page of the 
+Module's Properties. The default setting is Min = 0 and Max = 1. Another common setting 
+is 0 to 127, which can aid interpretability of values in some situations (Program Change 
+for example).
+Fig. 2.69 Use the Min and Max edit fields in the Range area of the Function page to set the range of output values [Min … 
+Max].
+MIDI In
+Channel Message
+ 
+REAKTOR 5.5 - Module Reference - 206
+
+
+--- Page 207 ---
+
+2.17.4
+Example: Note to Chord
+ 
+The To Voice Modules (↑14.11, To Voice) give you direct access to the values carried by 
+each Voice. A handy application is to generate chords from incoming Monophonic MIDI 
+Notes. The Structure that implements this feature is shown in the figure below for an In­
+strument that has its number of Polyphonic Voices set to "3". The chord that is played 
+when a key is pressed is the minor chord: the incoming MIDI Note is assigned to the first 
+Voice, the minor third to the second Voice, and the perfect fifth to the third Voice. As can 
+be seen in the Structure below, Add Modules (↑4.2, Add, +) and the consequent To Voice 
+Modules (↑14.11, To Voice) are used to assign each Voice the corresponding transposed 
+MIDI Note. The output of each To Voice Module carries a Polyphonic signal where each 
+Voice, except the one specified by the "V" input port, is zero. The outputs of the To Voice 
+Modules are added together to result in a Polyphonic signal where each Voice has a de­
+fined value.
+To get the base note of the chord, the "Nr" output port of the Channel Message Module is 
+used. Although this output can send values other than MIDI Notes, triggering the value to 
+be used only when a Gate On Event from the Single Trig Gate Module (↑2.4, Single Trig 
+Gate) arrives, ensures that only MIDI Note values are used. The Separator Module 
+(↑13.14, Separator), on the other hand, ensures that only Gate On Events trigger the note 
+number to be forwarded to the chord generation algorithm.
+Fig. 2.70 The Structure to create a chord from an incoming Monophonic MIDI Note.
+MIDI In
+Channel Message
+ 
+REAKTOR 5.5 - Module Reference - 207
+

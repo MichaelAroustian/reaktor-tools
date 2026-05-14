@@ -1,0 +1,515 @@
+--- Page 85 ---
+
+4
+Structures with Internal State
+ 
+4.1
+Clock Signals
+ 
+How a Reaktor Core module processes an incoming event is completely up to the module. 
+Normally a module would process the incoming value in some way, but it can also com­
+pletely ignore it. The most typical case of such processing is clock inputs.
+One example of a module with a clock input is a Latch. The Latch is not a built-in module; 
+it’s a macro; nevertheless, it’s perfect for demonstrating the clock principle.
+The Latch has two inputs – one for the value and one for the clock.
+The value input (the upper one) will store the incoming value to the internal memory of the 
+latch in response to an incoming event; nothing will be sent to the output. The clock input 
+will send the last stored value to the output in response to an incoming event.
+Clock inputs (unless otherwise specified) completely ignore the value of the incoming event 
+and respond only to the fact that the event is coming.
+(Because now we are discussing clock signals, not latches, examples of using the Latch 
+module will come later.)
+Because there are modules with clock inputs, it should be clear that some of the signals in 
+the structure do not carry any used (or, for that matter, useful) values. Some signals can 
+even be produced for the sole purpose of being used as a clock source. We will call them 
+clock signals.
+A sampling-rate clock is one example of a clock signal. It produces an event for each new 
+audio sample to be generated, so at 44.1 kHz sampling rate it would tick 44,100 times 
+per second. The value of the signal has no meaning, is not intended to be used in any way, 
+and is (in the current implementation) always zero.
+Structures with Internal State
+ 
+REAKTOR 5.5 - Core Reference - 85
+
+
+--- Page 86 ---
+
+4.2
+Object Bus Connections
+ 
+Object Bus Connections (OBC) are a special type of connection between modules. An OBC 
+connection between two modules declares that they share some internal object. The most 
+typical case of modules using OBC connections are memory Read and Write modules, 
+which would share a common memory if connected by an OBC.
+The functionality of the Write module is to write a value that is incoming at its input, to 
+the OBC-shared memory. The functionality of the Read module is to read a value from the 
+OBC-shared memory in response to an incoming clock signal (C input). The read value is 
+sent to the output of the Read module.
+The above structure implements the functionality of the Latch macro (in fact, it is the in­
+ternal structure of the Latch macro). The M and S pins of Read and Write modules are 
+pins of Latch OBC type. The M pin is the master connection input, the S pin is the slave 
+connection output. The master input of the Read module is connected to the slave output 
+of the Write module (the other two master and slave pins are unused). Therefore in this 
+structure the Write and Read modules share the common memory.
+In the next structure, there are two pairs of Write and Read modules. Each pair has its own 
+memory. Notice that the connection in the middle (from the output of Read to the input of 
+Write) is not an OBC connection.
+Structures with Internal State
+Object Bus Connections
+ 
+REAKTOR 5.5 - Core Reference - 86
+
+
+--- Page 87 ---
+
+One could ask what the difference is between master and slave. From the point of view of 
+owning the shared object (in this case memory), there is no difference. However, as you 
+may remember from a previous section of this manual, there is a rule that upstream mod­
+ules are processed before downstream modules when processing simultaneous events. 
+Therefore, in the two last examples the Write modules will be processed before their slave 
+Read modules, which is obviously not the same as the reverse.
+The relative order of processing of OBC connected modules is defined using the same rules as 
+for other modules: upstream modules are processed first.
+Indeed, let’s consider two different cases. In both cases, the original state of the memory 
+will be 2, and the same event of value 5 will be sent to both the Write and Read modules. 
+In one case, the Write module will be the master and in the other case the Read will be 
+the master.
+Above we have the structure for the first case. The module on the left side sends an event 
+of value 5, which first arrives at the Write module, causing it to write the new value of 5 
+into the memory shared by the Write and Read modules. Next, the event arrives at the 
+Read module, working as a clock event and triggering the read operation, which in turn 
+reads the recently stored value of 5 and sends it to the output. That is the functionality 
+provided by the Latch macro in the Reaktor Core macro library.
+Structures with Internal State
+Object Bus Connections
+ 
+REAKTOR 5.5 - Core Reference - 87
+
+
+--- Page 88 ---
+
+Now consider the second structure:
+Here we have the opposite situation. First, the clock event arrives at the Read module, 
+sending the stored value of 2 to the output. Only after that does the event arrive at the 
+input of the Write module, changing the stored value to 5. This structure implements the 
+functionality of a Z-1 block (one sample delay), widely used in DSP theory. Indeed, the out­
+put value is always one step behind the input value here.
+As mentioned, the above structure implements the Z-1 functionality. However, before you can 
+really build or use such structures yourself, there are a few other important things you have to 
+know, so please read on.
+When there are more than two modules connected by OBC wires, they all share the same 
+object. Then it becomes very important to know whether the order of specific read and 
+write operations is important, and if so, what that order should be.
+For example, in the following structure the relative order of the two read operations is un­
+defined, but they both happen after the write operation, so it should be completely OK:
+In the next structure, the relative order of the write operation and the second read opera­
+tion is undefined. That can be a potentially dangerous structure and generally has to be 
+avoided:
+Structures with Internal State
+Object Bus Connections
+ 
+REAKTOR 5.5 - Core Reference - 88
+
+
+--- Page 89 ---
+
+A better way to realize the above structure is possibly this one:
+Or this one:
+Even when it appears that the relative order of read and write operations is irrelevant, it 
+doesn’t hurt to impose a particular order, and it’s a little bit safer.
+The relative order of write operations is important. The relative order of read operations does 
+not matter, as long as their order relative to the write operations remains defined.
+OBC connections are not compatible with normal signal connections. Furthermore, OBC con­
+nections corresponding to different types of objects (for example, different floating point pre­
+cision of memory storage) are not compatible with each other. Pins of incompatible types can­
+not be connected; for example, you cannot connect a normal signal output to an OBC input.
+Structures with Internal State
+Object Bus Connections
+ 
+REAKTOR 5.5 - Core Reference - 89
+
+
+--- Page 90 ---
+
+4.3
+Initialization
+ 
+As we are starting to work with objects that have an internal state (in case of Read and 
+Write, the shared memory of the objects is their internal state), it becomes important to 
+understand what the initial state of the structure you’ve built is. For example if we are go­
+ing to read a value from memory (using a Read module) before anything is written to it, 
+what value will be read? And, if we don’t like the default value, how can we change it?
+Those questions are addressed by the initialization mechanism of Reaktor Core. The initi­
+alization of core structures is performed in the following way:
+1.
+First, all state elements are initialized to some default values, usually zeroes. Particu­
+larly all shared memory and all output values of the modules will be set to zeroes, un­
+less explicitly specified otherwise in the documentation
+2.
+Second, an initialization event is sent simultaneously from all initialization sources. 
+The initialization sources include most of the modules that do not have an input: 
+Const modules (including QuickConsts), core cell inputs (typically), and some others. 
+The sources would normally send their initial values during an initialization event; for 
+example, constants would send their values and core cell inputs would send the initial 
+values received from the primary level structure outside.
+If a module is an initialization event source, you will find information about initialization in 
+the module reference section for the module. If a module is not an initialization source, it 
+treats the initialization event exactly like any other incoming event. Mostly initialization sour­
+ces are those and only those modules that do not have inputs.
+Here’s a look at how initialization works:
+Structures with Internal State
+Initialization
+ 
+REAKTOR 5.5 - Core Reference - 90
+
+
+--- Page 91 ---
+
+This is a part of the structure; the Read module on the left is connected to some clock 
+source, which also sends an initialization event (as clock sources typically do).
+Initially, all signal outputs and the internal state of Read-Write-Read chain are set to zero.
+Then an initialization event is sent simultaneously from the clock source and from the con­
+stant 5.
+The Read module on the left is processed before the Write module and therefore the clock 
+event arrives there before the new value is written into the memory, so the output of this 
+module is zero. Then the value is written into the memory by the Write module. Now the 
+second Read module is triggered, producing a value of 5 at the output. Lastly the adder 
+module is processed, producing a sum of 5.
+As you remember, disconnected inputs are treated in Reaktor Core as zero values (unless oth­
+erwise specified by a particular module). More precisely, they are treated as zero constants. 
+That means that these inputs also receive the initialization event, exactly as if a real constant 
+module with zero value were connected there.
+Structures with Internal State
+Initialization
+ 
+REAKTOR 5.5 - Core Reference - 91
+
+
+--- Page 92 ---
+
+Above, an adder with one input disconnected and one connected to a constant module re­
+ceives two simultaneous initialization events, one from the default zero constant connec­
+tion and one from a real connection to a constant.
+There can also be special meaning for disconnected inputs that are not signal inputs (obvious­
+ly they cannot be connected to a zero constant). For example a disconnected master input of a 
+Write module means that the shared memory chain starts there and continues to the modules 
+connected to the slave output.
+4.4
+Building an Event Accumulator
+ 
+The event accumulator module that we want to build now is going to have two inputs: one 
+for the event values to be accumulated, and one for resetting the accumulator to zero. 
+There is also going to be one output, which outputs the sum of the accumulated events.
+We are going to build this module in the form of a core macro, which would be easy to use 
+inside an event core cell:
+This is what the inside of our macro looks like:
+Structures with Internal State
+Building an Event Accumulator
+ 
+REAKTOR 5.5 - Core Reference - 92
+
+
+--- Page 93 ---
+
+Obviously the accumulator module needs to have an internal state where it’s going to store 
+its current accumulated value. We are going to use Read and Write modules to build the 
+accumulator loop. They can be found in the Built‑In In Module > Memory submenu:
+The module which you see on the left (with an arrow pointing outwards) is the Read mod­
+ule and the module on the right (arrow pointing inwards) in the Write module.
+In response to an incoming event, the accumulator loop should take the current value and 
+add the new value to it. Therefore, we have to use a Read module to retrieve the current 
+state, use an adder to add the new value, and use a Write module to store the sum.
+Note that the Read module is clocked by the incoming event and, of course, that its OBC-
+connected Write module is located downstream, because we want to write after we read.
+The above structure works in the sense that it accumulates incoming values and outputs 
+their total at its output. What is missing is reset functionality and circuitry to ensure the 
+correct initial state.
+Let’s build the resetting circuitry first. Because we are within the Reaktor Core world, the 
+In input and the Rst input can send events simultaneously, and if we want this to be a 
+generally usable core macro, we need to take that into account. Let’s assume that the In 
+and Rst inputs simultaneously produce an event. What do we want to happen? Is the reset 
+Structures with Internal State
+Building an Event Accumulator
+ 
+REAKTOR 5.5 - Core Reference - 93
+
+
+--- Page 94 ---
+
+logically supposed to happen before the accumulated event is processed or after? (This is 
+very similar to the difference between the Latch and the Z-1 functionality, which differ only 
+in relative processing order for the signal and clock inputs).
+We suggest taking the Latch approach, because that module is very widely used in Reaktor 
+Core structures, and therefore such behavior would be more intuitive. In a Latch, the clock 
+signal logically arrives later than the value signal. In our case, the reset signal should ar­
+rive logically after the accumulated signal (forcing the state and the output to zero). There­
+fore, we need to somehow override the accumulator output with an initial value. To ach­
+ieve that we will need to use a new concept, which we are about to discuss.
+4.5
+Event Merging
+ 
+You have seen various ways of combining two different signals in Reaktor Core, including 
+arithmetic operations and other ways. What has been missing is a way to simply merge two 
+signals.
+Merging is not adding. Merging means that the result of the operation is the last incoming 
+value, rather than the sum of all incoming values. To merge signals you need to use the 
+Merge module. Let’s take a look at how it works.
+Imagine we have a Merge module with two inputs. The initial output value (before the ini­
+tialization event) is, as for most of the modules, zero:
+Now an event with a value of 4 arrives at the second input of the module:
+Structures with Internal State
+Event Merging
+ 
+REAKTOR 5.5 - Core Reference - 94
+
+
+--- Page 95 ---
+
+The event goes through the module and appears at the output. Now the output of the 
+merge has a value of 4.
+Then another even with a value of 5 arrives at the first input:
+The event goes through the module and appears at the output, which changes its value to 
+5.
+Now two events with values of 2 and 8 arrive simultaneously at both inputs.
+Here we have a special rule for the Merge module:
+Events arriving simultaneously at the inputs of a Merge module are processed in the order of 
+the input numbering. Still there is only one output event generated, because a Reaktor Core 
+output cannot produce several simultaneous events.
+In the above case this means that the event at the second input will be processed after the 
+first event, overriding the value of 2 by the value of 8, which then appears at the output.
+4.6
+Event Accumulator with Reset and Initialization
+ 
+So, in order to achieve the desired reset functionality we need to override the adder output 
+by some initial value. To do this we can use a Merge module (found in the Built‑In Module
+> Flow submenu). The simplest way is to connect the second input of the merge module to 
+the Rst input.
+Structures with Internal State
+Event Accumulator with Reset and Initialization
+ 
+REAKTOR 5.5 - Core Reference - 95
+
+
+--- Page 96 ---
+
+Now the reset event will be immediately sent to the Merge module, overriding the adder 
+output, should the accumulated event arrive at the same time. From there it goes to the 
+output and into the internal state of the accumulator.
+In the above structure, the value occurring at the Rst input will be used as the new value 
+of the accumulator. Maybe it’s even not such a bad idea, but then it’s not exactly a reset 
+function, but rather a set function, as implemented in the standard Reaktor event accu­
+mulator module. If we want to have a true reset function we should write only zero values 
+into the state, regardless of the value appearing at the Rst input. So what we have to do is 
+to send a zero value to the Write module each time an event occurs at the Rst input.
+Sending an event with a particular value in response to an incoming event is a quite com­
+mon operation in Reaktor Core, and we suggest using the Latch library macro for that. Ex­
+pert Macro > Memory > Latch:
+As we have already described, the Latch module has a value input (top) and a clock input 
+(bottom). We need to connect the Rst input to the clock input of the latch to trigger the 
+sending of an event to the output of the latch, and we also need to connect a zero con­
+stant to the value input of the latch, because we want the output events to always be zero. 
+Or we can remember that disconnected inputs are considered to be zero constants (unless 
+otherwise specified), and we can leave the value input of the latch disconnected:
+Structures with Internal State
+Event Accumulator with Reset and Initialization
+ 
+REAKTOR 5.5 - Core Reference - 96
+
+
+--- Page 97 ---
+
+Now the reset works as specified.
+The last thing we have to do is ensure the correct initialization, which of course requires 
+defining what is the correct initialization. Let’s take a look at how the above structure is 
+going to be initialized.
+If the initialization event is sent simultaneously from the In and Rst inputs of the core cell 
+top-level structure, and also from the implicit zero constant at the value input of the 
+Latch, then the Latch triggered by the Rst input will send a value of zero to the second 
+input of the Merge, overriding whatever value arrives at the first input of the Merge. There­
+fore, zero will be written into the internal state and sent to the output – perfect!
+There’s one little problem with that, however. It could be that the initialization event 
+doesn’t arrive at one or both of the ports. That could be because the initialization event 
+didn’t arrive at the corresponding input of the event core cell or because this macro is 
+used in a more complicated Reaktor Core structure that also doesn’t get the initialization 
+event on all its wires (we will learn how that can be arranged later). So we need to do a 
+last final modification to the structure to make it more universal.
+Go to the properties of the Merge module and change the number of inputs to 3.
+Structures with Internal State
+Event Accumulator with Reset and Initialization
+ 
+REAKTOR 5.5 - Core Reference - 97
+
+
+--- Page 98 ---
+
+Now, even if there was no event arriving at the Rst input, the implicit zero constant at the 
+third input of the Merge would still send an initialization event, producing the correct out­
+put and initial state values.
+Let’s try out our new event accumulator by building the following primary level structure 
+using the newly created Event Accum module.
+The instrument number of voices should be set to 1, and the meter should be set to dis­
+play a value and to be always active, as in the previous example. The button should be set 
+to the trigger mode.
+Now switch to the Panel and see the values incrementing in steps of 1 each second and 
+resetting in response to pressing the button.
+Structures with Internal State
+Event Accumulator with Reset and Initialization
+ 
+REAKTOR 5.5 - Core Reference - 98
+
+
+--- Page 99 ---
+
+We are going to use this opportunity to introduce Reaktor Core’s debug mode. As you’ve 
+probably already noticed, unlike on Reaktor’s primary level, where you can see the value at 
+the output of a module if you keep your mouse cursor over the output, output values don’t 
+appear under the cursor in Reaktor Core structures. That is an unfortunate side effect of 
+Reaktor Core’s internal optimization—values from Reaktor Core structures are typically un­
+available on the outside.
+Ok, we already hear you complaining, and we’ve provided a compromise. You can disable 
+the optimization for a particular core structure in order to see the output values. Let’s try 
+that with the structure we’ve just built. Right-click on the background and select Debug 
+Mode:
+Structures with Internal State
+Event Accumulator with Reset and Initialization
+ 
+REAKTOR 5.5 - Core Reference - 99
+
+
+--- Page 100 ---
+
+(You can do the same thing using the button with the bug icon on the toolbar). Now if you 
+keep your cursor over a particular output, you will see its value (or range of values):
+You can disable debug mode by selecting the same command (or pressing the button with 
+the bug icon) again:
+Structures with Internal State
+Event Accumulator with Reset and Initialization
+ 
+REAKTOR 5.5 - Core Reference - 100
+
+
+--- Page 101 ---
+
+Also, it will be automatically turned off when you leave the structure, so you may need to 
+enable it again for another structure. After debugging our core macro we might consider 
+saving it as a separate file for future use. That can be done by right-clicking on the macro 
+and selecting Save As…:
+Structures with Internal State
+Event Accumulator with Reset and Initialization
+ 
+REAKTOR 5.5 - Core Reference - 101
+
+
+--- Page 102 ---
+
+As with core cells you have the option of having your own macros in the menu. The macros 
+have to be put into the Core Macros subfolder of the Reaktor user library folder:
+Should any files be found in this Core Macros folder or its subfolders a new submenu ap­
+pears in the right-click menu:
+Structures with Internal State
+Event Accumulator with Reset and Initialization
+ 
+REAKTOR 5.5 - Core Reference - 102
+
+
+--- Page 103 ---
+
+Similar restrictions apply to the Core Macros folder as apply to the Core Cells folder:
+▪
+empty folders are not displayed in the menu
+▪
+never put your own files into the system library, put them into your user library folder
+4.7
+Fixing the Event Shaper
+ 
+We can now discuss in more detail exactly what’s wrong with the event shaper module 
+structure we built earlier:
+The problem is the initialization event. If you consider how the initialization of the above 
+structure will happen you’ll notice the following:
+Structures with Internal State
+Fixing the Event Shaper
+ 
+REAKTOR 5.5 - Core Reference - 103
+
+
+--- Page 104 ---
+
+▪
+the x input is firing or not firing an initialization event depending on whether it re­
+ceives an initialization event from the outside, primary-level structure (that is the ini­
+tialization event rule for core-cell event inputs)
+▪
+the constants 4 and 0.25 are always firing an initialization event
+Thus, in case for whatever reason the initialization event does not occur at the input of the 
+shaper, the output of the shaper will still receive the event from the last multiplier and will 
+forward that event to the outside primary level structure.
+Although for control signal processing purposes, that might be OK (in case of a missing 
+input initialization event, the input is considered zero, and the output initialization event 
+is still fired), it is not exactly what one would intuitively expect from an event processing 
+module. A more intuitive behavior would be for the module to send an output event only in 
+response to an incoming event.
+So, the problem is that our two constant modules may be sending events at a wrong time 
+(that is when there’s no input event). As a solution, we suggest replacing the subtraction 
+and multiplication modules, which have constants at their inputs, with their Modulation 
+counterparts.
+The Modulation macros is a group of modules in the Reaktor Core library found under Ex­
+pert Macro > Modulation:
+Structures with Internal State
+Fixing the Event Shaper
+ 
+REAKTOR 5.5 - Core Reference - 104
+
+
+--- Page 105 ---
+
+The name “Modulation”, although not 100% correct, still reflects their purpose of using 
+one signal to modulate another. (That will be especially easy to see later, when we use 
+control signals to modulate audio signals in low-level structures). Most of the modulation 
+macros combine two signals, one is carrier and the other is modulator. Unlike built-in 
+arithmetic core modules, the modulation macros generate output events only in response 
+to events at the carrier input. The events at the modulator input do not trigger the recalcu­
+lation process.
+The internal implementation of modulation macros is very simple, they just latch the mod­
+ulator signal, the latch being clocked by the carrier. Here is an example of a modulation 
+multiplier macro’s internal structure:
+The latch at the modulatior input (a) ensures that the modulator value will be sent to the 
+multiplier only when the event at the carrier input arrives.
+Here we replace the subtraction module by the a – x modulation macro and the second 
+multiplication module by x mul a modulation macro. This is how our structure is going to 
+look after the replacement (we also replaced the Const modules with QuickConst, but 
+that’s unimportant):
+You can normally tell the modulator inputs of modulation macros by their icons (pictures 
+on the modules). A modulator input is indicated by an arrow icon. In case of the subtrac­
+tion module, the arrow is on top, therefore the modulation input is on top. In case of the 
+multiplication module, it’s the other way around. You may also notice that the output of 
+Structures with Internal State
+Fixing the Event Shaper
+ 
+REAKTOR 5.5 - Core Reference - 105
+
+
+--- Page 106 ---
+
+these modules is located against the carrier input, which is an additional source of infor­
+mation. You can move your mouse cursor over the modules and their inputs and read the 
+corresponding hint texts.
+In the above structure no events will be sent unless there’s an event at the input of the 
+core cell:
+▪
+the |x| module is triggered by the core cell input event directly
+▪
+the subsequent subtraction module will be triggered only by the output of the |x| mod­
+ule, which sends an event only in response to the input event, the QuickConst has no 
+triggering effect
+▪
+the first multiplier is triggered by either the output of the subtraction module or the 
+core cell input event, but we have already seen that both occur only simultaneously
+▪
+the second multiplier is triggered only by the incoming event and not by the Quick­
+Const
+So, now our structure’s behavior is a little more intuitive.
+Structures with Internal State
+Fixing the Event Shaper
+ 
+REAKTOR 5.5 - Core Reference - 106
+

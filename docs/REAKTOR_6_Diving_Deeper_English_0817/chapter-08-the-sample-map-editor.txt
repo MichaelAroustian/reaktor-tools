@@ -1,0 +1,530 @@
+--- Page 69 ---
+
+8
+The Sample Map Editor
+ 
+If the Ensemble you are working with includes any of the Sampler Modules, you will be able to
+access the Sample Map Editor.
+When this is the case, a button with a waveform icon will appear on the right side of the Tool-
+bar, beside the Player/Recorder button and the Info Hints button.
+The Sample Map Editor Button
+►
+Clicking on this icon will open the Sample Map Editor.
+The Sample Map Editor is where you manage and edit the samples used by the Ensemble.
+For the purposes of illustration, this chapter will look at the Memory Drum 2 Ensemble,
+which is available from the REAKTOR Factory Library, in the Samplers folder. Memory
+Drum 2 is a good Ensemble to use if you want to learn how the Sample Map Editor
+works.
+The Sample Map Editor
+The Sample Map Editor is divided into two sections:
+The Sample Map Editor
+ 
+REAKTOR 6 - Diving Deeper - 69
+
+
+--- Page 70 ---
+
+•
+On the left is the Sample List.
+•
+The right side can switch between the Map (key mapping view) and the Waveform (sample
+waveform view.
+If certain functions are disabled in the context menu and the corresponding buttons are
+greyed out, the selected sample is protected. Find more information about this in sec-
+tion Third-Party and Protected Content in the REAKTOR 6 Getting Started document.
+ 
+8.1
+Sample Maps
+ 
+Sample Maps are a format REAKTOR uses to contain a list of audio samples along with their
+key mapping Properties.
+Sample Maps can be exported and imported from the Sample Map Editor, allowing you save
+and share different collections of samples and their mappings. Samples can even be embed-
+ded in the Sample Map file.
+Each Sampler Module in an Ensemble can hold one Sample Map, but an Ensemble can con-
+tain several Sampler Modules and thus an Ensemble can contain more than one Sample Map.
+►
+You can select between the different Sample Maps in the Ensemble from the dropdown
+menu above the Sample List.
+►
+When in Edit Mode, the Magnifying Glass button to the right of the Sample Map selector
+menu is used to locate the Sampler Module that uses the currently selected Sample Map
+in the Ensemble Structure.
+The Sample Map Editor
+Sample Maps
+ 
+REAKTOR 6 - Diving Deeper - 70
+
+
+--- Page 71 ---
+
+8.1.1
+Importing and Exporting Sample Maps
+ 
+In order to import and export Sample Maps, you must activate Edit Mode.
+►
+To activate Edit Mode, click on the EDIT button in the Toolbar.
+The Sample Map import and export options are accessed from the Sample Map menu above
+the Sample List.
+►
+Click on the Sample Map menu to display the Sample Map import and export options.
+The Sample Map menu contains four options:
+•
+Import (Merge) …: Opens a dialog window from which you can locate and import a REAK-
+TOR Sample Map file (a .map file). The imported Sample Map will be merged with the
+current Sample Map.
+•
+Import (Replace) …: The imported Sample Map will replace the previous Sample Map,
+and all audio data from the previous Sample Map will be deleted.
+•
+Export including Audio Data …: Opens a dialog window from which you can save the
+Sample Map as a .map file. The exported Sample Map will have all the necessary audio
+data embedded in the .map file.
+•
+Export with References Only …: This option is only available if all of the samples in the
+Sample Map are not embedded (i.e. their Embed option is unchecked). The exported
+Sample Map will act as a pointer to the external audio files.
+The Sample Map Editor
+Sample Maps
+ 
+REAKTOR 6 - Diving Deeper - 71
+
+
+--- Page 72 ---
+
+8.2
+The Sample List
+ 
+The Sample List is a table view of the samples used in the selected Sample Map.
+The Sample List will have a different appearance depending whether you are using Edit Mode
+or Play Mode:
+•
+When using the Sample List with REAKTOR in Play Mode, only the Sample Name and the
+Sample Location will be visible in the list.
+The Sample Map Editor
+The Sample List
+ 
+REAKTOR 6 - Diving Deeper - 72
+
+
+--- Page 73 ---
+
+•
+Activating Edit Mode expands the number of columns in the list to include the key map-
+ping parameters for each sample, and the embed state.
+8.2.1
+Editing the Sample List
+ 
+Below the Sample List table are four buttons that can be used to perform quick edits to the
+Sample List:
+•
+Add: Opens a dialog window for you to browse and load an audio sample file into the
+Sample List.
+•
+Replace: Functions in a similar manner to the Add button, but the loaded audio sample
+will replace a selected sample in the Sample List. The newly loaded audio sample takes
+the key mapping settings of the sample it has replaced.
+•
+Save as: Opens a dialog window for you to save a selected sample as an audio file.
+•
+Remove: Deletes the selected sample from the Sample List.
+These four options are also available from a menu that opens when you right-click on the Sam-
+ple List.
+The Sample Map Editor
+The Sample List
+ 
+REAKTOR 6 - Diving Deeper - 73
+
+
+--- Page 74 ---
+
+The Sample List Menu
+Editing the Mapping
+In order to edit the mapping of the samples from the Sample List, you must activate Edit
+Mode.
+►
+To activate Edit Mode, click on the EDIT button in the Toolbar.
+When looking at the Sample List with Edit Mode active, it is possible to view and edit the key
+mapping of the samples.
+The Sample Map Editor
+The Sample List
+ 
+REAKTOR 6 - Diving Deeper - 74
+
+
+--- Page 75 ---
+
+The Sample List when viewed in Edit Mode
+There are five columns in the Sample List that relate to the key mapping:
+•
+Root: The root MIDI note of the sample, i.e. the note at which the sample will play back
+at its original pitch.
+•
+L (Low): The lowest MIDI note that will trigger the sample.
+•
+H (High): The highest MIDI note that will trigger the sample.
+•
+LVel (Low Velocity): The lowest velocity that will trigger the sample.
+•
+HVel (High Velocity): The highest velocity that will trigger the sample.
+Each parameter listed above can be edited from the table:
+1.
+Double-click on the value you want to edit.
+2.
+Type in a new value (0-127).
+3.
+Press [Enter] or click away to set a new value.
+When editing the key mapping from the Sample List, you can view your changes in the
+Key mapping View for a graphical representation of the Sample Map, which may be eas-
+ier to read.
+The Sample Map Editor
+The Sample List
+ 
+REAKTOR 6 - Diving Deeper - 75
+
+
+--- Page 76 ---
+
+Referencing and Embedding Samples
+Samples can be embedded in the Sample Map (meaning that the audio file itself is saved in
+the Sample Map and thus also the Ensemble) or they can be referenced from an external loca-
+tion.
+When you add a sample to the Sample List, it will be embedded by default. Embedding sam-
+ples ensures that the audio files will always be available to the Ensemble, since they are saved
+inside it. However, this might not always be desirable as this will also increase the file size of
+the Ensemble. Keeping audio files as external files also means that they can be shared by oth-
+er programs, so you could have a KONTAKT Instrument referencing the same audio files as a
+REAKTOR Ensemble.
+To set a sample to not be embedded in the Sample Map:
+1.
+Activate Edit Mode by clicking on the EDIT button in the Toolbar.
+2.
+In the Sample List, locate the sample you wish to edit.
+3.
+Click on the button in the Embed column of the Sample List.
+4.
+A dialog window will open, asking you to save a copy of the audio file.
+5.
+Browse to the folder where you want to save the file and click Save.
+→
+The Ensemble will now reference the sample from the location specified when you saved
+the audio file.
+Referencing samples as external files can be risky. Moving or deleting the audio file may
+cause REAKTOR to be unable to load the sample next time you open the Ensemble.
+►
+If you wish to embed the sample again later, you can do this by clicking on the Embed
+button again.
+The Sample Map Editor
+The Sample List
+ 
+REAKTOR 6 - Diving Deeper - 76
+
+
+--- Page 77 ---
+
+The Sample Location
+When you add a sample to the Sample List, the location of the file will be displayed in the
+Location column.
+If the Ensemble you are working on is intended for public release, you may want to hide this
+information.
+To hide the audio file location:
+1.
+Select the sample you want to edit, or hold [Shift] to select multiple samples to edit at
+once.
+2.
+Right-click on the selected sample(s) in the Sample List.
+3.
+Select the Clear Location option from the menu.
+→
+The information in the Location column of sample will change from the original audio file
+location to [Ensemble].
+Clearing the sample location is only possible if the sample is embedded in the Sample
+Map.
+Additional Options
+The additional options in the right-click menu are only available if the selected sample is not
+embedded.
+The Sample Map Editor
+The Sample List
+ 
+REAKTOR 6 - Diving Deeper - 77
+
+
+--- Page 78 ---
+
+The right-click menu of a non-embedded sample
+These options are:
+•
+Reload: Reloads the audio file from the hard disk to refresh the sample held in REAK-
+TOR's memory. You may want to use this function if you have edited the audio file in an
+external audio editor.
+•
+Show in Folder: Opens a file explorer window in your operating system at the location of
+the selected sample.
+•
+External Edit: Opens the selected audio file in an external audio editing program. The ex-
+ternal editor is set in the Directories tab of the Preferences Window, which is described in
+section ↑7.3, Directories Preferences ↑7.3, Directories Preferences.
+8.3
+The Map View
+ 
+The Map View (key mapping) is located on the right side of the Sample Map Editor.
+►
+If it is not currently displayed, click on the Map tab to display the Map View.
+The Sample Map Editor
+The Map View
+ 
+REAKTOR 6 - Diving Deeper - 78
+
+
+--- Page 79 ---
+
+The Map View
+The Map View displays a map of the samples according to their key and velocity ranges (the
+Map). The key range is mapped along the x axis, and the velocity range is mapped along the y
+axis. A sample can be set as a 2-dimensional zone in this map.
+Above the Map is a display of information about the selected sample including (from left to
+right):
+•
+The sample name.
+•
+The sample rate.
+•
+The length of the sample.
+To the left of the sample name display is a play button.
+►
+Click on the play button to audition the sample.
+Editing the Map (key mapping)
+It is possible to edit the mapping parameters for a sample in the Sample Map by altering the
+size of the sample's zone in the Map.
+►
+Select a sample for editing by clicking on its zone in the Map. A selected sample zone
+will be highlighted in blue.
+The Sample Map Editor
+The Map View
+ 
+REAKTOR 6 - Diving Deeper - 79
+
+
+--- Page 80 ---
+
+►
+Click and drag a selection box over the zones to select a group of samplesfor editing.
+►
+Click and drag from the edge of the zone to alter the zone's height (velocity range) and
+width (key range).
+►
+Click and Drag on the blue note on the virtual keyboard to change a sample's root note.
+The Sample Map Editor
+The Map View
+ 
+REAKTOR 6 - Diving Deeper - 80
+
+
+--- Page 81 ---
+
+►
+Move the whole zone to change all of these parameters at once.
+►
+The mapping parameters can also be edited via the values below the Map, either by click-
+ing and dragging on them, or by double-clicking on them and entering a new value.
+Adding and Removing Samples
+To add samples to the Map, you can drag and drop them from a file browser into the main Map
+area.
+Where you drag the samples will specify their mapping parameters:
+The Sample Map Editor
+The Map View
+ 
+REAKTOR 6 - Diving Deeper - 81
+
+
+--- Page 82 ---
+
+•
+Drag to the top of the Map to map the samples to all keys and velocities, with a root note
+of middle C (MIDI note 60).
+•
+Drag to a single key to set all the mapping parameters to that key.
+The Sample Map Editor
+The Map View
+ 
+REAKTOR 6 - Diving Deeper - 82
+
+
+--- Page 83 ---
+
+•
+Drag several samples to a single key to map them to that key. This will distribute them
+evenly between different velocity ranges.
+•
+Drag to any location in between to map the sample(s) with varying key-range distances.
+The key-range will depend on the location of the mouse in the Map.
+To delete samples from the Map view:
+►
+Select the sample(s) you want to remove and press the [Delete] key on your keyboard.
+The Sample Map Editor
+The Map View
+ 
+REAKTOR 6 - Diving Deeper - 83
+
+
+--- Page 84 ---
+
+►
+Select the sample(s) you want to remove, right-click in the Map area, and select Remove
+from the menu.
+8.4
+Waveform View
+ 
+The Waveform view is located on the right side of the Sample Map Editor.
+►
+If it is not currently displayed, click on the Waveform tab to display the Sample Wave-
+form View.
+The Waveform view
+The Sample Map Editor
+Waveform View
+ 
+REAKTOR 6 - Diving Deeper - 84
+
+
+--- Page 85 ---
+
+The Waveform view shows the waveform of the selected sample and contains a handful of con-
+trols related to the playback of the sample.
+Above the main waveform is a display of information about the selected sample including
+(from left to right):
+•
+The sample name.
+•
+The sample rate of the sample.
+•
+The length of the sample.
+To the left of the sample name display is a play button.
+►
+Click on the play button to audition the sample.
+Below the waveform are a series of controls:
+•
+Reverse: Toggles reverse playback of the sample.
+•
+Loop: Toggle looping of the sample playback on or off.
+•
+Start: Sets the loop start point.
+•
+End: Sets the loop end point.
+•
+Alternate: Activates alternating loop mode, in which the playback will alternate between
+forwards and reverse modes while looping.
+•
+Release: Checking this option makes the loop continue even after releasing the note.
+•
+Phase Align: This option is only available if the Sample Map is used in one of the Grain
+Sampler Modules. It applies signal analysis to align the phases of the grains. This can im-
+prove the sound quality, but requires more CPU resources.
+Editing Loop Points
+You can edit the Start and End positions of a loop from the controls below the waveform. How-
+ever, it is also possible to set the loop points on the waveform itself.
+The Sample Map Editor
+Waveform View
+ 
+REAKTOR 6 - Diving Deeper - 85
+
+
+--- Page 86 ---
+
+►
+Click and drag on the left side of the blue box to set the loop start point.
+►
+Click and drag on the right side of the box to set the loop end point.
+8.5
+Note Actions
+ 
+Note actions are a way of automatically mapping one or more samples. They can be used to
+speed up the sample mapping process.
+The Sample Map Editor
+Note Actions
+ 
+REAKTOR 6 - Diving Deeper - 86
+
+
+--- Page 87 ---
+
+•
+In the Sample List, the Note Actions are located in the right-click-menu, under the Note
+Actions sub-menu.
+•
+In the Map view, the Note Actions are located in the main right-click menu.
+There are two note actions:
+•
+Set Root Note to Low Note: Click on this option to set the root note value to the low note
+value for all selected samples.
+•
+Remap to Single Notes: Selecting this option remaps the samples so that each sample is
+on a single key. The keys are selected in such a way that the samples are mapped chro-
+matically (on consecutive keys). Clicking on this option remaps all samples, regardless of
+how many you currently have selected. With a single sample selected, the root note of
+that sample will be used as the note from which the mapping will begin (in other words, it
+will be set as the lowest mapped key).
+The Sample Map Editor
+Note Actions
+ 
+REAKTOR 6 - Diving Deeper - 87
+
+
+--- Page 88 ---
+
+8.6
+Sample Map Editor Settings
+ 
+►
+Click on the cog icon in the top right corner of the Sample Map Editor to open The Sam-
+ple Map Editor Settings menu.
+The Sample Map Editor Settings menu contains five options that can be activated or deactivat-
+ed by clicking on their entry.
+The first three options all relate to the mapping behavior:
+•
+Move Root with Low Note: With this option selected, changing the low note of the sample
+key range via the numeric editors will automatically match the root note to the same val-
+ue. This option does not affect the behavior of the Map area.
+•
+Ignore Root Note on File Load: Certain audio files can have root note meta-data. REAK-
+TOR can read this meta-data to map the root note of the sample automatically, but with
+this option selected, REAKTOR will ignore this meta-data.
+•
+Single Note Mode: With this option selected, changing the low note (L) in the Sample List
+will also automatically update the Root note and the high note (H) to the same value.
+The next two options control aspects of how the Sample Map Editor behaves when selecting
+Samples:
+•
+Auto Prelisten: With this option selected, clicking on a sample in the Sample List or the
+Map will trigger playback of the sample.
+•
+Select by MIDI: When active, playing a MIDI note will automatically select the sample
+mapped to that note. If multiple samples are mapped to a single note, the sample that
+was most recently added to the Sample Map will be selected.
+The Sample Map Editor
+Sample Map Editor Settings
+ 
+REAKTOR 6 - Diving Deeper - 88
+
+
+--- Page 89 ---
+
+Having both of these options selected at once can cause a double-triggering of the sam-
+ple when playing the MIDI keyboard.
+8.7
+External Editor
+ 
+If you are mapping samples in REAKTOR and realize that one or more of the audio files need
+edited in another program, you can open the samples in that program from inside REAKTOR.
+The application that REAKTOR opens can be defined in the Directories tab of the Preferences
+(see section ↑7.3, Directories Preferences ↑7.3, Directories Preferences for more information).
+To the left of the Sample Map Editor Settings menu is a button that opens an external sample
+editor.
+►
+Click on the wrench icon to open the external sample editor.
+The external editor can only be opened if the selected sample is not embedded in the Sample
+Map.
+The Sample Map Editor
+External Editor
+ 
+REAKTOR 6 - Diving Deeper - 89
+

@@ -1,0 +1,4313 @@
+--- Page 185 ---
+
+Chapter 6
+Nonlinearities
+The ﬁlters which we were discussing until now were all linear. Formally this
+means that if we consider a ﬁlter as an operator, this operator is a linear one.
+Practically this meant that the structures of our ﬁlters were consisting of gains,
+summators and integrators. However, ﬁlters used in synthesizers often show no-
+ticeably nonlinear behavior. In terms of block diagrams, introducing nonlinear
+behavior means that we should add nonlinear elements to the set of our block
+diagram primitives.
+Nonlinear ﬁlters have more complicated behavior and are capable of produc-
+ing richer sound than the linear ones. Usually they exhibit complex overdriving
+eﬀects, when driven with an input signal of a suﬃciently high level. Another
+special feature of many nonlinear ﬁlters is their ability to increase the resonance
+beyond a formally inﬁnite amount, entering the so-called self-oscillation.
+6.1
+Waveshaping
+We just mentioned that in order to build non-linear ﬁlters we need to introduce
+nonlinear elements into the set of our block diagram primitives. In fact we are
+going to introduce just one new type of element, the waveshaper:
+f(x)
+/
+/
+x(t)
+y(t)
+A waveshaper is simply applying a given function to its input signal, and sends
+the respective function value as its output signal:
+y(t) = f(x(t))
+The function f(x) can be any “reasonable” function, e.g. f(x) = |x| or f(x) =
+sin x etc.
+Usually the function f cannot vary with time, that is, the function’s pa-
+rameters, if it has any, are ﬁxed. E.g. if f(x) = sin ax, then a is usually ﬁxed
+to some particular value, e.g. a = 2, which doesn’t vary. Often, this is just a
+matter of convention. e.g. the waveshaper sin ax can be represented as a serial
+connection of a gain element and the waveshaper itself:
+MMMq
+q
+q/
+f(x)
+/
+/
+x(t)
+y(t)
+a
+173
+
+
+--- Page 186 ---
+
+174
+CHAPTER 6. NONLINEARITIES
+in which case the waveshaper itself is time-invariant.
+Still, if necessary, it’s no problem for the waveshaper to contain time-varying
+parameters, as long as the time-varying parameters are “externally controlled”
+(in the same way how e.g. ﬁlter cutoﬀis controlled). That is, the waveshaper’s
+parameters cannot depend on the values of the signals within the block diagram.
+If one needs the parameter dependency on the signals of the block diagram, then
+one should consider such dependencies as additional inputs of the nonlinear
+element and we end up with a multi-input element of the block diagram. It is
+no problem to use such elements, but normally we should not refer to them as
+waveshapers, since commonly, waveshapers have one input and one output.
+In order to be representable as a function of the input signal, a waveshaper
+clearly shouldn’t have any dependency on its own the past. That is waveshaper
+is a memoryless element.
+6.2
+Saturators
+The probably most commonly used category of waveshapers is saturators. There
+is no precise deﬁnition of what kind of waveshaper is referred to as saturator,
+it’s easier to give an idea of what a saturator is by means of example.
+Bounded saturators
+One of the most classical saturators is the hyperbolic tangent function:
+y(t) = tanh x(t)
+(6.1)
+(Fig. 6.1). Even if the input signal of this saturator is very large, the output
+never exceeds ±1. Thus, this element saturates the signal, which is the origin
+of the term saturator.
+x
+y
+0
+1
+−1
+2
+−2
+1
+−1
+Figure 6.1: Hyperbolic tangent y = tanh x.
+Other saturators with shapes similar to the hyperbolic tangent include:
+y = sin arctan x = x/
+p
+1 + x2
+(6.2a)
+
+
+--- Page 187 ---
+
+6.2. SATURATORS
+175
+y =
+(
+x · (1 −|x|/4)
+if |x| ≤2
+sgn x
+if |x| ≥2
+(Parabolic saturator)
+(6.2b)
+y = x/(1 + |x|)
+(Hyperbolic saturator)
+(6.2c)
+(this list is by no means exhaustive). Is is not diﬃcult to see that the values of
+the hyperbolic tangent (6.1) and the saturators (6.2) do not exceed 1 in absolute
+magnitude. That is, their ranges are bounded. We are going to refer to such
+saturators as bounded-range saturators or simply bounded saturators.
+From the four introduced saturation functions the parabolic saturator (6.2b)
+stands out in that the full saturation is achieved at |x| = 2, whereas for other
+shapes it’s not achieved at ﬁnite input signal levels. Thus, the range of (6.2b)
+is [−1, 1], therefore being compact. We will refer to such saturators as compact-
+range monotonic saturators.
+Another important distinction of the parabolic saturator is that it has three
+discontinuities of the second derivative (at x = 0 and x = ±2) and the hy-
+perbolic saturator has one discontinuity of the second derivative (at x = 0).
+Even though such discontinuities are not easily visible on the graph, they af-
+fect the character of the saturator’s output signal. Usually such discontinuities
+are rather undesired, as they represent abrupt irregularities in the saturator’s
+shape, so it’s generally better to avoid those.1 A common reason to tolerate
+derivative discontinuities in a saturator, though, is performance optimization.
+Transparency at low signal levels
+A property commonly found with saturators is that at low levels of input signals
+the saturator is transparent: f(x) ≈x for x ≈0. Equivalently this condition
+can be written as
+f(0) = 0
+f ′(0) = 1
+(6.3)
+Visually it manifests itself as the function’s graph going at 45◦through the
+origin. Clearly, all the previously introduced saturators have this property.
+The property (6.3) is not really a must, but it’s quite convenient if the
+saturators have it, particularly for the analysis of system behavior at low signal
+levels. For that reason it’s common to represent a non-unit derivative at the
+origin via a separate gain. Given a saturation function f(x) such that f(0) = 0
+but f ′(0) ̸= 1 we introduce a diﬀerent saturation function ˜f(x) such that ˜f(0) =
+0 and ˜f ′(0) = 1. E.g. we can take
+˜f(x) = f(x)
+f ′(0)
+so that
+f(x) = f ′(0) ˜f(x)
+The coeﬃcient f ′(0) is then represented as a separate gain element.
+˜f(x)
+/
+MMMq
+q
+q/
+/
+x(t)
+y(t)
+f ′(0)
+1Sometimes the effect created by discontinuities is explicitly being sought after, e.g. in a
+rectification waveshaper f(x) = |x|.
+
+
+--- Page 188 ---
+
+176
+CHAPTER 6. NONLINEARITIES
+Apparently this representation is not available if f ′(0) = 0, however in such cases
+the saturator eﬀectively breaks the connection at low signal levels, working as
+a zero gain.
+Saturators with f(0) ̸= 0 can be represented by separation of the value f(0)
+into a DC oﬀset signal:
+f(x) = f(0) + ˜f(x)
+which is treated as another input signal with a ﬁxed value f(0):
+˜f(x)
+/
++
+ '!&"%#$
+/
+/
+
+x(t)
+y(t)
+f(0)
+Unbounded saturators
+Sometimes we want saturation behavior, but do not want a hard bound on the
+output signal’s level. One function with this property is inverse hyperbolic sine:
+y = sinh−1 x = ln
+
+x +
+p
+x2 + 1
+
+(6.4)
+(Fig. 6.2) While having the usual transparency property (6.3), it is not bounded.
+The asymptotic behavior of the hyperbolic sine is similar to the one of the
+logarithm function:
+sinh−1 x ∼sgn x · ln |2x|
+x →∞
+Another saturator with a similar behavior can be obtained as an inverse of
+y = x(1 + |x|), which is
+y =
+2x
+1 +
+p
+1 + |4x|
+(6.5)
+behaving as
+p
+|x| at x →∞.
+Such kind of waveshapers are also referred to saturators, even though the
+saturation doesn’t have a bound. We will refer to them as unbounded-range or
+unbounded saturators.
+Apparently, unbounded saturators represent a weaker kind of saturation
+than bounded ones. The weakest possible kind of saturation is achieved if y
+grows as a linear function of x at x →∞. Such saturators can be built by
+introducing a linear term into the saturator’s function. Given a saturator f(x)
+where f(x) can be any of the previously discussed saturators, we build a new
+saturator by taking a mixture of y = f(x) and y = x:
+y = (1 −α)f(x) + αx
+(0 < α < 1)
+(6.6)
+where we needed to multiply f(x) by 1 −α to keep the transparency property
+(6.3) (provided it was holding for f(x)). Apparently y ∼αx for x →∞. We
+can refer to such saturators as asymptotically linear saturators. The previously
+discussed saturators such that y = o(x) for x →∞can be respectively referred
+to as slower-than-linear saturators.
+
+
+--- Page 189 ---
+
+6.2. SATURATORS
+177
+x
+y
+0
+1
+−1
+2
+−2
+3
+−3
+4
+−4
+1
+-1
+2
+-2
+Figure 6.2: Inverse hyperbolic sine y = sinh−1 x.
+Soft- and hard-clippers
+One special but important example of a saturator is the hard clipper, shown in
+Fig. 6.3.2 In contrast, we will be referring to all previously discussed saturators
+as soft clippers.3
+x
+y
+0
+1
+−1
+2
+−2
+1
+−1
+Figure 6.3: Hard clipper.
+2Apparently, hard clipper is a compact-range saturator.
+3There doesn’t seem to be a universally accepted definition of which kinds of saturators are
+referred to as soft clippers, and which aren’t. E.g. the set of soft clippers could be restricted
+to contain only bounded saturators. In this book we will understand the term soft clipper in
+the widest possible sense.
+
+
+--- Page 190 ---
+
+178
+CHAPTER 6. NONLINEARITIES
+Saturation level
+The previously introduced bounded saturators (6.1) and (6.2) were all saturating
+at y = ±1. But that is not always desirable. Given a bounded saturator f(x)
+with the saturation level y = ±1 we can change the saturation level to y = ±L
+by simultaneouly scaling the x and y coordinates:
+y(t) = L · f(x/L)
+(6.7)
+(Fig. 6.4).
+The simultaneous scaling of x and y preserves the transparency
+property (6.3).
+x
+y
+0
+1
+−1
+2
+−2
+3
+−3
+4
+−4
+1
+-1
+2
+-2
+y = tanh x
+y = 2 tanh(x/2)
+Figure 6.4: Changing the saturation level.
+Saturator as variable gain
+Sometimes it is useful to look at saturators as at variable gain elements. E.g.
+we can rewrite y = tanh x as
+y = tanh x = x · tanh x
+x
+= g(x) · x
+(6.8)
+The graph of the function g(x) = tanh x
+x
+is shown Fig. 6.5. Thus
+g(x) ≈1
+for x ≈0
+(6.9a)
+g(x) ∼1/|x|
+for x →∞
+(6.9b)
+That is at low signal levels the saturator is transparent, at high signal levels is
+reduces the input signal’s amplitude by a factor of approximately 1/|x|. Ap-
+parently, this kind of behavior is shown by all bounded saturators. Unbounded
+saturators give a similar picture, as long as they are slower than linear. For
+asymptotically linear saturators, such as (6.6), we have g(x) →α instead.
+
+
+--- Page 191 ---
+
+6.3. FEEDBACK LOOP SATURATION
+179
+x
+g(x)
+0
+1
+−1
+2
+−2
+3
+−3
+4
+−4
+1
+2
+Figure 6.5: g(x) = tanh x
+x
+.
+6.3
+Feedback loop saturation
+In the ladder ﬁlter and its variations, such as 4-pole and 8-pole ladders and
+SKF/TSK ﬁlters, the resonance is implemented by means of a feedback loop.
+By this we mean that when the feedback loop is disabled (by setting the feedback
+gain to zero), there is no resonance, and the resonance amount is increased by
+increasing the amount of the feedback (thus e.g. the SVF ﬁlter doesn’t fall into
+this category).
+With such ﬁlter structures, when the feedback amount goes
+above a certain threshold (e.g. k = 4 for the 4-pole lowpass ladder or k = 2 for
+the SKF) the ﬁlter becomes unstable and “explodes” (the ﬁlter’s state and the
+output signal indeﬁnitely grow). By putting a saturator anywhere within such
+feedback loop we can prevent the signals in the feedback loop from the inﬁnite
+growth, making the ﬁlter stable again.
+Feedforward path saturation
+One of the common positions for the feedback loop saturator is in the feed-
+forward path right after the feedback merge point (Fig. 6.6). Given that the
+saturator is a bounded one (such as tanh x), the output signal of such saturator
+is guaranteed to be bounded. Since the rest of the feedforward path in Fig. 6.6
+is known to be BIBO-stable (independently of the feedback setting), the output
+of the ﬁlter is bounded too and thus the entire ﬁlter is BIBO-stable.
++
+ '!&"%#$
+/
+tanh
+/
+4 × LP
+/
+•/
+qqq
+M
+M
+M o
+−
+O
+/
+x(t)
+y(t)
+k
+Figure 6.6: Ladder ﬁlter with a saturator in the feedforward path.
+We could also view the saturator in Fig. 6.6 as a variable gain g (6.8).
+Apparently, as the amplitude of the signal grows, the average value of g is
+decreasing to zero.
+In those terms, the saturator is eﬀectively reducing the
+feedback gain from k to k · ⟨g⟩(where ⟨g⟩is the average value of g). Since at
+large signal amplitudes ⟨g⟩can get arbitrarily close to zero, the value of k · ⟨g⟩
+goes below 4, which, intuitively, prevents the ﬁlter from exploding. Unbounded
+
+
+--- Page 192 ---
+
+180
+CHAPTER 6. NONLINEARITIES
+saturators are therefore having the same eﬀect, as long as they are slower than
+linear.
+With asymptotically linear saturators the ﬁlter will still explode at some
+point. Assuming the saturator has the form (6.6) we have g(x) →α and thus
+⟨g⟩→α and k·⟨g⟩→αk. Thus, we could expect that for something like αk < 4
+the ﬁlter should not explode.
+Effects of transient response
+As we should remember, one possible way to look at a ﬁlter getting unstable is
+that its transient response grows instead of decaying with time. Each pair of
+conjugate poles pn and p∗
+n of the ﬁlter contributes a transient component of the
+form
+Aepnt + A∗ep∗
+nt = aet Re pn cos(t Im pn + ϕn)
+Thus at Re pn = 0 we have a sinusoid of frequency ω = Im pn. At Re pn > 0 we
+have the same sinusoid of an exponentially growing amplitude. This sinusoid
+will be present in the ﬁlter’s output even in the absence of the input signal.4
+Since at Re pn ≥0 this sinusoid is self-sustaining, the ﬁlter is said to self-
+oscillate. The saturator in the feedback loop prevents the self-oscillation from
+inﬁnite growth.5
+Suppose the system in Fig. 6.6 is at k ≈4, that is it is selfoscillating or at
+least strongly resonating. Let
+u(t) = x(t) −ky(t)
+(6.10)
+denote the input signal of the saturator and recall the representation of a satu-
+rator as a variable gain element (6.8). Then the output signal of the saturator
+is
+v(t) = tanh u(t) = g(u)·u = g(u)x(t)−g(u)k·y(t) = g(u)x(t)−˜k(u)y(t) (6.11)
+where g(u) =
+tanh u
+u
+.
+Comparing (6.10) to the last expression in (6.11) we
+see that the eﬀect of the saturator can be seen as the “replacing” x(t) with
+g(u)x(t) and ky(t) with ˜k(u)y(t).
+Thus, ˜k(u) = g(u)k is the new “eﬀective
+feedback amount”. Now, by increasing the amplitude of the input signal x(t)
+we increase the amplitude of u(t) and thus reduce the magnitude of g(u) and
+thereby reduce the eﬀective feedback amount ˜k, which in turn shows up as
+reduction of resonance.
+That is, at high amplitudes of the input signal the
+resonance oscillations kind of disappear.
+One intuitive way to look at this is to say that the input signal and the
+resonance are “ﬁghting” for the saturator’s headroom, and if the input signal
+4If the system is in the zero state, then in the absence of the input signal it will stay
+forever in this state of “unstable equilibrium”. In analog circuits, however, there are always
+noise signals present in the system, which will excite the transient response components,
+thus destroying the equilibrium. In the digital implementation such excitations need to be
+performed manually. This can be done by initializing the system to a not-exactly-zero state,
+or by sending a short excitation impulse into the system at the initialization, or by mixing
+some low-level noise at one or multiple points into the system. Often a very small constant
+DC offset will suffice instead of such noise.
+5As the saturator is effectively reducing the total gain of the feedback loop, at k = 4 the
+selfoscillation will first have an infinitely small signal level, where the saturator is transparent.
+Increasing the value of k further we can bring the selfoscillation to an audible level.
+
+
+--- Page 193 ---
+
+6.3. FEEDBACK LOOP SATURATION
+181
+has a very high level, it “pushes” the resonating component of the signal out.
+On the other hand, if the input signal level is low, then the entire headroom is
+taken by the resonating component which will be therefore much louder than
+the input signal. There is usually some “sweet spot” in the input signal’s level,
+where the ﬁghting doesn’t kill the resonance, but results in a nice interaction
+between the input signal and the resonance.
+Feedback path saturation
+The amount of ﬁghting (at the same input signal level) can be decreased by
+putting the saturator into the feedback path, either prior to the feedback gain
+(Fig. 6.7) or past the feedback gain (Fig. 6.8).6 In this case the input signal x(t)
+doesn’t directly enter the saturator but ﬁrst goes through the four 1-pole lowpass
+ﬁlters, which somewhat reduces its amplitude (depending on the signal and on
+the ﬁlter’s cutoﬀ). The diﬀerence between Figs. 6.7 and Fig. 6.8 is obviously
+that in one case the eﬀective saturation function is y = k tanh x whereas in the
+other one it’s y = tanh kx. This means that in the ﬁrst case the saturation level
+is ±k whereas in the second one it’s ﬁxed to ±1 (Fig. 6.9).
++
+ '!&"%#$
+/
+4 × LP
+/
+•/
+tanh o
+qqq
+M
+M
+M o
+−
+O
+/
+x(t)
+y(t)
+k
+Figure 6.7: Ladder ﬁlter with a saturator in the feedback path
+(pre-gain).
++
+ '!&"%#$
+/
+4 × LP
+/
+•/
+qqq
+M
+M
+M o
+tanh o
+−
+O
+/
+x(t)
+y(t)
+k
+Figure 6.8: Ladder ﬁlter with a saturator in the feedback path
+(post-gain).
+The amount of ﬁghting will also be decreased by using a weaker saturation
+curve. E.g. using an unbounded saturator instead of a bounded one, in the most
+extreme case having an asymptotically linear saturator. A classical example
+of this approach is ecountered in the nonlinear Sallen–Key ﬁlter (Fig. 6.10).
+It is an interesting observation that the sound of nonlinear Sallen–Key ﬁlter
+signiﬁcantly diﬀers from the sound of nonlinear transposed Sallen–Key ﬁlter
+(Fig. 6.11) since in one case the saturator’s output goes through a highpass and
+a lowpass, while in the other case it goes through two lowpasses before reaching
+the ﬁlter’s output.7
+6Notice that, with the saturator positioned in the feedback path, at k = 0 the filter
+effectively becomes linear.
+7This observation was made by Dr. Julian Parker.
+
+
+--- Page 194 ---
+
+182
+CHAPTER 6. NONLINEARITIES
+x
+y
+0
+1
+−1
+2
+−2
+3
+−3
+1
+-1
+2
+-2
+Figure 6.9: Pre-gain (y = k tanh x, solid) vs. post-gain saturation
+(y = tanh kx, dashed).
+MM1
+LP1
+/
+•/
+αx + (1 −α) sinh−1 x
+qqq
+M
+M
+M o
++
+ '!&"%#$O/
+/
+/
+/
+LP
+HP
+xBP(t)
+xLP(t)
+y(t)
+k
+Figure 6.10: Sallen-Key ﬁlter with an asymptotically linear satu-
+rator.
++
+ '!&"%#$
+/
+LP1
+/
+MM1
+/
+•/
+αx + (1 −α) sinh−1 x
+qqq
+M
+M
+M o
+O
+/
+/
+LP
+HP
+x(t)
+yBP(t)
+yLP(t)
+k
+Figure 6.11: Transposed Sallen-Key ﬁlter with an asymptotically
+linear saturator.
+Transfer function
+For systems containing nonlinear elements the complex exponentials est are no
+longer system eigensignals. That is, given an input signal of the form Aest the
+output will not have a similar form. Therefore the idea of the transfer function
+as well as amplitude and phase responses doen’t work anymore.
+Still, given that the nonlinear elements satisfy the transparency condition
+
+
+--- Page 195 ---
+
+6.4. NONLINEAR ZERO-DELAY FEEDBACK EQUATION
+183
+(6.3), at low signal levels the nonlinearities have almost no eﬀect and the system
+is approximately linear. In that sense the transfer function stays applicable to a
+certain degree and still can be used to analyse the ﬁlter’s behavior, although the
+error is growing stronger at higher signal levels. Nevertheless, as a rule, qualita-
+tively the ﬁlters retain their main properties also in the presence of saturators.
+The lowpass ﬁlters stay lowpass, bandpass ﬁlters stay bandpass etc.
+6.4
+Nonlinear zero-delay feedback equation
+The introduction of the nonlinearity in the feedback path poses no problems
+for a naive digital model. In the TPT case however this complicates the things
+quite a bit.
+Consider Fig. 5.5 redrawn to contain the feedback nonlinearity
+(Fig. 6.12).
++
+ '!&"%#$
+/
+tanh
+/
+Gξ + S
+/
+•/
+qqq
+M
+M
+M o
+−
+O
+/
+x[n]
+y[n]
+k
+u[n]
+Figure 6.12: Nonlinear TPT ladder ﬁlter in the instantaneous re-
+sponse form.
+Writing the zero-delay feedback equation we obtain
+u = x −k(G tanh u + S)
+(6.12)
+Apparently, the equation (6.12) is a transcendental one. It can be solved only
+using numerical methods.
+Also, the linear zero-delay feedback equation had
+only one solution, but how many solutions does (6.12) have? In order to answer
+the latter question, let’s rewrite (6.12) as
+(x −kS) −u = kG tanh u
+(6.13)
+If k ≥0 then v(u) = kG tanh u is a nonstrictly increasing function of u,8 while
+v(u) = (x −kS) −u is a strictly decreasing function of u. Thus, (6.13) (and
+respectively (6.12)) has a single solution (Fig. 6.13). At k < 0 we also typically
+have one solution (Fig. 6.14) unless kG > −1, in which case (6.13) has three
+solutions Fig. 6.15. Fortunately, kG > −1 corresponds to instantaneously un-
+stable feedback, and thus normally we are not so much interested in this case
+anyway.
+However, if needed, one could use the concept of the instantenous
+smoothing to ﬁnd out the applicable solution among the three formal ones.
+Having found the zero-delay equation solution u, we proceed in the usual
+way, ﬁrst letting u through the tanh waveshaper and then letting it through the
+1-pole lowpasses (denoted as Gξ + S in Fig. 6.12), updating the 1-pole states
+along the way and ultimately obtaining the value of y.
+Now we are going to discuss some possible approaches for ﬁnding u. This
+discussion is by no means exhaustive and the reader is advised to consult the
+literature on numerical methods for further information.
+8Recall that for a series of 1-pole lowpasses (which Gξ +S denotes in Fig. 6.12) 0 < G < 1.
+
+
+--- Page 196 ---
+
+184
+CHAPTER 6. NONLINEARITIES
+kG tanh u
+(x −kS) −u
+u
+v
+0
+Figure 6.13: The solution of (6.13) for k > 0.
+kG tanh u
+(x −kS) −u
+u
+v
+0
+Figure 6.14: The solution of (6.13) for −1 < kG < 0.
+6.5
+Iterative methods
+Fixed-point iteration
+Starting with some initial value u = u0 we compute iteratively the left-hand
+side of (6.12) from the right-hand side:
+un+1 = x −k(G tanh un + S)
+(6.14)
+and hope that this sequence converges quickly enough.9 Intuitively, the conver-
+gence gets worse at larger absolute magnitudes of kG, that is at high cutoﬀs
+(large G) and/or high resonance values (large k). Conversely, it gets better as
+9In a realtime situation it would be a good idea to artificially bound the number of iterations
+from above.
+
+
+--- Page 197 ---
+
+6.5. ITERATIVE METHODS
+185
+kG tanh u
+(x −kS) −u
+u
+v
+0
+Figure 6.15: Solutions of (6.13) for kG < −1.
+the sampling rate increases (since G becomes smaller in this case). Generally,
+the convergence fails for |kG| ≥1.
+The process deﬁned by (6.14) has a strong similarity to the naive approach
+to time discretization. Indeed, for the frozen values of G and S one can treat
+Fig. 6.12 as stateless zero-delay feedback system (Fig. 6.16). And then we simply
+implement this system in the naive way by introducing a unit delay at the
+point of the signal u (Fig. 6.17) and letting this system run for some number of
+discrete-time ticks. This is a bit like oversampling of the instantaneous feedback
+loop part of the system.10
++
+ '!&"%#$
+/
+tanh
+/
+MMMq
+q
+q/
++
+ '!&"%#$
+/
+•/
+qqq
+M
+M
+M o
+−
+O
+/
+
+x
+y
+k
+G
+S
+u
+Figure 6.16: Zero-delay feedback equation (6.12) as a stateless zero-
+delay feedback system.
+So, it is as if we introduce a “nested” discrete time into a single tick of the
+“main” discrete time. This suggests a natural choice of the initial value of u
+for (6.14), namely, taking the previous value of u (that is the value from the
+previous sample of the “main” discrete time) as the iteration’s initial value u0.
+Under the consideration of the concept of the instantaneous smoothing (in-
+troduced in Section 3.13), the interpretation in Fig. 6.17 also suggests a way to
+10Of course this is not exacty oversampling, because the state of the system (manfesting
+itself in the S variable) is frozen.
+
+
+--- Page 198 ---
+
+186
+CHAPTER 6. NONLINEARITIES
++
+ '!&"%#$
+/
+z−1
+/
+tanh
+/
+MMMq
+q
+q/
++
+ '!&"%#$
+/
+•/
+qqq
+M
+M
+M o
+−
+O
+/
+
+x
+y
+k
+G
+S
+u
+Figure 6.17: Interpretation of the equation (6.14) as an “oversam-
+pled” naive discrete-time model of the stateless feedback loop in
+Fig 6.16.
+improve the convergence of the method by introducing a smoother into the feed-
+back loop of Fig. 6.17. In a practical implementation such smoother can be a
+naive 1-pole lowpass, like in Fig. 6.18, which eﬀectively lowers the total feedback
+gain from kG to a smaller value.11 However, even though such smoother may
+improve the convergence at high kG, obviously it can deteriorate the conver-
+gence in good situations. Particularly at k = 0 the iteration process is supposed
+to immediately converge, however in the presence of the lowpass smoother it
+will converge exponentially instead.
++
+ '!&"%#$
+/
+LP1
+/
+z−1
+/
+tanh
+/
+MMMq
+q
+q/
++
+ '!&"%#$
+/
+•/
+qqq
+M
+M
+M o
+−
+O
+/
+
+x
+y
+k
+G
+S
+u
+Figure 6.18: Using a 1-pole lowpass smoother to improve conver-
+gence of signals in Fig. 6.17.
+Newton–Raphson iteration
+A very popular approach in practical DSP is Newton–Raphson method, which
+is based on the idea of linearization of the function around the current point un
+by the tangent line. Instead of solving (6.13) we solve
+(x −kS) −un+1 = kG(tanh un + (un+1 −un) tanh′ un)
+(6.15)
+for un+1 to obtain the next guess and repeat the iteration (6.15) until it con-
+verges. Fig. 6.19 illustrates the idea.
+11Clearly, the smoother will not help in the instantaneously unstable case, occurring when
+kG ≤−1.
+
+
+--- Page 199 ---
+
+6.5. ITERATIVE METHODS
+187
+un
+kG tanh u
+(x −kS) −u
+u
+v
+0
+un+1
+Figure 6.19: Newton–Raphson method: linearization by the tan-
+gent line.
+The textbook version of Newton–Raphson method is formulated in terms
+of searching for a zero-crossing of a function (Fig. 6.20). By subtracting the
+left-hand side of (6.13) from the right-hand side we obtain the equation
+f(u) = u + k(G tanh u + S) −x = 0
+(6.16)
+Respectively, the iterations are generated by solving
+f(un) + (un+1 −un)f ′(un) = 0
+(6.17)
+Apparently (6.15) and (6.17) (and respectively Figs. 6.19 and 6.20) are equiva-
+lent, both giving
+un+1 = un −f(un)
+f ′(un) = un −un + k(G tanh un + S) −x
+1 + kG/ cosh2 un
+=
+= un −un + k(G tanh un + S) −x
+1 + kG(1 −tanh2 un)
+Newton–Raphson method converges very nicely in almost linear areas of
+f(u), the convergence getting worse as f(u) becomes more nonlinear. As with
+ﬁxed-point iteration, the convergence deteriorates at large |kG|, as the predic-
+tion error of un increases.12
+As in the ﬁxed-point iteration method, the value of u from the previous
+sample tick is a natural choice for the iteration’s initial value as well.
+This
+choice usually leads to fast convergence if the new solution lies close to the
+value of u on the previous sample. However in excessive situations (such as high
+cutoﬀand/or high input signal frequency) the old solution could lie within the
+right-hand side saturation range of tanh u (that is u ≫0) and the new solution
+could lie within the left-hand side saturation range of tanh u (that is u ≪0).
+12There are a number of tricks which can be employed to improve the convergence of
+Newton–Raphson, but even those might not help in all situations. The specific tricks can be
+found in the literature on numerical methods and fall outside the scope of this book.
+
+
+--- Page 200 ---
+
+188
+CHAPTER 6. NONLINEARITIES
+un
+un+1
+v
+u
+0
+u + k(G tanh u + S) −x
+Figure 6.20: Texbook version of Newton–Raphson method (note
+that the aspect ratio of the graph is not 1:1)
+The solution search by Newton–Raphson iterations will need to traverse both
+“knees” (areas of higher curvature) of tanh along the way, which usually has
+a negative impact on the convergence. The neutral choice of u = 0 as initial
+value might somewhat improve this worst-case scenario, while simultaneously
+deteriorating the convergence in “nice” situation.
+Other, more advanced approached to the choice of the initial point may be
+used. Often one uses Newton–Raphson to reﬁne the result of another method,
+so that the initial point is alredy suﬃciently close to the true solution.
+There is also some freedom of the choice of the variable to solve for. E.g. in
+Fig. 6.19 we could have been solving for v instead of u. This means that we are
+having
+v = (x −kS) −u
+v = kG tanh u
+from where
+u = (x −kS) −v
+u = tanh−1 (v/kG)
+and (6.13) turns into
+(x −kS) −v = tanh−1 (v/kG)
+In this speciﬁc case v is hardly a better choice compared to u. For one we have
+a division by zero if k = 0.13 Worse, one could see in Fig. 6.19 that vn+1 is
+located above the horizontal asymptote of kG tanh u, which means that we are
+getting outside of the domain of tanh−1(v/kG). And even if we’re not outside of
+the domain, there still could be large precision losses when evaluating tanh−1 at
+points close to ±1. The convergence speed is likely to be aﬀected too. Therefore
+a good choice of the variable to solve for is important.
+13Taking ¯v = tanh u as the unknown to solve for addresses the division by zero issue, but
+the other issues are similar to the choice of v = kG tanh u.
+
+
+--- Page 201 ---
+
+6.5. ITERATIVE METHODS
+189
+Bisection
+Newton–Raphson method usually converges better than ﬁxed-point iteration,
+but the potential convergence problems of the former can be diﬃcult to predict.
+Often there can be good ways to address the convergence issues in Newton–
+Raphson method, but it might be worth it to have an alternative approach,
+which is not suﬀering from such issues at all.
+From Fig. 6.13 we could notice that for k ≥0 we are looking for an inter-
+section point of a monotonically decreasing straight line with a (nonstrictly)
+monotonically increasing curve. Therefore, if we somehow initially bracket the
+solution point of (6.13) we can search for it using bisection.
+Given the bracketing range u ∈[an, bn] we take the middle point un+1 =
+(an + bn)/2 and compare the values of the left- and right-hand sides of (6.13)
+at un+1.
+Depending on which of the two sides has a larger value, we take
+either [un+1, bn] or [an, un+1] as the new bracketing range [an+1, bn+1]. Fig. 6.21
+illustrates.
+u=a
+u=b
+u=(a+b)/2
+kG tanh u
+(x −kS) −u
+u
+v
+0
+Figure 6.21: Bisection method.
+Obviously the size of the bracketing range halves on each step and we re-
+peat the procedure until the bracketing range becomes suﬃciently small. The
+convergence speed therefore doesn’t depend on values of ﬁlter’s parameters or
+signals and the iteration is guaranteed to converge. However we need to be able
+to somehow ﬁnd the initial bracketing range [a0, b0].
+Fortunately, with monotonic saturation shapes such as tanh u this is not
+very diﬃcult. We can construct the initial bracketing range by noticing that
+the graph of the function v = kG tanh u lies between v ≡0 and v = kG sgn u
+(Fig. 6.22).
+With unbounded saturators such as inverse hyperbolic sine one needs to get
+slightly more inventive. One possible idea is shown in Fig. 6.23. This however
+doesn’t work for k < 0. In that case we could reuse the approach of Fig. 6.22
+by taking a vertically oﬀset version of (6.5) as a bound on sinh−1 u (Fig. 6.24).
+The intersection on v = (x −kS) −u with this bound can be found by solving
+a quadratic equation (more on this in Section 6.7). Obviously, the same idea
+works for k ≥0 too.
+
+
+--- Page 202 ---
+
+190
+CHAPTER 6. NONLINEARITIES
+u=a
+u=b
+kGsgn u
+kG tanh u
+(x −kS) −u
+u
+v
+0
+Figure 6.22: Initial bracketing for bisection.
+kG sinh−1 u
+(x −kS) −u
+u=a
+u=b
+u
+v
+0
+Figure 6.23: Initial bracketing for bisection in the case of an un-
+bounded saturator and k ≥0. First we ﬁnd the right bracket b
+and then use v = kG sinh−1 b to ﬁnd the left bracket a.
+If nothing else helps to ﬁnd the initial bracketing range for a (monotonic)
+nonlinearity f(u), one could simply start at some point, such as e.g. the zero-
+crossing of v = (x−kS)−u, determine the direction of other bracket by compar-
+ing v = (x−kS)−u to kG·f(u) and then take steps of progressively increasing
+size (exponential increasing of steps is usually a good idea) until the comparison
+result of v = (x −kS) −u and kG · f(u) ﬂips.
+Even though bisection method guarantees convergence, the convergence speed
+might be a bit too low for our purposes. Let’s assume that the magnitude order
+of the signals in the ﬁlter is 100 and let’s assume that the length of the initial
+bracketing segment [a0, b0] has about the same order of magnitude. Then, to
+
+
+--- Page 203 ---
+
+6.6. APPROXIMATE METHODS
+191
+kG sinh−1 u
+kG·
+
+2u
+1+√
+1+|4u| +0.6·sgn u
+
+(x −kS) −u
+u
+v
+0
+Figure 6.24: Initial bracketing for bisection in the case of f(u) =
+sinh−1 u and k < 0.
+reach a −60dB SNR14 corresponding to the order of magnitude of 10−3, we’ll
+need about 10 iterations. This might be a bit too expensive for a realtime audio
+processing algorithm on modern computers.15
+6.6
+Approximate methods
+We might also attempt to ﬁnd a rough approximate solution of (6.12) without
+running an iterative scheme. Having found u, we would simply pretend it’s a
+true solution, and proceed as usual in the zero-delay feedback solution scheme,
+sending u through the tanh waveshaper and further through the 1-pole low-
+passes, updating their state along the way. Several approximation approaches
+seem to be in (more or less) common use:
+Linearization at zero. At small signal levels the nonlinearity is almost trans-
+parent:
+tanh u ≈u
+Hoping that our signal level is “suﬃciently small”, whatever that means,
+we could replace tanh u by u and solve the resulting linear equation:
+u = x −k(Gu + S)
+Note that this is equivalent to one step of Newton–Raphson with u = 0
+as the initial guess.
+14Treating the error in the numerically computed solution as noise, we can define the signal-
+to-noise ratio (SNR) as the ratio of the absolute magnitudes of the error and the signal,
+expressed in decibels.
+15Whether this is too expensive or not depends on a number of factors. E.g. in Newton–
+Raphson method we needed to compute both tanh u and tanh′ u. With the hyperbolic tangent
+function we were quite fortunate in that the derivative of the function is trivially computable
+from the function value (tanh′ u = 1−tanh2 u) and thus doesn’t create significant computation
+cost. Had the derivative computation been expensive, the computation cost of 10 iterations
+of bisection could have been comparable to 5 iterations of Newton–Raphson.
+
+
+--- Page 204 ---
+
+192
+CHAPTER 6. NONLINEARITIES
+Linearization at operating point. Hoping that the signals within the ﬁlter
+do not change much during one sample tick, we replace tanh u with its
+tangent line at the current point:
+tanh u ≈tanh u−1 + (u −u−1) · tanh′ u−1
+where u−1 is the value of u at the previous discrete time moment. This is
+equivalent to one step of Newton–Raphson with u−1 as the initial guess.
+Usually this approximation provides a better result, however in the exces-
+sive (but not so unusual) situations of high cutoﬀ, high feedback amount
+and/or high signal frequencies this can work worse than the linearization
+at zero. Thus, the linearization at zero might provide a better “worst case
+performance”.
+Linearization by secant line16 On the graph of tanh u we draw a straight
+line going through the origin (0, 0) and the operating point (u−1, tanh u−1)
+and use this line as our linearization to obtain the value of u. Being a
+mixture of the previous two approaches, in moderately excessive situations
+this could work better than the linearization at the operating point, but
+at more excessive settings could work worse than the linearization at zero.
+The readers are however encouraged to gain their own experience and
+judgement in the choice of the initial guess approach.
+All the above quick approximation approaches share the same idea of replac-
+ing the nonlinearity with a straight line. In that regard it is important that we
+have chosen to solve for the signal u at the saturator’s input, so that the signal
+obtained through the approximation is then really sent through the nonlinear-
+ity before reaching the 1-poles and the output. One can view this as if, after
+having obtained the approximated result, we are doing one step of ﬁxed-point
+iteration.17
+Had we instead chosen to solve for the signal at the saturator’s
+output, the results would have been more questinable. Particularly, in the case
+of linearization at zero there would have been no diﬀerence to the linear case
+whatsoever.
+The above approximation approaches work reasonably well with saturation
+type of nonlinearities. Obviously, the error increases as kG becomes larger and
+thus the system becomes “more non-linear”. Notably, G, being monotonically
+growing in respect to ωcT, decreases as the sampling rate grows, thus the ap-
+proximation error is smaller at higher sampling rates.
+6.7
+2nd-order saturation curves
+It is possible to avoid the need of solving the transcendental equation by using
+a saturator function which still allows analytic solution. This is particularly
+the case with second-order curves, such as hyperbolas. E.g. f(x) = tanh x can
+be replaced by f(x) = x/(1 + |x|) (which consists of two hyperbolic segments),
+thereby turning (6.13) into:
+(x −kS) −u = kG
+u
+1 + |u|
+(6.18)
+16Proposed for usage in the zero-delay feedback context by Teemu Voipio.
+17This is a particular case of a more general idea, where we would use the result obtained
+by one of the above approximations as an initial point for an iterative algorithm.
+
+
+--- Page 205 ---
+
+6.7. 2ND-ORDER SATURATION CURVES
+193
+The inverse of f(x) = sinh x can be replaced by the inverse of f(x) = x(1+|x|),
+consisting of two parabolic segments.
+In order to solve (6.18), which graphically is an itersection between the lines
+v = (x −kS) −u and v = kG · f(u) (same as in Figs. 6.13, 6.14, 6.15), we ﬁrst
+need to ﬁnd out, whether the intersection is occuring at u > 0 or u < 0 (the
+case u = 0 can be included into either of the cases). Looking at Figs. 6.13 and
+6.14, it’s not diﬃcult to realize that for kG > −1 this is deﬁned solely by the
+sign of the value which (x −kS) −u takes at u = 0. Thus (6.18) turns into
+(x −kS) −u = kG
+u
+1 + u
+if x −kS ≥0
+(6.19a)
+(x −kS) −u = kG
+u
+1 −u
+if x −kS ≤0
+(6.19b)
+Each of the equations (6.19) is a quadratic equation in respect to u.
+Choosing the appropriate one of the two solutions of the quadratic equation
+is easy.
+E.g. for (6.19a) the choice can be made with the help of Fig. 6.25.
+Taking into account the restriction x −kS ≥0, we see that we should be alway
+interested in the larger of the two solutions u1, u2. The choice of the appropriate
+solution for (6.19b) can be done using similar considerations.
+u
+v
+v = (x −kS) −u
+v = kGu/(1 + u)
+v = kGu/(1 + u)
+0
+Figure 6.25: Choice of the solution of the quadratic equation for
+f(u) = u/(1+u). The dashed line shows the graph of v = kGu/(1+
+u) for kG < 0.
+In solving the quadratic equation Ax2 −2Bx + C = 0 one has not only to
+choose the appropriate one of the two roots of the equation, but also to choose
+
+
+--- Page 206 ---
+
+194
+CHAPTER 6. NONLINEARITIES
+the appropriate one of the two solution formulas:
+x = B ±
+√
+B2 −AC
+A
+=
+C
+B ∓
+√
+B2 −AC
+(6.20)
+Mathematically the two formulas are equivalent, however numerically there is a
+precision loss (which may become very strong) if B ±
+√
+B2 −AC results in ad-
+dition of two values of opposite sign, or, conversely, subtraction of two values of
+the same sign. This consideration yields the following formulas for the solutions
+of the quadratic equation:
+x1 = B + sgn B ·
+√
+B2 −AC
+A
+x2 =
+C
+B + sgn B ·
+√
+B2 −AC
+2nd-order soft clippers of the most general form
+We could generalize the previously used idea of turning the nonlinear zero-delay
+feedback equation into a quadratic one by considering a waveshaper made of
+the most general form of a second-order curve y = f(x) deﬁned by18
+Φ(x, f(x)) = Φ(x, y) = ax2 −2bxy + cy2 −2px −2qy + r = 0
+(6.21)
+Equation (6.21) has 6 parameters and 5 degress of freedom. After subtituting
+the nonlinearity (6.21) into (6.13), the equation (6.13) turns into
+Φ
+
+u, (x −kS) −u
+kG
+
+= 0
+or, equivalently,
+k2G2au2 −2kGbu((x −kS) −u) + c((x −kS) −u)2−
+−2k2G2pu −2kGq((x −kS) −u) + k2G2r = 0
+(6.22)
+Obviously, (6.22) is a quadratic equation in respect to u. Particularly, under
+the “typical soft clipping curve” conditions
+f(0) = 0
+f ′(0) = 1
+f(∞) = 1
+f ′(∞) = 0
+(6.23)
+equation (6.21) turns into a family of hyperbolas: with a single parameter:
+2y1 −1
+y2
+1
+y2 −xy + x −y = 0
+(6.24)
+Four of ﬁve freedom degrees in (6.21) has been taken by the conditions (6.23).
+The ﬁfth remaining degree is represented by the parameter y1, which is the
+value19 of y that the curve has at x = 1 (Fig. 6.26). A reasonable choice for
+the range of y1 is [0.5, 1], where at y1 = 0.5 we obtain the already familiar
+y = x/(1 + x) curve, at y1 = 1 the curve (6.24) turns into a hardclipper.
+18We use the implicit form, because the explicit form has some ill-conditioning issues. Be-
+sides, in order to solve (6.13) for the specific second-order shaper function f(x), we will need
+to effectively go from explicit to implicit form during the algebraic transformations of the
+resulting equation anyway, thus using the explicit form wouldn’t have simplified the solution,
+but on the contrary, would have made it longer.
+19More precisely, one of the two values.
+
+
+--- Page 207 ---
+
+6.7. 2ND-ORDER SATURATION CURVES
+195
+x
+y
+1
+1
+0
+Figure 6.26: A family of soft clippers generated by (6.24) for y1 =
+0.5, y1 = 0.7829 and y1 = 0.9.
+The two dashed curves above
+the line y = 1 are the second (unused) branches of the respective
+curves (the second branch for y1 = 0.5 is not visible because it is
+outside the picture boundaries). The thin dashed curve close to
+the main branch of the curve for y1 = 0.7829 is the hyperbolic
+tangent y = tanh x.
+By making the odd extension of the curve:
+fext(x) =
+(
+f(x)
+if x ≥0
+−f(−x)
+if x ≤0
+we obtain a proper soft clipping saturator shape, where we should remember to
+pick the appropriate branch of the curve, when solving the quadratic zero-delay
+feedback equation (6.22).
+This time the selection of the appropriate solution of the quadratic equation
+is still simple for k ≥0, where we can just pick the larger of the two solutions u1,
+u2, however for k < 0 it becomes more complicated (Fig. 6.27). From Fig. 6.27
+one can see that our choice of the larger or smaller of the two solutions is
+switched once when kG changes sign and once again when the oblique asymptote
+of kG · f(u)20 goes at −45◦, thereby becoming parallel to to the line v = (x −
+kS) −u.21
+20It can be shown, that f(u) ∼u ·
+ (2y1 −1)/y2
+1
+−1 at u →∞which defines the steepness
+of the asymptote.
+21In the previously discussed case f(u) = u/(1 + u) we didn’t have a switch between larger
+and smaller solutions. But f(u) = u/(1 + u) is a limiting case of (6.24) at y1 →0.5, so why
+is there no switch? It turns out that both switches occur simultaneously at kG = 0 (since
+
+
+--- Page 208 ---
+
+196
+CHAPTER 6. NONLINEARITIES
+By writing out the expressions for the solutions of the resulting quadratic
+equation, one could see that, if we deﬁne the choice of the solution in terms of
+the choice of the plus or minus sign in (6.20) in front of
+√
+B2 −AC (which is
+actually what we care about), then the solution is switched only when kG = 0,
+at which moment B2 −AC = 0 and respectively both solutions become equal
+to each other.
+The (negative) value of kG, at which the oblique asymptote
+of kG · f(u) goes at −45◦, doesn’t correspond to another solution switch but
+solely to the unused solution disappearing into the inﬁnity from one side and
+reappering from the other.
+u
+v
+v = (x −kS) −u
+v = kG · f(u)
+v = kG · f(u)
+0
+Figure 6.27: Choice of the solution of the quadratic equation for
+f(u) which is a member of the family of hyperbolas (6.24). Solid
+line corresponds to kG > 0, dashed lines correspond to two diﬀer-
+ent values of kG < 0.
+Other 2nd-order saturators
+Apparently, mixing in a linear component (6.6) into a saturator deﬁned by (6.21)
+still can be expressed in the general form (6.21), thus the zero-delay feedback
+equation is still quadratic equation and we can use the same solution techniques.
+Instead of using hyperbolas, we could also use parabolas, such as the one in
+(6.5) or its mixture with a linear term. Ellipses, having ﬁnite support in terms
+the oblique asymptote of f(u) becomes vertical), and thus we simply always choose the larger
+solution.
+
+
+--- Page 209 ---
+
+6.8. TABULATION
+197
+of both x and y, are not lending themselves for this kind of usage, unless used
+in a piecewise approximation, which we discuss later.
+6.8
+Tabulation
+Tabulation is one of the standard ways of reducing the computation cost of
+functions.
+Instead of computing the function using some numerical method
+(which might be too expensive) we store function values at certain points in a
+lookup table. To compute the function value in between the points, interpolation
+(most commonly linear) is used.
+Tabulation is worth a dedicated discussion in the context of nonlinear zero-
+delay feedback equations, because in this case it can be combined with the
+bisection method in a special way, making this combination more eﬃcient. Also
+the same ideas provide a general framework for applying piecewise saturation
+curves in a zero-delay feedback context, even if the number of segments is so
+low that using a real table is not practical.
+Imagine the saturator function in Fig. 6.13 was represented by tabulation
+combined with linear interpolation, which eﬀectively means that we are having
+a piecewise-linear function f(u) (Fig. 6.28). In order to solve (6.13) we ﬁrst
+would need to determine the applicable segment of f(u).
+Having found the
+linear segment we just need to solve a linear zero-delay equation.
+kG · f(u)
+(x −kS) −u
+u
+v
+0
+Figure 6.28: The solution of (6.13) for a piecewise-linear saturator.
+From Fig. 6.28 is should be clear that the bisection method for a piecewise-
+linear curve can be implemented by simply comparing the values of v = (x −
+kS) −u and v = kG · f(u) at the breakpoints un, thereby sparing the need
+for linear interpolation.
+We would start with some initial bracketing of the
+breakpoint range n ∈[L, R] and then compare the two curves at the breakpoint
+in the middle of the range uM (where M = (L + R)/2, rounding the result of
+division by 2 up or down, if necessary). Depending on the comparison outcome
+we pick either [L, M] or [M, R] as the next range. We repeat until we are left
+with a single segment, and then simply solve the linear zero-delay feedback
+
+
+--- Page 210 ---
+
+198
+CHAPTER 6. NONLINEARITIES
+equation.22
+The very ﬁrst and very last linear segments will require special care, because
+they do not go from one table point to the other, but extend from the outermost
+entries of the table to u = ±∞. We can either assume that they horizontally
+extend from the ﬁrst and last points in the table, or store their slope separately.
+As a very simple example of the just introduced concepts we could consider
+a hard clipper
+f(x) =
+
+
+
+
+
+1
+if x ≥1
+x
+if −1 ≤x ≤1
+−1
+if x ≤−1
+(Fig. 6.29). We don’t need a real table to store the breakpoints, but the same
+ideas apply. First comparing v = (x −kS) −u and v = kG · f(u) at u = 1 we
+ﬁnd out whether the intersection occurs in the right-hand saturation segment
+u ≥1. If not, then we perform the same comparison at u = −1, thereby ﬁnding
+out whether the intersection occurs in the left-hand saturation segment u ≤−1.
+Otherwise the interesection occurs in the middle segment −1 ≤u ≤1.23.
+kG · f(u)
+(x −kS) −u
+u
+v
+0
+Figure 6.29: The solution of (6.13) for a hard clipper.
+The tabulation approach is not limited to piecewise-linear segments. We
+could e.g. use the 2nd-order segments of the form (6.21). Since the latter have 5
+degrees of freedom, we could use 4 of those to specify the values of the function
+and its ﬁrst derivative at the segments ends (like we would do for a Hermi-
+tian interpolating segment and like we did for (6.24)) and use the 5th degree of
+freedom e.g. to minimize the remaining error. In fact, in Section 6.7 we have
+22Note that the described binary search process doesn’t rely on the regular spacing of
+breakpoints un along the u axis. This suggests that we might use an irregular spacing, e.g.
+placing the breakpoints more densely in the areas of higher curvature.
+Irregularly spaced
+breakpoints might complicate the initial bracketing a bit, though.
+23Treating the hard clipper as a piecewise-linear shaper is just a demonstration example. For
+a hard clipper shape it might be simpler and more practical to simply perform a linearization
+at zero (thereby treating the hard clipper as a fully transparent shaper f(u) = u) to find u.
+As the very next step after that is sending u through the hard clipper, at the output of the
+hard clipper we will get the true value, as if we properly solved the equation (6.13))
+
+
+--- Page 211 ---
+
+6.9. SATURATION IN 1-POLE FILTERS
+199
+done exactly this, building a piecewise-2nd-order curve consisting of two seg-
+ments joined at the breakpoint at the origin. The saturator (6.2b), consisting
+of four segments of an order not exceeding 2, could be another candidate for
+this approach.
+6.9
+Saturation in 1-pole filters
+The feedback in the 1-pole ﬁlter is not one creating the resonance. Therefore
+the discussion from Section 6.3 does not apply and we need to address nonlinear
+1-poles separately.
+We are going now to discuss nonlinear 1-poles with the nonlinearity ideas de-
+rived from diﬀerent analog variations of the 4-pole lowpass ladder ﬁlter discussed
+in Section 5.1 These nonlinear 1-pole ﬁlters, however, are of generic nature and
+are therefore not limited to the usage inside 4-pole lowpass ladder ﬁlters (or
+inside ﬁlters of whatever speciﬁc kind, for that matter).
+Transistor ladder’s 1-pole lowpasses
+The linear model of transistor ladder discussed in Section 5.1 (Fig. 5.1) is a ﬁrst
+level of approximation of the behavior of the respective analog structure, where
+we ignore all nonlinear eﬀects. If we wish to take nonlinear eﬀects into account,
+we could replace the underlying linear 1-pole lowpasses of the ladder ﬁlter with
+nonlinear 1-pole lowpasses, the structure of such nonlinear lowpass being shown
+in Fig. 6.30. In terms of the equations, (2.3) is transformed into
+y = y(t0) +
+Z t
+t0
+ωc
+ tanh x(τ) −tanh y(τ)
+
+dt
+(6.25)
+The lowpass in (6.25) and Fig. 6.30 is a simple nonlinear model of the underlying
+1-pole lowpass of the transistor ladder, directly arising out of the application of
+Ebers–Moll transistor model.24
+tanh
+/
++
+ '!&"%#$
+/
+R
+/
+•/
+tanh o
+−
+O
+/
+x(t)
+y(t)
+Figure 6.30: A nonlinear 1-pole lowpass element of the transistor
+ladder ﬁlter.
+Which eﬀect does the change from (2.3) to (6.25) have? Apparently, tanh x−
+tanh y has a smaller absolute magnitude compared to x −y, the drop in magni-
+tude becoming more noticeable of one or both of the signals x and y is suﬃciently
+high. If both x and y have large values of the same sign, it’s possible that the
+diﬀerence tanh x −tanh y is close to zero, even though the diﬀerence x −y is
+very large. This means that the ﬁlter will update its state more slowly than
+24A famous piece of work describing this specific nonlinear model of the transistor ladder
+filter is the DAFx’04 paper Non-linear digital implementation of the Moog ladder filter by
+Antti Huovilainen. Therefore this model is sometimes referred to as the “Antti’s model”.
+
+
+--- Page 212 ---
+
+200
+CHAPTER 6. NONLINEARITIES
+in (2.3). Intuitively this feels like “cutoﬀreduction” at large signal levels, or,
+more precisely this can be seen as audio-rate modulation of the cutoﬀ, where
+the cutoﬀis being changed by the factor
+K = tanh x −tanh y
+x −y
+0 < K ≤1
+where the equality K = 1 is attained at x = y = 0.
+Connecting 1-poles from Fig. 6.30 in series (Fig. 6.31) can be optimized by
+noticing that we don’t need to compute the tanh of the output of the ﬁrst
+integrator twice (Fig. 6.32), thus sparing one tanh saturator. The entire ladder
+ﬁlter thereby turns into one in Fig. 6.33.
+tanh
+/
++
+ '!&"%#$
+/
+R
+/
+•/
+tanh o
+−
+O
+tanh
+/
++
+ '!&"%#$
+/
+R
+/
+•/
+tanh o
+−
+O
+/
+Figure 6.31: Serial connection of two nonlinear 1-pole lowpass el-
+ements from Fig. 6.30.
+tanh
+/
++
+ '!&"%#$
+/
+R
+/
+tanh
+
+•
+−
+O
++
+ '!&"%#$
+/
+R
+/
+•/
+tanh o
+−
+O
+/
+Figure 6.32: Optimized serial connection of two nonlinear 1-pole
+lowpass elements from Fig. 6.31.
+The nonlinear 1-pole in Fig. 6.33 are normally suﬃcient to prevent the ﬁlter
+from explosion in selfoscillation range.
+However, obviously, there is nothing
+which should stop us from introducing additional nonlinearities, such as the
+ones discussed in Section 6.3, not so much as a means from preventing the
+ﬁlter explosion but rather for giving additional color to the sound. Apparently
+feedfoward path of Fig. 6.33 already contains many nonlinear elements, therefore
+adding nonlinearities to the feedback path could make more sense. Note that
+while there are good reasons to keep the saturation levels of nonlinearities in the
+feedfoward path of Fig. 6.33 (especially since we are employing the optimization
+from Fig. 6.32, which shares one nonlinearity between two 1-pole lowpasses),
+there is much less reason to have the same saturation level (or even the same
+saturation curve) for the nonlinearity in the main feedback path.
+The nonlinear version of the diode ladder ﬁlter (Figs. 5.48, 5.49) is using a
+similar kind of nonlinear 1-poles, resulting in a structure shown in Fig. 6.34.
+
+
+--- Page 213 ---
+
+6.9. SATURATION IN 1-POLE FILTERS
+201
++
+ '!&"%#$
+/
+tanh
+/
++
+ '!&"%#$
+/
+R
+/
+•/
+tanh o
+•o
+−
+O
++
+ '!&"%#$
+R
+/
+•/
+tanh o
+•o
+−
+O
++
+ '!&"%#$
+R
+/
+•/
+tanh o
+•o
+−
+O
++
+ '!&"%#$
+R
+/
+•/
+tanh o
+−
+O
+/
+/
+/
+•/
+/
+111O
+−
+O
+x(t)
+y1(t)
+y2(t)
+y3(t)
+y4(t)
+k
+Figure 6.33: Nonlinear transistor ladder ﬁlter.
+The equations (5.18) are respectively turned into:
+˙y1 = ωc
+ tanh x −tanh(y1 −y2)
+
+˙y2 = ωc
+2
+ tanh(y1 −y2) −tanh(y2 −y3)
+
+˙y3 = ωc
+2
+ tanh(y2 −y3) −tanh(y3 −y4)
+
+˙y4 = ωc
+2
+ tanh(y3 −y4) −tanh y4
+
+(compare to (6.25)).
+OTA ladder 1-poles
+The same idea of the ladder ﬁlter discussed in Section 5.1 and shown in Fig. 5.1
+has been often implemented in analog form using OTA (operational transcon-
+ductance ampliﬁers) instead of transistors. This generates another kind of non-
+linear 1-pole structure (Fig. 6.35).
+Formally we are having a feedback loop saturator here. However this feed-
+back loop is not responsible for generating the resonance, therefore the eﬀect of
+the saturator is diﬀerent from the one discussed in Section 6.3. We are having
+a saturator at the integrator’s input, therefore we are performing soft clipping
+
+
+--- Page 214 ---
+
+202
+CHAPTER 6. NONLINEARITIES
++
+ '!&"%#$
+/
+tanh
+/
++
+ '!&"%#$
+/
+R
+/
+•/
++
+ '!&"%#$
+tanh o
+•o
+−
+O
++
+ '!&"%#$
+MMMq
+q
+q/
+R
+/
+•/
++
+ '!&"%#$
+tanh o
+•o
+−
+O
+−O
++
+ '!&"%#$
+MMMq
+q
+q/
+R
+/
+•/
++
+ '!&"%#$
+tanh o
+•o
+−
+O
+−O
++
+ '!&"%#$
+MMMq
+q
+q/
+R
+/
+•/
+tanh o
+−
+O
+−O
+/
+/
+/
+•/
+/
+111O
+−
+O
+x(t)
+y1(t)
+y2(t)
+y3(t)
+y4(t)
+1/2
+1/2
+1/2
+k
+Figure 6.34: Nonlinear diode ladder ﬁlter.
++
+ '!&"%#$
+/
+tanh
+/
+R
+/
+•/
+−
+O
+/
+x(t)
+y(t)
+Figure 6.35: OTA-style nonlinear 1-pole lowpass.
+on the speed of change of the ﬁlter’s output value, or, equivalently, we are do-
+ing “soft slew limiting”. Alternatively, as shown by (6.8), this can be seen as
+audio-rate cutoﬀmodulation, the cutoﬀfactor varying in agreement with (6.9).
+Note that we have two diﬀerent options for picking the highpass signal in
+Fig. 6.35.
+We could do this either before or after the nonlinearity.
+In the
+latter case the highpass signal will be saturated (which might be a bit over the
+top, compared to the lowpass signal), in the former case we have the beneﬁt of
+preserving the relationship HLP(s) + HHP(s) = 1. This also makes the former
+option look like a particulary good candidate not only for a nonlinear 1-pole
+highpass (and thereby, among other things, for ladder ﬁlter structures utilising
+highpasses) but also for a nonlinear allpass.
+Fig. 6.36 shows the respective
+nonlinear 1-pole multimode.
+
+
+--- Page 215 ---
+
+6.9. SATURATION IN 1-POLE FILTERS
+203
++
+ '!&"%#$
+/
+•/
+tanh
+/
+R
+/
+•/
+−
+O
+/
+•
+/
++
+ '!&"%#$
+−
+
+O
+/
+x(t)
+yLP(t)
+yHP(t)
+yAP(t)
+Figure 6.36: OTA-style nonlinear 1-pole multimode.
+Saturated integration
+The previously discussed ways of introduction of nonlinearities into 1-poles re-
+sulted in relatively complicated nonlinear behavior of the ﬁlters. But what if
+we want a simpler behavior? Let’s say we want to simply saturate the output.
+Of course we simply could put a saturator at the output of the ﬁlter (Fig. 6.37)
+but this doesn’t really feel like making the ﬁlter itself nonlinear.
++
+ '!&"%#$
+/
+R
+/
+•/
+−
+O
+tanh
+/
+/
+x(t)
+y(t)
+Figure 6.37: Putting a saturator at the ﬁlter’s output.
+We could try putting the output nonlinearity inside the ﬁlter’s feedback loop
+(Fig. 6.38). However, comparing this to equation (2.3) we should realize that
+the main eﬀect of such nonlinearity will be that the diﬀerence x −y will be
+changed to x −tanh y, leading to the capacitor in Fig. 2.1 continuing to charge
+even after the output value has reached the input value. In other words, the
+output will still grow even after reaching the input value. This feels more like a
+mistake.
++
+ '!&"%#$
+/
+R
+/
+tanh
+/
+•/
+−
+O
+/
+x(t)
+y(t)
+Figure 6.38: Saturating the integrator’s output (not really a work-
+ing idea).
+What we rather want is to prevent the 1-pole’s capacitor in Fig. 2.1 from
+charging beyond a certain level (that is we want to prevent the integrator state
+from going beyond a certain maximum). In order to achieve that in a “proper
+analog way”, we will need to introduce antisaturators, which we are going to
+
+
+--- Page 216 ---
+
+204
+CHAPTER 6. NONLINEARITIES
+do later in this chapter. However we could also do a “hack” and modify the
+integrator structure, introducing the saturation into its internal accumulation
+process. This works particularly well with direct form I (Fig. 6.39) and trans-
+posed direct form II (Fig. 6.40) integrators. Obviously, this hack is not limited
+to 1-poles, but can be applied to any structure which is based on integrators,
+such as e.g. SVF.
+MMMq
+q
+q/
+•/
++
+ '!&"%#$
+/
+z−1
+/
+O
++
+ '!&"%#$
+/
+tanh
+/
+•/
+z−1 o
+O
+/
+x[n]
+y[n]
+ωcT/2
+Figure 6.39: Saturating direct form I trapezoidal integrator.
+MMMq
+q
+q/
+•/
++
+ '!&"%#$
+/
+tanh
+/
+•/
+/
++
+ '!&"%#$
+/
+z−1
+O
+O
+o
+x[n]
+y[n]
+ωcT/2
+Figure 6.40: Saturating transposed direct form II trapezoidal inte-
+grator.
+6.10
+Multinonlinear feedback
+We have seen that instantaneous responses of linear ﬁlters are linear functions
+of their input, such as e.g. in (3.29). It is not diﬃcult to realize, particularly
+from the previous discussion of the solution of the nonlinear zero-delay feed-
+back equation (6.12), that instantaneous response of a nonlinear ﬁlter is some
+nonlinear function of its input:
+y = F(x, S)
+(6.26)
+(where we also explicitly notated the dependency on the ﬁlter’s state S, but the
+dependency of F on the ﬁlter’s parameters is understood implicitly).
+Consider the OTA-style 1-pole lowpass in Fig. 6.35 and imagine we build a
+4-pole lowpass ladder ﬁlter (as in Fig. 5.1) from four idenitical 1-pole lowpasses
+of this kind. Assuming (6.26) decribes the instantaneous response of Fig. 6.35,
+we could redraw Fig. 5.1 in the instantaneous response form as Fig. 6.41.
+
+
+--- Page 217 ---
+
+6.10. MULTINONLINEAR FEEDBACK
+205
++
+ '!&"%#$
+/
+F(x, S1)
+/
+F(x, S2)
+/
+F(x, S3)
+/
+F(x, S4)
+/
+•/
+qqq
+M
+M
+M o
+−
+O
+/
+x
+y
+k
+Figure 6.41: Nonlinear ladder ﬁlter in the instantaneous response
+form.
+Let u denote the signal at the input of the ﬁrst 1-pole lowpass in Fig. 6.41.
+The zero-delay feedback equation for the entire of Fig. 6.41 therefore becomes
+u = x −k · F(F(F(F(u, S1), S2), S3), S4)
+(6.27)
+Intuitively we can expect F(x, S) to be monotonically increasing with respect to
+x, thus F(F(F(F(x, S1), S2), S3), S4) should be monotonically increasing too,
+and we could use most of the previously described methods of solving nonlinear
+zero-delay feedback equations to solve (6.27). Theoretically.
+Practically the evaluation of F(x, S) is usually very expensive, because it
+means a numerical solution of the zero-delay feedback equation for the respective
+1-pole, possibly running several rounds of an iterative method.
+Now, if we
+are going to use an iterative method to solve (6.27), these expenses will be
+multiplied by the number of the “outer” iterations. Besides, if we are using
+Newton–Raphson to solve (6.27) then we need not only to evaluate F(x, S) but
+also its derivative with respect to x, which further increases the computation
+cost of solving (6.27).
+Therefore usually such “nesting” approach, where we express the higher-
+level zero-delay feedback equation in terms of the solutions of the lower-level
+zero-delay feedback equations, is not very practical for nonlinear systems. In-
+stead, let’s “ﬂatten” the entire structure, and write the equation describing the
+instantaneous response signals within this structure. E.g. for the 4-pole ladder
+built out of 1-poles in Fig. 6.35 the ﬂattened structure is shown in Fig. 6.42. Or,
+representing the integrators by their instantaneous responses (which are fully
+linear), we obtain Fig. 6.43.
+Denoting the input and output signals of each of the 1-poles as xn and yn,
+we write the 1-pole zero-delay feedback equations:
+yn = g tanh(xn −yn) + sn
+Or, since xn+1 = yn we can denote the input of the ﬁrst lowpass as y0 and write
+yn = g tanh(yn−1 −yn) + sn
+n = 1, . . . , 4
+Plus, we are having the global feedback loop:
+y0 = x −ky4
+and thus we are having an equation system:
+y0 = x −ky4
+
+
+--- Page 218 ---
+
+206
+CHAPTER 6. NONLINEARITIES
++
+ '!&"%#$
+/
++
+ '!&"%#$
+/
+tanh
+/
+R
+/
+•o
+−
+O
++
+ '!&"%#$
+tanh
+/
+R
+/
+•o
+−
+O
++
+ '!&"%#$
+tanh
+/
+R
+/
+•o
+−
+O
++
+ '!&"%#$
+tanh
+/
+R
+/
+•
+•o
+−
+O
+111O
+−
+O
+/
+x(t)
+y(t)
+k
+Figure 6.42: Flattened OTA lowpass ladder ﬁlter structure.
+y1 = g tanh(y0 −y1) + s1
+y2 = g tanh(y1 −y2) + s2
+y3 = g tanh(y2 −y3) + s3
+y4 = g tanh(y3 −y4) + s4
+We can get rid of the ﬁrst equation by simply substituting its right-hand side
+for y0, obtaining:
+y1 = g tanh(x −ky4 −y1) + s1
+y2 = g tanh(y1 −y2) + s2
+y3 = g tanh(y2 −y3) + s3
+y4 = g tanh(y3 −y4) + s4
+(6.28)
+Equation (6.28) can be written in a more concise form by introducing the vector
+y =
+ y1 y2 y3 y4
+T
+and the vector-function of a vector argument Φ:
+Φ(y) =
+
+
+
+
+g tanh(x −ky4 −y1) + s1
+g tanh(y1 −y2) + s2
+g tanh(y2 −y3) + s3
+g tanh(y3 −y4) + s4
+
+
+
+
+In this notation (6.28) looks simply like
+y = Φ(y)
+(6.29)
+
+
+--- Page 219 ---
+
+6.10. MULTINONLINEAR FEEDBACK
+207
++
+ '!&"%#$
+/
++
+ '!&"%#$
+/
+tanh
+/
+gx + s1
+/
+•o
+−
+O
++
+ '!&"%#$
+tanh
+/
+gx + s2
+/
+•o
+−
+O
++
+ '!&"%#$
+tanh
+/
+gx + s3
+/
+•o
+−
+O
++
+ '!&"%#$
+tanh
+/
+gx + s4
+/
+•
+•o
+−
+O
+111O
+−
+O
+/
+x(t)
+y(t)
+k
+Figure 6.43: Flattened OTA lowpass ladder ﬁlter structure in the
+instantaneous response form.
+This is our nonlinear 4-dimensional (since we are having 4 unknowns yn) zero-
+delay feedback equation.
+The form (6.29) readily oﬀers itself for ﬁxed-point iteration. By rewriting
+(6.29) as
+Φ(y) −y = 0
+the multidimensional form of Newton–Raphson algorithm can be used:
+yn+1 = yn −
+∂(Φ(y) −y)
+∂y
+(yn)
+−1
+· (Φ(yn) −yn)
+Also the quick approximate methods of Section 6.6 work out of the box.
+The diﬀerence of solving (6.29) instead of (6.27) is that in (6.29) we are
+simultaneously solving all zero-delay feedback equations in the system, thereby
+not having the problem of nested iterations.
+Actually, choosing the 1-pole output signals as the unknowns is not necessar-
+ily the best choice. It would have been more convenient to solve for the inputs
+of the integrators, so that we can directly reuse the obtained signals to update
+the integrator states.25 On the other hand, e.g. for the transposed direct form
+II integrator (Fig. 3.11) one could deduce the new state from the old state and
+the new output signal, thus yn also work pretty eﬃciently (this trick has been
+used in the digital implementation of an SVF in Section 4.4). A consideration
+25It might be a good idea to write the equation system in terms of integrator input signals
+as an exercise.
+
+
+--- Page 220 ---
+
+208
+CHAPTER 6. NONLINEARITIES
+of a bigger importance therefore could be that the choice of the unknowns may
+aﬀect the convergence of the iteration scheme.
+Usually for multidimensional zero-delay feedback cases the iterative methods
+need to be further reﬁned and/or a combination of diﬀerent methods need to be
+used to have a reliable and quick convergence of an iterative process of ﬁnding
+the solution of (6.29). However, often simply using the approximate methods
+of Section 6.6, will deliver reasonable results.
+6.11
+Antisaturators
+In Section 6.9 we made some attempts to make the 1-pole lowpass ﬁlter state
+saturate, the most successful attempt being the modiﬁcation of the internals of
+an integrator. In a real analog circuit we wouldn’t have been able to do the
+same, as e.g. a capacitor, which is used as an integrator for the current, doesn’t
+have “built-in saturation functionality”. Therefore diﬀerent means have to be
+used to achieve the integrator state’s saturation.
+Diode clipper
+A common trick is to shorten the 1-pole ﬁlter’s capacitor with a nonlinear re-
+sistance, this resistance being high at low voltages and dropping down at high
+voltages on the capacitor. That is the short path is disabled at low voltages but
+progressively “turns on” at higher voltages. This can be done by using a diode
+pair (Fig. 6.44). The structure in Fig. 6.44 is commonly referred to as diode
+clipper.
+
+R
+
+
+ÿ
+
+
+
+ C
+
+
+þ
+
+
+ÿ
+
+ÿ
+
+ò
+y(t)
+
+
+
+
+
+þ
+
+
+
+
+
+þ
+
+
+
+
+ð
+x(t)
+Figure 6.44: Diode clipper.
+Using Shockley diode equation we can show that, qualitatively, the current
+ﬂowing through the diode pair is related to the capacitor voltage as
+ID = Is sinh UC
+UT
+where Is and UT are diode parameters (Fig. 6.45 provides a graph of sinh as a
+reference). This current is then subtracted from the current which is charging
+the capacitor, thus acting as current leakage:
+˙qC = I −ID = I −Is sinh UC
+UT
+(please refer to equations (2.1) for the other details of the circuit’s model).
+Since Is is very small, as long as UC is below or comparable to UT the leakage
+
+
+--- Page 221 ---
+
+6.11. ANTISATURATORS
+209
+is negligible. As UC exceeds UT , the current grows exponentially and quickly
+stops being negligible.
+x
+y
+0
+1
+−1
+2
+−2
+3
+−3
+4
+−4
+1
+−1
+2
+−2
+3
+−3
+4
+−4
+Figure 6.45: Hyperbolic sine y = sinh x.
+In terms of the block diagram (Fig. 2.2) this current leakage can be expressed
+as shown in Fig. 6.46, where we have assumed that the ﬁlter cutoﬀis controlled
+by the resitance R rather than capacitance C and thus the amount of the current
+leakage is independent of the cutoﬀ.
++
+ '!&"%#$
+/
+MMMq
+q
+q/
++
+ '!&"%#$
+/
+R
+/
+•/
+•
+−
+O
+/
+sinh
+O
+−
+O
+x(t)
+y(t)
+ωc
+Figure 6.46: Diode clipper in the form of a block diagram.
+“sinh” stands for some curve of the form “a sinh(x/b)”.
+The fact that the leakage current is independent of the cutoﬀis actually
+having the opposite eﬀect: the eﬀects of the leakage become cutoﬀ-dependent
+and the leakage more strongly aﬀects the ﬁlter at lower cutoﬀs. Particularly,
+
+
+--- Page 222 ---
+
+210
+CHAPTER 6. NONLINEARITIES
+given a constant input voltage, the stabilized output level will be larger at larger
+cutoﬀs. For the purposes of generic application it is therefore more useful to
+make the leakage cutoﬀ-independent, as in Fig. 6.47.
++
+ '!&"%#$
+/
++
+ '!&"%#$
+/
+MMMq
+q
+q/
+R
+/
+•/
+•
+−
+O
+/
+sinh
+O
+−
+O
+x(t)
+y(t)
+ωc
+Figure 6.47: Diode clipper with cutoﬀ-independent leakage.
+“sinh” stands for some curve of the form “a sinh(x/b)”.
+Or, using implied cutoﬀnotation and combining the two feedback paths
+into a single one, we obtain the structure Fig. 6.48. Also, in Fig. 6.47 the cutoﬀ
+parameter ωc was not the true cutoﬀof the system, since at low signal levels the
+gain of the feedback path was 1 + a/b. This made the system behave as if its
+cutoﬀwas (1 + a/b)ωc and as if its input signal was reduced by (1 + a/b) factor
+at the same time. In Fig. 6.48 we addressed this issue by scaling the linear path
+of the feedback by the factor (1 −a/b). This doesn’t change the qualitative
+behavior of the system, but aﬀects only the interpretation of the cutoﬀωc and
+the input signal scale.
++
+ '!&"%#$
+/
+R
+/
+•/
+ 1 −a
+b
+
+x + a sinh x
+b
+−
+O
+/
+x(t)
+y(t)
+Figure 6.48: Diode clipper with cutoﬀ-independent leakage (sim-
+pliﬁed diagram).
+The structure in Fig. 6.48 is a good illustration of the idea that we could
+employ to introduce saturation into 1-pole lowpass ﬁlter’s state: as sinh(x/b)
+grows exponentially for large signals, the term a sinh(x/b) causes the negative
+feedback to grow as well, thereby causing the integrator to “discharge”.
+The same eﬀect is obviously obtained by putting any other quickly growing
+function of a similar shape into the feedback path of a 1-pole lowpass. Good
+options for such functions are provided by the inverses of the saturator functions
+introduced in Section 6.2:
+y = tanh−1 x = 1
+2 ln 1 + x
+1 −x
+(inverse of (6.1))
+y = x/(1 −|x|)
+(inverse of (6.2c))
+y = sinh x
+(inverse of (6.4))
+y = x(1 + |x|)
+(inverse of (6.5))
+
+
+--- Page 223 ---
+
+6.11. ANTISATURATORS
+211
+A particularly important feature of the inverses of the saturators is that, same as
+with saturators, they are transparent at low signal levels, thereby not aﬀecting
+the cutoﬀof the ﬁlter.
+We will refer to the waveshapers having an inverse saturator kind of shape
+as antisaturators. Fig. 6.49 shows another version of Fig. 6.48, this time using
+a simpler antisaturator.
++
+ '!&"%#$
+/
+R
+/
+•/
+sinh x
+−
+O
+/
+x(t)
+y(t)
+Figure 6.49: Lowpass ﬁlter’s state saturation by using an antisat-
+urator.
+An antisaturator in Fig. 6.49 is having a similar eﬀect on the ﬁlter’s state
+saturation as its inverse (the respective saturator) would have had if directly
+applied to a signal, or if being put in a resonating feedback path. Speciﬁcally,
+using an unbounded saturator’s inverse as an antisaturator in Fig. 6.49 would
+result in an unbounded saturation of the ﬁlter’s state, in the sense that by
+making the amplitude of the input signal of the ﬁlter larger and larger one can
+achieve arbitrarily large levels of the ﬁlter’s state. On the other hand, using
+a bounded saturator’s inverse as an antisaturator (such as e.g. tanh−1) would
+result in bounding of the ﬁlter state, the state not being able to exceed the
+saturation level.
+As with saturators, adding a linear term to an antisaturator f(x) doesn’t
+change its antisaturating behavior, but simply weakens it a bit further, where
+we assume that the addition should be done under the same considerations of
+keeping the transparency at low signal levels:
+y = (1 −α)f(x) + αx
+(0 < α < 1)
+The antisaturator in Fig. 6.48 is a kind of a reverse example of this principle,
+which can be seen as if the (otherwise fully linear and transparent) shape y = x
+was modiﬁed by an addition of a non-transparent antisaturator a sinh(x/b),
+however the resulting curve has been made transparent again.
+Antisaturation in SVF
+As with 1-pole ﬁlters, the feedback in SVF is also not one creating the resonance,
+respectively the discussion from Section 6.3 does not apply either, and thus we
+can’t simply put a saturator into the feedback loop. Actually, the purpose of the
+feedback in SVF is kind of an opposite of creating the resonance. The function
+of the feedback path containing the bandpass signal is to dampen the otherwise
+self-oscillating structure. This suggests the idea that if we put an antisaturator
+into the bandpass signal path, this might actually do the trick of preventing the
+signal levels from getting too high.
+Our ﬁrst attempt to do so is shown in Fig. 6.50. After thinking a bit we,
+however, realize that it can’t work. Indeed, at R = 0 there is no damping signal
+whatsoever, the same as without the antisaturator. Furthermore, probably the
+
+
+--- Page 224 ---
+
+212
+CHAPTER 6. NONLINEARITIES
+main reason to introduce the antisaturator into the SVF is so that we could go
+into the selfoscillation range R < 0, same as we did e.g. with nonlinear 4-pole
+ladder by going into the range k > 4. However, at R < 0 the introduced anti-
+saturator doesn’t cause any damping either, quite on the opposite, it ampliﬁes
+the “antidamping” (the inverted damping signal). Obviously, putting the anti-
+saturator after the 2R gain element instead of putting it before doesn’t change
+much in this regard.
++
+ '!&"%#$
+/
+•/
+R
+/
+•/
+R
+/
+•/
+sinh
+
+111
+
+
++
+ '!&"%#$ o
+−
+O
+/
+/
+/
+x(t)
+yLP(t)
+2R
+yHP(t)
+yBP(t)
+Figure 6.50: An attempt to introduce an antisaturator into an SVF
+(not really working).
+We could get a bit smarter and connect a saturator in parallel with the 2R
+gain element (Fig. 6.51). This now does the job of saturating the signals, as
+the damping feedback signal will grow exponentially at large levels of yBP, no
+matter what the value of R is. However now the eﬀective gain of the damping
+feedback path (at low signal levels, where sinh x ≈x) is 2R+1, rather than 2R.
+The latter problem is ﬁxed in Fig. 6.52. In this structure, at the neutral
+setting of R = 1 the entire damping signal goes through the antisaturator. This
+exactly matches the same situation in our ﬁrst attempt in Fig. 6.50 (and is
+the reason for the separation of the multiplication by 2 into an additional gain
+element). As R gets away from 1, we send some of the damping signal through
+the parallel linear path, still keeping the total gain of the damping path equal
+to 2R at low signal levels.
+The antisaturator in Fig. 6.52 eﬀectively makes the state of the ﬁrst inte-
+grator saturate. This might result in the feeling that the level of the bandpass
+signal yBP becomes too low. Therefore, instead one could pick the bandpass
+signal from yBP′ output, where the antisaturator has increased the level of yBP
+back. The yBP1 output provides the normalized bandpass signal.
+Note that yHP + yBP1 + yLP = x, as for the linear SVF.
+Zero-delay feedback equation with antisaturators
+The introduction of antisaturators raises some new considerations for the solu-
+tion of the zero-delay feedback equation. We will use the nonlinear 1-pole in
+
+
+--- Page 225 ---
+
+6.11. ANTISATURATORS
+213
++
+ '!&"%#$
+/
+•/
+R
+/
+•/
+R
+/
+•/
+•
+111
+
+
++
+ '!&"%#$
+/
+sinh
+
+o
++
+ '!&"%#$ o
+−
+O
+/
+/
+/
+x(t)
+yLP(t)
+2R
+yHP(t)
+yBP(t)
+Figure 6.51: A second attempt to introduce an antisaturator into
+an SVF (works better, but R does no longer directly correspond
+to damping).
++
+ '!&"%#$
+/
+•/
+R
+/
+•/
+R
+/
+•/
+•
+111
+
+
++
+ '!&"%#$
+/
+sinh
+
+•
+o
+111
+
+
+•
++
+ '!&"%#$ o
+−
+O
+/
+/
+/
+/
+/
+x(t)
+yLP(t)
+R −1
+2
+yHP(t)
+yBP(t)
+yBP′(t)
+yBP1(t)
+Figure 6.52: An SVF with antisaturator.
+Fig. 6.49 as a demonstration example, however it will also be more instructive
+to consider an inverse hyperbolic tangent (Fig. 6.53) instead of a hyperbolic sine
+
+
+--- Page 226 ---
+
+214
+CHAPTER 6. NONLINEARITIES
+as an antisaturator.
+x
+y
+0
+1
+−1
+2
+−2
+1
+−1
+2
+−2
+Figure 6.53: Inverse hyperbolic tangent y = tanh−1 x.
+Introducing the instantaneous response gx + s for the integrator in Fig. 6.49
+and replacing sinh with tanh−1 we obtain Fig. 6.54.
+Writing the zero-delay
+feedback equation for Fig. 6.54 we obtain
+y = g(x −tanh−1 y) + s
+(6.30)
++
+ '!&"%#$
+/
+gx + s
+/
+•/
+tanh−1
+−
+O
+/
+x(t)
+y(t)
+Figure 6.54: Lowpass ﬁlter with a tanh−1 antisaturator in the
+instantaneous response form.
+We could start solving (6.30) using the usual methods, such as the ones dis-
+cussed earlier in this chapter, however notice that tanh−1 has a limited support,
+being deﬁned only on the (−1, 1) range. This might create serious problems if
+we somehow arrive at a value of y outside of that range. Such values of y could
+appear for a number of reasons, such as e.g.:
+
+
+--- Page 227 ---
+
+6.11. ANTISATURATORS
+215
+- from an approximate solution
+- from an iterative method’s step
+- from numerical errors, such as roundoﬀs.26
+Even if we formally stay within the range y ∈(−1, 1), we could still get out of
+the range of representable values of tanh−1 y if tanh−1 y gets too large.
+There are also related questions of convergence of iterative schemes, partic-
+ulary of ﬁxed point iteration. Last but not least, close to the boundaries of the
+range y ∈(−1, 1) a small numerical error in the value of y will result in a huge
+error in the value of tanh−1 y, which suggests that it might be generally a bad
+idea to explicitly evaluate tanh−1 y at all. Similar issues also of course arise with
+unbounded antisaturators, even though they are not as bad as with bounded
+ones.
+In order to avoid this kind of problems, we can solve for the antisaturator’s
+output, rather than for the antisaturator’s input. Introducing variable u for the
+antisaturator’s output signal:
+u = tanh−1 y
+we respectively have y = tanh u and can rewrite (6.30) in terms of u as
+tanh u = g(x −u) + s
+or, further rewriting it so that the linear function in the right-hand side is more
+explicitly visible
+tanh u = (gx + s) −gu
+(6.31)
+Equation (6.31) looks very much like the previously discussed zero-delay feed-
+back equation (6.13). However, there are still important diﬀerences. Expressing
+the left- and right-hand sides of (6.31) graphically in Figs. 6.55 and 6.56, we
+see that, compared to Figs. 6.13, 6.14 and 6.15, multiple solutions can occur
+already for g < 0. Fortunately, in Fig. 6.54 the value of g cannot get negative,
+since that would require a negative cutoﬀvalue for the integrator.
+Having found u from (6.31) we can “send” it further through the feedback
+loop, ﬁrst ﬁnding the integrator’s input value as x −u, then updating the in-
+tegrator’s state and ﬁnding y as the output value of the integrator. Note that
+thereby we never explicitly evaluated tanh−1 y.
+For an antisaturator in the SVF (Fig. 6.52) the situation is more complicated.
+We would like to solve for the antisaturator’s output yBP′, but then we would
+be stuck immediately afterwards: since we don’t know the signal on the “R−1”
+path, we can’t add the output signals from sinh and R −1. Furthermore, we
+would have a similar problem of not knowing yLP at the next adder (which
+computes yBP1 +yLP). These problems are not unexpected, considering that we
+have been solving for a point in the signal path which is not shared among all
+zero-delay feedback loops in the structure.
+One way around this would be to try to introduce more unknowns into the
+system and solve several equations at once. However, in this speciﬁc case we
+26Going out of supported range of y due to numerical errors is more likely to happen in
+more complicated structures than the one in Fig. 6.54. However since we are using Fig. 6.54
+as a demonstration of general principles, we should mention this aspect as well.
+
+
+--- Page 228 ---
+
+216
+CHAPTER 6. NONLINEARITIES
+tanh u
+(gx + s) −gu
+u
+v
+0
+Figure 6.55: The solution of (6.31) for g > 0.
+tanh u
+(gx + s) −gu
+u
+v
+0
+Figure 6.56: The solution of (6.31) for g < 0.
+could simply “send the obtained signal through the antisaturator in the reverse
+direction”.
+That is, knowing the antisaturator’s output, we can obtain the
+antisaturator’s input by evaluating sinh−1 (which is completely okay, we don’t
+want to explicitly evaluate the antisaturator function because it can increase
+the computation error by a huge factor, but it is no problem to evaluate its
+inverse), thereby ﬁnding the value of yBP. The signal yBP is shared among all
+zero-delay feedback loops and therefore is suﬃcient to ﬁnd all other signals in
+the structure.27
+The general approach of avoiding the explicit evaluation of antisaturators
+but rather dealing with their inverses instead also allows us to deal with a
+27Of course, we should remember that we already know the output signal of the antisaturator
+and not attempt to evaluate it again as sinh yBP, which was the whole point of solving for
+yBP′.
+
+
+--- Page 229 ---
+
+6.12. ASYMMETRIC SATURATION
+217
+certain class of antisaturators which are not functions in the normal sense. An
+example of this are compact-range monotonic saturators such as (6.2b). The
+inverse of such saturator is not really a function, since it would have inﬁnitely
+many diﬀerent values at x = ±1 (Fig. 6.57). However we still can use it as
+an antisaturator, since we never have to deal with the antisaturating function
+explicitly, but are dealing with the respective saturating function instead.28
+x
+y
+0
+1
+−1
+2
+−2
+1
+−1
+2
+−2
+Figure 6.57: The inverse of (6.2b) is not a function in the normal
+sense.
+6.12
+Asymmetric saturation
+The saturators which we have been using so far were all having the odd symme-
+try f(−x) = −f(x). A feature of all symmetric saturators is that when its input
+signal amplitude is very high, the output signal basically alternates between pos-
+itive and negative saturation levels f(x). If the input signal is something like a
+sine or a sawtooth, the saturator would produce a square-like output. More gen-
+erally, such saturators tend to produce signals containing mostly odd harmonics
+(as the square wave does).
+Sometimes this domination of odd harmonics can become too boring29 and
+28Note that thereby we can even use an antisaturator which is an inverse of hard clipper.
+29More likely so for a “standalone” saturator being used as an overdrive effect, rather than
+for a saturator used in a complicated feedback loop structure in a filter.
+
+
+--- Page 230 ---
+
+218
+CHAPTER 6. NONLINEARITIES
+asymmetric saturation might be desired. Simply adding an oﬀset to the satura-
+tor’s input (or, instead, performing a parallel translation of the saturator curve
+by “sliding” it through the origin, to keep the property f(0) = 0) works only
+for signals of average levels. At high signal levels the same square would be
+produced for e.g. a sine or a sawtooth input.
+The oﬀset idea would have worked, though, if the oﬀset had been somehow
+made proportional to the input signal’s amplitude.30
+It turns out that this
+is a natural feature of a particular nonlinear 1-pole construct. Consider the
+OTA-style nonlinear 1-pole in Fig. 6.36 and imagine that instead of a saturator
+nonlinearity we have used the following shaper function:
+f(x) =
+(
+2x
+if x ≥0
+x/2
+if x ≤0
+(6.32)
+(Fig. 6.58 illustrates). This would mean that whenever yHP = x −yLP > 0, the
+cutoﬀis eﬀectively doubled. When yHP = x −yLP < 0, the cutoﬀis eﬀectively
+halved. Therefore the integrator state will be more “willing” to change in the
+positive direction than in the negative one.
+x
+y
+0
+1
+−1
+2
+−2
+1
+−1
+Figure 6.58: “Asymmetric cutoﬀ” nonlinearity.
+Imagine such ﬁlter receives a steady periodic signal with a zero DC oﬀset
+(meaning that the average value of the signal is zero, or, in other words, there is
+an “equal amount” of signal above and below zero). And suppose this signal’s
+fundamental frequency is well above the nominal cutoﬀof the ﬁlter. In such
+case a linear lowpass ﬁlter would have performed a kind of averaging of the
+input signal, thereby producing a zero output signal.31 However in the case of
+using the nonlinearity (6.32) the positive input values will have “more weight”
+than the negative ones and the lowpass output will be nonzero.
+30Clearly, by “amplitude” here we don’t mean the momentary value of the signal but rather
+some kind of average or maximum.
+31Formally the filter would have produced the DC offset of the signal at the output. The
+fundamental and all other harmonics, being way above filter’s cutoff, would have been filtered
+out.
+
+
+--- Page 231 ---
+
+6.12. ASYMMETRIC SATURATION
+219
+It should be inituitively clear that the lowpass output value will increase as
+the input signal amplitude increases and vice versa (particularly it should be
+obvious that in the case of the zero amplitude of the input signal the output
+signal will also be zero). Therefore, qualitatively such lowpass ﬁlter works as an
+envelope follower, the ﬁlter cutoﬀin a way controlling the envelope follower’s
+response time. Respectively, the highpass output will contain the input signal
+with an added (or subtracted) DC oﬀset, such oﬀset being approximately pro-
+portional to the input signal’s amplitude. This means that if initially 50% of
+the signal were above zero and the other 50% below zero, we now have changed
+this ratio to something like 80% to 20%, and this eﬀect is happening more or
+less at any amplitude of the input signal.
+Thus, asymmetric nonlinear shaping could be produced by the following
+structure:
+HPlin
+/
+HPnl
+/
+MMMq
+q
+q/
+(f)x
+/
+/
+g
+where HPlin is an initial lowpass, killing the DC oﬀset which might be previ-
+ously contained in the input signal, HPnl is the asymmetric nonlinear highpass,
+introducing the DC oﬀset into the signal, the signal is then boosted by the gain
+g, controlling the amount of “drive”, and f(x) is a usual symmetric saturator.
+The nonlinearity (6.32) has a drawback that it contains a discontinuity in
+the 1st derivative at x = 0. Such discontinuity may add a noticeable amount
+of new harmonic content into the signal. This eﬀect might be desired at times,
+but for now we would rather at least reduce it, if not avoiding it altogether,
+as the ﬁlter’s main purpose is to introduce the DC oﬀset into the signal. This
+can be achieved by smoothing the discontinuity. E.g. we could replace (6.32)
+with a hyperbola going at 45◦through the origin, but having a similar to (6.32)
+asymptotic behavior (Fig. 6.59).
+x
+y
+0
+1
+−1
+2
+−2
+1
+−1
+Figure 6.59: Replacing the nonlinearity (6.32) (Fig. 6.58) (dashed
+line) by a hyperbola.
+This kind of nonlinear highpass can occur easily in analog circuits, if non-
+linear resistances are involved. E.g. consider Fig. 6.60. The eﬀective resistance
+
+
+--- Page 232 ---
+
+220
+CHAPTER 6. NONLINEARITIES
+connected in series with the capacitor varies between approximately R1 and R2
+depending on the polarity of the output voltage. Respectively the cutoﬀvaries
+between 1/R1C and 1/R2C.
+ C
+
+
+ÿ
+
+
+
+
+
+R1
+
+
+þ
+
+
+ÿ
+
+ò
+y(t)
+
+
+
+
+R2
+þ
+
+
+
+
+ð
+x(t)
+Figure 6.60: Highpass ﬁlter with asymmetric cutoﬀ.
+6.13
+Antialiasing of waveshaping
+Aliasing
+When a signal goes through a waveshaper, the waveshaping introduces addi-
+tional partials into the spectrum of the signal. These partials extend into the
+entire frequency range ω ∈[0, ∞) for almost any waveshaper. We can show that
+in several steps.
+First, let’s consider waveshapers of the form f(x) = xn (where n > 1),
+starting with f(x) = x2. Let x(t) be a periodic signal. Therefore it can be
+represented as a sum of its harmonics:
+x(t) =
+N
+X
+n=−N
+Xnejnωt
+where N can be ﬁnite or iniﬁnity. Note that we are using complex-form Fourier
+series, therefore, assuming a real x(t), we have an equal number of positive- and
+negative-frequency partials. Then
+y(t) = f(x(t)) = (x(t))2 =
+ 
+N
+X
+n=−N
+Xnejnωt
+!2
+=
+=
+N
+X
+n1,n2=−N
+Xn1Xn2ej(n1+n2)ωt =
+2N
+X
+n=−2N
+Ynejnωt
+(6.33)
+Thus, the frequencies of partials of y(t) are all possible sums n1ω + n2ω of
+frequencies of partials of x(t).32 Respectively the frequencies of the partials of
+y(t) vary between −2Nω and 2Nω. That is the width of the spectrum of y(t)
+is twice the width of the spectrum of x(t).
+32Or, if we think in terms of real-form Fourier series, where only positive-frequency partials
+are present, the frequencies of partials of y(t) are all possible sums and differences n1ω ± n2ω
+of frequencies of partials of x(t).
+
+
+--- Page 233 ---
+
+6.13. ANTIALIASING OF WAVESHAPING
+221
+For f(x) = x3 we obtain
+y(t) = f(x(t)) = (x(t))3 =
+ 
+N
+X
+n=−N
+Xnejnωt
+!3
+=
+=
+N
+X
+n1,n2,n3=−N
+Xn1Xn2Xn3ej(n1+n2+n3)ωt =
+3N
+X
+n=−3N
+Ynejnωt
+that is the width of the spectrum is tripled. It’s not diﬃcult to generalize it to
+an arbitrary power of x, concluding that f(x) = xn increases the width of the
+spectrum of x(t) n times.
+It should be clear by now that, if f(x) is a polynomial of order N:
+f(x) = a0 + a1x + a2x2 + . . . + aNxN
+the highest-order term xN will expand the spectrum of x n times, while the
+lower-order terms will also expand the spectrum of x(t) but not as much, thus
+f(x) expands the spectrum of x(t) N times.
+Now suppose f(x) is a function of a more or less general form, expandable
+into Taylor series around x = 0:
+f(x) =
+∞
+X
+n=0
+f (n)(0)
+n!
+xn =
+∞
+X
+n=0
+anxn
+We can consider such f(x) as a polynomial of an inﬁnite order and thus f(x)
+expands the spectrum of x(t) by an inﬁnite number of times.33
+Some of the waveshapers that we were previously discussed were constructed
+as piecewise functions, including e.g. a piecewise polynomial saturator (6.2b).
+Would the saturator (6.2b), which consists of polynomial segments of order not
+higher than 2, thereby expand the spectrum of f(x) only 2 times? It turns
+out that such piecewise function waveshapers also expand the spectrum an inﬁ-
+nite number of times. Having discontinuous derivatives themselves (e.g. (6.2b)
+has a continuous 1st derivative, but three discontinuities of the 2nd derivative),
+such waveshapers also introduce discontinuous derivatives into their output sig-
+nal y(t). The presence of discontinuities in a signal’s derivative automatically
+implies an inﬁnite spectrum of the signal.34
+Therefore all waveshapers which we have been considering until now (as well
+as most of the ones we could even think of) expand the spectrum of the input
+signal an inﬁnite number of times. This means that discrete-time waveshaping
+produces aliasing.
+Indeed, suppose we are given a waveshaper f(x) of a general shape, so that
+it expands the spectrum of its input signal an inﬁnite number times.
+And
+33If the Taylor expansion of f(x) has a finite convergence radius, we still can make the same
+argument about spectrum expansion, at least for the signals x(t) which are small enough to
+fit into the convergence radius of the Taylor series of f(x). Note that we also could expand
+f(x) not around x = 0 but around some other point x = x0, making the same consideration
+applicable for signals x(t) centered around x = x0.
+34A discontinuity of N-th order derivative generates harmonics rolling off as 1/nN+1. Thus
+a discontinuity in a 2nd derivative generates harmonics at 1/n3. A discontiuity in the function
+itself (0th derivative) generates harmonics at 1/n (Fourier series of sawtooth and square signals
+are examples of that).
+
+
+--- Page 234 ---
+
+222
+CHAPTER 6. NONLINEARITIES
+imagine we are having a sampled signal x[n] and its corresponding continuous
+bandlimited version x(t). Assuming unit sampling period T = 1 we can write
+x[n] = x(n) ∀n ∈Z. A direct application of a waveshaper f(x) to discrete-time
+signal x[n]:
+y[n] = f(x[n])
+(6.34)
+is fully equivalent to sampling the continuous-time signal y(t) = f(x(t)), by
+simply letting y[n] = y(n). However, since f(x) expands the spectrum of x(t)
+inﬁnitely, the spectrum of y(t) is not bandlimited and simply letting y[n] = y(n)
+will result in aliased frequencies contained in y[n].
+Trying to use polynomial waveshapers doesn’t help much. We could deﬁ-
+nitely construct polynomial antisaturators, e.g. f(x) = x3 +x, whereas a purely
+polynomial saturator could be constucted only if we know that the input signal
+has a limited range, which is a pretty heavy restriction. However even x3 + x
+will triple the width of the spectrum, so that we’ll need e.g. to bandlimit x(t)
+to one third of the Nyquist frequency, process it by an f(x) = x3 saturator and
+add the result to the unprocessed signal:
+•/
+BL/3
+/
+x3
+/
++
+ '!&"%#$
+O
+/
+(where BL/3 denotes a ﬁlter which bandlimits the signal to 1/3 of the Nyquist
+frequency, and Lat denotes). Actually bandlimiting will introduce latency into
+the signal, so we’ll need to add the same latency on the lower path
+•/
+BL/3
+/
+x3
+/
++
+ '!&"%#$
+Lat
+/
+O
+/
+(where Lat denotes a structure which artiﬁcially introduces the same latency as
+introduced by BL/3).
+This idea stll doesn’t work really well, since antisaturators are normally used
+in feedback loops. We can’t perform the bandlimiting inside the feedback loop,
+e.g.
++
+ '!&"%#$
+/
+R
+/
+•/
+/
+•o
+BL/3 o
+x3 o
++
+ '!&"%#$
+Lat o
+O
+−
+O
+because of the introduced latency. Doing it outside the feedback loop is also
+problematic. For one, we’d need to bandlimit the entire signal x(t), not only
+
+
+--- Page 235 ---
+
+6.13. ANTIALIASING OF WAVESHAPING
+223
+the part of it which goes through the x3 shaper.
+This still could be done,
+though, if the sampling rate is suﬃciently high (at least 3 × 44.1kHz). The
+other problem is that the signal inside the feedback loop will go inﬁnitely many
+times through the waveshaper. Therefore bandlimiting of the signal prior to
+entering the feedback loop to 1/3 of Nyquist frequency won’t really prevent the
+aliasing from happening.35
+Antialiasing
+The antialiasing of waveshapers is a diﬃcult problem, not having a universally
+good solution at the time of writing this text. The only thing which is more or
+less guaranteed to work is heavy oversampling.36 Unfortuntately, oversampling
+introduces latency, thus, if e.g. a waveshaper is used in a ﬁlter feedback loop, we
+cannot oversample locally just the waveshaper, but at least the entire feedback
+loop must be oversampled.
+There is however an approach37 which reduces aliasing by a noticeable
+amount, so that the same quality of sound can be achieved at lower sampling
+rates than otherwise.38 Suppose we are having a discrete-time signal x[n] going
+through a waveshaper f(x). Instead of sending x[n] through the waveshaper in
+discrete time, thereby producing the discrete time signal
+y[n] = f(x[n])
+(6.35)
+let’s convert x[n] to continuous time by means of linear interpolation. Without
+loss of generality we will consider the linear interpolating segment going between
+x[0] and x[1]:
+x(t) = (1 −t)x[0] + tx[1]
+0 ≤t ≤1
+(6.36)
+(where we assume unit sampling period T = 1). Applying the waveshaper f(x)
+in contnuous time to this segment we obtain
+y(t) = f(x(t)) = f((1 −t)x[0] + tx[1])
+Now we propose to compute the discrete time sample y[1] as
+y[1] =
+Z 1
+0
+y(τ) dτ =
+Z 1
+0
+f((1 −τ)x[0] + τx[1]) dτ = F(x[1]) −F(x[0])
+x[1] −x[0]
+(6.37)
+where F(x) is some antiderivative of f(x), that is F ′(x) = f(x).
+Or, more
+generally
+y[n] =
+Z n
+n−1
+y(τ) dτ = F(x[n]) −F(x[n −1])
+x[n] −x[n −1]
+(6.38)
+35However, it still might reduce the amount of aliasing.
+36Higher sampling rates lead to smaller relative increments of integrator states (at the same
+cutoff value in Hz). Thus, at some point higher computation precision will be required. 32
+bit floats might happen to become insufficient pretty quickly, but 64 bit floats should still do
+in a wide range of high sampling rates.
+37The approach was proposed independently by A.Huovilainen, E.Le Bivic, Dr. J.Parker
+and possibly others. The application of the approach within zero-delay feedback context has
+been developed by the author.
+38Still, 44.1kHz would be usually insufficient and one will need to go to 88.2kHz or even
+higher.
+
+
+--- Page 236 ---
+
+224
+CHAPTER 6. NONLINEARITIES
+where y(t) = f(x(t)) and where x(t) is a piecewise linear continuous-time func-
+tion arising out of linear interpolation of x[n]. It might seem that the averaging
+of y(t) on t ∈[n −1, n] in (6.38) is a somewhat arbitrary operation. However, it
+isn’t. In fact, such averaging can be considered as one of the simplest possible
+forms of lowpass ﬁltering the continuous-time signal, aiming to suppress the
+aliasing frequencies above Nyquist.39
+The averaging (6.38) does a reasonable job of reducing the aliasing in y[n]
+compared to (6.35), however it is introducing two problems: latency and ill-
+conditioning.
+Latency
+Assuming the transparency of the waveshaper at small signal levels f(x) ≈x
+we have F(x) ≈x2/2 and (6.38) turns into
+y[n] = x2[n]/2 −x2[n −1]/2
+x[n] −x[n −1]
+= x[n] + x[n −1]
+2
+(6.39)
+The expression (6.39) describes a discrete time 1-pole lowpass ﬁlter with a cutoﬀ
+at half the Nyquist frequency. Indeed, let’s take the lowpass ﬁlter in Fig. 3.31.
+At g = 1 (which corresponds to ωcT/2 = 1, which in turn corresponds to
+prewarped half Nyquist frequency ωcT/2 = π/4) we have g/(g + 1) = 1/2 and
+thus
+v[n] = x[n] −s[n]
+2
+(6.40a)
+y[n] = v[n] + s[n] = x[n] + s[n]
+2
+(6.40b)
+s[n + 1] = y[n] + v[n] = x[n]
+(6.40c)
+Combining (6.40b) and (6.40c) we obtain
+y[n] = x[n] + x[n −1]
+2
+which is the same as (6.39).
+The lowpass ﬁltering eﬀect of (6.38) is actually another problem that we
+didn’t mention so far. It arises out of the approximations that the method does
+when converting from discrete-time signal x[n] to x(t) and back from y(t) to
+y[n]. This problem is however not very noticeable at sampling rates of 88.2kHz
+and higher. So, let’s concentrate on the latency introduced by (6.39).
+The averaging in (6.39) can be seen as a mid-way linear interpolation between
+x[n] and x[n−1] and thus intuitively one could expect that it introduces a half-
+sample delay. This is indeed the case. Taking x[n] = ejωn and assuming |ω| ≪1,
+so that the signal’s frequency is far below the cutoﬀof the lowpass ﬁlter (6.39),
+we have
+y[n] = ejωn + ejω(n−1)
+2
+= exp jω
+
+n −1
+2
+
+· ejω/2 + e−jω/2
+2
+=
+39Similarly, linear interpolation can be interpreted in terms of continuous-time lowpass
+filtering which suppresses the aliasing discrete time spectra.
+
+
+--- Page 237 ---
+
+6.13. ANTIALIASING OF WAVESHAPING
+225
+= exp jω
+
+n −1
+2
+
+· cos ω
+2 ≈exp jω
+
+n −1
+2
+
+where cos(ω/2) ≈1 since ω ≈0.
+It can be shown that the source of this half-sample delay is the averaging of
+y(t) on [n −1, n] done in (6.38). Taking y(t) = ejωt where |ω| ≪1, we have
+Z n
+n−1
+ejωτ dτ = ejωn −ejω(n−1)t
+jω
+= exp jω
+
+n −1
+2
+
+· ejω/2 −e−jω/2
+2j · ω/2
+=
+= exp jω
+
+n −1
+2
+
+· sin(ω/2)
+ω/2
+= exp jω
+
+n −1
+2
+
+· sinc ω
+2 ≈
+≈exp jω
+
+n −1
+2
+
+(where sinc x =
+sin x
+x
+is the cardinal sine function).
+Thus (6.39) and (6.38)
+indeed introduce a delay of half sample. Inside a zero-delay feedback loop this
+would be a serious problem. In order to develop an idea of how to address this
+problem, let’s look at a few examples.
+Waveshaper followed by an integrator
+Suppose a waveshaper is immediately preceding an integrator, as shown in
+Fig. 6.61 (this particularly happens in the OTA-style 1-poles in Figs. 6.35 and
+6.36). Normally we recommended to use transposed direct form II integrators
+however this time we suggest to use a direct form I integrator (Fig. 6.62). Look-
+ing at the ﬁrst half of the direct form I integrator (highlighted by the dashed
+line in Fig. 6.62) we can notice that it exactly implements the formula (6.39).
+So, the ﬁrst part of the integrator implements a half-sample delay too and does
+so in exactly the same way as the antialiased waveshaper for low-level signals.
+This therefore leads to an idea to simply drop this part of the integrator, as it is
+done in Fig. 6.63, since we are getting the same half-delay from the waveshaper
+already.
+f(x)
+/
+R
+/
+/
+Figure 6.61: Waveshaper immedidately followed by an integrator.
+It is interesting to notice that what thereby remains of the integrator is the
+native integrator contained in Fig. 3.3). Thus, in order to implement an an-
+tialiased waveshaper followed by a trapezoidal integrator, simply use a naive
+integrator instead. This eﬀectively produces trapezoidal integrator, simultane-
+ously “killing” the unwanted latency produced by the antialiased waveshaper.
+The solution proposed in Fig. 6.63 works quite well. There is still one sub-
+tlety though, which, depending on the circumstances, may be fully academic
+or not. By “assigning” the functionality of the ﬁrst part of the integrator to
+the antialiased waveshaper, we eﬀectively positioned the ωcT gain element into
+the middle of the integrator (Fig. 6.64). This doesn’t aﬀect the time-invariant
+behavior of the integrator, but will introduce some changes if the cutoﬀωc is
+varying.
+
+
+--- Page 238 ---
+
+226
+CHAPTER 6. NONLINEARITIES
+f(x)
+/
+MMMq
+q
+q/
+•/
+z−1
+/
++
+ '!&"%#$O/
+MMMq
+q
+q/
++
+ '!&"%#$
+/
+•/
+z−1 o
+O
+/
+ωcT
+1/2
+_
+_
+_
+_
+_
+_
+_
+_
+_
+_
+_
+_
+
+
+
+
+
+
+
+
+
+_ _ _ _ _ _ _ _ _ _ _ _
+
+
+
+
+
+
+
+
+
+Figure 6.62: Antialiased waveshaper combined with direct form I
+integrator. The dashed line highlights the part of the integrator
+which is equivalent to the waveshaper at low signals.
+f(x)
+/
+MMMq
+q
+q/
++
+ '!&"%#$
+/
+•/
+z−1 o
+O
+/
+ωcT
+Figure 6.63: Antialiased waveshaper combined with direct form I
+integrator, the ﬁrst part of the integrator being dropped, since its
+implemented by the antialiased waveshaper already.
+•/
+z−1
+/
++
+ '!&"%#$O/
+MMMq
+q
+q/
+MMMq
+q
+q/
++
+ '!&"%#$
+/
+•/
+z−1 o
+O
+/
+ωcT
+1/2
+
+
+
+
+
+
+
+
+
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+
+
+
+
+
+
+
+
+_
+_
+_
+_
+_
+_
+_
+_
+_
+_
+_
+_
+_
+_
+_
+Figure 6.64: Structure in Fig. 6.63 implies positioning the ωcT gain
+element in the middle of the integrator. The dashed line highlights
+the part which is being replaced by the antialiased waveshaper.
+In order to avoid that eﬀect, we would need to somehow include the varying
+ωcT into the averaging implemented by (6.38). A straightforward possibility
+would be to change (6.37) into
+u[1] =
+Z 1
+0
+ωc(τ)y(τ) dτ
+(6.41)
+(remember that we assume T = 1), where u(t) = ωc(t)y(t) = ωc(t)Ty(t). Trape-
+zoidal integration assumes (kind of) that the signals are varying linearly in
+
+
+--- Page 239 ---
+
+6.13. ANTIALIASING OF WAVESHAPING
+227
+between the samples, therefore (6.41) can be rewritten as
+u[1] =
+Z 1
+0
+ (1 −τ)ωc[0] + τωc[1]
+
+y(τ) dτ =
+=
+Z 1
+0
+ (1 −τ)ωc[0] + τωc[1]
+
+f((1 −τ)x[0] + τx[1]) dτ
+(6.42)
+Unfortunately, the formula (6.42) is not fully convincing. At f(x) = x we would
+expect (6.42) to turn into ordinary trapezoidal integration of ωcf(x) yielding
+ωc[0]f(x[0]) + ωc[1]f(x[1])
+2
+However (6.42) gives in this case
+ωc[0] + ωc[1]
+2
+· f(x[0]) + f(x[1])
+2
+Of course, (6.42) can be further artiﬁcially amended. Whether one should at-
+tempt anything like that, is an open question.
+Waveshaper following an integrator
+The opposite order of connection of a waveshaper and an integrator looks much
+better at ﬁrst sight, since in this case we could use a transposed direct form I
+integrator (Fig. 6.65), which won’t require us to reposition the cutoﬀgain.40
+MMMq
+q
+q/
++
+ '!&"%#$
+/
+•/
+z−1 o
+O
+•/
++
+ '!&"%#$
+/
+z−1
+/
+O
+MMMq
+q
+q/
+f(x)
+/
+/
+1/2
+ωcT
+
+
+
+
+
+
+
+
+_ _ _ _ _ _ _ _ _ _ _ _
+
+
+
+
+
+
+
+
+_
+_
+_
+_
+_
+_
+_
+_
+_
+_
+_
+_
+Figure 6.65: Transposed direct form I trapezoidal integrator fol-
+lowed by a waveshaper. The dashed line highlights the part of the
+integrator which is about to be dropped.
+A concern which this approach is raising though, is that, as we have seen,
+the latency introduced by the waveshaper is caused by the averaging occurring
+after the nonlinearity, whereas in Fig. 6.65 the averaging in the integrator,
+which we are dropping, is occurring before the nonlinearity. On the other hand,
+linear interpolation, which is used to construct x(t) from x[n] in (6.36), is also
+having a lowpass ﬁltering eﬀect similar to the one of the averaging, while it
+doesn’t actually matter, whether we compensate the latency before or after the
+waveshaper. Therefore Fig. 6.65 may also provide an acceptable solution.
+40Technically the integrator in Fig. 6.65 is, formally, not exactly a transposed direct form
+II integrator, as the 1/2 gain element should have been positioned in the middle. However,
+since this is a constant gain, we can shift it without causing the same concerns as in the case
+of shifting the potentially varying ωcT gain element.
+
+
+--- Page 240 ---
+
+228
+CHAPTER 6. NONLINEARITIES
+Waveshaper followed by a 1-pole lowpass
+Let’s now consider the case of the feedback saturator in Fig. 6.6, where the
+saturator is not exactly followed by an integrator, but by a complete 1-pole?
+Fig. 6.66 depicts this situation explicitly showing the internal structure of the
+1-pole.
+f(x)
+/
++
+ '!&"%#$
+/
+R
+/
+•/
+−
+O
+/
+Figure 6.66: Waveshaper followed by a 1-pole lowpass.
+Replacing the integrator with its direct form I implementation we obtain the
+structure in Fig. 6.67. Following the approach of Fig. 6.64, we reposition the
+ωcT element, as shown in Fig. 6.68.
+f(x)
+/
++
+ '!&"%#$
+/
+MMMq
+q
+q/
+•/
+z−1
+/
++
+ '!&"%#$O/
+MMMq
+q
+q/
++
+ '!&"%#$
+/
+•/
+z−1 o
+O
+•/
+−
+O
+/
+ωcT
+1/2
+
+
+
+
+
+
+
+
+
+_ _ _ _ _ _ _ _ _ _ _
+
+
+
+
+
+
+
+
+
+_
+_
+_
+_
+_
+_
+_
+_
+_
+_
+_
+Figure 6.67: Waveshaper followed by a 1-pole lowpass built around
+a direct form I integrator.
+f(x)
+/
++
+ '!&"%#$
+/
+•/
+z−1
+/
++
+ '!&"%#$O/
+MMMq
+q
+q/
+MMMq
+q
+q/
++
+ '!&"%#$
+/
+•/
+z−1 o
+O
+•/
+−
+O
+/
+ωcT
+1/2
+
+
+
+
+
+
+
+
+
+_ _ _ _ _ _ _ _ _ _ _
+
+
+
+
+
+
+
+
+
+_
+_
+_
+_
+_
+_
+_
+_
+_
+_
+_
+Figure 6.68: Structure from Fig. 6.67 with a changed position of
+the cutoﬀgain.
+Now we would like to drop the (1+z−1)/2 part of the direct form I integrator,
+but only for the signal coming from the waveshaper. The feedback signal of the
+
+
+--- Page 241 ---
+
+6.13. ANTIALIASING OF WAVESHAPING
+229
+1-pole should still come through the full integrator. This can be achieved by
+injecting the waveshaped signal into a later point of the feedback loop. The
+resulting structure in Fig. 6.69 thereby compensates the latency introduced by
+the antialiased waveshaper.
+f(x)
+/
++
+ '!&"%#$
+MMMq
+q
+q/
++
+ '!&"%#$
+/
+•/
+z−1 o
+O
+•/
+111O
+•/
+z−1
+/
++
+ '!&"%#$O/
+MMMq
+q
+q/
+/
+/
+ωcT
+1/2
+−1
+
+
+
+
+
+
+
+
+_ _ _ _ _ _ _ _ _ _ _
+
+
+
+
+
+
+
+
+_
+_
+_
+_
+_
+_
+_
+_
+_
+_
+_
+Figure 6.69: Structure from Fig. 6.68 with the waveshaped signal
+bypassing the ﬁrst part of the direct form I integrator (thereby
+compensating the introduced latency).
+The structure in Fig. 6.69 can be further simpliﬁed as shown in Fig. 6.70,
+where we “slid” the inverter “−1” all the way through (1 + z−1)/2 to the injec-
+tion point of the waveshaped signal. Such change doesn’t cause any noticeable
+eﬀects.41 Noticing that the two z−1 elements in Fig. 6.70 are actually sharing
+the same input signal, we can combine both into one (Fig. 6.71).
+f(x)
+/
++
+ '!&"%#$
+MMMq
+q
+q/
++
+ '!&"%#$
+/
+•/
+z−1 o
+O
+•/
+•/
+z−1
+/
++
+ '!&"%#$O/
+MMMq
+q
+q/
+−/
+/
+ωcT
+1/2
+Figure 6.70: Structure from Fig. 6.69 with a changed position of
+the inverter.
+Fig. 6.71 contains a zero-delay feedback loop, which can be resolved. Let’s
+introduce helper variables u, v and s as shown in Fig. 6.71 and let g = ωcT.
+Writing the equations implied by the block diagram we have
+v = g ·
+
+u −v + s + s
+2
+
+41The internal state stored in the first z−1 element is inverted compared to what it used to
+be, but this is compensated by the new position of the inverter.
+
+
+--- Page 242 ---
+
+230
+CHAPTER 6. NONLINEARITIES
+f(x)
+/
++
+ '!&"%#$
+MMMq
+q
+q/
++
+ '!&"%#$
+/
+•/
+z−1 o
+•o
+O
+•/
++
+ '!&"%#$
+/ O
+MMMq
+q
+q/
+−/
+/
+ωcT
+1/2
+x[n]
+y[n]
+s
+u
+v
+Figure 6.71: Structure from Fig. 6.70 with merged z−1 elements.
+from where
+v · (1 + g/2) = g · (u −s)
+v =
+g
+1 + g/2 · (u −s)
+Considering that y = v + s we obtain the structure in Fig. 6.72.
+f(x)
+/
++
+ '!&"%#$
+/
+MMMq
+q
+q/
++
+ '!&"%#$
+/
+•/
+z−1 o
+•o
+O
+−
+O
+/
+x[n]
+y[n]
+ωcT
+1+ωcT/2
+s
+u
+v
+Figure 6.72: Structure from Fig. 6.71 with resolved zero-delay feed-
+back loop, implementing Fig. 6.66 with latency compensation.
+Notice that the obtained structure in Fig. 6.72 is pretty much identical to
+the structure of the naive 1-pole lowpass ﬁlter in Fig. 3.5, except that the cutoﬀ
+gain is not ωcT but ωcT/(1+ωcT/2). Thus, in order to implement an antialiased
+waveshaper followed by a 1-pole lowpass, we simply use a naive 1-pole lowpass
+with adjusted cutoﬀinstead, which eﬀectively “kills” the unwanted latency.
+In principle we could have tried to avoid the repositioning of the ωcT gain
+element. Attempting to do so, we could have gone from Fig. 6.67 to the structure
+in Fig. 6.73. However, this solves only one half of the problem, namely ﬁxing
+the issue in the feedback path, while the issue is still there for the waveshaped
+signal. The considerations of possibly including the averaging of ωcT into the
+antialiased waveshaper apply, where we are having exactly the same situation
+as in the case of an integrator following a waveshaper.
+1-pole lowpass followed by a waveshaper
+In case of a 1-pole lowpass ﬁlter followed by a waveshaper (Fig. 6.74) we can use
+the transposed direct form I integrator, as we did in Fig. 6.65. The respective
+structure is shown in Fig. 6.75.
+
+
+--- Page 243 ---
+
+6.13. ANTIALIASING OF WAVESHAPING
+231
+f(x)
+/
+MMMq
+q
+q/
++
+ '!&"%#$
+•/
+z−1 o
+O
+•/
+MMMq
+q
+q/
+•/
+z−1
+/
++
+ '!&"%#$O/
+MMMq
+q
+q/
+−/
+/
+ωcT
+ωcT
+1/2
+Figure 6.73: Structure from Fig. 6.67 with the waveshaped signal
+bypassing the ﬁrst part of the direct form I integrator (thereby
+compensating the introduced latency) but without repositioning
+of ωcT gain element.
++
+ '!&"%#$
+/
+R
+/
+•/
+−
+O
+f(x)
+/
+/
+Figure 6.74: 1-pole lowpass followed by a waveshaper.
++
+ '!&"%#$
+/
+MMMq
+q
+q/
++
+ '!&"%#$
+/
+•/
+z−1 o
+O
+•/
+z−1
+/
++
+ '!&"%#$O/
+MMMq
+q
+q/
+•/
+−
+O
+f(x)
+/
+/
+ωcT
+1/2
+
+
+
+
+
+
+
+
+
+_ _ _ _ _ _ _ _ _ _ _ _
+
+
+
+
+
+
+
+
+
+_
+_
+_
+_
+_
+_
+_
+_
+_
+_
+_
+_
+Figure 6.75: 1-pole lowpass built around a transposed direct form
+I integrator followed by a waveshaper.
+In this case we can simply pick up the waveshaper input signal in the middle
+of the integrator, bypassing the second half (Fig. 6.76). Noticing that the two
+z−1 elements in Fig. 6.76 are picking up the same signal, we could merge them
+into a single z−1 element as shown in Fig. 6.77, thereby producing a direct form
+II integrator (compare to Fig. 3.9).
+In order to resolve the zero-delay feedback loop in Fig. 6.77 we introduce
+helper variables u, v and s as shown in Fig. 6.77 and we let g = ωcT. Then,
+
+
+--- Page 244 ---
+
+232
+CHAPTER 6. NONLINEARITIES
++
+ '!&"%#$
+/
+MMMq
+q
+q/
++
+ '!&"%#$
+/
+•/
+z−1 o
+O
+•/
+•/
+z−1
+/
++
+ '!&"%#$O/
+MMMq
+q
+q/
+−
+O
+f(x)
+/
+/
+ωcT
+1/2
+Figure 6.76: Structure from Fig. 6.75 with the waveshaper skipping
+the second half of the transposed direct form I integrator (thereby
+compensating the introduced latency).
++
+ '!&"%#$
+/
+MMMq
+q
+q/
++
+ '!&"%#$
+/
+•/
+z−1
+
+•
+O
++
+ '!&"%#$
+/ O
+MMMq
+q
+q/
+−
+O
+f(x)
+/
+/
+ωcT
+1/2
+x[n]
+y[n]
+s
+v
+u
+
+
+
+
+
+
+
+
+
+
+
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+
+
+
+
+
+
+
+
+
+
+_
+_
+_
+_
+_
+_
+_
+_
+_
+_
+_
+_
+_
+_
+_
+_
+_
+_
+Figure 6.77: Structure from Fig. 6.76 with merged z−1 elements.
+The dashed line highlights the direct form II integrator.
+writing the equations implied by the block diagram, we have
+u = g ·
+
+x −u + s + s
+2
+
+from where
+u · (1 + g/2) = g · (x −s)
+u =
+g
+1 + g/2 · (x −s)
+Considering that v = u + s we obtain the structure in Fig. 6.78.
+Notice that the obtained structure in Fig. 6.78 is identical to the structure
+in Fig. 6.72, except for the the opposite order of the naive 1-pole lowpass and
+the waveshaper. Thus, in order to implement a 1-pole lowpass followed by an
+antialiased waveshaper we simply use a naive 1-pole lowpass with adjusted cutoﬀ
+instead.
+
+
+--- Page 245 ---
+
+6.13. ANTIALIASING OF WAVESHAPING
+233
++
+ '!&"%#$
+/
+MMMq
+q
+q/
++
+ '!&"%#$
+/
+•/
+z−1 o
+•o
+O
+−
+O
+f(x)
+/
+/
+x[n]
+y[n]
+ωcT
+1+ωcT/2
+s
+v
+u
+Figure 6.78: Structure from Fig. 6.77 with resolved zero-delay feed-
+back loop, implementing Fig. 6.74 with latency compensation.
+Other positions of waveshaper
+In Fig. 6.66 we had a waveshaper followed by a lowpass, but imagine it was a
+highpass instead (Fig. 6.79).42 In this case, even if we use the tricks similar
+to the ones we did in the lowpass case, we still won’t be able to eliminate the
+latency on the feedforward path between x(t) and y(t).
+f(x)
+/
++
+ '!&"%#$
+/
+•/
+R
+o
+−
+O
+/
+x(t)
+y(t)
+Figure 6.79: Waveshaper followed by a 1-pole highpass.
+If there is e.g. a lowpass further after the the highpass:
+f(x)
+/
+HP
+/
+LP
+/
+/
+then we can eliminate the latency by changing the lowpass, exactly as we did
+before. The highpass ﬁlter will work on a signal delayed by half a sample, but
+this will be compensated in the immediately following lowpass. Similarly, if
+there is a preceding lowpass:
+LP
+/
+f(x)
+/
+HP
+/
+/
+we could consider compensating the latency by changing that lowpass.
+The
+same of course could be done if instead of a lowpass we ﬁnd an integrator, or a
+suitable structure containing one.
+However it might happen that there is no lowpass or an integrator or any
+other structure suitable for this purpose, neither after the waveshaper nor before
+it. In such cases we could artiﬁcially insert a 1-pole lowpass immediately before
+or after the waveshaper (Fig. 6.80), setting the cutoﬀof this lowpass to a very
+high value. In this case we could hope that the insertion of the new lowpass
+would not signiﬁcantly change the signal, at least not in the audible range, if
+its cutoﬀis lying well above.
+42The highpass in Fig. 6.79 might look different from the one in Fig. 2.9, however it’s not
+difficult to realize that in fact both structures are identical.
+
+
+--- Page 246 ---
+
+234
+CHAPTER 6. NONLINEARITIES
+f(x)
+/
+LP
+/
++
+ '!&"%#$
+/
+•/
+R
+o
+−
+O
+/
+x(t)
+y(t)
+Figure 6.80: Artiﬁcially inserted 1-pole lowpass.
+One still has to be careful, since such lowpass will introduce noticeable
+changes into the behavior of the system in the spectral range above the lowpass’s
+cutoﬀand even, to an extent, below its cutoﬀ. Even though a lowpass gener-
+ally reduces the amplitude of signals, due to the changes in the phase it could
+increase the system’s resonance, causing the system to turn to selfoscillation
+earlier than expected.43 In a nonlinear system the inaudible parts of the spec-
+trum could become audible through the so-called intermodulation distortion.44
+So, it’s a good idea to test for the possible artifacts created by the introduction
+of such lowpass.
+Zero-delay feedback equation
+The appearance of antialiased waveshapers in a zero-delay feedback loop creates
+the question of solving the arising zero-delay feedback equations. Fortunately,
+this doesn’t create any new problems, as the inistantaneous response of an
+antialiased waveshaper can be represented in familiear terms.
+Indeed, according to (6.38) the instantaneous response of an antialiased
+waveshaper is simply another waveshaper:
+˜f(x) = F(x) −F(a)
+x −a
+(6.43)
+where a = x[n −1] is the waveshaper function’s parameter, which is having a
+ﬁxed value at each given time moment n. Thus we obtain the already familiar
+kind of a zero-delay feedback equation with a waveshaper.
+Ill-conditioning
+If x[n] ≈x[n −1], the denominator of (6.38) will be close to zero.
+Rather
+fortunately this also means that the numerator will be close to zero as well,
+so that, at least formally, their ratio should produce a ﬁnite value. However
+practically this could mean precision losses in the numeric evaluation of the
+right-hand side of (6.38) (or division by zero if x[n] = x[n −1]).
+Since x[n] ≈x[n−1], the value of the interpolated signal x(t) and respectively
+the value of y(t) = f(x(t)) shouldn’t change much on [n −1, n] and thus the
+integral in (6.38) can be well approximated by a value of y(t) somewhere on that
+43This would be particularly the case in a 4-pole lowpass ladder filter, where the effect is
+noticeable at ladder filter’s cutoff settings comparable or higher than the cutoff of the added
+lowpass.
+44Recall that e.g. in (6.33) the output signal of a waveshaper contained all sums and dif-
+ferences of the frequencies of the original signal. Thus if the difference of two frequencies,
+both lying well above the audible range, falls into the audible range, these originally inaudible
+partials will create an audible one.
+
+
+--- Page 247 ---
+
+SUMMARY
+235
+interval.45 In principle we could take any point on that interval, but intuitively
+we should expect the midway point to give the best result, and thus we take
+y[n] = f
+x[n] + x[n −1]
+2
+
+if x[n] ≈x[n −1]
+(6.44)
+Notice that at f(x) ≈x (6.44) turns into (6.39).
+The fallback formula (6.44) creates no new problems for the solution of the
+zero-delay feedback equation, since in instantaneous response terms it looks like
+another waveshaper
+˜f(x) = f
+x + a
+2
+
+(6.45)
+where a = x[n −1]. Note, however, that when using iterative approaches to the
+solution of the zero-delay feedback equation, we potentially may need to switch
+between (6.43) and (6.45) on each iteration step.
+The choice between the normal and the ill-conditioned case formulas should
+depend on the comparison of estimated precision losses in (6.38) and the error
+in (6.44).
+In that regard note, that it might be a good idea to choose the
+antiderivative F(x) so that F(0) = 0.
+This could improve the precision of
+numerical computation of (6.38) and (6.43) at low signal levels, as subtraction
+of two close numbers is the main source of precision losses here. On the other
+hand, the main source of error in (6.44) and (6.45) is nonlinear behavior of f(x)
+on the segment lying between x[n −1] and x[n].46
+SUMMARY
+Nonlinear ﬁlters can be constructed by introducing waveshapers into block dia-
+grams. Two important types of waveshapers are saturators and antisaturators.
+Saturators used in resonating feedback loops prevent the signal level from inﬁ-
+nite growth. Antisaturators have a similar eﬀect in damping feedback paths.
+The discussed types of usage of saturators in ﬁlters included feedback loop
+saturation, transistor ladder-style 1-pole saturation and OTA-style 1-pole sat-
+uration. The discussed usage of antisaturators included the diode clipper-style
+saturation of 1-poles and the usage in the damping path of an SVF.
+Waveshapers usually turn zero-delay feedback equations into transcendental
+ones, which then need to be solved using approximate or numeric methods,
+although in some cases analytic solution is possible.
+Discrete-time waveshaping produces aliasing, which might need to be miti-
+gated using oversampling and/or some more advanced methods.
+45This is more precisely stated by the mean value theorem.
+46Note that if f(x) is fully linear on that segment, then (6.44) gives the exact answer. One
+could also obtain an estimation of the error of (6.44) by expanding f(x) in Taylor series around
+x = (x[n] + x[n −1])/2 and noticing that applying (6.38) just to the first two terms of this
+expansion gives (6.44) (as the contribution of the first-order term of the series turns out to be
+zero). Therefore the error of (6.44) is equal to the contribution of the remaining terms of the
+Taylor series to (6.38).
+
+
+--- Page 248 ---
+
+236
+CHAPTER 6. NONLINEARITIES
+

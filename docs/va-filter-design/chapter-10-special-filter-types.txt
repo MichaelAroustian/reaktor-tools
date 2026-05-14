@@ -1,0 +1,5281 @@
+--- Page 419 ---
+
+Chapter 10
+Special filter types
+Butterworth ﬁlters of the 1st and 2nd kind as well as elliptic ﬁlters can serve
+as a basis to contruct other ﬁlter types of a more specialzed nature, which are
+going to be the subject of this chapter.
+10.1
+Reciprocally symmetric functions
+The reciprocal symmetry (9.130) seems to be responsible for the special proper-
+ties of EMQF ﬁlters. There is indeed a strong relationship between those, which
+is worth a dedicated discussion, because we will have more uses of such functions
+throughout this text. Let’s therefore suppose that f(x) (used in (9.18)) satisﬁes
+f(1/x) = 1/f(x)
+(10.1)
+Reciprocal symmetry of the poles
+An obvious conjecture which might appear from the discussion of EMQF ﬁlters
+is that (10.1) implies the poles on the unit circle. This, however, is not exactly
+true, although there is some relation.
+The symmetry (10.1) actually implies the reciprocal symmetry of the ﬁlter’s
+poles. That is, if s is a pole of H(s), then so is 1/s. Indeed, suppose f 2(−js) =
+−1, which means s is a pole of H(s). Then f 2(−j/s) = f 2(1/js) = 1/f 2(js) =
+1/f 2(−js) = −1 (where the latter transformation is by the fact that f is required
+to be odd or even) and thus 1/s is also a pole of H(s).
+The reciprocal symmetry of the ﬁlter’s poles manifests itself nicely for the
+poles on the unit circle, where the reciprocation turns into simply conjugation,
+and as poles of the real ﬁlters must be conjugate symmetric, they are also
+reciprocally symmetric.
+But the poles do not really have to lie on the unit
+circle.
+407
+
+
+--- Page 420 ---
+
+408
+CHAPTER 10. SPECIAL FILTER TYPES
+Image of the unit circle
+f(x) maps unit circle to the unit circle.1 Indeed, ﬁrst notice that |x| = 1 ⇐⇒
+1/x = x∗. Suppose |x| = 1. Then, recalling that f is real,
+f(1/x) = f(x∗) = f ∗(x) = 1/f(x) ⇐⇒|f(x)| = 1
+Therefore
+|x| = 1 =⇒|f(x)| = 1
+The converse is however not necessarily true:
+it’s possible that ∃x: |x| ̸=
+1, |f(x)| = 1. In other words, there may be other preimages of the unit circle
+points.
+E.g. consider the function
+f(x) = ρ+1
+
+(ρ+1(x))3
+= x x2 + 3
+3x2 + 1
+Apparently f(x) satisﬁes (10.1). However, it has three diﬀerent preimages of
+the unit circle:
+x(t) = ρ+1(ejαt)
+where t ∈R and α is one of the values π/6, 3π/6, 5π/6. At α = 3π/6 = π/2 we
+obtain |x| = 1, however for other α this is not so.
+Poles on the unit circle
+Under the additional restriction that the zeros of f(x) (including a possible zero
+at x = ∞) must be either all inside or all outside of the unit circle, the unit
+circle will be the only preimage of the unit circle, that is
+|x| = 1 ⇐⇒|f(x)| = 1
+(10.2)
+We have already shown that |x| = 1 =⇒|f(x)| = 1, therefore it remains
+for us to show that |x| = 1 ⇐= |f(x)| = 1. First notice that (10.1) implies
+that the poles of f(x) are reciprocals of the zeros. From (10.1) we also have
+f(1) = ±1. Then f(x) can be written as
+f(x) =
+Y
+n
+x −zn
+1 −znx
+where zn are the zeros of f(x). Furthermore, since f is real, complex zeros must
+come in conjugate pairs and so must complex poles, and we can write
+f(x) =
+Y
+n
+x −zn
+1 −z∗nx
+(10.3)
+Suppose all zeros of f(x) lie inside the unit circle. Let’s show that in this case
+|x| > 1 =⇒|f(x)| > 1. Suppose |x| > 1. In order to show that |f(x)| > 1 we
+are going to show that each of each of the factors of f(x) has absolute magnitude
+greater that unity:
+
+x −zn
+1 −z∗nx
+ > 1
+1Notice that incidentally this implies that f(x) is a discrete-time allpass transfer function,
+although not necessarily describing a stable allpass.
+
+
+--- Page 421 ---
+
+10.1. RECIPROCALLY SYMMETRIC FUNCTIONS
+409
+By equivalent transformations we are having
+|x −zn| > |1 −z∗
+nx|
+(x −zn)(x∗−z∗
+n) > (1 −z∗
+nx)(1 −znx∗)
+|x|2 −znx∗−z∗
+nx −|zn|2 > 1 −znx∗−z∗
+nx −|zn|2 · |x|2
+(|x|2 −1)(1 −|zn|2) > 0
+which is obviously true, therefore each of the factors of f(x) is larger than
+1 in absolute magnitude and so is f(x). In a similar way we can show that
+|x| < 1 =⇒|f(x)| < 1. Therefore there are no other images of unit circle points
+and we have shown that |x| = 1 ⇐= |f(x)| = 1. The case of all zeros lying
+outside the unit circle is treated similarly, where we have |x| > 1 =⇒|f(x)| < 1
+and |x| < 1 =⇒|f(x)| > 1.
+From (10.2) it follows that the solutions of the pole equation f 2(x) = −1
+are lying on the unit circle, and so do the poles of H(s) obtained from f(x).
+Complementary symmetry of lowpass and highpass filters
+The reciprocal symmetry of the poles implies that ﬁlters H(s) and H(1/s) (re-
+lated by the LP to HP transformation) share the same poles.
+Furthermore,
+it turns out that there is a complementary symmetry of squared amplitude
+responses of these ﬁlters:
+|H(jω)|2 + |H(1/jω)|2 = 1 ⇐⇒f(1/x) = 1/f(x)
+(10.4)
+Indeed, by the Hermitian property of H(1/jω), the left-hand side of (10.4) can
+be equivalently written as
+|H(jω)|2 + |H(j/ω)|2 = 1
+Using (9.18) we further rewrite it as
+1
+1 + f 2(ω) +
+1
+1 + f 2(1/ω) = 1
+Transforming the equation further, we obtain
+1
+1 + f 2(1/ω) = 1 −
+1
+1 + f 2(ω) =
+f 2(ω)
+1 + f 2(ω) =
+1
+1 +
+1
+f 2(ω)
+or equivalently
+f 2(1/ω) = 1/f 2(ω)
+or
+f(1/ω) = ±1/f(ω)
+Noticing that f(1/ω) = −1/f(ω) implies f 2(1) = −1, which is impossible for a
+real f(ω), we conclude that f(1/ω) = −1/f(ω) is not an option. Thus we simply
+have f(1/ω) = 1/f(ω), which was obtained by an equivalent transformation
+from |H(jω)|2 + |H(1/jω)|2 = 1 and thus both conditions are equivalent.
+
+
+--- Page 422 ---
+
+410
+CHAPTER 10. SPECIAL FILTER TYPES
+10.2
+Shelving and tilting filters
+We have made some attempts to construct shelving ﬁlters in the discussions of 1-
+and 2-poles, but the results were lacking intuitively desired amplitude response
+symmetries shown in Fig. 10.1. The kind of symmetry shown in Fig. 10.1 is
+better expressed if we symmetrize the amplitude response further, obtaining
+the one in Fig. 10.2.
+0 dB
+ω
+|H(jω)|
+1
+1/8
+8
+0 dB
+ω
+|H(jω)|
+1
+1/8
+8
+Figure 10.1: Shelving amplitude responses, ideally symmetric in
+fully logarithmic scale.
+0 dB
+ω
+|H(jω)|
+1
+1/8
+8
+Figure 10.2: Tilting amplitude response, ideally symmetric in fully
+logarithmic scale.
+Fig. 10.1 apparently shows low-shelving (left) and high-shelving (right) am-
+plitude responses. The amplitude response in Fig. 10.2 can be referred to as
+tilting amplitude response. It is easy to notice that the low- and high-shelving
+responses can be obtained from the tilting one by vertical shifts. Vertical shifts
+in decibel scale are corresponding to multiplication of the signal by a constant.
+That is tilting and low- and high-shelving ﬁlters can be obtained from each other
+by a multiplication by a constant. We will therefore not make much distinction
+between these types, arbitrarily jumping from one type to the other, whenever
+the discussion requires so.
+Reciprocal symmetry of poles and zeros
+Treating |H(1)| = 1 as the logarithmic origin of an amplitude response graph we
+can express the desired symmetry of the tilting amplitude response in Fig. 10.2
+as an odd logarithmic symmetry:
+log |H(j exp(−x))| = −log |H(j exp x)|
+
+
+--- Page 423 ---
+
+10.2. SHELVING AND TILTING FILTERS
+411
+which in linear scale becomes
+|H(j/ω)| =
+1
+|H(jω)|
+or
+|H(j/ω)|2 =
+1
+|H(jω)|2
+(10.5)
+Writing |H(jω)|2 as H(jω)H(−jω) we introduce G(s) = H(s)H(−s). Then
+(10.5) becomes
+G(j/ω) =
+1
+G(jω)
+Taking into account that G(s) is even, we have
+G(jω)G(1/jω) = 1
+Apparently, the latter equality must be true not only for ω ∈R but also for any
+ω ∈C, thus
+G(s)G(1/s) = 1
+(s ∈C)
+Therefore, G(s) = 0 ⇐⇒G(1/s) = ∞and G(s) = ∞⇐⇒G(1/s) = 0. That
+is the poles of G(s) are reciprocals of the zeros of G(s) and vice versa.
+Conversely, given G(s) = H(s)H(−s) such that its poles are reciprocals of
+its zeros and additionally requiring that |G(j)| = 1 we will have G(s)G(1/s) = 1
+and (10.5) follows. Indeed, writing G(s) in the factored form we have
+G(s) = g ·
+Y
+n
+s −zn
+1 −zns
+where zn are the zeros of G(s). Then
+G(1/s) = g ·
+Y
+n
+1/s −zn
+1 −zn/s = g ·
+Y
+n
+1 −zns
+s −zn
+Therefore G(s)G(1/s) = g2. Letting s = j we have
+g2 = G(j)G(1/j) = G(j)G(−j) = G(j)G∗(j) = |G(j)|2 = 1
+and thus G(s)G(1/s) = 1.
+Now the poles and zeros of G(s) consist of those of H(s) and their symmetric
+counterparts (with respect to the complex plane’s origin). Under the assumption
+that H(s) must be stable, all poles of H(s) will be in the left complex semiplane.
+Under the additional assumption that H(s) is minimum phase, so will be zeros
+of H(s). Respectively H(−s) will contain poles and zeros in the right semiplane.
+However, the reciprocation turns left-semiplane values into left-semiplane values
+and right-semiplane values into right-semiplane values. Therefore the poles of a
+minimum-phase stable H(s) will be mutually reciprocal with the zeros of H(s).
+Thus, in order for a minimum phase H(s) to have the tilting amplitude
+response symmetry of Fig. 10.2 its poles and zeros must be mutually recipro-
+cal. Conversely, given H(s) with mutually reciprocal poles and zeros (which is
+thereby minimum phase, assuming H(s) is stable), (10.5) will hold under the
+additional requirement |H(j)| = 1. Relaxing the minimum phase requirement
+eﬀectivlely means that some zeros will be ﬂipped from the left semiplane into
+the right semiplane, which is pretty trivial and doesn’t change the amplitude
+response, therefore we will concentrate on minimum phase tilting and shelving
+ﬁlters.
+
+
+--- Page 424 ---
+
+412
+CHAPTER 10. SPECIAL FILTER TYPES
+Construction as a lowpass ratio2
+Let G(s) be a ﬁlter (now this is a diﬀerent G(s) than G(s) = H(s)H(−s) we
+have been using above) having the following properties: G(s) doesn’t have zeros,
+all its poles are lying on the unit circle, and G(0) = 1.
+Apparently, G(s) is a lowpass ﬁlter, which should be obvious by considering
+the factoring of G(s) into a cascade of 1- and 2-poles. Such G(s) also can be
+factored as
+G(s) =
+N
+Y
+n=1
+1
+s −pn
+(where the leading coeﬃcient is 1 due to G(s) being real stable, G(0) = 1,
+|pn| = 1 and Re pn < 0). The poles of G(s) lying on the unit circle and being
+conjugate symmetric imply the reciprocal symmetry of the poles: if pn is a pole
+of G(s) then so is 1/pn.
+Let’s apply the cutoﬀsubstitution s ←s/M (M ∈R, M > 0) to G(s). We
+obtain
+G(s/M) =
+N
+Y
+n=1
+1
+s/M −pn
+= M N ·
+N
+Y
+n=1
+1
+s −Mpn
+That is we obtain the ﬁlter with the poles Mpn. Respectively, shifting the cutoﬀ
+in the opposite direction by the same logarithmic amount, we have
+G(Ms) =
+N
+Y
+n=1
+1
+Ms −pn
+= M −N ·
+N
+Y
+n=1
+1
+s −M −1pn
+That is we obtain the ﬁlter with the poles M −1pn.
+Since for each pn there is pn′ = 1/pn, for each Mpn there is M −1pn′ =
+1/Mpn. That is, the poles of G(s/M) are mutually reciprocal with the poles of
+G(Ms) and we can construct
+H(s) = G(s/M)
+G(Ms)
+(10.6)
+By construction the poles of G(Ms) are the zeros of H(s) and the poles of
+G(s/M) are the poles of H(s). Thus the poles of H(s) are reciprocal to its
+zeros and vice versa. However generally |H(j)| ̸= 1 (a little bit later we’ll show
+that |H(j)| = M N). This means that H(s) is not a tilting ﬁlter, but is related
+to the tilting ﬁlter by some factor. Noticing that H(0) = G(0)/G(0) = 1, we
+conclude that H(s) must be a kind of high-shelving ﬁlter. The conversion to
+the tilting ﬁlter is trivial: we can simply divide the result by |H(j)|.
+The conversion to the low-shelving ﬁlter looks more complicated, since ap-
+parently G(∞) = 0 and we have a 0/0 uncertainty evaluating H(∞). However
+we can notice that at s →∞we have G(s) ∼s−N, G(s/M) ∼M Ns−N and
+G(Ms) ∼M −Ns−N, thus H(s) ∼M 2N, that is simply H(∞) = M 2N. We
+therefore obtain the low-shelving ﬁlter from the high-shelving one by dividing
+by M 2N.
+We can also obtain the explicit expression for the value of |H(j)|, where we
+can simply use the symmetries of the amplitude response. Since H(s)/|H(j)| is
+2The author has learned the approach of constructing a shelving filter as a ratio of two
+lowpasses from Teemu Voipio.
+
+
+--- Page 425 ---
+
+10.2. SHELVING AND TILTING FILTERS
+413
+a tilting ﬁlter, it must have mutually reciprocal amplitude responses at ω = 0
+and ω = ∞, that is
+
+H(0)
+|H(j)|
+ =
+
+|H(j)|
+H(∞)
+
+from where |H(j)|2 = |H(0)| · |H(∞)| = M 2N and |H(j)| = M N. Thus the
+tilting ﬁlter is obtained from the high-shelving one by dividing by M N.
+Therefore we have
+HHS(s) = G(s/M)
+G(Ms)
+(10.7a)
+Htilt(s) = M −N · G(s/M)
+G(Ms)
+(10.7b)
+HLS(s) = M −2N · G(s/M)
+G(Ms)
+(10.7c)
+for the high-shelving, tilting and low-shelving ﬁlter respectively. From the values
+H(0), |H(j)|, H(∞) obtained earlier for the high-shelving ﬁlter we thus obtain:
+HHS(0) = 1
+|HHS(j)| = M N
+HHS(∞) = M 2N
+Htilt(0) = M −N
+|Htilt(j)| = 1
+Htilt(∞) = M N
+HLS(0) = M −2N
+|HLS(j)| = M −N
+HLS(∞) = 1
+(10.8)
+Apparently M can be greater or smaller than 1, corresponding to increasing or
+decreasing of the signal level in the respective range. Since M and 1/M are
+ﬁlter cutoﬀfactors, M must be positive.
+The ﬁlters constructed by the lowpass ratio approach satisfy the symmetry
+(10.5), however we know little about the shapes of their amplitude responses.
+These shapes can be arbitrary odd functions (if seen in the logarithmic scale),
+whereas we would like to obtain the shapes at least resembling those in Figs. 10.1
+and 10.2.
+Also, apparently the lowpass ratio approach can be easily applied to a But-
+terworth G(s), since Butterworth (unit-cutoﬀ) ﬁlters have poles on the unit
+circle. On the other hand, while EMQF ﬁlters also have poles on the unit circle,
+they don’t have only poles, but also zeros, therefore this method is not directly
+applicable to EMQF ﬁlters.3 In order to have a better control of the amplitude
+responses and to be able to build tilting and shelving ﬁlters based on EMQF
+ﬁlter, we will need to address the problem from a diﬀerent angle.
+Construction by mixing
+We have already made some attempts of constructing a low-shelving ﬁlters by
+mixing the lowpass signal with the input signal, which weren’t too successful.
+Instead we could attempt the same mixing in terms of squared amplitude re-
+sponse, in which case we at least would not have the eﬀects of the phase response
+3It would have been okay, if all zeros of G(s) were at the origin, since in this case the zeros
+of G(s/M) and G(Ms) would be also at the origin and therefore would cancel each other.
+Particularly, we could have used Butterworth highpass filters in (10.6), but this wouldn’t have
+produced any new results compared to Butterworth lowpasses.
+
+
+--- Page 426 ---
+
+414
+CHAPTER 10. SPECIAL FILTER TYPES
+interfering. Also, rather that constructing a low-shelving ﬁlter, we shall attempt
+to construct a tilting ﬁlter, in which case it is easier to express the symmetry
+requirement (10.5).
+Suppose G(s) is deﬁned by
+|G(jω)|2 =
+1
+1 + f 2(ω)
+We construct the tilting squared amplitude response by mixing |G(jω)|2 with
+the squared “amplitude response of the input signal”, which is simply 1:
+|H(jω)|2 = a2 +
+b2
+1 + f 2(ω) = α2 + β2f 2(ω)
+1 + f 2(ω)
+where a2 and b2 (or, equivalently, α2 and β2) denote the unknown positive
+mixing coeﬃcients. We wish |H(jω)|2 to satisfy (10.5).
+Assuming a lowpass f(x), that is f(x) →0 for x →0 and f(x) →∞for
+x →∞, we notice that |H(0)|2 = α2 and |H(∞)|2 = β2, therefore (10.5) can
+be attained only at α2β2 = 1 and we can drop one of these variables obtaining:
+|H(jω)|2 = β−2 + β2f 2(ω)
+1 + f 2(ω)
+(10.9)
+However there apparently are additional restrictions on f(x) which ensure that
+(10.5) holds for any ω and not just for ω = 0 and ω = ∞.
+To ﬁnd these
+restrictions let’s substitute (10.9) into (10.5):
+β−2 + β2f 2(1/ω)
+1 + f 2(1/ω)
+=
+1 + f 2(ω)
+β−2 + β2f 2(ω)
+β−4 + f 2(1/ω) + f 2(ω) + β4f 2(1/ω)f(ω) =
+= 1 + f 2(1/ω) + f 2(ω) + f 2(1/ω)f(ω)
+1 −β−4 = (β4 −1)f 2(1/ω)f 2(ω)
+(β4 −1)f 2(1/ω)f 2(ω) = β4 −1
+β4
+and
+f 2(1/ω)f 2(ω) = β−4
+(10.10)
+The equation (10.10) thereby ensures that (10.5) will hold.
+Let ¯f(ω) = βf(ω), or f(ω) = β−1 ¯f(ω). Then (10.10) becomes4
+¯f(1/ω) ¯f(ω) = 1
+(10.11)
+while (10.9) becomes
+|H(jω)|2 = β−2 + ¯f 2(ω)
+1 + β−2 ¯f 2(ω) = β−2 · 1 + β2 ¯f 2(ω)
+1 + β−2 ¯f 2(ω)
+(10.12)
+4The other option ¯f(1/ω) ¯f(ω) = −1 implied by (10.10) implies ¯f2(1) = −1, therefore we
+ignore it.
+
+
+--- Page 427 ---
+
+10.2. SHELVING AND TILTING FILTERS
+415
+That is, we simply want ¯f(ω) satisfying (10.11). Then f(ω) = β−1 ¯f(ω) (for
+any arbitrarily picked β) will satisfy (10.10) and respectively H(s) will satisfy
+(10.5).
+Comparing the above to the lowpass-ratio approach to the construction of
+the tilting ﬁlters, that is comparing (10.12) to (10.6) we notice obvious similar-
+ities. Essentially (10.12) is a ratio of two lowpasses β−2H1/H2:
+|H1(jω)|2 =
+1
+1 + β−2 ¯f 2(ω)
+|H2(jω)|2 =
+1
+1 + β2 ¯f 2(ω)
+with an additional gain of β−2, which occurs since this is a tilting rather than
+high-shelving ﬁlter.
+Given a Butterworth f(ω) = ωN, we have f(ω/M) = M −Nf(ω), that is
+the cutoﬀsubstitution ω ←ω/M is equivalent to choosing β = M N, in which
+case (10.12) means essentially the same as (10.6). The diﬀerence appears in the
+EMQF case where f(ω/M) ̸= M −Nf(ω).
+The zeros of the EMQF ﬁlter would have been exactly the problem in the
+case of (10.6), since the cutoﬀsubstitution also shifts the zeros, and the zeros
+of G(s/M) do not match the zeros of G(Ms), respectively they cannot cancel
+each other in H(s) and would have resulted in zero amplitude response at the
+zeros of the numerator and in inﬁnite amplitude response at the zeros of the
+denominator. On the other hand, in (10.12), where the EMQF zeros correspond
+to the poles of ¯f, the poles of ¯f will result in identical zeros of the numerator
+and of the denominator of |H(jω)|2, thus they will cancel each other. In that
+sense, the approach of (10.12) is more general than the one of (10.6).
+We can also notice that the right-hand side of (10.12) monotonically maps
+the range [0, +∞] of ˜f 2 onto [β−2, β2] if |β| > 1 and onto [β2, β−2] if 0 < |β| < 1.
+Since negating β doesn’t have any eﬀect on (10.12), therefore we can restrict β
+to β > 0, in which case we can say |Htilt(jω)| is varying between β−1 and β.
+Obviously, (10.12) results in
+|HHS(jω)|2 = 1 + β2 ¯f 2(ω)
+1 + β−2 ¯f 2(ω)
+(10.13a)
+|Htilt(jω)|2 = β−2 · 1 + β2 ¯f 2(ω)
+1 + β−2 ¯f 2(ω)
+(10.13b)
+|HLS(jω)|2 = β−4 · 1 + β2 ¯f 2(ω)
+1 + β−2 ¯f 2(ω)
+(10.13c)
+The values at the key points respectively are (under the restriction β > 0)
+|HHS(0)| = 1
+|HHS(j)| = β
+|HHS|(∞) = β2
+|Htilt(0)| = β−1
+|Htilt(j)| = 1
+|Htilt|(∞) = β
+|HLS(0)| = β−2
+|HLS(j)| = β−1
+|HLS|(∞) = 1
+(10.14)
+where we also assume that ¯f(0) = 0 and ¯f(∞) = ∞. In the EMQF case, where
+¯f = ¯RN this is not true for even N, and we need to understand (10.14) as
+referring to the points where ¯f(ω) = 0 and ¯f(ω) = ∞instead (which we didn’t
+explicitly write in (10.14) for the sake of keeping the notation short).
+As with M in the lowpass ratio approach, β can be greater than 1 or smaller
+than 1.
+
+
+--- Page 428 ---
+
+416
+CHAPTER 10. SPECIAL FILTER TYPES
+10.3
+Fixed-slope shelving
+Using Butterworth ﬁlters as a basis for a shelving/tilting ﬁlter is compatible with
+both lowpass ratio (10.6) and mixing (10.12) approaches, where both options
+are giving equivalent results. For now we will continue the discussion in terms
+of the lowpass ratio option (10.6).
+We will be interested in shelving ﬁlters obtained from the Butterworth ﬁlters
+of the 1st kind by (10.6). Noticing that (10.6) commutes with the Butterworth
+transformation:
+BN
+G(s/M)
+G(Ms)
+
+= BN [G(s/M)]
+BN [G(Ms)]
+(10.15)
+we can restrict our discussion to the shelving ﬁlters obtained by the application
+of (10.6) to the 1st-order Butterworth lowpass. By (10.15) higher order shelving
+ﬁlters will be simply Butterworth transformations of the 1st-order Butterworth
+shelving ﬁlters, which is going to be covered in Section 10.5.
+Since the 1st-order Butterworth lowpass coincides with the ordinary 1-pole
+lowpass, we simply have
+G(s) =
+1
+1 + s
+and respectively by (10.7)
+HHS(s) = G(s/M)
+G(Ms) = 1 + Ms
+1 + s/M = M 2 · s + 1/M
+s + M
+Htilt(s) = M −1HHS(s) = M −1 · 1 + Ms
+1 + s/M = Ms + 1
+s + M = M s + 1/M
+s + M
+HLS(s) = M −1Htilt(s) = M −2 · 1 + Ms
+1 + s/M = s + 1/M
+s + M
+By (10.8)
+HHS(0) = 1
+|HHS(j)| = M
+HHS(∞) = M 2
+Htilt(0) = M −1
+|Htilt(j)| = 1
+Htilt(∞) = M
+HLS(0) = M −2
+|HLS(j)| = M −1
+HLS(∞) = 1
+Implementation
+The 1st-order tilting ﬁlter can be implemented as a linear combination of the
+lowpass and highpass signals:
+Htilt(s) = Ms + 1
+s + M = s + 1/M
+s/M + 1 = M
+s/M
+s/M + 1 + M −1
+1
+s/M + 1 =
+= M −1 · HLP(s) + M · HHP(s)
+where the cutoﬀof the 1-pole multimode is at ω = M. The low- and high-
+shelving ﬁlters can be obtained from the above mixture by a division a or mul-
+tiplication by M:
+HHS(s) = M · Htilt(s) = HLP(s) + M 2 · HHP(s)
+HLS(s) = M −1 · Htilt(s) = M −2 · HLP(s) + HHP(s)k
+
+
+--- Page 429 ---
+
+10.3. FIXED-SLOPE SHELVING
+417
+Amplitude response
+The example amplitude responses of the 1-pole tilting ﬁlter are presented in
+Fig. 10.3, where the formal “cutoﬀ” frequency is denoted as ωmid, being the
+middle frequency of the tilting.
+ω
+|H(jω)|, dB
+ωmid
+ωmid/8
+8ωmid
+0
+-6
+-12
+12
+Shelving
+band
+Shelving
+band
+Transition
+band
++6
+Figure 10.3: Amplitude responses of a 1-pole tilting ﬁlter for M > 1
+(solid) and M < 1 (dashed).
+Since the amplitude response of the tilting ﬁlter neither decreases to zero
+anywhere, nor does it have a range where it is approximately unity, we can’t
+deﬁne pass- and stop-bands. Instead we can refer to the bands on the left and
+on the right, where the amplitude response is almost constant, as shelving bands.
+The band in the middle where the amplitude response is varying can be referred
+to as transition band, as usual.
+On the other hand, for low- and high-shelving ﬁlters we can deﬁne one of the
+bands, where the amplitude response is approximately unity, as the passband
+(Figs. 10.4, 10.5).
+Phase response
+The representation of the shelving ﬁlter as a ratio of two lowpasses with cutoﬀs
+M and M −1 allows an intuitive derivation of the tilting ﬁlter’s phase response,
+the latter being equal to the diﬀerence of the lowpass phase responses:
+arg HHS(s) = arg 1 + Ms
+1 + s/M = arg 1 + s/M −1
+1 + s/M
+=
+= arg
+1
+1 + s/M −arg
+1
+1 + s/M −1
+(s = jω)
+(since both shelving ﬁlters and the tilting ﬁlter all have identical phase responses,
+we picked the one with the most convenient transfer function).
+Recalling how the phase response of a 1-pole lowpass looks (Fig. 2.5) we can
+conclude that the biggest deviation of the tilting ﬁlter’s phase response from 0◦
+
+
+--- Page 430 ---
+
+418
+CHAPTER 10. SPECIAL FILTER TYPES
+ω
+|H(jω)|, dB
+ωmid
+ωmid/8
+8ωmid
+0
+-6
+-12
+-18
++6
+Passband
+Shelving
+band
+Transition
+band
+Figure 10.4: Amplitude responses of a 1-pole low-shelving ﬁlter.
+ω
+|H(jω)|, dB
+ωmid
+ωmid/8
+8ωmid
+0
+-6
+-12
+-18
++6
+Passband
+Shelving
+band
+Transition
+band
+Figure 10.5: Amplitude responses of a 1-pole high-shelving ﬁlter.
+(potentially reaching almost ±90◦) should occur in the frequency band between
+M and M −1, the deviation being positive if M > 1 > M −1 and negative if
+M < 1 < M −1. Outside of this band the phase response cannot exceed ±45◦.
+Fig. 10.6 illustrates. Notice that therefore the phase response is close to zero
+outside of the transition region.
+Transition band width
+In order to roughly estimate the width of the transition band of the tilting ﬁlter’s
+amplitude response we could divide the decibel diﬀerence in amplitude response
+levels at ω →0 and ω →∞by the derivative of the amplitude response at the
+
+
+--- Page 431 ---
+
+10.3. FIXED-SLOPE SHELVING
+419
+ω
+arg H(jω)
+ωmid
+ωmid/4
+4ωmid
+π/2
+π/4
+0
+−π/4
+−π/2
+Figure 10.6: Phase response of the 1-pole shelving/tilting ﬁlters
+for M = 4 (positive) and for M = 1/4 (negative). Dashed curves
+represent phase responses of the underlying 1-pole lowpasses at
+cutoﬀs M and M −1.
+middle of the transition band (Fig. 10.7).
+ω
+|H(jω)|, dB
+ωmid
+ωmid/8
+8ωmid
+0
+-6
+-12
+12
++6
+Figure 10.7: Estimation of the transition bandwidth of the 1-pole
+tilting ﬁlter by approximating the amplitude response by a broken
+line tangential to the amplitude response at the middle frequency.
+Writing out the derivative of the amplitude response in the logarithmic fre-
+quency and amplitude scales (where we use natural logarithms to simplify the
+math), we obtain
+d
+dx ln |Htilt(jex)|
+
+x=0
+= |Htilt(jex)|−1
+
+x=0
+· d
+dx|Htilt(jex)|
+
+x=0
+=
+
+
+--- Page 432 ---
+
+420
+CHAPTER 10. SPECIAL FILTER TYPES
+= d
+dx|Htilt(jex)| =
+d
+2dx|Htilt(jex)|2 =
+d
+2dx
+
+jMex + 1
+jex + M
+
+2
+=
+=
+d
+2dx
+M 2e2x + 1
+e2x + M 2
+
+= 2M 2e2x(e2x + M 2) −2e2x(M 2e2x + 1)
+2(e2x + M 2)2
+
+x=0
+=
+= 2M 2(1 + M 2) −2(M 2 + 1)
+2(1 + M 2)2
+= M 2 −1
+M 2 + 1 = M −M −1
+M + M −1
+(where we have assumed x = 0 throughout the entire transformation chain).
+The logarithmic amplitude diﬀerence is ln M −ln M −1 = 2 ln M and thus the
+bandwidth in terms of natural logarithmic scale is the ratio of that diﬀerence
+and the derivative at x = 0:
+∆ln = 2 ln M · M + M −1
+M −M −1
+Introducing the natural-logarithmic amplitude boost m = ln M, we rewrite the
+above as
+∆ln = 2m · em + e−m
+em −e−m = 2 ·
+m
+tanh m =
+2
+tanhc m
+where
+tanhc m = tanh m
+m
+is the “cardinal hyperbolic tangent” function, introduced similarly to the more
+commonly known cardinal sine function sinc x = sin x
+x .
+Introducing the decibel diﬀerence betwen the right and left “shelves”
+GdB = 20 log10 M 2
+we can switch the amplitude scale from natural logarithmic to decibel:
+M = em
+M 2 = 10GdB/20
+2m = ln 10GdB/20 = GdB/20 · ln 10
+m = GdB/40 · ln 10 ≈0.0576 · GdB
+Then
+∆ln ≈
+2
+tanhc (0.0576 · GdB)
+Switching from the natural logarithmic bandwidth to the octave bandwidth we
+have
+eΔln = 2Δoct
+∆ln = ∆oct · ln 2
+and we have obtained the octave bandwidth formula:
+∆oct ≈
+2
+ln 2 · tanhc (0.0576 · GdB) ≈
+2.89
+tanhc (0.0576 · GdB)
+The graph of the dependency is plotted in Fig. 10.8.
+At GdB = 0 we have
+∆oct ≈2.89. At |GdB| →∞we have ∆oct ∼GdB/6, that is the bandwidth
+is growing proportionally to the decibel boost.5 Since the shelving boosts are
+typically within the range of ±12dB, or maybe ±18dB, we could say that the
+typical transition band width of the titling ﬁlter is roughly 3 octaves.
+5It’s not difficult to realize that the 6 in the denominator is 1-pole lowpass filter’s rolloff
+of 6dB/oct.
+
+
+--- Page 433 ---
+
+10.4. VARIABLE-SLOPE SHELVING
+421
+GdB
+∆oct
+0
++20
+−20
++40
+−40
+2
+4
+6
+Figure 10.8: Transition bandwidth (estimated) as a function of the
+total decibel boost.
+10.4
+Variable-slope shelving
+With shelving ﬁlters based on Butterworth ﬁlters of the 1st kind we didn’t have
+any control over the steepness of the transition slope, or, respectively over the
+transition band width. In order to introduce that kind of control we can use
+Butterworth ﬁlters of the 2nd kind.
+The commutativity relation (10.15) still applies, since it’s independent of
+whether the involved ﬁlters are 1st or 2nd kind Butterworth, and we can restrict
+our discussion to the 2-pole shelving ﬁlters. Shelving ﬁlters of higher (even)
+orders can be obtained from those by Butterworth transformation, which is
+going to be covered in Section 10.5.
+A generic unit-cutoﬀ2-pole lowpass ﬁlter
+G(s) =
+1
+s2 + 2Rs + 1
+(10.16)
+has its poles on the unit circle, no zeros and unity gain at ω = 0, thus the
+requirements of the lowpass ratio approach are fulﬁlled and we can obtain the
+respective shelving ﬁlters by (10.7):
+HHS(s) = G(s/M)
+G(Ms) =
+M 2s2 + 2RMs + 1
+s2/M 2 + 2Rs/M + 1 = M 2 · M 2s2 + 2RMs + 1
+s2 + 2RMs + M 2
+Htilt(s) = M −2HHS(s) = M 2s2 + 2RMs + 1
+s2 + 2RMs + M 2
+HLS(s) = M −2Htilt(s) = M −2 · M 2s2 + 2RMs + 1
+s2 + 2RMs + M 2 = s2 + 2Rs/M + 1/M 2
+s2 + 2RMs + M 2
+where by (10.8)
+HHS(0) = 1
+|HHS(j)| = M 2
+HHS(∞) = M 4
+Htilt(0) = M −2
+|Htilt(j)| = 1
+Htilt(∞) = M 2
+HLS(0) = M −4
+|HLS(j)| = M −2
+HLS(∞) = 1
+
+
+--- Page 434 ---
+
+422
+CHAPTER 10. SPECIAL FILTER TYPES
+Implementation
+In order to construct an implementation of the tilting ﬁlter, we simply express
+its transfer function in terms of the SVF modes:
+Htilt(s) = M 2s2 + 2RMs + 1
+s2 + 2RMs + M 2 = s2 + 2R(s/M) + 1/M 2
+(s/M)2 + 2R(s/M) + 1 =
+= M 2(s/M)2 + 2R(s/M) + 1/M 2
+(s/M)2 + 2R(s/M) + 1
+=
+= M −2HLP(s) + HBP1(s) + M 2HHP(s)
+where the cutoﬀof the multimode SVF is ωc = M (notice that we used the
+normalized bandpass mode instead of the ordinary bandpass). Respectively
+HHS(s) = M 2Htilt(s) = HLP(s) + M 2HBP1(s) + M 4HHP(s)
+HLS(s) = M −2Htilt(s) = M −4HLP(s) + M −2HBP1(s) + HHP(s)
+Amplitude and phase response
+Notably, G(s) deﬁned by (10.16) cannot be conveniently expressed in terms of
+(9.18), since
+|G(jω)|2 =
+1
+(ω2 −1)2 + 4R2ω2 =
+1
+4R2(1 −R2) ·
+1
+1 +
+ω2 + 2R2 −1
+2R
+√
+1 −R2
+2
+Respectively, (10.12) doesn’t apply and we cannot use the associated interpreta-
+tion to reason about the shelving amplitude response shapes obtained from G(s).
+However, we could notice that at R = 1 the ﬁlter G(s) turns into a squared 1st-
+order Butterworth, while at R = 1/
+√
+2 it turns into a 2nd-order Butterworth of
+the 1st kind, therefore we can apply the results of Section 10.3 concluding that
+at least at these values of R we should expect to obtain a resonable shelving
+shape.
+The family of amplitude responses of a 2-pole tilting ﬁlter for various R is
+shown in Fig. 10.9. One can see in the picture that R controls the slope, or
+equivalently, the width of the transition band, however only a small range of
+R generates “reasonable” tilting curves. We’ll analyse this topic in detail a bit
+later.
+The phase response expressed in terms of a lowpass ratio gives
+arg HHS(s) = arg M 2s2 + 2RMs + 1
+s2/M 2 + 2Rs/M + 1 = arg s2/M −2 + 2Rs/M −1 + 1
+s2/M 2 + 2Rs/M + 1
+=
+= arg
+1
+(s/M)2 + 2R(s/M) + 1 −arg
+1
+(s/M −1)2 + 2R(s/M −1) + 1
+(where s = jω). Recalling the 2-pole lowpass phase response (Fig. 4.6) we can
+conclude that the biggest deviation of the 2-pole tilting ﬁlter’s phase response
+from 0◦(potentially reaching almost ±180◦) should occur in the frequency band
+between M and M −1, the deviation being positive if M > 1 > M −1 and negative
+if M < 1 < M −1. Outside of this band the phase response cannot exceed ±90◦.
+Fig. 10.10 illustrates. Notice that thus the phase response is close to zero outside
+of the transition region.
+
+
+--- Page 435 ---
+
+10.4. VARIABLE-SLOPE SHELVING
+423
+ω
+|H(jω)|, dB
+R ≪1
+R ≫1
+R = (M + M −1)/2
+R = 1/
+√
+2
+ωmid
+ωmid/8
+8ωmid
+0
+-6
+-12
++6
++12
+Figure 10.9:
+Amplitude responses of a 2-pole tilting ﬁlter for
+M 2 = 2 and various R.
+ω
+arg H(jω)
+ωmid
+ωmid/4
+4ωmid
+π
+π/2
+0
+−π/2
+−π
+Figure 10.10: Phase response of the 2-pole tilting ﬁlter for M = 4
+(positive) and for M = 1/4 (negative). Damping R = 1/4. Dashed
+curves represent phase responses of the underlying 2-pole lowpasses
+at cutoﬀs M and M −1.
+Steepness control
+As one could notice from Fig. 10.9, the damping parameter R aﬀects the steep-
+ness of the amplitude response slope at ω = 1. Let’s analyse it in more detail.
+First, we write Htilt(s) as
+Htilt(s) = M 2s2 + 2RMs + 1
+s2 + 2RMs + M 2 = M 2s + 2RM + 1/s
+s + 2RM + M 2/s =
+G(s)
+G(1/s)
+
+
+--- Page 436 ---
+
+424
+CHAPTER 10. SPECIAL FILTER TYPES
+where
+G(s) = M 2s + 2RM + 1/s
+Then, considering the derivative of the fully logarithmic-scale amplitude re-
+sponse at ω = 1, we obtain (assuming x = 0 thoughout the entire transformation
+chain):
+d
+dx ln |Htilt(jex)|
+
+x=0
+= d
+dx ln
+|G(jex)|
+|G(−je−x)| = d
+dx ln |G(jex)|
+|G(je−x)| =
+= d
+dx
+ ln |G(jex)| −ln
+G(je−x)
+
+= 2 d
+dx ln |G(jex)| = d
+dx ln |G(jex)|2 =
+=
+d
+dx |G(jex)|2
+|G(jex)|2
+=
+d
+dx|jM 2ex + 2RM −je−x|2
+|G(j)|2
+=
+=
+d
+dx(4R2M 2 + (M 2ex −e−x)2)
+4R2M 2 + (M 2 −1)2
+=
+d
+dx(M 4e2x −2M + e−2x)
+4R2M 2 + (M 2 −1)2
+=
+=
+2M 4e2x −2e−2x
+4R2M 2 + (M 2 −1)2 =
+2(M 2 −M −2)
+4R2 + (M −M −1)2
+(10.17)
+The maximum possible value is attained at R = 0 and is equal to
+d
+dx ln |Htilt(jex)|
+
+x=0
+= 2(M 2 −M −2)
+(M −M −1)2 = 2 · M + M −1
+M −M −1 < ∞
+for M ̸= 1
+That is, we can’t reach inﬁnite steepness. Further, as one can see from Fig. 10.9,
+for R →0 the amplitude response gets a peak and a dip, which are generally
+undesired for a shelving EQ.
+On the other hand, given a suﬃciently large R, we can attain arbitrarily
+small steepness. However, for R ≥1 the ﬁlter falls apart into a product of two
+1-pole tilting ﬁlters.6 As R grows, the 1-pole cutoﬀs get further apart and one
+can see the two separate “tilting inﬂection points“ in the amplitude response
+(Fig. 10.9).
+We need therefore to restrict R to “a reasonable range”. But how do we
+deﬁne this range? Let’s analyse several characteristic values of R.
+At R = 1 we have a two times vertically stretched (in the decibel scale)
+amplitude response of the 1-pole tilting ﬁlter with the same cutoﬀωc = M:
+M 2s2 + 2Ms + 1
+s2 + 2Ms + M 2 =
+Ms + 1
+s + M
+2
+It should be no surprise that at R = 1/
+√
+2 we obtain a Butterworth transform
+of the 1-pole tilting ﬁlter with cutoﬀωc = M 2:
+
+M 2s2 +
+√
+2 · Ms + 1
+s2 +
+√
+2 · Ms + M 2
+
+2 
+s=jω
+= (1 −M 2ω2)2 + 2M 2ω2
+(M 2 −ω2)2s2 + 2M 2ω2 =
+6This can be derived from the fact that in this case H(s) has real poles and zeros which are
+mutually reciprocal. Thus, each such reciprocal pole/zero pair makes up a 1-pole tilting filter.
+The gain M2 of the tilting 2-pole filter is distributed into two 1-pole tilting filter’s gains, each
+equal to M.
+
+
+--- Page 437 ---
+
+10.5. HIGHER-ORDER SHELVING
+425
+= 1 + M 4ω4
+M 4 + ω4 =
+
+M 2 · jω2 + 1
+jω2 + M 2
+ =
+
+M 2s + 1
+s + M 2
+
+
+s=jω2
+We can also obtain the response identical to the response of the just mentioned
+1-pole tilting ﬁlter with cutoﬀωc = M 2 by combining such 1-pole tilting ﬁlter
+with a “unit-gain” (fully transparent) tilting ﬁlter (s + 1)/(s + 1):
+Htilt(s) = M 2s + 1
+s + M 2 = M 2s + 1
+s + M 2 · s + 1
+s + 1 = M 2s2 + (M 2 + 1)s + 1
+s2 + (M 2 + 1)s + M 2 =
+=
+M 2s2 + M 2 + 1
+M
+· Ms + 1
+s2 + M 2 + 1
+M
+· Ms + M 2
+= M 2s2 + (M + M −1) · Ms + 1
+s2 + (M + M −1) · Ms + M 2
+Therefore, such response is attained at R = (M + M −1)/2 ≥1.
+Thus we are having two good candidates for the boundaries of the “reason-
+able range of R”. One boundary can be at R = (M + M −1)/2, corresponding
+to the amplitude response of the 1-pole tilting ﬁlter with cutoﬀωc = M 2, the
+other boundary is at R = 1/
+√
+2, corresponding to the same response shrunk
+horizontally two times.7 The steepness at ω = 1 therefore varies by a factor of
+2 within that range, which also can be veriﬁed explicitly:
+d
+dx ln |Htilt(jex)|
+
+x=0, R=1/
+√
+2
+d
+dx ln |Htilt(jex)|
+
+x=0, R=(M+M −1)/2
+=
+=
+2(M 2 −M −2)
+2 + (M −M −1)2 · (M + M −1)2 + (M −M −1)2
+2(M 2 −M −2)
+=
+= (M + M −1)2 + (M −M −1)2
+2 + (M −M −1)2
+= 2(M 2 + M −2)
+M 2 + M −2
+= 2
+These boundary responses of the “reasonable range of R” can be found among
+the responses shown by Fig. 10.9.
+10.5
+Higher-order shelving
+Butterworth shelving of the 1st kind
+Given a 1-pole tilting ﬁlter:
+Htilt(s) = Ms + 1
+s + M = M s + M −1
+s + M
+7Since the 2-pole tilting filter is essentially a ratio of two 2-pole lowpass filters with mu-
+tually reciprocal cutoffs, and since these lowpasses obtain a resonance peak at R < 1/
+√
+2,
+it is intuitively clear that either immediately below R = 1/
+√
+2 or possibly starting from a
+slightly lower boundary these peaks will show up in amplitude response of the tilting filter.
+In Section 10.7 we will establish that at R < 1
+√
+2 the filter will go into elliptic range, and it
+will follow that the elliptic ripples (showing up as resonance peaks for 2nd-order filters) will
+appear immediately below R = 1/
+√
+2.
+
+
+--- Page 438 ---
+
+426
+CHAPTER 10. SPECIAL FILTER TYPES
+we have reciprocal “cutoﬀs” in the numerator and the denominator. Respec-
+tively the zero is reciprocal to the pole. According to (8.12c) and (8.12d), this
+property is preserved by the Butterworth transformation.
+The dampings of
+the poles and zeros obtained after the Butterworth transformation of the 1st
+kind depend solely on the transformation order and thus are identical in the
+numerator and denominator:
+B [Htilt(s)] = M ·
+s + M −1/N
+s + M 1/N
+N∧1
+·
+Y
+n
+s2 + 2RnM −1/Ns + (M −1/N)2
+s2 + 2RnM 1/Ns + (M 1/N)2
+=
+=
+
+M 1/N s + M −1/N
+s + M 1/N
+N∧1
+·
+Y
+n
+(M 1/N)2 s2 + 2RnM −1/Ns + (M −1/N)2
+s2 + 2RnM 1/Ns + (M 1/N)2
+Therefore we obtain a serial chain of 1- and 2-pole tilting ﬁlters.
+The low-
+and high-shelving ﬁlters are transformed similarly. Alternatively we can simply
+reuse the obtained Butterworth transformation of the tilting ﬁlter, multiplying
+or dividing it by the factor M.
+Notice that the factor being M rather than M N is a kind of a notational
+diﬀerence.
+After the Butterworth transformation of N-th order the original
+change of cutoﬀby the M factor will turn into a change of cutoﬀby the M 1/N
+factor. Raising M 1/N to the N-th power (according to (10.8)) to obtain the
+multiplication factors gives M.
+Butterworth shelving of the 2nd kind
+Remember that the “cutoﬀs” of the numerator and denominator of a 2-pole
+tilting ﬁlter are mutually reciprocal, while the “dampings” are equal:
+Htilt(s) = M 2s2 + 2RMs + 1
+s2 + 2RMs + M 2 = M 2 · s2 + 2RM −1s + M −2
+s2 + 2RMs + M 2
+so the numerator “cutoﬀ” is M −1 and the denominator “cutoﬀ” is M.
+By using the Butterworth transform cutoﬀproperty (8.12c) we obtain that
+B [Htilt(s)] must have the following form:
+B [Htilt(s)] = M 2 ·
+N
+Y
+n=1
+s2 + 2RnM −1/Ns + M −2/N
+s2 + 2RnM 1/Ns + M 2/N
+=
+=
+N
+Y
+n=1
+M 2/N s2 + 2RnM −1/Ns + M −2/N
+s2 + 2RnM 1/Ns + M 2/N
+which is in agreement with the reciprocal cutoﬀpreservation property of the
+Butterworth transformation. Thus we have obtained a serial chain of 2-pole
+tilting ﬁlters with numerator “cutoﬀ” M −1/N and denominator “cutoﬀ” M 1/N.
+The low- and high-shelving ﬁlters can be transformed similarly or obtained from
+the transformed tilting ﬁlter.
+Wide-range slope
+Let H2(s) be a 2-pole tilting ﬁlter. In the discussion of the 2-pole shelving ﬁlters
+we mentioned that such ﬁlter smoothly varies its response from the one of a 1-
+pole shelving ﬁlter H1(s) to B2 [H1(s)] as R varies from R1 = (M + M −1)/2 to
+
+
+--- Page 439 ---
+
+10.5. HIGHER-ORDER SHELVING
+427
+R2 = 1/
+√
+2:
+H2(s)
+
+R=R1
+= H1(s)
+(10.18a)
+H2(s)
+
+R=R2
+= B2 [H1(s)]
+(10.18b)
+where the steepness of the amplitude response respectively doubles on that
+range.
+Now let R initially be equal to R1 and imagine we have smoothly decreased
+it to R = R2. Suppose at this moment we swapped the 2-pole tilting ﬁlter
+H2(s) with a 4-pole tilting ﬁlter H4(s) = B2 [H2(s)] simultaneously resetting
+the damping back to R = R1. Using (10.18) we have
+B2
+"
+H2(s)
+
+R=R1
+#
+= H2(s)
+
+R=R2
+and thus this swapping doesn’t change the frequency response of the ﬁlter. Now
+we can vary R from R1 to R2 again to smoothly double the amplitude response
+once more.
+So it seems we have found a way to vary the steepness of the tilting ﬁlter by
+a factor of 4 without getting the unwanted amplitude response artifacts which
+occur in a 2-pole tilting ﬁlter on an excessive range of R. However the problem
+is the swapping of H2(s) with H4(s) and back. In mathematical notation the
+swapping is seamless, because the transfer function doesn’t change during the
+swap. In a real implementation however the swapping means replacing one ﬁlter
+structure with another and this will generate a transient, unless the internal
+states of the two ﬁlters are perfectly matched at the moment of the swapping.
+Recall, however, that at R = R1 the 2-pole H2(s) can be decomposed into
+two 1-poles, where the second of the 1-poles is fully transparent:
+H2(s)
+
+R=R1
+= H1(s) · s + 1
+s + 1
+Applying Butterworth transformation of order N = 2 to both sides we obtain
+H4(s)
+
+R=R1
+= B2 [H1(s)] · B2
+s + 1
+s + 1
+
+= H2(s)
+
+R=R2
+· s2 +
+√
+2s + 1
+s2 +
+√
+2s + 1
+This means that we could have a 4-pole ﬁlter
+H4(s) = H2a(s) · H2b(s)
+(where H2a(s) and H2b(s) are 2-pole sections) all the time. As long as we are
+interested in a 2-pole response H2(s) we let
+H2a(s) = H2(s)
+H2b(s) = s2 +
+√
+2s + 1
+s2 +
+√
+2s + 1
+As we are switching from H2(s)
+
+R=R2 to B2
+h
+H2(s)
+
+R=R1
+i
+neither of the sections
+H2a(s) H2b(s) is changed. From this point on we can further change R from R1
+
+
+--- Page 440 ---
+
+428
+CHAPTER 10. SPECIAL FILTER TYPES
+to R2 updating the coeﬃcients of H2a(s) H2b(s) according to H2a(s) · H2b(s) =
+B2 [H2(s)].
+This procedure can be repeated again, that is, having reached R = R2 for
+the 4-pole shelving response, we can replace H4(s) by
+H8(s) = B2 [H4(s)] = B4 [H2(s)]
+simultaneously resetting R to R = R1. The idea is the same, we decompose
+H8(s) into
+H8(s) = H4a(s) · H4b(s)
+and we let
+H4a(s) = H4(s)
+H4b(s) = B2
+"
+s2 +
+√
+2s + 1
+s2 +
+√
+2s + 1
+#
+= B4
+s + 1
+s + 1
+
+until the point of the switching from H4(s) to H8(s) where we start having
+H4a(s) = B2 [H2a(s)]
+H4b(s) = B2 [H2b(s)]
+Of course the same procedure can be further repeated as many times as
+desired (keeping in mind that the order of the resulting ﬁlter grows exponen-
+tially). Thus we can choose some power of 2 as a maximum desired ﬁlter order
+and switch this ﬁlter’s response from H2(s) to H4(s) to H8(s) etc. each time R
+reaches R2. The steepness of the amplitude response thereby smoothly varies
+by a factor equal to the ﬁlter’s order.8
+Another way of looking at this is noticing that, as the response steepness
+grows, we are traversing the responses deﬁned by H1(s), B2 [H1(s)], B4 [H1(s)],
+etc.
+Therefore we can consider this as if it was a smooth variation of the
+Butterworth tilting ﬁlter’s order.9
+10.6
+Band shelving
+The 2-pole bandshelving ﬁlter can be easily obtained by applying the LP to
+BP substitution to the 1-pole low-shelving ﬁlter. Or, we can apply the LP to
+BP substitution to the 1-pole tilting ﬁlter (obtaining a kind of a “band-tilting”
+ﬁlter) and multiply the result by the necessary gain factor.
+Let’s do the latter. Given
+Htilt(s) = Ms + 1
+s + M = s + 1/M
+s/M + 1
+8Note that the relative steepness κ of the amplitude response thereby provides a natural
+way to control the steepness variation, where κ = k/k1, where k is the actual derivative of the
+amplitude response at the midpoint and k1 is the same derivative for H1(s) (for the currently
+chosen tilting amount M).
+9Unfortunately there is no 100% generalization of this process for lowpass, highpass or
+bandpass filters, since the rolloff of these filter types is fixed to an integer multiple of 6dB/oct
+and can’t be varied in a smooth way.
+
+
+--- Page 441 ---
+
+10.6. BAND SHELVING
+429
+we perform the substitution
+s ←1
+2R
+ s + s−1
+obtaining
+H(s) =
+1
+2R
+ s + s−1
++ 1/M
+1
+2RM (s + s−1) + 1
+= Ms + 2R + Ms−1
+s + 2RM + s−1
+= Ms2 + 2Rs + M
+s2 + 2RMs + 1 =
+= Ms2 + M −1 · 2RMs + M
+s2 + 2RMs + 1
+= MHLP(s) + M −1HBP1(s) + MHHP(s)
+where the SVF damping is equal to RM, where R is determined by the band-
+width of the LP to BP transformation. The obtained ﬁlter could be referred to
+as “band-tilting” ﬁlter (Fig. 10.11).
+ω
+|H(jω)|, dB
+ωc
+ωc/8
+8ωc
+0
+-6
+-12
+12
++6
+Figure 10.11: Amplitude response of 2-pole band-tilting ﬁlter for
+various M.
+In order to turn this ﬁlter into the band-shelving ﬁlter, apparently, we have
+to divide the response by M:10
+H(s) = s2 + M −2 · 2RMs + 1
+s2 + 2RMs + 1
+=
+= HLP(s) + M −2HBP1(s) + HHP(s) = 1 + (M −2 −1)HBP1(s)
+(mind that the SVF damping is still being equal to RM). Thus, the 2-pole band-
+shelving ﬁlter can be implemented by mixing the (normalized) bandpass signal
+to the input signal. The amplitude response at the cutoﬀis H(j) = M −2 which
+thereby deﬁnes the shelving gain. The desired bandwidth of the shelving can be
+10Alternatively, by multiplying the response by M we obtain a kind of “inverted band-
+shelving” filter, where the shelving bands are to the left and to the right of the passband in
+the middle.
+
+
+--- Page 442 ---
+
+430
+CHAPTER 10. SPECIAL FILTER TYPES
+achieved using the properties of the LP to BP substition, namely the formula
+(4.20).
+It is interesting to observe that the above band-shelving transfer function
+can be rewritten as
+H(s) = s2 + 2RM −1s + 1
+s2 + 2RMs + 1
+(10.19)
+that is we have a ratio of two ﬁlters with diﬀerent dampings RM and RM −1,
+where the ﬁlters themselves could be lowpass, highpass or bandpass (the impor-
+tant thing being that they have identical numerators, which then cancel each
+other).
+Band shelving of higher orders
+The band-shelving Butterworth ﬁlter of the 2nd kind is obtained by applying
+the Butterworth transformation to the 2-pole band-shelving ﬁlter (10.19):
+H(s) = s2 + 2RM −1s + 1
+s2 + 2RMs + 1
+Thus we have a ratio of two 2nd order polynomials both having unit cutoﬀ
+but diﬀerent damping. Applying the Butterworth transformation we therefore
+obtain a cascade of 2nd-order sections with unit cutoﬀ:
+H′(s) =
+Y
+n
+s2 + 2R′
+ns + 1
+s2 + 2Rns + 1
+Apparently each such 2nd-order section is a 2-pole bandshelving ﬁlter with
+the shelving boost and the bandwidth deﬁned by the parametrs Rn and R′
+n.
+Fig. 10.12 shows the amplitude response.
+ω
+|H(jω)|, dB
+ωc
+ωc/8
+8ωc
+0
+-6
++6
++12
+Figure 10.12: 4th order band-shelving Butterworth ﬁlter of the 2nd
+kind vs. 2nd order band-shelving ﬁlter (dashed line).
+Another kind of band-shelving ﬁlter can be obtained by applying the LP
+to BP substitution to a Butterworth low-shelving ﬁlter of the 2nd kind.
+A
+useful feature of this approach is that by choosing the order of the low-shelving
+ﬁlter (and thus choosing the steepness of the low-shelving ﬁlter’s slope) one can
+choose the steepness of the slopes of the band-shelving ﬁlter.
+
+
+--- Page 443 ---
+
+10.7. ELLIPTIC SHELVING
+431
+10.7
+Elliptic shelving
+We have mentioned that the mixing approach of (10.12) can be applied to
+EMQF ﬁlters. Of all equations (10.13) it’s probably easiest to use (10.13a) to
+construct a high-shelving ﬁlter, the other ﬁlters can be derived from it in a
+trivial way. As (10.13a) is a monotonic mapping of the range [0, +∞] of ¯f 2
+onto the range of |HHS(jω)| contained between 1 and β2, we are going to have
+|HHS(jω)| smoothly varying from 1 to β2 as ¯RN varies from 0 to ∞, just with
+some ripples in the pass and shelving bands.
+Letting ¯f(ω) = ¯RN(ω) in (10.13a):
+|HHS(jω)|2 = 1 + β2 ¯R2
+N(ω)
+1 + β−2 ¯R2
+N(ω)
+(10.20)
+we obtain the amplitude response shown in Fig. 10.13. Notice that due to the
+monotonic nature of the mapping (10.13a) the pass and shelving band ripples
+do not oscillate around the reference gains 1 and β2 (corresponding to ¯RN = 0
+and ¯RN = ∞), but are rather occurring “into the inside” of the range between
+1 and β2.
+ω
+|H(jω)|
+ωmid
+ωmid/8
+8ωmid
+1
+β
+β2
+Figure 10.13: Amplitude response of an elliptic high-shelving ﬁlter.
+Horizontal dashed lines denote the reference gains 1 and β2.
+Implementation
+From (10.20) we obtain the pole and zero equations for HHS(s):
+1 + β−2 ¯R2
+N(ω) = 0
+(10.21a)
+1 + β2 ¯R2
+N(ω) = 0
+(10.21b)
+where we ignore the poles of ¯RN, since they cancel each other within HHS(s)
+anyway. The equations (10.21) are essentially identical to (9.152), where we let
+
+
+--- Page 444 ---
+
+432
+CHAPTER 10. SPECIAL FILTER TYPES
+λ = 1 and ε = β−1 or ε = β respectively.11
+Having obtained the poles and zeros we can deﬁne the leading gain coeﬃcient
+g of the cascade form (8.1) from the requirement
+H(0) =
+s
+1 + β2 ¯R2
+N(0)
+1 + β−2 ¯R2
+N(0) =
+s
+1 + β2 (Re jN)2 ˜k
+1 + β−2 (Re jN)2 ˜k
+We could also use a simpler requirement:
+|H(j)| = β
+however we should mind the possibility of accidentally obtaining a 180◦phase
+response at ω = 0.
+Control parameters
+In order to compute the passband (ω ≪1) ripple amplitude, we can notice that
+in the passband the value of ¯R2(ω) varies between 0 and ˜k. By (10.20) the
+maximum deviation from the reference gain 1 will be at the gain equal to
+δ =
+s
+1 + β2˜k
+1 + β−2˜k
+(10.22)
+thus in the passband |HHS(jω)| varies between 1 and δ. If β > 1 then δ > 1 and
+vice versa. By the reciprocal symmetry (10.5) the deviation from the shelving
+band’s reference gain β2 is the same, just in the opposite direction, thus in the
+shelving band |HHS(jω)| varies between β2 and β2/δ.
+From (10.22) it’s easy to notice that reciprocating β reciprocates δ and vice
+versa. Therefore without loss of generality, for the sake of simplicity we can
+restrict the discussion to β ≥1, δ ≥1, in which case the passband ripples
+occcur within [1, δ] and the shelving band ripples occur within [β2/δ, β2]. The
+case of β ≤1, δ ≤1 will follow automatically, where the ripple ranges will be
+[δ, 1] and [β2, β2/δ] respectively.
+Recall that the value of ˜k grows simultaneously with k, where the latter is
+deﬁning the elliptic transition band [
+√
+k, 1/
+√
+k]. Thus we are having three user-
+facing parameters, each of those being independently related to its respective
+variable:12
+Transition bandwidth:
+˜k
+Shelving gain:
+β
+Ripple amplitude:
+δ
+where the dependency between the three variables is given by (10.22).
+Apparently at ﬁxed ˜k > 0 the value of δ grows with β and vice versa. At
+ﬁxed β > 1, the value of δ grows with ˜k and vice versa. At ﬁxed δ > 1, the
+11Thus, differently from how we used (9.152) in the discussion of elliptic lowpass, we treat ε
+and λ now as independent variables. This doesn’t affect the solution process of (9.152), since
+the respective transformations didn’t use the interdependency of ε and λ.
+12We should mind that the dependency between the transition bandwidth and ˜k is
+reciprocal-like: larger ˜k means smaller bandwidth. The other two dependencies are straight-
+forward.
+
+
+--- Page 445 ---
+
+10.7. ELLIPTIC SHELVING
+433
+values of β and k change in opposite directions. Thus, if e.g. we want a smaller
+transition band, this means we want larger k and larger ˜k, which means larger
+δ (given a ﬁxed β). This means there is a tradeoﬀbetween the transition band
+width (which we usually want small) and the ripple amplitude (which we also
+usually want small). There are similar tradeoﬀs between the other two pairs of
+the user-facing parameters.
+Given any two of the three parameters, we can ﬁnd the third one from
+(10.22). The explicit expressions for β and ˜k can be obtained by transforming
+(10.22) to
+1 + β2˜k = δ2 + β−2˜kδ2
+β2 + β4˜k = β2δ2 + ˜kδ2
+from where on one hand
+β4˜k −(δ2 −1)β2 −˜kδ2 = 0
+β2 = δ2 −1
+2˜k
++
+sδ2 −1
+2˜k
+2
++ δ2
+(10.23)
+(where apparently the restriction is δ ≥1), on the other hand
+(β4 −δ2)˜k = β2(δ2 −1)
+˜k = β2 δ2 −1
+β4 −δ2
+(10.24)
+(where 1 ≤δ < β will ensure 0 < ˜k < 1) and k can be obtained by (9.138).
+At β = 1 the formula (10.24) doesn’t work, since the amplitude response of
+HHS is simply a horizontal line at unity gain and any of the values of ˜k will do.
+Respectively at ˜k = 0 the formula (10.23) doesn’t work, since δ must be equal
+to 1 in this case.
+Notably, since (10.22) works equally well for β < 1 and δ < 1, so do (10.23)
+(under the restriction δ ≤1) and (10.24) (under the restriction β < δ ≤1). In
+practice the numerical evaluation of (10.23) for δ < 1 could raise concerns of
+potential precision losses, therefore it’s better to apply (10.23) to the reciprocal
+value of δ, which is larger than 1, and then reciprocate the result once again.
+Steepness control
+As with 2nd kind Butterworth shelving ﬁlters, we would like to be able to
+estimate the logarithmic midslope steepness of the elliptic shelving ﬁlter. Eval-
+uating the following derivative at x = 0, by (10.20) we have
+d
+dx ln |HHS(jex)|
+
+x=0
+=
+d
+2 dx ln |HHS(jex)|2 =
+d
+2 dx ln 1 + β2 ¯R2
+N(ex)
+1 + β−2 ¯R2
+N(ex) =
+=
+d
+2 dx
+ ln
+ 1 + β2 ¯R2
+N(ex)
+
+−ln
+ 1 + β−2 ¯R2
+N(ex)
+
+=
+= 1
+2
+2β2 ¯RN(ex) ¯R′
+N(ex)ex
+1 + β2 ¯R2
+N(ex)
+−2β−2 ¯RN(ex) ¯R′
+N(ex)ex
+1 + β−2 ¯R2
+N(ex)
+
+=
+
+
+--- Page 446 ---
+
+434
+CHAPTER 10. SPECIAL FILTER TYPES
+= β2 ¯R′
+N(1)
+1 + β2
+−β−2 ¯R′
+N(1)
+1 + β−2
+=
+
+β2
+1 + β2 −
+β−2
+1 + β−2
+
+¯R′
+N(1) =
+= β2(1 + β−2) −β−2(1 + β2)
+(1 + β2)(1 + β−2)
+¯R′
+N(1) =
+β2 −β−2
+β2 + 2 + β−2 ¯R′
+N(1) =
+= β2 −β−2
+(β + β−1)2 ¯R′
+N(1) = β −β−1
+β + β−1 ¯R′
+N(1)
+(10.25)
+Recalling the formulas (9.145), (9.150) and Fig. 9.61, we ﬁnd that, as expected,
+steepness grows with k and N. Unfortunately, diﬀerently from the 2nd kind
+Butterworth case, the expression (10.25) (or, speciﬁcally, (9.145)) is not easily
+invertible as a function of k, which means we cannot easily ﬁnd k from the
+desired slope steepness. However, for each given N this function’s inverse can
+be tabulated and we could use the midslope steepness instead of transition
+bandwidth as a control parameter.
+Centered ripples
+If we allow equiripples in the pass and shelving bands, it would be reasonable
+to require that these equiripples are not unipolar but rather centered around
+the required reference gains of these bands. We are going now to derive the
+respective formulas, which will be slightly simpler to do in terms of the tilting
+ﬁlter:
+|Htilt(jω)|2 = β−2 1 + β2 ¯R2
+N(ω)
+1 + β−2 ¯R2
+N(ω)
+where again, for simplicity of discussion, without loss of generality we will as-
+sume β ≥1, δ ≥1.
+As a ﬁrst step, we shall deﬁne the new reference gains, corresponding to the
+logarithmic centers of the equiripples. Since the left shelving band ripples occur
+within [β−1, β−1δ], their logarithmic center is at β−1√
+δ. Similarly, since the
+right shelving band ripples occur within [β/δ, β], their logarithmic center is at
+β/
+√
+δ. Therefore we introduce ˜β = β/
+√
+δ and the new reference gains ˜β−1 and
+˜β at the logarithmic centers of the equiripple ranges (Fig. 10.14).
+We want to use ˜β instead of β as one of the three control parameters. Since
+the entire framework of elliptic shelving ﬁlters has been developed in terms of
+k, β and δ, we’ll need to be able to convert from ˜β to β. At the ﬁrst sight this
+seems to be trivially done by β = ˜β
+√
+δ, however this can be done only if we
+know δ.
+Recall that we have three control parameters ˜k, β and δ but only two freedom
+degrees, which means that we can specify only two of the three parameters, while
+the third parameter needs to be found by the respective relations. Similarly,
+if the three control parameters are now ˜k, ˜β and δ, we are going to specify
+only two of them. So, if we specify ˜β and δ, then indeed we can simply ﬁnd
+β = ˜β
+√
+δ and then ﬁnd ˜k by (10.24). Specifying ˜k and δ is apparently the same
+as before and doesn’t pose any new probleems. However there is yet an option
+of specifying ˜k and ˜β, in which case we need to ﬁnd either β or δ, so that the
+other variable can be found from (10.23) or (10.22).
+Let’s ﬁnd β. Substituting the equation (10.22) into β = ˜β
+√
+δ we obtain
+β4 = ˜β4 · 1 + β2˜k
+1 + β−2˜k
+
+
+--- Page 447 ---
+
+10.7. ELLIPTIC SHELVING
+435
+ω
+|H(jω)|
+ωmid
+ωmid/8
+8ωmid
+˜β−1
+1
+˜β
+Figure 10.14: Centered reference gains ˜β−1 and ˜β of an elliptic
+tilting ﬁlter.
+β4 + ˜kβ2 = ˜β4 + ˜k ˜β4β2
+β4 −˜k(˜β4 −1)β2 −˜β4 = 0
+β2 = ˜k
+˜β4 −1
+2
++
+v
+u
+u
+t
+ 
+˜k
+˜β4 −1
+2
+!2
++ ˜β4
+(10.26)
+Similarly to (10.23), formula (10.26) also works for β ≤1, δ ≤1, but due to
+numeric reasons in this case it’s better to apply it to the reciprocal δ and then
+reciprocate the result.
+Thus we have developed a way to express the tilting ﬁlter in terms of the
+centered reference gains β−1 and β by converting from ˜β to β either by β = ˜β
+√
+δ
+or by (10.26). For the high- and low-shelving ﬁlters one needs to additionally
+take into account that the new reference gains imply diﬀerent multiplication
+factors for conversion from tilting to the respective shelving factors:
+HHS(s) = ˜β · Htilt(s)
+HLS(s) = ˜β−1 · Htilt(s)
+so that the centered passband reference gain is at 1 and the centered shelving
+reference gain is at ˜β2 or ˜β−1 respectively.
+Relation to Butterworth shelving
+At k = 0 we have ¯RN(x) = xN and the elliptic shelving ﬁlters turn into respec-
+tive 1st-kind Butterworth shelving ﬁlters. However also notice that a 2nd-kind
+Butterworth shelving ﬁlter of order N at R = 1/
+√
+2 is equal to the 1st-kind
+Butteworth shelving of the same order, which in turn is equal to the elliptic
+
+
+--- Page 448 ---
+
+436
+CHAPTER 10. SPECIAL FILTER TYPES
+shelving ﬁlter of the same order at k = 0. That is at R = 1/
+√
+2 and k = 0 all
+three kinds of shelving ﬁlters coincide.13
+In that sense elliptic shelving can be seen as another way of extending the
+2nd-kind Butterworth variable-slope shelving into the range beyond R = 1/
+√
+2.
+Instead of reducing R below 1/
+√
+2 (which would result in one large resonance
+peak in each of the pass and/or shelving bands), we could switch to the elliptic
+ﬁlter parameters14 obtaining a number of smaller equiripples. This particularly
+means that in the wide-range slope technique described in Section 10.5 instead
+of increasing the ﬁlter order at R = 1/
+√
+2 we could switch to elliptic equations
+(if we are willing to accept the ripples).
+At N = 2 however there is essentially no diﬀerence between 2nd-kind But-
+terworth shelving at R ≤1/
+√
+2 and elliptic shelving, except for diﬀerent formal
+control parameters. Indeed, both ﬁlters have two poles and two zeros which
+are mutually reciprocal and are also having conjugate symmetry. This leaves
+only two degrees of freedom, one degree corresponds to choosing the cutoﬀof
+the poles (which simultaneously deﬁnes the cutoﬀof the zeros as the recipro-
+cal value of the poles cutoﬀ) the other degree being the damping of the poles
+(which simultaneously deﬁnes the damping of the zeros as both dampings must
+be equal). However the ﬁrst degree of freedom is taken by controlling the shelv-
+ing gain and the second degree of freedom is taken by varying the R or the
+k parameter respectively. Thus the diﬀerence between the two ﬁlters can be
+only in how the control parameters are translated to the transfer function and
+in the leading gain coeﬃcients of the transfer functions (where we would have
+|HHS(0)| = 1 in the Butterworth case and |HHS(0)| = δ in the elliptic case).
+Combining with other techniques
+Elliptic design of shelving ﬁlters can be combined with other design techniques.
+Particulary, we can apply the LP to BP transformation to an elliptic low-
+shelving ﬁlter to obtain an elliptic band-shelving ﬁlter.
+In principle one also could apply Butterworth transformation to elliptic ﬁl-
+ters to increase the slope steepness. However, since we are already having ripples
+in the pass and shelving bands, it would be more eﬃcient to simply increase the
+order of elliptic ﬁlter, thereby attaining higher slope steepnesses (compared to
+applying the Butterworth transformation) at the same ripple amplitude.
+10.8
+Crossovers
+Sometimes we would like to process diﬀerent frequency bands of a signal dif-
+ferently. In the simplest case we would want to split the signal into low- and
+high-frequency parts, process one of them or both in some way and then merge
+13Particularly, notice that (10.25) becomes identical to (10.17) for β = M2.
+14Notice that such switching is completely smooth, as the transfer functions of the filters
+are completely identical at this point and the “physical” orders of the filters are identical
+too (there is no pole/zero cancellation as we had in the Butterworth filter order switching).
+Strictly speaking, the statement that the transfer functions are identical holds only under the
+restriction that the phase responses of the filters are in sync, rather that 180◦off, which is
+a matter of the sign in front of the transfer functions. However usually we are having zero
+phase responses at ω = 0, therefore the signs will be automatically matched.
+
+
+--- Page 449 ---
+
+10.8. CROSSOVERS
+437
+them back (Fig. 10.15). This kind of ﬁlters, splitting the signal into diﬀerent
+frequency bands are called crossovers.
+Crossover
+/
+Process highs
+/
++
+ '!&"%#$
+Process lows
+/
+O
+/
+x(t)
+y(t)
+HP
+LP
+Figure 10.15: The crosssover idea.
+In principle we could take any a pair of lowpass and highpass ﬁlters to
+build a crossover, but some combinations would work better than the others.
+Particularly, imagine that the processing of diﬀerent bands changes the signals
+very slightly, or sometimes maybe even doesn’t change them at all. In that case
+it would be really nice if the original signal was unaltered by the structure in
+Fig. 10.15, that is y(t) = x(t). However, this naturally expected property will
+not be given for granted.
+Suppose we use a multimode 1-pole as a crossover basis, in which case the
+low- and high-pass ﬁlters share the same cutoﬀ. Without loss of generality we
+could let ωc = 1 (in other words, the crossover frequency will be at ω = 1):
+HLP(s) =
+1
+1 + s
+HHP(s) =
+s
+1 + s
+Adding low- and high-pass transfer functions we have
+H(s) = HLP(s) + HHP(s) =
+1
+1 + s +
+s
+1 + s = 1
+Thus, if the low- and high-pass signals are unmodiﬁed by the processing, adding
+them together at the end of the network in Fig. 10.15 would restore the original
+signal exactly.
+However the same doesn’t hold anymore for 2-poles:
+HLP(s) =
+1
+1 + 2Rs + s2
+HHP(s) =
+s2
+1 + 2Rs + s2
+in which case we have
+H(s) = HLP(s) + HHP(s) =
+s2 + 1
+s2 + 2Rs + 1 ̸= 1
+In fact, as we may recall, the above H(s) is a notch ﬁlter. Of course, we could
+add the missing bandpass component, e.g. splitting it equally between the low-
+
+
+--- Page 450 ---
+
+438
+CHAPTER 10. SPECIAL FILTER TYPES
+and high-bands:
+1 + Rs
+1 + 2Rs + s2 +
+s2 + Rs
+1 + 2Rs + s2 = 1
+but then the rolloﬀof the resulting low- and high-pass ﬁlters becomes 6dB/oct
+instead of former 12dB/oct, leading to the question, why using such 2-pole in
+the ﬁrst place when a 1-pole would have done similarly.
+Butterworth crossovers
+If we relax the requirement of the sum of unprocessed signals being exactly
+equal to the original signal and allow a phase shift in the sum, while retaining
+the amplitudes, we essentially require that the low- and high-passes should add
+to an allpass:
+|H(s)| = |HLP(s) + HHP(s)| = 1
+Let’s take (1st kind) Butterworth low- and high-passes at the same cutoﬀωc = 1:
+HLP(s) =
+1
+P(s)
+HHP(s) = sN
+P(s)
+where N is the ﬁlter order and P(s) denotes the common denominator of HLP(s)
+and HHP(s). Remember that the denominator P(s) is deﬁned by the equation
+|P(jω)|2 = 1 + ω2N
+while all roots of P(s) must lie in the left complex semiplane.
+Adding the low- and high-passes together we obtain
+H(s) = HLP(s) + HHP(s) =
+1
+P(s) + sN
+P(s) = 1 + sN
+P(s)
+Assuming N is odd, for s = jω we get
+|H(jω)|2 =
+
+1 + (jω)N
+P(jω)
+
+2
+= 1 + ω2N
+|P(jω)|2 = 1
+(N odd)
+Notably, the same property holds for the diﬀerence of Butterworth low- and
+high-passes of odd order
+|HLP(s) −HHP(s)|2 =
+
+1 −(jω)N
+P(jω)
+
+2
+= 1 + ω2N
+|P(jω)|2 = 1
+(N odd)
+For an even order however 1 ± sN becomes purely real for s = jω
+1 ± sN = 1 ± jNωN = 1 ± (−1)N/2ωN
+and we get either a zero at ω = 1 if the above gets the form 1 −ωN, or, if it
+gets the form 1 + ωN then
+|H(jω)|2 =
+
+1 + (jω)N
+P(jω)
+
+2
+=
+ 1 + ωN2
+1 + ω2N
+= 1 + 2ωN + ω2N
+1 + ω2N
+=
+
+
+--- Page 451 ---
+
+10.8. CROSSOVERS
+439
+= 1 +
+2ωN
+1 + ω2N = 1 +
+1 + ω2N
+2ωN
+−1
+= 1 + 2
+
+ωN +
+1
+ωN
+−1
+Apparently the expression in parentheses is symmetric in logarithmic scale
+around ω = 1 and attains a minumum at this point, respectively |H(jω)|2
+attains a maximum, which we can evaluate by substituting ω = 1, obtaining
+|H(j)|2 = 2. Respectively |H(j)| =
+√
+2 thus the amplitude response of H(s)
+has a +3dB bump at ω = 1.
+As both HLP(s) and HHP(s) share the same denominator, they can be imple-
+mented by a single generalized SVF (the controllable canonical form in Fig. 8.1)
+using the modal outputs for the numerators 1 and sN respectively. Alternatively
+one could use multimode features of the serial cascade representation. Parallel
+representation is also possible, where we would pick up diﬀerent modal mixtures
+of the same parallel 2-poles as the low- and high-pass signal respectively.
+Linkwitz–Riley crossovers
+If instead of Butterworth lowpass and highpass ﬁlters we take squared Butter-
+worth ﬁlters:
+H(s) = H1(s) + H2(s)
+H1(s) = H2
+LP(s) =
+
+1
+P(s)
+2
+H2(s) = (−1)NH2
+HP(s) = (−1)N
+ sN
+P(s)
+2
+|P(jω)|2 = 1 + ω2N
+(notice the conditional inversion of the squared highpass signal) we do obtain a
+perfect allpass H(s) for any N:
+H(jω) = H1(jω) + H2(jω) =
+1
+P 2(jω) + (−1)N (jω)2N
+P 2(jω) =
+= 1 + (−1)Nj2Nω2N
+P 2(jω)
+= 1 + ω2N
+P 2(jω) = P(jω)P(−jω)
+P 2(jω)
+= P(−jω)
+P(jω)
+(10.27)
+and thus, since P(jω) is Hermitian, |H(jω)| = 1. A crossover designed in this
+way is referred to as Linkwitz–Riley crossover. Since the denominators in (10.27)
+are identical, we again can use a shared structure, such as a generalized SVF or
+a multimode serial cascase to produce the output signals of both H1 and H2.
+The parallel representation is problematic, since we are now having repeated
+poles due to the squaring of the denominators.15
+Note that the phase responses of H1(s) and H2(s) are identical, since the
+phase contributions of their numerators are zero, while the phase contributions
+of their denominators are identical. This in-phase relationship of the split bands
+15In principle, by general considerations, one should be able to connect two identical parallel
+representations in series and obtain modal mixtures from those in a fashion similar to the
+multimode serial cascade. The author however didn’t verify the feasibility of this approach.
+
+
+--- Page 452 ---
+
+440
+CHAPTER 10. SPECIAL FILTER TYPES
+is the key feature of Linkwitz–Riley crossovers16 (contrary to the somewhat
+common opinion that the key feature of Linkwitz–Riley crossovers is the absence
+of the +3dB bump, which, as we have seen is also e.g. the case with odd-order
+Butterworth crossovers).
+The in-phase relationship actually also includes H(s):
+arg H1(jω) = arg H2(jω) = arg H(jω)
+Indeed
+arg H(jω) = arg P(−jω) −arg P(jω) = −2 arg P(jω) = arg
+1
+P 2(jω)
+where we used the Hermitian property of P(jω).
+Generalized Linkwitz–Riley crossovers
+The Linkwitz–Riley design consisting of two squared Butterworth ﬁlters is a
+special case of a more generic idea which we will discuss below.17
+First we need a kind of auxiliary lemma. Let Q(s) be a real polynomial of
+s. We now state that the formal frequency response Q(jω) is real nonnegative
+if and only if Q(s) can be written in the form Q(s) = P(s)P(−s), where P(s)
+is some other real polynomial of s. The proof goes like follows.
+Suppose Q(s) = P(s)P(−s). Then for ω ∈R
+Q(jω) = P(jω)P(−jω) = P(jω)P ((jω)∗) = P(jω)P ∗(jω) = |P(jω)|2 ≥0
+Conversely, suppose Q(jω) ≥0.
+Since Q(jω) is simultaneously real and
+Hermitian, it must be even, and so must be Q(s). Therefore it can be factored
+into Q(s) = P(s)P(−s). Let’s chose P(s) to contain the left complex semiplane
+roots of Q(s), thereby P(−s) will contain the right complex semiplane roots. If
+Q(s) has roots on the imaginary axis, these roots will all have even multiplicities
+(since otherwise Q(jω) will be changing sign at these points) and therefore we
+can split these roots into two identical halves, which we assign to P(s) and
+P(−s) respectively. Since Q(s) is real, its poles are conjugate symmetric and
+so will be the poles of P(s) and P(−s).
+We still need to show that the leading coeﬃcient of P(s) will be real. Let g
+denote the leading coeﬃcient of P. Then the leading term of Q(s) = P(s)P(−s)
+is gsNg(−s)N = (−1)Ng2s2N. By substituting s = jω we obtain the leading
+term of Q(jω), which is (−1)Ng2(jω)2N = (−1)Ng2(−1)Nω2N = g2ω2N. How-
+ever the coeﬃcient g2 of the leading term g2ω2N of Q(jω) must be positive,
+otherwise Q(jω) would become negative at large ω. Since g2 is positive, g is
+real. That completes the proof.
+16The author has been made aware of the importance of the in-phase property of Linkwitz–
+Riley crossovers by a remark by Teemu Voipio. The author also learned the cascaded phase
+correction approach shown in Fig. 10.24 from the same person.
+17The idea to generalize the Linkwitz–Riley design arose from a remark by Max Mikhailov,
+that Linkwitz–Riley crossovers can be also built based on naive 1-pole lowpasses, which in the
+BLT terms can be formally seen as a special kind of high-shelving filters. It is quite possible
+that this idea has been already developed elsewhere, however at the time of the writing the
+author is not aware of other sources.
+
+
+--- Page 453 ---
+
+10.8. CROSSOVERS
+441
+Now, given two real polynomials Q1(s) and Q2(s) with real nonnegative
+frequency responses, we can construct a third real polynomial as their sum
+Q1(s) + Q2(s) = Q(s)
+(10.28)
+Since the frequency responses of Q1(s) and Q2(s) are nonnegative, so is the
+frequency response of Q(s). By the previous discussion, the above equation can
+be rewritten as
+P1(s)P1(−s) + P2(s)P2(−s) = P(s)P(−s)
+(10.29)
+Dividing both sides by the right-hand side, we obtain
+P1(s)P1(−s)
+P(s)P(−s) + P2(s)P2(−s)
+P(s)P(−s) = 1
+(10.30)
+We wish to interpret the two terms in the left-hand side as transfer functions.
+However, these functions are not stable, since the roots of P(−s) are lying in
+the right semiplane. We can however multiply both parts by P(−s)/P(s):
+P1(s)P1(−s)
+P 2(s)
++ P2(s)P2(−s)
+P 2(s)
+= P(−s)
+P(s)
+(10.31)
+thereby making both ﬁlters stable and turning the right-hand side into an (also
+stable) allpass. Also notice that the orders of P1(s) and P2(s) do not exceed
+the order of P(s), therefore the terms of (10.31) are nonstrictly proper rational
+functions of s, as required for transfer functions of (integrator-based) diﬀerential
+ﬁlters. Introducing
+H1(s) = P1(s)
+P(s) · P1(−s)
+P(s)
+(10.32a)
+H2(s) = P2(s)
+P(s) · P2(−s)
+P(s)
+(10.32b)
+HAP(s) = P(−s)
+P(s)
+(10.32c)
+we rewrite (10.31) as
+H1(s) + H2(s) = HAP(s)
+(10.33)
+and thus we have built a crossover (provided H1(s) is a kind of a lowpass and
+H2(s) is a kind of a highpass). Again, the denominators are identical and we
+can use a shared structure for H1 and H2.
+Notice that (10.33) is simply (10.28) divided by P 2(s). The phase responses
+of all terms of (10.28) are apparently zero, therefore the phase responses of all
+terms of (10.33) are identical and simply equal to −2 arg P(jω):
+arg H1(jω) = arg H2(jω) = arg H(jω) = −2 arg P(jω)
+The identical phase responses, as we should remember, are the key feature
+of Linkwitz–Riley crossover design, thus we have built a kind of generalized
+Linkwitz–Riley crossover.
+
+
+--- Page 454 ---
+
+442
+CHAPTER 10. SPECIAL FILTER TYPES
+The identical phase responses of H1, H2 and HAP also allow to rewrite
+(10.33) in terms of amplitude responses:
+|H1(s)| + |H2(s)| = 1
+(10.34)
+It is often convenient to deﬁne
+G1(s) = P1(s)
+P(s)
+G2(s) = P2(s)
+P(s)
+By (10.32), Hn(s) = Gn(s)G−
+n (s) where G−
+n (s) = Pn(−s)/P(s). Apparently
+|Hn(jω)| = |Gn(jω)|2 and therefore (10.34) turns into
+|G1(jω)|2 + |G2(jω)|2 = 1
+(10.35)
+The interpretation in terms of G1 and G2 suggests another, somewhat more
+practical approach to building generalized Linkwitz–Riley crossovers. We start
+with a pretty much random ﬁlter G1(s) = P1(s)/P(s), although satisfying
+|G1(jω)|2 ≤1, so that (10.35) can hold. From P1(s) and P(s), using (10.32), we
+obtain H1(s) and HAP(s) and can simply ﬁnd H2(s) as H2(s) = HAP(s)−H1(s).
+In principle, the obtained H2(s) can be used as it is, but we can also further
+factor it into H2(s) = P2(s)P2(−s)/P 2(s) thereby obtaining G2(s).18 Of course,
+in order for H1(s) and H2(s) to count as a “reasonable” crossover, H1(s) must
+be a lowpass or lowpass-like ﬁlter (which can be ensured by choosing a lowpass-
+like G1(s)), and the obtained H2(s) must be highpass-like. Or the other way
+around.
+Alternatively we might be able to simply “guess” H1(s) and H2(s) (or, equiv-
+alently, P1(s) and P2(s), or G1(s) and G2(s)). E.g. the previously discussed But-
+terworth ﬁlter-based Linkwitz–Riley crossover arises by choosing G1(s) to be a
+Butterworth lowpass and G2(s) = G1(1/s) to be a Butterworth highpass, which
+gives G−
+1 (s) = G1(s), G−
+2 (s) = (−1)NG2(s) and respectively H1(s) = G2
+1(s),
+H2(s) = (−1)NG2
+2(s). The same result is obtained by by choosing P1(s) = 1,
+P2(s) = sN (respectively P1(−s) = 1 and P2(−s) = (−1)NsN).
+This gives
+(10.29) in the form
+P(s)P(−s) = P1(s)P1(−s) + P2(s)P2(−s) = 1 + (−1)Ns2N
+from where
+Q(jω) = 1 + ω2N = |P(jω)|2 = P(jω)P(−jω)
+where P(s) is the Butterworth denominator. The equation (10.31) respectively
+takes the form
+
+1
+P(s)
+2
++ (−1)N
+ sN
+P(s)
+2
+= P(−s)
+P(s)
+which is essentially the same as (10.27).
+18In order to show that this factoring is possible, multiply H2(jω) = HAP(jω) −H1(jω)
+by P 2(jω), obtaining H2(jω)P 2(jω) = P(jω)P(−jω) −P1(jω)P1(−jω) ≥0, where the latter
+inequality follows from |G1(jω)|2 ≤1.
+
+
+--- Page 455 ---
+
+10.8. CROSSOVERS
+443
+Symmetric generalized Linkwitz–Riley crossovers
+Ideally in (10.33) we would like to have symmetric amplitude responses
+|H2(jω)| = |H1(j/ω)|
+(10.36)
+as it was e.g. the case with Butterworth-based Linkwitz–Riley crossover. Appar-
+ently (10.36) is not guaranteed for an arbitrary pair of H1(s) and H2(s) which
+satisﬁes (10.33) (where satisfying (10.33) is understood in the sense that the
+sum of H1(s) and H2(s) is an allpass). We would like to ﬁnd a way of obtaining
+generalized Linkwitz–Riley crossovers satisfying (10.36).
+Recall that (10.35) is just another intepretation of the crossover equation
+(10.33). On the other hand, compare (10.35) to (10.4). By (10.4), the equation
+(10.35) will be satisﬁed by G1 and G2 related through an LP to HP transfor-
+mation, if f(1/x) = 1/f(x), where f(x) is the function used to construct G1 by
+(9.18).
+This is not suﬃcient yet, as besides satisfying (10.35) (and respectively
+(10.33)), we need to have the same poles in G1(s) and G2(s), so that they
+can share the same denominator P(s). However we have already shown that
+G1(s) and G2(s) will have the same poles if f(1/x) = 1/f(x).
+Therefore, in order to obtain a generalized Linkwitz–Riley crossover with
+symmetric amplitude responses, we need to take G1(s) obtained from f(x) sat-
+isfying f(1/x) = 1/f(x) and G2(s) = G1(1/s).
+EMQF Linkwitz–Riley crossovers
+We already know one function f(ω) satisfying f(1/x) = 1/f(x): the normal-
+ized elliptic rational function ¯RN. Therefore EMQF ﬁlters might be a good
+candidate for symmetric generalized Linkwitz–Riley crossovers. Notice that at
+k →0 EMQF ﬁlters turn into Butterworth ﬁlters and we obtain a classical
+(Butterworth-based) Linkwitz–Riley crossover.
+Therefore let G1(s) = P1(s)/P(s) be an EMQF (lowpass) ﬁlter and G2(s) =
+G1(1/s) = P2(s)/P(s) be the respective highpass.
+Recall that the zeros of
+elliptic lowpass ﬁlters are positioned on the imaginary axis in pairs symmetric
+relatively to the origin, with the exception of the zero at the inﬁnity, which
+occurs if the order N of the ﬁlter is odd. Therefore P1(s) can be written as
+P1(s) = g1 ·
+Y
+Im zn>0
+(s2 −z2
+n)
+which means that P1(−s) = (−1)NP1(s). Respectively P2(s) can be written as
+P2(s) = g2 · sN∧1
+Y
+Im zn>0
+(s2 −1/z2
+n)
+where the sN∧1 factor arises from the zero of G1(s) occuring at the inﬁnity
+which turns into a zero of G2(s) occurring at the origin. Therefore P2(−s) =
+(−1)NP2(s).
+Therefore H1(s) = G2
+1(s), H2(s) = (−1)NG2
+2(s) and (10.33) takes the form
+G2
+1(s) + (−1)NG2
+2(s) = P(−s)
+P(s)
+Fig. 10.16 shows the example of amplitude responses of H1 and H2.
+
+
+--- Page 456 ---
+
+444
+CHAPTER 10. SPECIAL FILTER TYPES
+ω
+|H(jω)|2
+1
+1/8
+8
+1
+0.5
+0
+Figure 10.16: Amplitude responses of EMQF crossover low- (solid)
+and high-pass (dashed) outputs.
+Centered ripples
+Next we will describe a way to further improve the amplitude response of gener-
+alized Linkwitz–Riley crossovers. The techniques can be applied to pretty much
+any generalized Linkwitz–Riley crossover, but for the sake of simpler presenta-
+tion we’ll be using the EMQF crossover as an example.
+Recall that the phase responses of H1, H2 and HAP are identical. Let ϕ(ω) =
+arg H1(jω) = arg H2(jω) = arg HAP(jω) be this common phase response. Then
+we can introduce the zero phase frequency response functions
+¯H1(jω) = e−jϕ(ω)H1(jω)
+¯H2(jω) = e−jϕ(ω)H2(jω)
+¯HAP(jω) = e−jϕ(ω)HAP(jω) ≡1
+Notice that since arg ¯H1(jω) = arg ¯H2(jω) = arg ¯HAP(jω) = 0, we have
+¯H1(jω) = |H1(jω)|
+¯H2(jω) = |H2(jω)|
+¯HAP(jω) = |HAP(jω)| = 1
+That is we can consider ¯H1(jω), ¯H2(jω) and ¯HAP(jω) as amplitude response
+functions.
+We are now going to construct some linear combinations of the above zero
+phase frequency responses. Since they are all related to the original frequency
+responses via one and the same factor e−jϕ(ω), linear combinations of ¯H1, ¯H2
+and ¯HAP correspond to exactly the same linear combinations of H1, H2 and
+HAP. E.g.
+α ¯H1(jω) + β ¯H2(jω) = e−jϕ(ω) · (αH1(jω) + βH2(jω))
+We can think of these linear combinations as of linear combinations of amplitude
+responses, resulting in the new amplitude responses, with the reservation that
+
+
+--- Page 457 ---
+
+10.8. CROSSOVERS
+445
+the new “amplitude responses” may become negative (which in terms of true
+amplitude responses would have been interpreted as changing the phase response
+by 180◦).
+Consider that the passband ripple amplitude of ¯RN is
+p
+˜k, while the stop-
+band ripple amplitude is 1/
+p
+˜k. Respectively the passband ripples of ¯H1 and
+¯H2 oscillate within [1/(1 + ˜k), 1], while the stopband ripples oscillate within
+[0, ˜k/(1 + ˜k)], which corresponds to the absolute maximum deviations ˜k/(1 + ˜k)
+from the ideal values of 1 (passband) and 0 (stopband).
+Note that so far the deviations are unipolar. The deviation from 1 occurs
+towards zero, while the deviation from zero occurs towards 1. We could make
+these deviations bipolar instead, simultaneously reducing the maximum devi-
+ation. The (linear) midpoints of the oscillation ranges are (˜k/2)/(1 + ˜k) for
+the stopband and (1 + ˜k/2)/(1 + ˜k) for the passband. We can take the range
+[(˜k/2)/(1 + ˜k), (1 + ˜k/2)/(1 + ˜k)] between these middles and stretch it to [0, 1]
+This can be achieved by the transformation
+¯H′ = (1 + ˜k) ¯H −˜k/2 = (1 + ˜k) ¯H −
+˜k
+2 · ¯HAP
+which should be applied to both lowpass and highpass:
+¯H′
+1 = (1 + ˜k) ¯H1 −
+˜k
+2 · ¯HAP
+¯H′
+2 = (1 + ˜k) ¯H2 −
+˜k
+2 · ¯HAP
+Thereby the deviation amplitude is multiplied by 1 + ˜k, but simultaneously the
+deviations become centered around the ideal values 0 and 1, which eﬀectively
+halves the deviations. Thus the deviation amplitude is eﬀectively multiplied by
+(1 + ˜k)/2 becoming equal simply to ˜k/2 (Fig. 10.17).
+ω
+¯H′
+n(jω)
+1
+1/8
+8
+1
+0.5
+0
+Figure 10.17: Zero-phase frequency responses of adjusted EMQF
+crossover low- (solid) and high-pass (dashed) outputs.
+Multiplying the above equations by ejϕ(ω) we obtain the same transformation
+
+
+--- Page 458 ---
+
+446
+CHAPTER 10. SPECIAL FILTER TYPES
+for H1 and H2:
+H′
+1 = (1 + ˜k)H1 −
+˜k
+2 · HAP
+H′
+2 = (1 + ˜k)H2 −
+˜k
+2 · HAP
+Note that thereby we still have
+H′
+1 + H′
+2 = (1 + ˜k)H1 + (1 + ˜k)H2 −˜kHAP = HAP + ˜kHAP −˜kHAP = HAP
+Phase correction
+If we need to do some processing in parallel to the crossover, then we should
+keep in mind that the crossover signals are phase shifted, therefore it could be a
+good idea to introduce the same phase shift into the signal which bypasses the
+crossover.
+At this point we will assume that the crossover is (generalized) Linkwitz–
+Riley, therefore all phase shifts are identical. In this case the simplest way to
+construct a phase-shifted bypass signal is by adding the LP and HP outputs of
+the crossover together, which by the previous discussion should be an allpass
+signal with exactly the same phase shift as in LP and HP signals (Fig. 10.18).
+Notice that the LP and HP outputs of the crossover in Fig. 10.18 correspond to
+the H1(s) and H2(s) transfer functions in (10.33). Particularly, if we’re using a
+Butterworth or an EMQF crossover, the squared HP signal needs to be inverted
+for odd N.
+Crossover
+/
+•/
+Process 1
+/
++
+ '!&"%#$
+•/
+Process 2
+/
+O
++
+ '!&"%#$O/
+Process 0
+/
++
+ '!&"%#$
+/ 
+/
+HP
+LP
+Figure 10.18: Adjusting the phase of the bypass signal.
+The approach of Fig. 10.18 doesn’t work if the bypass signal processing path
+is not starting from the same point where the crossover is connected. In this
+case we might need an explicit phase-correction allpass. Fig. 10.19 shows the
+option of doing the phase correction prior to the processing of the bypass signal.
+Rather than constructing the correction allpass following the idea of Fig. 10.18
+(that is building such an allpass as another crossover with LP and HP out-
+puts added), it is more eﬃcient to construct this allpass directly. Indeed, by
+(10.32), given a crossover whose order is 2N, the order of the allpass HAP(s) =
+P(−s)/P(s) is only N. Therefore it is more eﬃcient to implement the correction
+allpass simply as an N-th order ﬁlter:
+
+
+--- Page 459 ---
+
+10.8. CROSSOVERS
+447
+Crossover
+/
+Process 1
+/
++
+ '!&"%#$
+Process 2
+/
+O
+Allpass
+/
+Process 0
+/
++
+ '!&"%#$
+/ 
+/
+HP
+LP
+Figure 10.19: Adjusting the phase of the signal from a diﬀerent
+source.
+In Fig. 10.19 we could swap the order of the phase correction and the pro-
+cessing of the bypass signal as shown in Fig. 10.20. If the processing is nonlinear,
+this may result in an audible change in the sound. One could argue that the
+option shown in Fig. 10.20 is better, since the nonlinear processing is done on
+the original signal, while the allpass correction of the processing results would
+be usually inaudible (unless another nonlinear processor is following), and thus
+the bypass processing would sound pretty much identical to the one in the ab-
+sence of the phase shifts. However, there is a counterargument that all other
+processing is done on phase-shifted signals, and it would be more consistent to
+do the same for the bypass signal.
+Crossover
+/
+Process 1
+/
++
+ '!&"%#$
+Process 2
+/
+O
+Process 0
+/
+Allpass
+/
++
+ '!&"%#$
+/ 
+/
+HP
+LP
+Figure 10.20: Correction allpass at the end of processing.
+A more complicated situation arises if we want to stack the crossovers to
+make a multiband crossover because in this case the phase correction is needed
+even if there is no bypass signal. Consider Fig. 10.21, where A2 denotes an
+allpass introducing the phase shift corresponding to the crossover C2. The LP
+and HP outputs of the crossover C1 are completely in-phase, therefore the signal
+going through the processor P1 is, from the phase shift perspective, essentially
+the same as bypass signal of the crossover C2 and thus needs phase correction
+equivalent to the phase contribution of C2. Or, looking from a slightly diﬀerent
+angle, the input signals of processors P2 and P3 contain phase shifts from both
+crossovers, while the input signal of processor P1 contains the phase shift only
+
+
+--- Page 460 ---
+
+448
+CHAPTER 10. SPECIAL FILTER TYPES
+from the ﬁrst crossover and thus needs an additional phase shift by A2.
+C1
+/
+C2
+/
+P3
+/
++
+ '!&"%#$
+P2
+/
+O
++
+ '!&"%#$
+/
+/
+A2
+P1
+/
+O
+/
+HP
+LP
+HP
+LP
+Figure 10.21: Phase correction in 3-way crossover mixing.
+If the bypass signal processing is present, we could modify the structure
+of Fig. 10.21 as shown in Fig. 10.22.
+An alternative option is presented in
+Fig. 10.23 and yet another option (requiring one more corection allpass) in
+Fig. 10.24. Notice that Fig. 10.22 does all phase shifting at the beginning and
+Fig. 10.24 does all phase shifting at the end, while the structure in Fig. 10.23 is a
+kind of in-between mixture of Fig. 10.22 and Fig. 10.24. These ideas generalize
+by induction to higher numbers of bands, where in Fig. 10.22 we’ll be adding
+new crossover-allpass pairs on the left, whereas in Fig. 10.24 we would be adding
+crossovers on the left and allpasses on the right.
+C1
+/
+C2
+/
+•/
+P3
+/
++
+ '!&"%#$
+•
+P2
+/
+O
++
+ '!&"%#$
+/
+/
+A2
+•/
+P1
+/
++
+ '!&"%#$
+/
+O
+/
++
+ '!&"%#$
++
+ '!&"%#$
+/
++
+ '!&"%#$
+/
+
+
+P0
+/
+O
+HP
+LP
+HP
+LP
+Figure 10.22: Phase correction of bypass signal in 3-way crossover
+mixing.
+In four-way crossover mixing there are new options, e.g. there is a symmetric
+band splitting option shown in Fig. 10.25. However practically it is not much
+diﬀerent from the approach of Fig. 10.22 generalized to 4 bands, since the total
+phase shifts in the input signals of all processing units contain the total sums
+of the phase shifts associated with all crossovers in either case.
+Note that in Fig. 10.25 one could also wish to replace the allpasses A2 and A3
+with a single allpass A23 in one of the paths, which just corrects the diﬀerence
+between the phase responses of C2 and C3. This is however not possible. Indeed,
+
+
+--- Page 461 ---
+
+10.9. EVEN/ODD ALLPASS DECOMPOSITION
+449
+C1
+/
+•/
+C2
+/
+P3
+/
++
+ '!&"%#$
+P2
+/
+O
++
+ '!&"%#$
+/
+/
+P1
++
+ '!&"%#$
+/
+A2O
+O
+•
+/
++
+ '!&"%#$/
+P0
+O
+/
+HP
+LP
+HP
+LP
+Figure 10.23: Another way of phase correction of bypass signal in
+3-way crossover mixing.
+C1
+/
+C2
+/
+P3
+/
++
+ '!&"%#$
+P2
+/
+O
++
+ '!&"%#$
+/
+/
+P1
++
+ '!&"%#$
+/
+A2O
+O
+/
+P0
+A1O
+O
+HP
+LP
+HP
+LP
+Figure 10.24: 3-way crossover mixing with all phase correction
+done at the end.
+assuming identical orders of C2 and C3, their phase responses are identical at
+each of the points ω = 0 and ω = ∞. Therefore the phase response of A23
+must be equal to zero at both ω = 0 and ω = ∞. But this is not possible for a
+diﬀerential allpass.19 The argument becomes somewhat more complicated if the
+crossovers are allowed to have diﬀerent orders, where one would need to consider
+the factored forms of A2 and A3, essentially reaching the same conclusion.
+10.9
+Even/odd allpass decomposition
+Suppose we are given a ﬁlter H(s) deﬁned by (9.18). In this section we are
+going to show that H(s) is expressible as a linear combination of the “even”
+19This would have been formally possible if A23 is allowed to be unstable, however the order
+of A23 would have been equal to the sum of the orders of A2 and A3. We mention this because
+this has a clear analogy to the phase splitter discussed later in the text.
+
+
+--- Page 462 ---
+
+450
+CHAPTER 10. SPECIAL FILTER TYPES
+C1
+/
+A2
+/
+C3
+/
+P4
+/
++
+ '!&"%#$
+P3
+/
+O
+A3
+/
+C2
+/
+P2
+/
++
+ '!&"%#$
+P1
+/
+O
++
+ '!&"%#$
+/
+O
+HP
+LP
+HP
+LP
+HP
+LP
+Figure 10.25: Symmetric 4-way crossover.
+and “odd” allpasses, that is allpasses based on the even and odd poles of H(s).
+Recall that we have deﬁned even poles as solutions of f = j (or equivalently
+1 + jf = 0) and odd poles as solutions of f = −j (or equivalently 1 −jf = 0).
+Let’s introduce the following notation:
+(1 + jf)−=
+Y
+1+jf(−jpn)=0
+Re pn<0
+(s −pn)
+(1 + jf)+ =
+Y
+1+jf(−jpn)=0
+Re pn>0
+(s −pn)
+(1 + jf)± =
+Y
+1+jf(−jpn)=0
+(s −pn) = (1 + jf)+(1 + jf)−
+that is the product is being taken over all left- or respectively right-semiplane
+even poles pn of H(s)H(−s) in the ﬁrst two lines, and over all even poles
+of H(s)H(−s) in the third line. We will also use (1 −jf)−, (1 −jf)+ and
+(1 −jf)± with similar meanings for the respective products based on the odd
+poles of H(s)H(−s). We also introduce
+(f)∞=
+Y
+f(−jzn)=∞
+(s −zn)
+where zn goes over all poles of f(−js), or, equivalently, over all zeros of H(s).
+In this notation we could express the construction of H(s) from its poles and
+zeros as
+H(s) = g? ·
+(f)∞
+(1 −jf)−(1 + jf)−
+=
+= H(jω0)[(1 −jf)−](jω0) · [(1 + jf)−](jω0)
+[(f)∞](jω0)
+·
+(f)∞
+(1 −jf)−(1 + jf)−
+(10.37)
+
+
+--- Page 463 ---
+
+10.9. EVEN/ODD ALLPASS DECOMPOSITION
+451
+where g? denotes a placeholder for the yet unknown gain coeﬃcient, which we
+then ﬁnd from the requirement of H(s) to have a speciﬁc value H(jω0) at some
+point s = jω0 on the imaginary axis, and where [(1 −jf)−](ω0) denotes the
+value of (1 −jf)−at s = jω0 and so on. In the simplest case we will let ω0 = 0,
+which gives H(jω0) = H(0) = 1/
+p
+1 + f 2(0), however we will also need to be
+able to take other choices of ω0.
+Now let’s introduce the “even” and “odd” allpasses:
+He(s) = ge · (1 −jf)+
+(1 + jf)−
+(10.38a)
+Ho(s) = go · (1 + jf)+
+(1 −jf)−
+(10.38b)
+where the gains ge and go are deﬁned by the conditions He(jω0) = 1 and
+Ho(jω0) = 1:
+ge = [(1 + jf)−](jω0)
+[(1 −jf)+](jω0)
+go = [(1 −jf)−](jω0)
+[(1 + jf)+](jω0)
+(note that allpasses deﬁned in this manner can be trivially built as cascades of
+2nd- and 1st-order sections). The allpass property of He and Ho follows from
+the fact that f(ω) is a real function of ω, therefore the even an odd poles of
+H(s)H(−s) (which are respectively the solutions of 1 + jf = 0 and 1 −jf = 0)
+are mutually conjugate in terms of ω, that is they are symmetric with respect
+to the imaginary axis in terms of s. Figs. 8.11, 8.12 and other similar ﬁgures
+illustrate.
+Apparently both He and Ho are stable ﬁlters. If additionally f(ω) is an odd
+function and ω0 = 0, then He and Ho are real. Indeed, suppose 1+jf(−js) = 0,
+that is s is an even pole. Then s∗is also an even pole since
+1 + jf(−js∗) = 1 −jf(js∗) = 1 −jf((−js)∗) = 1 −j · (f(−js))∗=
+= 1 + (jf(−js))∗= (1 + jf(−js))∗= 0∗= 0
+The same can be shown for odd poles. Therefore the poles of each of the He
+and Ho are mutually conjugate and, since He(0) = Ho(0) = 1, both ﬁilters are
+real. If f(ω) is not an odd function, particularly if f(ω) is even, then the poles
+of He and Ho do not have the conjugate symmetry, therefore He and Ho are
+essentially complex ﬁlters. However this shouldn’t be a problem, since we will
+use He and Ho only as intermediate transformation helpers.
+Now we attempt express H(s) as a linear combination of He and Ho. Con-
+sider the obvious algebraic relationship:
+1 + 1 −jf
+1 + jf = 2
+1
+1 + jf
+(10.39)
+where f = f(ω). Equation (10.39), if interpreted in terms of s = jω, can be
+understood as a relationship between three transfer functions, the two trans-
+fer functions 1 and (1 −jf)/(1 + jf) in the left-hand side adding up to the
+
+
+--- Page 464 ---
+
+452
+CHAPTER 10. SPECIAL FILTER TYPES
+doubled transfer function 1/(1 + jf) in the right-hand side. The poles of these
+transfer functions are identical20 and consist of the full set of the even poles of
+H(s)H(−s).
+By analysing the behavior of these transfer functions for ω ∈R we also notice
+that the two functions in the left-hand side of (10.39) are allpasses, while the
+transfer function 1/(1 + jf) in the right-hand side has an amplitude response
+identical to |H(s)|. So, amplitude response-wise (10.39) is already what we are
+looking for and we just need to correct it so that it also becomes what we want
+transfer function-wise.
+Let’s multiply (10.39) by Ho:
+Ho(s) + 1 −jf
+1 + jf Ho(s) = 2
+1
+1 + jf Ho(s)
+(10.40)
+Considering the product in the right-hand side of (10.40) we have
+1
+1 + jf Ho(s) = g? ·
+(f)∞
+(1 + jf)±
+· (1 + jf)+
+(1 −jf)−
+= g? ·
+(f)∞
+(1 + jf)−(1 −jf)−
+Comparing to (10.37) we notice that we essentially have obtained H(s). Match-
+ing the values at s = jω0 to ﬁnd g? (and remembering that Ho(jω0) = 1) we
+obtain
+1
+1 + jf Ho(s) =
+H(s)
+(1 + jf(ω0))H(jω0)
+Considering the second term in the left-hand side of (10.40) we obtain
+1 −jf
+1 + jf Ho(s) = g? · (1 −jf)±
+(1 + jf)±
+· (1 + jf)+
+(1 −jf)−
+= g? · (1 −jf)+
+(1 + jf)−
+Comparing to (10.38a) we notice that we essentially have obtained He(s). Match-
+ing the values at s = jω0 we obtain
+1 −jf
+1 + jf Ho(s) = 1 −jf(ω0)
+1 + jf(ω0)He(s)
+Thus (10.40) turns into
+Ho(s) + 1 −jf(ω0)
+1 + jf(ω0)He(s) = 2
+H(s)
+(1 + jf(ω0))H(jω0)
+or
+(1 + jf(ω0))Ho(s) + (1 −jf(ω0))He(s) = 2 H(s)
+H(jω0)
+(10.41)
+Thus we have represented H(s) as a linear combination of Ho(s) and He(s).
+If ω0 = 0 and f is an odd function, then f(jω0) = f(0) = 0. Thus we obtain
+1 ± jf(ω0) = 1 and H(jω0) = 1/
+p
+1 + f 2(0) = 1 and therefore (10.41) turns
+into
+Ho(s) + He(s) = 2H(s)
+If the order of f is even, then generally f(0) ̸= 0 and the coeﬃcients of the
+linear combination (10.41) are complex. Note that forcing f(0) = 0 or choosing
+another ω0 such that f(ω0) = 0 in this case doesn’t help, since the allpasses
+themselves are still complex. However, as we already mentioned, this won’t be
+a problem for our puproses.
+20The identity transfer function 1 in the left-hand side obviously has no poles, but we could
+also write it as (1 + jf)/(1 + jf) in which case it formally has the same poles (which are then
+cancelled by the zeros).
+
+
+--- Page 465 ---
+
+10.10. ANALYTIC FILTER
+453
+10.10
+Analytic filter
+Sometimes in signal processing we want to deal with the so called analytic
+signals, which are deﬁned as signals whose Fourier spectrum doesn’t contain any
+negative frequencies (that is the amplitudes of the negative frequency partials
+are all zero). Since spectra of real signals must be Hermitian, apparently analytic
+signals can’t be real, thus they are essentially complex.
+Occasionally there is a need to convert a real signal into an analytic signal
+by dropping all of its negative frequency partials. This is very similar to the
+lowpass ﬁltering, except that this time we want to dampen not the frequencies
+|ω| > 1 but the frequencies ω < 0. Such ﬁlter can be referred to as analytic
+filter. The process of removing the negative frequencies from a real signal is also
+known as the Hilbert transform, for that reason the analytic ﬁlter is probably
+more commonly known under the name Hilbert transformer.
+The opposite conversion is simple: we just take the doubled real part of
+the analytic signal. That is, given an analytic signal x>0(t) we can restore the
+original signal x(t) by
+x(t) = 2 Re x>0(t)
+(10.42)
+This eﬀectively turns each complex partial of the form X(ω)ejωt to a real partial
+2·|X(ω)|·cos(ωt+arg X(ω)), which can be equivalently seen as adding a negative
+frequency partial X∗(ω)e−jωt.
+Construction from a lowpass
+The basic idea of constructing an analytic ﬁlter is simple, we take a unit-cutoﬀ
+lowpass ﬁlter (so that the passband is |ω| < 1 and the stopband is |ω| > 1) and
+rotate its transfer functions along the imaginary Riemann circle:
+H>0(s) = HLP(ρ−j(s))
+(10.43)
+This eﬀectively rotates the frequency response along the real Riemann circle:
+H>0(jω) = HLP(jρ−1(ω))
+thereby transforming the passband (−1, 1) to (0, +∞) and the stopband |ω| > 1
+to (−∞, 0) (Fig. 10.26).
+ω
+|H(jω)|
+∞
+∞
+1
+−1
+1
+0
+Figure 10.26: Conversion of a unit-cutoﬀlowpass ﬁlter into an
+analytic ﬁlter by a rotation of the real Riemann circle.
+
+
+--- Page 466 ---
+
+454
+CHAPTER 10. SPECIAL FILTER TYPES
+The poles and zeros of HLP are respectively transformed by the inverse of
+ρ−j, which is ρ+j. Therefore the poles ˜pn and zeros ˜zn of H>0 can be explicitly
+obtained from the poles pn and zeros zn of HLP by ˜pn = ρ+j(pn), ˜zn = ρ+j(zn).
+The gain coeﬃcient of H>0 can be found by equating the frequency responses of
+H>0 and HLP at corresponding frequencies, e.g. H>0(j) = HLP(0). Note that
+in principle, we can multiply H>0(s) by an arbitrary complex number of unit
+magnitude, as this wouldn’t change the ampitude response of H>0. Particularly,
+we could let H>0(0) = |HLP(−j)| = 1/
+p
+1 + f 2(−1).
+Parallel allpass implementation
+In practical implementation we usually don’t want to deal with complex signals.
+In this case the output of the ﬁlter is a fundamentally complex signal, so we
+can’t avoid that. However we could try to construct as much as possible of
+H>0 staying in real signal domain. Particularly we could attempt to express
+H>0 using real ﬁlters, where we then do some postprocessing by mixing the
+real outputs of those ﬁlters with possibly complex coeﬃcients. This is indeed
+possible.
+Suppose HLP is implemented using (9.18). Recall that by (10.41) the lowpass
+ﬁlter HLP can be represented as a linear combination of allpasses. This linear
+combination must be preserved by the rotation ρ−j in (10.43) giving
+2H>0(s)
+HLP(ω0) = (1 + jf(ω0))Ho(ρ−j(s)) + (1 −jf(ω0))He(ρ−j(s))
+Since ρ−j rotates along the imaginary axis (in terms of s plane and its
+respective Riemann sphere), the allpass property should be preserved by this
+transformation and Ho(ρ−j(s)) and Ho(ρ−j(s)) must still be allpasses. It would
+be convenient to reexpress Ho(ρ−j(s)) and Ho(ρ−j(s)) in terms of their new
+poles after the transformation by ρ−j.
+As mentioned, the poles are transformed by ˜pn = ρ+j(pn). Therefore let’s
+introduce the new allpasses
+˜Ho(s) = ˜go ·
+Y
+pn odd
+s + ˜p∗
+n
+s −˜pn
+˜He(s) = ˜ge ·
+Y
+pn even
+s + ˜p∗
+n
+s −˜pn
+where ˜go and ˜ge are deﬁned from the conditions ˜Ho(0) = 1, ˜He(0) = 1. Appar-
+ently,
+Ho(ρ−j(s)) = g? · ˜Ho(s)
+He(ρ−j(s)) = g? · ˜He(s)
+where g? denote two diﬀerent yet uknown coeﬃcients. Substituting s = 0 into
+the above we ﬁnd that these coeﬃcients must be simply equal to Ho(−j) and
+He(−j) respectively and therefore
+2H>0(s)
+HLP(jω0) = (1 + jf(ω0))Ho(−j) ˜Ho(s) + (1 −jf(ω0))He(−j) ˜He(s)
+
+
+--- Page 467 ---
+
+10.10. ANALYTIC FILTER
+455
+Up to this point we have been explicitly keeping the freedom of choice of ω0.
+This has been done on purpose, as now we can see a good choice for ω0. By
+letting ω0 = −1 we have Ho(−j) = 1 and He(−j) = 1 and thereby
+2H>0(s)
+HLP(−j) = (1 + jf(−1)) ˜Ho(s) + (1 −jf(−1)) ˜He(s)
+or
+H>0(s) = HLP(−j) ·
+1 + jf(−1)
+2
+˜Ho(s) + 1 −jf(−1)
+2
+˜He(s)
+
+(10.44)
+Equation (10.44) would be an acceptable answer, provided ˜Ho(s) and ˜He(s)
+are real ﬁlters.
+Since ˜Ho(0) = 1 and ˜He(0) = 1 by construction, we only
+need to make sure that the poles of each of the ˜Ho(s) and ˜He(s) are conjugate
+symmetric.
+Recall that the poles of ˜Ho(s) and ˜He(s) are obtained by ˜pn = ρ+j(pn). We
+therefore wonder, what would be the relationship between the two preimages
+p1, p2 of a conjugate pair of poles ˜p2 = ˜p∗
+1. Considering visually the eﬀect of ρ+j
+on the Riemann sphere, we could guess that p2 = 1/p∗
+1. Verifying algebraically:
+˜p2 = ρ+j(p2) = ρ+j(1/p∗
+1) = jρ+1(−j/p∗
+1) = jρ+1 ((j/p1)∗) = j (ρ+1(j/p1))∗=
+= (−jρ+1(j/p1))∗= (jρ+1(p1/j))∗= (jρ+1(−jp1))∗= (ρ+j(p1))∗= ˜p∗
+1
+Therefore, given that poles of HLP have the conjugate reciprocal symmetry
+p2 = 1/p∗
+1 (that is, if s is a pole of HLP then so is 1/s∗), the poles of ˜Ho and
+˜He will have the conjugate symmetry.
+The poles of HLP will have the conjugate reciprocal symmetry, given that
+f(ω) is a real function such that f(1/x) = 1/f(x). Indeed, suppose f(1/x) =
+1/f(x) and 1 + f 2(−js) = 0. Then
+1 + f 2(−j/s∗) = 1 + f 2(1/js∗) = 1 + f 2(1/(−js)∗) = 1 +
+ f 2(1/(−js))
+∗=
+=
+ 1 + f 2(1/(−js))
+∗=
+
+1 +
+1
+f 2(−js)
+∗
+=
+1 + f 2(−js)
+f 2(1/(−js))
+∗
+= 0∗= 0
+We already know one speciﬁc kind of lowpass ﬁlter where f has such reciprocal
+symmetry: the EMQF ﬁlter (with the Butterworth ﬁlter as its limiting case).
+Note that EMQF poles not only have conjugate reciprocal symmetry, but are
+simply lying on the unit circle, in which case conjugate reciprocation simply
+maps the poles to themselves: 1/p∗= p. Since ρ+j maps the unit circle to the
+real axis, the poles ˜pn are real. Also, since ρ+j is a rotation in the direction of
+the imaginary axis, it maps left semiplane poles to the left semiplane poles and
+thus ˜pn < 0 ∀n. Thus, we are having stable real Ho and He whose poles are
+also all real.
+Real and imaginary allpasses
+The expression (10.44) can be simpliﬁed a bit further. Notice that for an EMQF
+ﬁlter we are having f(−1) = (−1)N where N is the ﬁlter’s order. Respectively
+
+
+--- Page 468 ---
+
+456
+CHAPTER 10. SPECIAL FILTER TYPES
+HLP(−j) = 1/
+√
+2. Therefore (10.44) turns into
+H>0(s) =
+
+
+
+
+
+
+
+
+
+1
+√
+2 ·
+1 + j
+2
+˜Ho(s) + 1 −j
+2
+˜He(s)
+
+N even
+1
+√
+2 ·
+1 −j
+2
+˜Ho(s) + 1 + j
+2
+˜He(s)
+
+N odd
+Recall that we can multiply H>0(s) by any unit-magnitude complex number
+without changing the amplitude response. Particulary, we could multiply it by
+j1/2 = (1 + j)/
+√
+2 obtaining
+H>0(s) =
+
+
+
+
+
+˜He(s) + j ˜Ho(s)
+2
+N even
+˜Ho(s) + j ˜He(s)
+2
+N odd
+(10.45)
+Thus the real and imaginary parts of the output signal of H>0 are obtained
+completely separately from two parallel allpasses ˜Ho and ˜He.
+10.11
+Phase splitter
+There is another, conceptually completely diﬀerent, but closely mathematically
+related approach to constructing the Hilbert transformer. Considering a single
+positive-frequency complex sinusoidal partial
+ejωt = cos ωt + j sin ωt = cos ωt + j cos(ωt −π/2)
+(ω > 0)
+we notice that the imaginary part of the signal is phase-delayed by 90◦relatively
+to the real part.
+Now let ˆH>0 denote the analytic ﬁlter operator.
+That is,
+applying ˆH>0 discards the negative frequency partials from the signal. Then,
+applying analytic ﬁltering to cos ωt we have
+ˆH>0 cos ωt = ˆH>0
+ejωt + e−jωt
+2
+= ejωt
+2
+= cos ωt + j cos(ωt −π/2)
+2
+(ω > 0)
+Respectively, for a general real signal we have
+ˆH>0
+Z ∞
+0
+a(ω) cos(ωt + ϕ(ω)) dω
+2π =
+= 1
+2
+Z ∞
+0
+a(ω) cos(ωt + ϕ(ω)) dω
+2π + j
+2
+Z ∞
+0
+a(ω) cos(ωt + ϕ(ω) −π/2) dω
+2π
+Introducing notations:
+x(t) =
+Z ∞
+0
+a(ω) cos(ωt + ϕ(ω)) dω
+2π
+x−90(t) =
+Z ∞
+0
+a(ω) cos(ωt + ϕ(ω) −π/2) dω
+2π
+(where x−90(t) is the signal x(t) with all real sinusoidal partials phase-shifted
+by −90◦) we have
+ˆH>0x(t) = x(t) + jx−90(t)
+2
+(10.46)
+
+
+--- Page 469 ---
+
+10.11. PHASE SPLITTER
+457
+Equation (10.46) gives us another approach to the implementation of the ana-
+lytic ﬁlter: we take the halved original signal as its own real part, and phase
+shift the partials of its real spectrum by −90◦to obtain the imaginary part.
+Also notice that (10.46) is exactly the opposite of (10.42).
+Diﬀerently from the approach in Section 10.10 where we didn’t care about
+the phase, the approach of (10.46) explicitly preserves the phase of the partials,
+thus (10.46) deﬁnes a zero-phase analytic ﬁlter. Unfortunately, as we shall see
+later, such ﬁlter cannot be implemented by a stable diﬀerential system. Still, the
+whole approach is somewhat more straightforward than the one of Section 10.10.
+We will also develop a number of useful explicit expressions, which will be
+helpful in the construction of H>0. In principle, the same expressions could
+have been derived in Section 10.10 (as the answers are essentially the same),
+however the derivations will be somewhat more direct in the context of the new
+approach.
+Complex spectral form
+Before we get to the construction of the −90◦phase shifter, we need to reexpress
+this phase shifting in terms of complex spectral partials:
+x(t) =
+Z ∞
+0
+a(|ω|)
+2
+
+ej(ωt+ϕ(ω)) + e−j(ωt+ϕ(ω)) dω
+2π
+x−90(t) =
+Z ∞
+0
+a(|ω|)
+2
+
+ej(ωt+ϕ(ω)−π/2) + e−j(ωt+ϕ(ω)−π/2) dω
+2π =
+=
+Z ∞
+0
+a(|ω|)
+2
+
+e−jπ/2ej(ωt+ϕ(ω)) + ejπ/2e−j(ωt+ϕ(ω)) dω
+2π
+(10.47)
+That is we need to phase shift the positive frequency partials by −90◦and
+phase shift the negative frequency partials by +90◦. Since the amplitudes are
+unchanged by the phase-shifting, this is an allpass transformation, which we
+can denote by the ˆH−90 operator:
+x−90(t) = ˆH−90x(t)
+Note that the fact that the negative frequencies need to be phase shifted by the
+opposite amount is in agreement with the fact that x−90(t), being the imaginary
+part of ˆH>0x(t), needs to be a real signal. Therefore ˆH−90 needs to preserve
+the hermiticity of the spectrum of x(t). This means that the frequency response
+of ˆH−90 must be a Hermitian function, which implies the phase response being
+an odd function.
+The frequency response of the ˆH−90 allpass is obviously
+H−90(jω) =
+(
+−j
+if ω > 0
+j
+if ω < 0
+We are still uncertain as to which value to assign to H−90(0).
+In principle,
+according to (10.47) the zero-frequency partial should be completely killed in
+x−90, thus
+H−90(jω) = −j sgn ω =
+
+
+
+
+
+−j
+if ω > 0
+0
+if ω = 0
+j
+if ω < 0
+
+
+--- Page 470 ---
+
+458
+CHAPTER 10. SPECIAL FILTER TYPES
+Strictly speaking, this kills the allpass property of ˆH−90 at ω = 0, but this is
+actually the only way to keep H−90(jω) Hermitian.
+Now we can rewrite (10.46) in the pure operator form
+ˆH>0 = 1 + j ˆH−90
+2
+(10.48)
+or in the frequency response form
+H>0(jω) = 1 + jH−90(jω)
+2
+= 1 + sgn ω
+2
+(10.49)
+The complex spectrum interpretation of (10.46) gives another insight into
+why does it describe an analytic ﬁlter.
+Given a positive-frequency complex
+sinusoidal signal x(t) = ejωt we have x−90(t) = −jejωt and respectively
+ˆH>0x(t) = ejωt + j · (−j)ejωt
+2
+= ejωt + ejωt
+2
+= x(t)
+(ω > 0)
+that is x(t) is unchanged by ˆH>0. On the other hand, if ω < 0, then x−90(t) =
+jejωt and respectively
+ˆH>0x(t) = ejωt + j · jejωt
+2
+= ejωt −ejωt
+2
+= 0
+(ω < 0)
+The DC at ω = 0 is neither a positive- nor a negative-frequency partial. Ac-
+cording to what we discussed above, it is killed by ˆH−90 and thus
+ˆH>01(t) = 1(t) + 0j
+2
+= 1
+2
+(ω = 0)
+(where 1(t) denotes a signal equal to 1 everywhere).
+Rational 90◦phase shifting allpass
+We are looking for an allpass ﬁlter H−90 whose frequency response is
+H−90(jω) = −j sgn ω
+(10.50)
+Apparently H−90(s) can’t be a rational function, since rational functions are
+continuous everywhere except at their poles, where they gradually approach
+inﬁnity, thus a rational function cannot accommodate a jump from j to −j
+which H−90(jω) has at ω = 0. But we still can build a rational H(s) which
+approximates the ideal H−90(jω) for s = jω.
+As mentioned earlier, the ideal H−90 is an allpass everywhere except at
+ω = 0. Since we are building an approximation of H−90 anyway, we can ignore
+that fact and build an approximation which is a perfect allpass.
+This will
+simplify our goal, since then we can construct the allpass in terms of its phase
+response. Therefore let
+ϕ∞(ω) =
+(
+−90◦
+∀ω > 0
++90◦
+∀ω < 0
+
+
+--- Page 471 ---
+
+10.11. PHASE SPLITTER
+459
+be the ideal phase response of our allpass.21 So, how can we build a rational
+allpass transfer function approximating ϕ∞(ω)?
+Consider the fact that the frequency response of an allpass can be explicitly
+written in terms of its phase response:
+H(jω) = ejϕ(ω)
+Using (9.11a) we can rewrite the same as
+H(jω) = ρ+1
+
+j tan ϕ(ω)
+2
+
+However ρ+1, being a 1st-order rational function, maps rational functions to
+rational functions of the same order and back.
+Thus, if we have a rational
+function Φ(ω) of some order N such that
+Φ(ω) = tan ϕ(ω)
+2
+(10.51)
+then jΦ(ω) and H(jω) = ρ+1(jΦ(ω)) will also be rational functions of the same
+order N and the phase response of H will be equal to ϕ(ω).
+Letting s = jω we rewrite H(jω) = ρ+1(jΦ(ω)) as
+H(s) = ρ+1(jΦ(−js))
+(10.52)
+Will H(s) be a real function of s? Since ϕ(ω) must be real odd, so must be
+Φ(ω). This implies that it must be representable in the form Φ(ω) = ωΦ2(ω2)
+where Φ2 is some other real function. Therefore
+H(s) = ρ+1(jΦ(−js)) = ρ+1
+ j · (−js)Φ2((−js)2)
+
+= ρ+1(sΦ2(−s2))
+and thus H(s) is real.
+Before proceeding to the construction of Φ(ω) we would like to give one
+warning. The allpass transfer functions H(s), which will arise from the appli-
+cation of (10.52) to the obtained Φ(ω), will be unstable. This corresponds to
+the fact that phase responses of stable diﬀerential allpasses cannot stay around
+±90◦over a large range of ω.22 This is a fundamental limitation, which we’ll
+have to deal with. Later in this section we will describe a way of addressing this
+problem.
+Construction of Φ(ω)
+The ideal Φ(ω) is apparently
+Φ∞(ω) = tan ϕ∞(ω)
+2
+=
+(
+−1
+∀ω > 0
+1
+∀ω < 0
+21Since we want our allpass approximation of H−90 to be a real filter, its phase response
+must be odd, which leaves only two possible values at ω = 0: ϕ(0) = 0 or ϕ(0) = 180◦. If
+we formally include ω = ∞into the range of frequencies of interest, then we notice that the
+phase response at ω = ∞has the same two options.
+22In order to convince oneself that this is indeed so, one could factor a generic stable allpass
+tranfer function into 1st- and 2nd-order sections and consider their phase responses, which
+are monotonically decaying.
+
+
+--- Page 472 ---
+
+460
+CHAPTER 10. SPECIAL FILTER TYPES
+We wish to ﬁnd a rational Φ(ω) ≈Φ∞(ω). This will ensure ϕ(ω) ≈ϕ∞(ω).
+Let f(x) be a real rational function satisfying the unit-cutoﬀlowpass condi-
+tions (9.21). We would like to compose f(x) with other functions in such a way
+that the result is an approximation of Φ∞. This composition should still result
+in a real rational function and, ideally, also preserve the order of f. Therefore,
+good candidates for the elements of such composition are the rotations of real
+Riemann circle ρ±1.
+As a ﬁrst step, we map the pass- and stop-band areas of f(x) (that is
+f(x) ≈0 and f(x) ≈∞) to the areas where Φ(x) = ±1.
+This is achieved
+by Φ(x) = ρ±1(f(x)) (where the ± signs are matched).
+We thereby obtain
+Φ(x) which has the desired values in the “pass”- and “stop”-bands, however the
+bands themselves are incorrectly positioned on the argument axis, still coincid-
+ing with the pass- and stop-bands of a unit-cutoﬀlowpass. We could ﬁx this
+by a real Riemann circle rotation of the argument. Which turns our candidate
+compositions into
+Φ(x) = ρ±1(f(ρ±1(x)))
+(10.53)
+where we initially treat the ± signs as independent.
+However actually the ± signs in (10.53) cannot be independent. E.g. if we
+choose the “inner rotation” (the rotation of the argument of f(x)) to be ρ+1,
+this maps the original lowpass passband |x| ≪1 to −∞≪x ≪0. In this
+area we want Φ(x) = 1, therefore we have to choose the “outer rotation” (the
+rotation of the value of f(x)) to be ρ+1 as well. In a similar way we could
+choose both rotations to be ρ−1. This means that the ± signs in (10.53) must
+be matched.
+Intuitively it is clear that any “lowpass” kind of f(x) should result in (10.53)
+giving an approximation of Φ∞.
+However we also need Φ(ω) to be an odd
+function. Let’s see what kind of restriction this means for f(x). By (9.13) the
+rotations ρ±1 map the odd symmetry to the reciprocal symmetry, which means
+that
+Φ(−ω) = −Φ(ω) ⇐⇒f(1/x) = 1/f(x)
+which eﬀectively brings us to the idea to use the EMQF function f(x) = ¯RN(x)
+(or the Butterworth ﬁlter function f(x) = xN as its limiting case).
+Having chosen f(x) = ¯RN(x) we can reﬁne the formula (10.53) a little. Sup-
+pose we chose the “+” signs in (10.53). Then Φ(0) = ρ+1(f(1)) = ρ+1(1) = ∞.
+Vice versa, if we choose the “−” signs, then Φ(0) = ρ−1(f(−1)) = ρ+1((−1)N)
+which is 0 if N is odd and ∞if N is even. In principle, this is not a very big
+problem, and both options are valid, but it would be just nice to have Φ(0) = 0
+and respectively H(0) = 1 all the time. This is achieved by changing (10.53)
+into
+Φ(ω) = −ρ−1(f(ρ+1(ω)))
+(10.54)
+The readers can convince themselves that (10.54) also gives an approximation
+of Φ∞and that in this case Φ(0) = 0 regardless of N. Fig. 10.27 illustrates.
+Explicit expression for EMQF Φ(ω)
+Sticking to the idea to use the EMQF function f(x) = ¯RN(x) we will refer
+to the 90◦phase shifter that we are constructing as “EMQF phase shifter”.
+Even though this is some kind of a misnomer, this should provide a pretty clear
+identiﬁcation of the approach we use.
+
+
+--- Page 473 ---
+
+10.11. PHASE SPLITTER
+461
+ω
+Φ(ω)
+∞
+∞
+1
+−1
+1
+∞
+−1
+∞
+0
+Figure 10.27: Φ(ω) obtained from (10.54) and f(x) = ¯RN(x) for
+even (solid) and odd (dashed) N.
+Substituting f(x) = ¯RN(x) into (10.54) we obtain
+Φ(ω) = −ρ−1( ¯RN(ρ+1(ω)))
+(10.55)
+Since ¯RN is a real rational function of order N, so is Φ(ω).
+In the real period-based preimage representation terms we have
+x = cdK u
+v = Nu
+¯RN(x) = cd ˜
+K(v)
+Expressing (10.55) in the same terms we have
+ω = ρ−1
+ cdK u
+
+v = Nu
+Φ(ω) = −ρ−1
+ cd ˜
+K v
+
+which by (9.111) turns into
+ω = −ndK2
+u
+2
+v
+2 = N u
+2
+Φ(ω) = nd ˜
+K2
+v
+2
+Replacing u/2 with u and v/2 with v we obtain
+ω = −ndK2 u
+v = Nu
+Φ(ω) = nd ˜
+K2 v
+
+
+--- Page 474 ---
+
+462
+CHAPTER 10. SPECIAL FILTER TYPES
+and ﬁnally, switching to the explicit scaling form:
+ω = −nd(u, k2)
+(10.56a)
+v = N
+˜K2
+K2
+u =
+˜K′
+2
+K′
+2
+u
+(10.56b)
+Φ(ω) = nd(v, ˜k2)
+(10.56c)
+where K2 = K(k2) and ˜K2 = K(˜k2) are the quarter periods corresponding to
+the elliptic moduli k2 = L2(k) and ˜k2 = L2(˜k), that is k2 and ˜k2 are obtained by
+the double Landen transformation from k and ˜k. Note that, since double Landen
+transformation solely changes the quarter period ratios K′/K and ˜K′/ ˜K by a
+factor of 4, the degree equation (9.112) stays essentially the same:
+˜K′
+2/ ˜K2 =
+NK′
+2/K2. Thus the imaginary periods of the two nd functions are matched,
+while the real period is scaled by N.
+Turning the representation form into the explicit form we obtain, e.g. using
+real period argument normalization
+Φ(ω) = nd ˜
+K2
+
+N nd
+−1
+K2 (−ω)
+
+(10.57)
+Expression (10.57) deﬁnes another (normalized) elliptic rational function. Dif-
+ferently from the already familiar ¯RN, this function has equiripples around ±1
+in the bands centered around ω = ±1.
+Strictly speaking the amplitudes of
+the upwards- and downwards-pointing ripples of Φ(ω) (shown in Fig. 10.27)
+are not equal, rather, the values are mutually reciprocal at the upwards- and
+downward-pointing peaks. It is just that in arctangent scale the reciprocal values
+correspond to equal deviations from 1 or from −1. Therefore the true equiripple
+behavior occurs in the arctangent rather than linear scale. However according
+to (10.51) the function ϕ(ω) (which is our true goal) is exactly the arctangent
+scale representation of Φ(ω). Therefore ϕ(ω) will have true equiripples. For the
+sake of clarity we provide a graph of ϕ(ω) in Fig. 10.28, however notice that the
+only diﬀerence between Figs. 10.28 and 10.27. is the labelling of the vertical
+axis.
+Bands of EMQF Φ(ω)
+It is instructive to analyse Φ(ω) in terms of its bands in the preimage domain.
+The readers can convince themselves that the bands are:
+Transition band 1:
+|ω| ≤
+p
+k′
+2
+|Φ(ω)| ≤
+q
+˜k′
+2
+Passband 1:
+p
+k′
+2 ≤ω ≤1/
+p
+k′
+2
+−1/
+q
+˜k′
+2 ≤Φ(ω) ≤−
+q
+˜k′
+2
+Transition band 2:
+|ω| ≥1/
+p
+k′
+2
+depends on N
+Passband 2:
+−1/
+p
+k′
+2 ≤ω ≤−
+p
+k′
+2
+q
+˜k′
+2 ≤Φ(ω) ≤1/
+q
+˜k′
+2
+where in the transition band 2 we have |Φ(ω)| ≤
+q
+˜k′
+2 for even N and |Φ(ω)| ≥
+1/
+q
+˜k′
+2 for odd N. Fig. 9.51 can be referred to as an illustration.
+It is not diﬃcult to realize that that the “passband” ripples of Φ(ω) are
+essentially obtained from the ripples that the nd function has on the real axis
+
+
+--- Page 475 ---
+
+10.11. PHASE SPLITTER
+463
+ω
+ϕ(ω)
+∞
+∞
+1
+−1
+π/2
+π
+−π/2
+−π
+0
+Figure 10.28: ϕ(ω) obtained from (10.57) and (10.51) for even
+(solid) and odd (dashed) N.
+(which thereby results in the upwards-pointing peaks being reciprocal to the
+downwards-pointing peaks) and on a parallel line which is away from the real
+axis by one half of its imaginary period. The details are left as an exercise to
+the reader.
+Poles and zeros of EMQF phase shifter
+We would like to construct H(s) from its poles and zeros. Since H(s) is an
+allpass, it is suﬃcient to ﬁnd the poles, while the zeros can be trivially obtained
+from the poles. However we could also consider obtaining the zeros explicitly.
+Starting with the equations H(s) = ∞and H(s) = 0 we apply the inverted
+(10.52), which is Φ(−js) = −jρ−1(H(s)), yielding
+Φ(−js) = ∓j
+(10.58)
+where “−” should be taken for poles and “+” for zeros.
+At this point there are diﬀerent possibilities how to continue.
+Particu-
+larly, we could apply (10.55) which gives ¯RN(ρ+1(−js)) = ±j or equivalently
+¯RN(−jρ+j(s)) = ±j. This would be pretty much the same as what we have
+been solving in Section 10.10.23
+It could be more interesting and practical,
+though, to take a diﬀerent path, which will allow us to obtain simple explicit
+expressions for the poles and zeros of H(s). The obtained poles and zeros will
+be of course the same, since we are solving the same equations, just in a diﬀerent
+way.
+Let’s use the preimage representation (10.56) to solve (10.58), in a similar
+way to how we were solving the pole equations for other ﬁlter types. Recall
+that by the imaginary argument property, nd is essentially the same as cd, just
+rotated 90◦in its complex argument plane. Therefore, while cd was generating
+quasielliptic curves for its argument moving parallel to the real axis, nd will
+generate the same curves for its argument moving parallel to the imaginary
+23Except that we would obtain both stable and unstable poles this time, since there is no
+explicit restriction of the solutions having to be in the left semiplane.
+
+
+--- Page 476 ---
+
+464
+CHAPTER 10. SPECIAL FILTER TYPES
+axis.
+In order to solve (10.58), we would like the curves to go through ±j,
+however the movement parallel to the imaginary axis in the preimage domain
+is not very useful for solving (10.58), since the imaginary periods are matched
+for the preimages of ω and Φ(ω), and therefore we will not obtain all possible
+solutions.
+We should rather move parallel to the real axis. Apparently, in this case
+we won’t generate quasielliptic curves in the representation domain, but rather
+the kind of lines shown in Fig. 9.54. Since cd and respectively nd take each
+value only once within a quater-period grid cell, and since the values ±j occur
+on horizontal lines where nd turns into j sc or −j sc (Fig. 9.51), we need to
+move in one of these lines. The representation will then simply move along the
+imaginary axis24 in one and the same direction, looping through the ∞point.
+Choosing the horizontal line Im v = ˜K′
+2 as the principal preimage line we
+have nd(v, ˜k2) = j sc(Re v, ˜k2). We wish to have representation moving upwards
+along the imaginary axis therefore the preimages need to move towards the right
+(going along the line Im v = ˜K′
+2). In terms of u the same movement corresponds
+to moving along the line
+Im u = K′
+2
+˜K′
+2
+Im v = K′
+2
+where the direction of movement of u is, obviously, also towards the right.
+Notice that any other possible choices of the principal preimage line of v do not
+generate any additional solutions of (10.58), since ω will be simply traversing
+along the entire imaginary axis in any case.
+The value Φ(ω) = nd(v, ˜k2) moving upwards along the imagniary axis will
+be traversing the points ±j at
+v = j ˜K′
+2 +
+1
+2 + n
+
+˜K2
+(n ∈Z)
+where at even n we’ll have Φ(ω) = j and at odd n we’ll have Φ(ω) = −j. That
+is, even n correspond to zeros and odd n correspond to poles. The values of u
+are respectively
+u = j K′
+2
+˜K′
+2
+˜K′
+2 + K2
+N ˜K2
+1
+2 + n
+
+˜K2 = jK′
+2 +
+1
+2 + n
+N
+K2
+from where
+ω = −nd u = −j sc
+ 1
+2 + n
+N
+K2, k2
+
+from where by s = jω we obtain
+s = sc
+ 1
+2 + n
+N
+K2, k2
+
+(10.59)
+where even n correspond to zeros and odd n correspond to poles. Note that in
+the Butterworth limit k2 →0 the equation (10.59) turns into
+s = tan
+π
+2 ·
+1
+2 + n
+N
+
+24Apparently the imaginary axis belongs to the family of lines shown in Fig. 9.54, being the
+boundary case between the two groups of lines on the left and on the right.
+
+
+--- Page 477 ---
+
+10.11. PHASE SPLITTER
+465
+Since all values in (10.59) are real, the solutions given by (10.59) are also
+real. That is the poles and zeros of H(s) are real and H(s) can be factored into
+1st-order allpasses.
+Since the period of sc is 2K2, there are 2N diﬀerent values of s given by
+(10.59). Half of them are zeros and the other half are poles, thus there are
+N zeros and N poles, where the poles and zeros are inverleaved (Fig. 10.29).
+Apparently, n can run over any range of 2N consecutive integers. A particularly
+convenient range is n = −N . . . (N −1). In this case n = −1 and n = 0 give
+one pole/zero pair where the pole and the zero are mutually opposite. This
+pole/zero pair corresponds to the lowest-cutoﬀ1-pole allpass factor, which is
+stable since the pole is obtained from n = −1. The values n = 1 and n = −2
+give another pole/zero pair corresponding to the next 1-pole factor, which is
+unstable since the pole is obtained from n = 1. The third 1-pole factor will be
+stable again etc.
+-5
+-4
+-3
+-2
+-1
+0
+1
+2
+3
+4
+5
+s
+Figure 10.29: Poles (black dots) and zeros (white squares) of an
+EMQF phase shifter H(s) for N = 4.
+One could notice in Fig. 10.29 that there is reciprocal symmetry within the
+set of poles and zeros of H(s). That is if s is a pole or a zero of H(s), then so
+is 1/s. Apparently, this is due to the property (9.74b) of the elliptic tangent
+function sc.
+We could also derive a simple rule for remembering, whether for n = −1 one
+obtains a pole or a zero, that is whether the closest to zero negative value of s
+given by (10.59) is a stable allpass factor’s pole or an unstable allpass factor’s
+zero. First, notice that negating the allpass’s cutoﬀis equivalent to the sub-
+stitution ω ←−ω. Since the frequency response of a real ﬁlter is Hermitian,
+its phase response is odd, thus negating ω is equivalent to negating the phase
+response. Thus, since the phase responses of stable allpasses are decreasing,
+the phase responses of unstable (negative cutoﬀ) allpasses are increasing. Now
+consider the phase shifter H(s) which is a product of stable and unstable all-
+passes. Intuitively, as ω starts to increase from 0, the phase response ﬁrst has
+to decrease to approximately −90◦, therefore the allpass factor with the lowest
+cutoﬀin the chain must be stable.25
+Bandwidth of EMQF phase shifter
+In our discussion of the bands of EMQF Φ(ω) we have established that the
+equiripple “passband” ranges are
+−k′−1/2
+2
+<ω < −k′1/2
+2
+k′1/2
+2
+<ω < k′−1/2
+2
+25The same reasoning can be applied to (10.45), where we want the imaginary signal to be
+phase shifted by −90◦compared to the real one. Therefore the lowest-cutoff allpass factor
+(corresponding to the pole closest to the origin) must be in the imaginary signal’s allpass.
+Since the poles of the allpasses in (10.45) are obtained by Riemann sphere rotation ρ+j, the
+pole closest to the origin will be obtained from the pole closest to −j, which is an even pole
+for N odd and an odd pole for N even.
+
+
+--- Page 478 ---
+
+466
+CHAPTER 10. SPECIAL FILTER TYPES
+that is
+k′1/2
+2
+< |ω| < k′−1/2
+2
+where we could notice that the logarithmic center of the “passband” is thereby
+at ω = 1.
+Respectively, the logarithmic bandwidth ∆expressed in octaves is a loga-
+rithm base 2 of the ratio of the passband’s boundaries:
+∆= log2
+k′−1/2
+2
+k′1/2
+2
+= log2 k′−1
+2
+= −log2 k′
+2
+which gives us a way to immediately ﬁnd k′
+2 from a given bandwidth:26
+k′
+2 = 2−Δ
+Since the boundaries of the bands of ϕ(ω) are identical to the bands of Φ(ω),
+the above formulas equally apply to the bands of ϕ(ω).
+The value of ˜k′
+2, which eﬀectively deﬁnes the amplitude of the ripples, can
+be computed (after having constructeed Φ(ω)) from
+˜k′1/2
+2
+= −Φ(k′1/2
+2
+)
+However it is more practical to directly compute the deviation of arg H(jk′1/2
+2
+)
+from the target value −90◦(after having constructed H(s)). According to the
+above formula, ω = k′1/2
+2
+should be the point of maximum phase deviation
+(within the equiripple range) and thus the deviation of ϕ(k′1/2
+2
+) = arg H(jk′1/2
+2
+)
+from −90◦should give the amplitude of the equiripples.
+Since ˜k′
+2 and k′
+2 increase or decrease simultaneously, H(s) will get larger
+ripple amplitudes for larger bandwidths and vice versa. Increasing the order N
+will result in a smaller ripple amplitude for the same bandwidth.
+Apparently the “passband” doesn’t need to be centered at ω = 1 and can
+be shifted to any other center frequency by the cutoﬀsubstitution s ←s/ωc.
+This raises a related question of prewarping, where we could notice that the
+situation is pretty similar to the prewarping of a normalized 2-pole bandpass
+ﬁlter (discussed in connection with the LP to BP transformation in Section 4.6).
+Therefore the suggested way of handling the prewarping of H(s) consists of the
+following steps:
+1. Given the desired “passband” [ω1, ω2]:
+ω1 = ωc · 2−Δ/2
+ω2 = ωc · 2Δ/2
+prewarp its boundaries separately:
+˜ω1 = µ(ω1)
+˜ω2 = µ(ω2)
+26Note that if desired, we can also find k from k′
+2 by (9.110) (where we let k0 = k).
+
+
+--- Page 479 ---
+
+10.11. PHASE SPLITTER
+467
+thereby obtaining the new prewarped “passband” of a diﬀerent bandwidth
+and center frequency:
+˜ωc =
+p
+˜ω1˜ω2
+˜∆= log2
+˜ω2
+˜ω1
+2. Given the new bandwidth and assuming a unit center frequency, construct
+the allpass H(s) as previously described in this section.
+3. Apply the cutoﬀsubstitution s ←s/˜ωc to H(s), which eﬀectively means
+multiplying the cutoﬀs of the underlying 1-poles by the new center fre-
+quency ˜ωc.
+This approach eﬀectively implements an idea similar to the usage of a single
+prewarping point discussed in Section 3.8, which takes care of preserving the
+correct ratios between the cutoﬀs of the individual ﬁlters in the system. In prin-
+ciple it could be okay to prewarp each of the 1-pole factors of H(s) individually
+instead, however that apparently will somewhat destroy the optimality of the
+equiripple ϕ(ω).
+Phase splitter
+Half (or approximately half, if N is odd) of the poles of H(s) are unstable and we
+can’t implement H(s) directly. However, there is one trick which allows to work
+around this limitation. Before describing this trick we will switch the notation
+back from H(s) to H−90(s) to highlight the fact that the ﬁlter performs a −90◦
+phase shift (of the positive frequencies).
+Let’s factor H−90(s) into a product of two allpasses:
+H−90(s) = H+(s)H−(s)
+where H+(s) contains only the right-semiplane (unstable) poles and H−(s) con-
+tains only the left-semiplane (stable) poles. As usual, we could assume or re-
+quire that H+(0) = 1 and H−(0) = 1, which is achievable, given ϕ(ω) = 0 and
+respectively H(0) = 1.
+Given a signal x(t) = est we wish to obtain the signal y(t) = H−90(s)x(t).
+Consider two other signals:
+x′(t) = H−1
++ (s)x(t)
+y′(t) = H−1
++ (s)y(t) = H−(s)x(t)
+where H−1
++ (s) = 1/H+(s). Notice that H−1
++
+is a stable allpass and so is appar-
+ently H−, thus x′(t) and y′(t) can be obtained from x(t) by processing x(t) by
+stable allpasses H−1
++
+and H−. Notice that
+y′(t) = H−(s)x(t) = H−(s)H+(s)x′(t) = H−90(s)x′(t)
+that is y′(t) and x′(t) are in a 90◦phase shift relationship.
+Apparently the same idea applies to abitrary x(t), which we can express in
+the operator notation as
+x′(t) = ˆH−1
++ x(t)
+(10.60a)
+
+
+--- Page 480 ---
+
+468
+CHAPTER 10. SPECIAL FILTER TYPES
+y′(t) = ˆH−1
++ y(t) = ˆH−x(t)
+(10.60b)
+y′(t) = ˆH−90x′(t)
+(10.60c)
+where ˆH−90 is the operator denoting the processing of a signal by the ﬁlter
+H−90. Thus, even though we cannot phase-shift the input signal x by 90◦, we
+can obtain two derived allpass signals x′ and y′, where the phase diﬀerence
+between x′ and y′ is 90◦. Respectively, the combined signal
+x>0(t) = x′(t) + jy′(t)
+2
+=
+ˆH−1
++ + j ˆH−
+2
+x(t) =
+= ˆH−1
++
+x(t) + jy(t)
+2
+= ˆH−1
++
+1 + j ˆH−90
+2
+x(t)
+(10.61)
+is an analytic version of x(t), where the phase shift of this analytic version
+relatively to x(t) is deﬁned by H−1
++ . The approach of generating two allpass
+signals which are in a 90◦phase relationship is referred to as phase splitting and
+is illustrated in Fig. 10.30. Since x′/2 is the real part of the analytic signal and
+y′/2 is the imaginary part, the allpass H−1
++
+produces the (doubled) real part
+and the allpass H−produces the (doubled) imaginary part and therefore we can
+refer to H−1
++
+and H−as real and imaginary allpasses respectively.
+•/
+H−1
++
+/
+/
+H−
+/
+/
+x(t)
+x′(t)
+y′(t)
+Figure 10.30: Phase splitter.
+Notice that (10.61) is essentially the same as we have in (10.45), where Ho
+and He are corresponding to H−1
++
+and H−(where which speciﬁc ﬁlter corre-
+sponds to which depends on the order N). Thus (10.45) also describes a phase
+splitter, just obtained from a diﬀerent angle.
+10.12
+Frequency shifter
+Even though frequency shifter is not a ﬁlter in the strict sense, its most critical
+part will be based around the Hilbert transformer, which is a ﬁlter. For that
+reason the discussion of frequency shifters may belong to the ﬁlter topic.
+Suppose we are given a signal x(t) represented by its complex spectrum:
+x(t) =
+Z ∞
+−∞
+X(ω)ejωt dω
+2π
+By multiplying the signal x(t) with a complex sinusoidal signal ejΔω·t we eﬀec-
+tively shift the frequencies of all partials by ∆ω:
+y(t) = ejΔω·tx(t) = ejΔω·t
+Z ∞
+−∞
+X(ω)ejωt dω
+2π =
+Z ∞
+−∞
+X(ω)ejΔω·tejωt dω
+2π =
+
+
+--- Page 481 ---
+
+10.12. FREQUENCY SHIFTER
+469
+=
+Z ∞
+−∞
+X(ω)ej(ω+Δω)t dω
+2π
+(10.62)
+This is not very interesting, since given a real x(t) we obtain a complex y(t).
+Obviously, it’s because we multiplied by the complex signal ejΔω·t. In terms
+of signal spectra, the spectrum of x(t) was Hermitian, however by shifting the
+spectrum by ∆ω we destroyed the Hermitian propetry.
+However, this is also not exactly what we want if we think of frequency shift-
+ing. The complex spectrum is a more or less purely mathematical concept, while
+the one more intuitively related to our hearing of sounds is the real spectrum,
+and it’s the partials of the real spectrum whose frequencies we’d rather want to
+shift. That is, given
+x(t) =
+Z ∞
+0
+a(ω) cos
+ ωt + ϕ(ω)
+ dω
+2π
+we wish to obtain
+y(t) =
+Z ∞
+0
+a(ω) cos
+ (ω + ∆ω)t + ϕ(ω)
+ dω
+2π
+(10.63)
+Notably, if ∆ω < 0, then some of the frequencies ω + ∆ω in (10.63) will be
+negative and will alias with the positive frequencies of the same absolute mag-
+nitude. This can be either ignored, or x(t) can be preﬁltered to make sure it
+doesn’t contain frequencies below −∆ω. So, except for the just mentioned high-
+pass preﬁltering option, the possible aliasing of the negative frequencies doesn’t
+aﬀect the subsequent discussion.
+We can rewrite (10.63) as
+y(t) =
+Z ∞
+0
+a(ω) cos
+ (ω + ∆ω)t + ϕ(ω)
+ dω
+2π =
+=
+Z ∞
+0
+a(ω) cos
+ ∆ωt + ωt + ϕ(ω)
+ dω
+2π =
+=
+Z ∞
+0
+a(ω)
+
+cos ∆ωt cos
+ ωt + ϕ(ω)
+
+−sin ∆ωt sin
+ ωt + ϕ(ω)
+ dω
+2π =
+= cos ∆ωt ·
+Z ∞
+0
+a(ω) cos
+ ωt + ϕ(ω)
+ dω
+2π −
+−sin ∆ωt ·
+Z ∞
+0
+a(ω) sin
+ ωt + ϕ(ω)
+ dω
+2π =
+= cos ∆ωt ·
+Z ∞
+0
+a(ω) cos
+ ωt + ϕ(ω)
+ dω
+2π −
+−sin ∆ωt ·
+Z ∞
+0
+a(ω) cos
+
+ωt + ϕ(ω) −π
+2
+ dω
+2π =
+= x(t) cos ∆ωt −x−90(t) sin ∆ωt
+(10.64)
+where
+x−90(t) =
+Z ∞
+0
+a(ω) cos
+
+ωt + ϕ(ω) −π
+2
+ dω
+2π
+is a signal obtained from x(t) by phase-shifting all partials by −90◦. In the
+
+
+--- Page 482 ---
+
+470
+CHAPTER 10. SPECIAL FILTER TYPES
+operator notation the same can be expressed as
+y(t) = cos ∆ωt · x(t) −sin ∆ωt · ˆH−90x(t) =
+
+cos ∆ωt −sin ∆ωt · ˆH−90
+
+x(t)
+(10.65)
+We have already found out how to obtain a −90◦phase shifted signal in
+Section 10.11, except that we also found than such signal cannot be directly
+obtained.
+We will address this slightly later, while for now we shall take a
+diﬀerent look at the same problem of frequency shifting.
+Analytic signal approach
+Looking again at (10.62) we can notice that the positive frequency partials are
+correctly shifted and it’s the negative frequency partials which make trouble.
+So, if the negative partials weren’t there in the ﬁrst place:
+x>0(t) =
+Z ∞
+0
+X(ω)ejωt dω
+2π
+we would have obtained
+y>0(t) = ejΔω·tx>0(t) = ejΔω·t
+Z ∞
+0
+X(ω)ejωt dω
+2π =
+Z ∞
+0
+X(ω)ejΔω·tejωt dω
+2π =
+=
+Z ∞
+0
+X(ω)ej(ω+Δω)t dω
+2π
+(10.66)
+Comparing (10.66) to (10.63) we notice that they essentially consist of the same
+frequency partials, except that y>0(t) is missing the negative part of its spec-
+trum. The negative part of the spectrum can be restored by (10.42), and thus
+(10.66) and (10.63) are related via
+y(t) = 2 Re y>0(t)
+This is easier to see in the operator notation:
+y(t) = 2 Re y>0(t) = 2 Re
+ ejΔωtx>0(t)
+
+= 2 Re
+
+ejΔωt ˆH>0x(t)
+
+=
+= 2 Re
+ 
+ejΔωt 1 + j ˆH−90
+2
+x(t)
+!
+= Re
+
+ejΔωt(1 + j ˆH−90)
+
+x(t) =
+= Re
+
+(′cos∆ωt + j sin ∆ωt)(1 + j ˆH−90)
+
+x(t) =
+=
+
+cos ∆ωt −sin ∆ωt ˆH−90
+
+x(t)
+which is identical to (10.65), thus both approaches are equivalent.
+Implementation
+Let ˆH−1
++
+be the allpass from (10.60). Multiplying (10.65) by ˆH−1
++
+we obtain
+ˆH−1
++ y(t) = ˆH−1
++
+
+cos ∆ωt −sin ∆ωt · ˆH−90
+
+x(t) =
+=
+
+cos ∆ωt · ˆH−1
++ −sin ∆ωt · ˆH−90 ˆH−1
++
+
+x(t) =
+
+
+--- Page 483 ---
+
+10.12. FREQUENCY SHIFTER
+471
+=
+
+cos ∆ωt · ˆH−1
++ −sin ∆ωt · ˆH−
+
+x(t)
+(10.67)
+If we are willing to accept the phase-shifted signal ˆH−1
++ y(t) instead of y(t) (and
+as it seems, we don’t have much other choice) a frequency shifter can be simply
+implemented by the structure in Fig. 10.31.
+•/
+H−1
++
+/
+MMMq
+q
+q/
++
+ '!&"%#$
+/
+H−
+/
+MMMq
+q
+q/
+−
+O
+/
+x(t)
+y(t)
+cos ∆ωt
+sin ∆ωt
+Figure 10.31: Frequency shifter.
+Notably, replacing ∆ω by −∆ω in (10.67) we obtain
+ˆH−1
++ y(t) = ˆH−1
++
+
+cos ∆ωt + sin ∆ωt · ˆH−90
+
+x(t) =
+=
+
+cos ∆ωt · ˆH−1
++ + sin ∆ωt · ˆH−
+
+x(t)
+(10.68)
+This means that we can extend the frequency shifter in Fig. 10.31 to a one that
+shifts simultaneously in both directions, obtaining the diagram in Fig. 10.32.27
+•/
+H−1
++
+/
+MMMq
+q
+q/
+•/
++
+ '!&"%#$
+/
+H−
+/
+MMMq
+q
+q/
+•
+−
+?
+
+
+
+
+
+
+
+
+
+/
++
+ '!&"%#$
+/?
+?
+?
+?
+?
+?
+?
+?
+?
+?
+/
+x(t)
+y+(t)
+y−(t)
+cos ∆ωt
+sin ∆ωt
+Figure 10.32: A bidirectional frequency shifter.
+Adding together the frequency-shifted signals from (10.67) and (10.68) we
+notice that
+ˆH−1
++
+
+cos ∆ωt −sin ∆ωt · ˆH−90
+
++
++ ˆH−1
++
+
+cos ∆ωt + sin ∆ωt · ˆH−90
+
+= ˆH−1
++ · 2 cos ∆ωt
+or
+
+cos ∆ωt · ˆH−1
++ −sin ∆ωt · ˆH−
+
++
++
+
+cos ∆ωt · ˆH−1
++ + sin ∆ωt · ˆH−
+
+= ˆH−1
++ · 2 cos ∆ωt
+27The signal notations y+ and y= denote the positive- and negative-shifted signals respec-
+tively and shouldn’t be confused with the “+” and “−” subscripts of H−1
++
+and H−which
+denote the stable and unstable poles.
+
+
+--- Page 484 ---
+
+472
+CHAPTER 10. SPECIAL FILTER TYPES
+That is, the sum of y+ and y−in Fig. 10.32 essentially produces the ring mod-
+ulation of x(t) by cos ∆ωt, except that the result of this ring modulation is
+doubled and phase-shifted by ˆH−1
++ . So frequency-shifting and ring-modulation
+by a sinusoid seem are very closely related. The same can be analyzed in the
+complex spectral domain:
+cos ∆ωt · x(t) = ejΔωt + e−jΔωt
+2
+Z ∞
+−∞
+X(ω)ejωt dω
+2π =
+= 1
+2
+Z ∞
+−∞
+X(ω)ejωtejΔωt dω
+2π + 1
+2
+Z ∞
+−∞
+X(ω)ejωte−jΔωt dω
+2π =
+= 1
+2
+Z ∞
+−∞
+X(ω)ej(ω+Δω)t dω
+2π + 1
+2
+Z ∞
+−∞
+X(ω)ej(ω−Δω)t dω
+2π
+Thus in the case of the ring modulation by a sinusoid, the partials are frequency-
+shifted in both directions.
+Aliasing
+If ∆ω > 0 then for some partials the sum ω + ∆ω may exceed the Nyquist
+frequency, respectively they will alias to 2π −(ω +∆ω) (assuming unit sampling
+period T = 1). This kind of aliasing is similar to the one occurring at ω+∆ω < 0
+in case of ∆ω < 0, however, while the aliasing around ω = 0 also occurs in the
+analog case, aliasing around Nyquist frequency is a purely digital phenomenon.
+It is therefore up to the eﬀect designer, whether the aliasing around ω = 0
+should be prevented, or allowed. The aliasing at Nyquist is however usually
+undersired. It can be avoided by preﬁltering the frequency band [π −∆ω, π],
+which can be done by a lowpass ﬁlter with a cutoﬀaround π −∆ω. Notice that
+π −∆ω is a discrete-time cutoﬀvalue and thus doesn’t need prewarping.
+The aliasing around ω = 0 can be prevented in a similar way by using a
+highpass with a cutoﬀat −∆ω (since in this case we assume ∆ω < 0, the
+cutoﬀwill thereby be positive). Note that since the phase splitter has a limited
+bandwidth, one also may consider ﬁltering out the signal outside that bandwidth
+anyway, regardless of ∆ω.
+10.13
+Remez algorithm
+The equiripple behavior of Chebyshev polynomials and elliptic rational functions
+is a characteristic feature of the so-called minimax approximations. TN,
+T
+N,
+RN, ¯RN and the function Φ(ω) used to build the phase splitter all provide
+speciﬁc analytic-form solutions to speciﬁc minimax problems. However, in a
+more general situation we might want a numerical solution approach.28
+Suppose we are given a function f(x) and its approximation ˜f(x). There
+are diﬀerent ways to measure the quality of the approximation. One way to
+28The description of Remez algorithm (which is a numerical minimax optimization algo-
+rithm) was included into earlier revisions of this book as an alternative to the use of elliptic
+functions to construct phase splitters.
+Now that the book is strongly focusing on elliptic
+functions anyway, the discussion of Remez algorithm might feel almost redundant. However
+the author felt that this is still quite valuable resource to be simply dropped from the book.
+Particularly, Remez algorithm is useful for building low-cost approximations of functions, al-
+though, depending on the context, minimax solutions are not necessarily the best ones for a
+given purpose.
+
+
+--- Page 485 ---
+
+10.13. REMEZ ALGORITHM
+473
+measure this quality is the maximum error of the approximation on the given
+interval of interest x ∈[a, b]:
+E = max
+[a,b]
+ ˜f(x) −f(x)
+
+(10.69)
+We therefore wish to minimize the value of E. That is we want to minimize the
+maximum error of the approximation. Such approximations are hence called
+minimax approximations.29
+Gradient search methods do not work well for minimax optimizations. There-
+fore a diﬀerent method, called Remez algorithm,30 needs to be used. As of today,
+internet resources concerning the Remez algorithm seem quite scarce, nor does
+this method seem to be a subject of common math textbooks.
+This might
+suggest that Remez algorithm belongs to a rather esoteric math area. The al-
+gorithm itself, however, is very simple. We will therefore cover the essentials of
+that algorithm in this book.31
+Suppose ˜f(x) is a polynomial:
+˜f(x) =
+N
+X
+n=0
+anxn
+(10.70)
+Apparently, there are N +1 degrees of freedom in the choice of ˜f(x), each degree
+corresponding to one of the coeﬃcients an. Therefore we can force the function
+˜f(x) to take arbitrarily speciﬁed values at N + 1 arbitrarily chosen points ¯xn.
+Particularly, we can require
+˜f(¯xn) = f(¯xn)
+n = 0, . . . , N
+or equivalently require the error to be zero at ¯xn:
+˜f(¯xn) −f(¯xn) = 0
+n = 0, . . . , N
+(10.71)
+(notice that the equations (10.71) are linear in respect to the unknowns an
+and therefore are easily solvable). If the points ¯xn are approximately uniformly
+spread over the interval of interest [a, b] then intuitively we can expect ˜f(x) to
+be a reasonably good approximation of f(x) (Fig. 10.33).
+This based on the uniform zero spacing approximation is however not the
+best one. Indeed, instead let ¯xn equal the (properly scaled) zeros of the Cheby-
+shev polynomial of order N + 1:
+¯xn = a + b
+2
++ b −a
+2
+zn
+¯xn ∈(a, b)
+zn ∈(−1, 1)
+TN+1(zn) = cos
+ (N + 1) arccos zn
+
+= 0
+zn = −cos
+1
+2 + n
+N + 1π
+n = 0, . . . , N
+29The maximum of the absolute value of a function is also the L∞norm of the function.
+Therefore minimax approximations are optimizations of the L∞norm.
+30The Remez algorithm should not be confused with the Parks–McClellan algorithm. The
+latter is a specific restricted version of the former. For whatever reason, the Parks–McClellan
+algorithm is often referred to as the Remez algorithm in the signal processing literature.
+31The author’s primary resource for the information about the Remez algorithm was the
+documentation for the math toolkit of the boost library by J.Maddock, P.A.Bristow, H.Holin
+and X.Zhang.
+
+
+--- Page 486 ---
+
+474
+CHAPTER 10. SPECIAL FILTER TYPES
+x
+˜f(x) −f(x)
+5 × 10−4
+π
+2
+0
+Figure 10.33: The error of the 4-th order polynomial approxima-
+tions of sin x on [0, π/2]. The approximation with uniformly spaced
+zeros at 9◦, 27◦, 45◦, 63◦, 81◦(solid line) and the one with Cheby-
+shev zeros (dashed line). The empty square-shaped dots at the
+extrema of the error are the control points of the Remez algorithm.
+where the minus sign in front of the cosine ensures that zn are in ascending order.
+Comparing Chebyshev zeros approximation (the dashed line in Fig. 10.33) to
+the uniform zeros approximation, we can see that the former is much better
+than the latter, at least in the minimax sense.
+A noticeable property of the Chebyshev zeros approximation clearly observ-
+able in Fig. 10.33 is that the extrema of the approximation error (counting the
+extrema at the boundaries of the interval [a, b]!) are approximately equal in
+absolute magnitude and have alternating signs. This is a characteristic trait of
+minimax approximations: the error extrema are equal in magnitude and alter-
+nating in sign.
+So, we might attempt to build a minimax approximation by trying to sat-
+isfy the equiripple error oscillation requirement.
+That is, instead of seeking
+to minimize the maximum error, we simply seek an error which oscillates be-
+tween the two boundaries of opposite sign and equal absolute value. Somewhat
+surprisingly, this is a much simpler task.
+Intuitive description of Remez algorithm
+Consider the solid line graph in Fig. 10.33. Intuitively, imagine a “control point”
+at each of the extrema. Now we “take” the control point which has the largest
+error (the one at x = 0) and attempt to move it towards the x axis, reducing
+the error value at x = 0. Since there are 6 control points (4 at local extrema
+plus 2 at the boundaries), but only 5 degrees of freedom (corresponding to
+the coeﬃcients an), at least one of the other control points needs to move (or
+several or all of them can move). Intuitively it’s clear that if we lower the error
+at x = 0, then it will grow at some other points of [a, b]. However, since we have
+
+
+--- Page 487 ---
+
+10.13. REMEZ ALGORITHM
+475
+the largest error at x = 0 anyway, we can aﬀord the error growing elsewhere
+on [a, b], at least for a while. Notice that during such change the x positions of
+control points will also change, since the extrema of the error do not have to
+stay at the same x coordinates.
+As the error elsewhere at [a, b] becomes equal in absolute magnitude to the
+one at x = 0, we have two largest-error control points which need to be moved
+simultaneously from now on. This can be continued until only one “free” control
+point remains. Simultaneously reducing the error at 5 of 6 control points we
+thereby increase the error at the remaining control point. At some moment both
+errors will become equal in absolute magnitude, which means that the error at
+all control points is equal in absolute magnitude. Since the control points are
+located at the error extrema, we have thereby an equiripple oscillating error.
+Remez algorithm for polynomial approximation
+Given ˜f(x) which is a polynomial (10.70), the process of “pushing the control
+points towards zero” has a simple algorithmic expression. Indeed, we seek ˜f(x)
+which satisﬁes
+˜f(ˆxn) + (−1)nε = f(ˆxn)
+n = 0, . . . , N + 1
+(10.72)
+where ˆxn are the (unknown) control points (including ˆx0 = a and ˆxN+1 = b)
+and ε is the (unknown) signed maximum error. Thus, the unknowns in (10.72)
+are an (the polynomial coeﬃcients), ˆxn (the control points at the extrema) and
+ε (the signed maximum error). Notice that the equations (10.72) are linear in
+respect to an and ε, which leads us to the following idea.
+Suppose we already have some initial guess for ˜f(x), like the uniform zero
+polynomial in Fig. 10.33 (or the Chebyshev zero polynomial, which is even
+better). Identifying the extrema of ˜f(x)−f(x) we obtain a set of control points
+ˆxn. Now, given these ˆxn, we simply solve (10.72) for an and ε (where we have
+N + 2 equations and N + 2 unknowns in total), thereby obtaining a new set of
+an. In a way this is cheating, because ˆxn are not the control points anymore,
+since they are not anymore the extrema of the error (and if they were, we
+would already have obtained a minimax approximation by simply ﬁnding these
+new an). However, the polynomial deﬁned by the new an has a much better
+maximum error (Fig. 10.34)!
+So we simply update the control points ˆxn to the new positions of the ex-
+trema and solve (10.72) again. Then again update the control points and solve
+(10.72) and so on. This is the Remez algorithm for polynomial approximation.
+We still need to reﬁne some details about the algorithm though.
+- The function f(x) should be reasonably well-behaved (whatever that could
+mean) in order for Remez algorithm to work.
+- As a termination condition for the iteration we can simply check the
+equiripple property of the error at the control points.
+That is, having
+obtained the new an, we ﬁnd the new control points ˆxn and then compute
+the errors εn = ˜f(ˆxn)−f(ˆxn). If the absolute values of εn are equal up to
+the speciﬁed precision, this means that we have an approximation which
+is minimax up to the speciﬁed error, and the algorithm may be stopped.
+
+
+--- Page 488 ---
+
+476
+CHAPTER 10. SPECIAL FILTER TYPES
+x
+˜f(x) −f(x)
+5 × 10−4
+π
+2
+0
+Figure 10.34: The approximation error before (dashed line) and
+after (solid line) a single step of the Remez polynomial approxi-
+mation algorithm. The empty square-shaped dots are the control
+points.
+- The initial approximation ˜f(x) needs to have the alternating sign prop-
+erty. This is more or less ensured by using (10.71) to construct the initial
+approximation. A good choice for ¯xn (as demonstrated by Fig. 10.33) are
+the roots of the Chebyshev polynomial of order one higher than the order
+of the approximating polynomial ˜f(x).32
+- The control points ˆxn are the zeros of the error derivative ( ˜f −f)′ (except
+for ˆx0 = a and ˆxN+1 = b). There is exactly one local extremum on each
+interval (¯xn, ¯xn+1) between the zeros of the error. Therefore, ˆxn+1 can
+be simply found as the zeros of the error derivative by bisection of the
+intervals (¯xn, ¯xn+1).
+- After having obtained new an, the old control points ˆxn are not the ex-
+trema anymore, however the errors at ˆxn are still alternating in sign.
+Therefore the new zeros ¯xn (needed to ﬁnd the new control points by
+bisection) can be found by bisection of the intervals (ˆxn, ˆxn+1).
+Restrictions and variations
+Often it is desired to obtain a function which is odd or even, or has some
+other restrictions. This can be done by simply ﬁxing the respective an, thereby
+reducing the number of control variables an and reducing the number of control
+points ˆxn and zero crossings ¯xn accordingly.
+Remez algorithm can also be easily modiﬁed to accommodate a weight func-
+32This becomes kind of intuitive after considering Chebyshev polynomials as some kind of
+minimax approximations of the zero constant function f(x) ≡0 on the interval [−1, 1].
+
+
+--- Page 489 ---
+
+10.13. REMEZ ALGORITHM
+477
+tion in the minimax norm (10.69):
+E = max
+[a,b]
+
+W(x) ·
+ ˜f(x) −f(x)
+
+
+W(x) > 0
+The error function therefore turns into W(x)( ˜f(x) −f(x)), while the minimax
+equations (10.72) turn into
+˜f(ˆxn) + (−1)nW −1(ˆxn)ε = f(ˆxn)
+n = 0, . . . , N + 1
+(where W −1(x) is the reciprocal of W(x)).
+Remez algorithm for rational approximation
+Instead of using a polynomial ˜f(x), better approximations can be often achieved
+by rational ˜f(x):
+˜f(x) =
+N
+X
+n=0
+anxn
+1 +
+M
+X
+n=1
+bnxn
+(10.73)
+Besides being able to deliver better approximations in certain cases, rational
+functions can be often useful for obtaining approximations on inﬁnite intervals
+such as [a, +∞), because by varying the degrees of the numerator and denomi-
+nator the asymptotic behavior of ˜f(x) at x →∞can be controlled.
+For a rational ˜f(x) deﬁned by (10.73) the minimax equations (10.72) become
+nonlinear in respect to the unknowns ε and bn, although they are still linear in
+respect to the unknowns an:
+N
+X
+i=0
+aiˆxi
+n + (−1)n
+ 
+1 +
+M
+X
+i=1
+biˆxi
+n
+!
+ε =
+ 
+1 +
+M
+X
+i=1
+biˆxi
+n
+!
+f(ˆxn)
+n = 0, . . . , N + M + 1
+(10.74)
+Notice that the number of degrees of freedom is now N +M +1. The equations
+(10.74) can be solved using diﬀerent numeric methods for nonlinear equation
+solution, however there is one simple trick.33 Rewrite (10.74) as
+N
+X
+i=0
+aiˆxi
+n + (−1)nε
+M
+X
+i=1
+biˆxi
+n + (−1)nε =
+ 
+1 +
+M
+X
+i=1
+biˆxi
+n
+!
+f(ˆxn)
+Now we pretend we don’t know the free term ε, but we do know the value of ε
+before the sum of biˆxi
+n:
+N
+X
+i=0
+aiˆxi
+n + (−1)nε0
+M
+X
+i=1
+biˆxi
+n + (−1)nε =
+ 
+1 +
+M
+X
+i=1
+biˆxi
+n
+!
+f(ˆxn)
+(10.75)
+where ε0 is this “known” value of ε. The value of ε0 can be estimated e.g. as
+the average absolute error at the control points ˆxn. Then (10.75) are linear
+33This trick is adapted from the boost library documentation and sources.
+
+
+--- Page 490 ---
+
+478
+CHAPTER 10. SPECIAL FILTER TYPES
+equations in respect to an, bn and ε and can be easily solved. Having obtained
+the new an and bn, we can obtain a new estimation for ε0 and solve (10.75)
+again. We repeat until the errors ˜f(ˆxn)−f(ˆxn) at the control points ˆxn become
+equal in absolute vlaue up to a necessary precision. At this point we can consider
+the solution of (10.74) as being obtained to a suﬃcient precision and proceed
+with the usual Remez algorithm routine (ﬁnd the new ¯xn, new ˆxn etc.)
+Here are some further notes.
+- In principle the solution of (10.74) doesn’t need to be obtained to a very
+high precision, except in the ﬁnal step of the Remez algorithm. However,
+in order to know whether the current step is the ﬁnal one or not, we
+need to know the true control points, so that we can estimate how well
+the equiripple condition is satisﬁed. Ultimately, this is a question of the
+computational expense of ﬁnding the new control points vs. computing
+another iteration of (10.75).
+- Sometimes, if the equations are strongly nonlinear, the trick (10.75) may
+fail to converge. In this case one could attempt to use the discussed be-
+low more general Newton–Raphson approach (10.81), where the damping
+parameter may be used to mitigate the convergence problems.
+- In regards to the problem of choice of the initial ˜f(x) for the rational
+Remez approximation, notice that the zero error equations (10.71) take
+the form
+N
+X
+n=0
+an¯xn = f(¯xn)
+ 
+1 +
+M
+X
+n=1
+bn¯xn
+!
+which is fully linear in respect to an and bn, and can be easily solved.
+Other kinds of approximating functions
+In certain cases one could use even more complicated forms of ˜f(x), which
+are neither polynomial nor rational. In the general case such function ˜f(x) is
+controlled by a number of parameters an:
+˜f(x) = ˜f(x, a1, a2, . . . , aN)
+(notice that this time the numbering of an is starting at one, so that there are
+N parameters in total, giving N degrees of freedom). The minimax equations
+(10.72) become
+˜f(ˆxn, a1, a2, . . . , aN) + (−1)nε = f(ˆxn)
+n = 0, . . . , N
+(10.76)
+Introducing functions
+φn(a1, a2, . . . , aN, ε) = ˜f(ˆxn, a1, a2, . . . , aN) + (−1)nε −f(ˆxn)
+we rewrite the equations (10.76) as
+φn(a1, a2, . . . , aN, ε) = 0
+n = 0, . . . , N
+(10.77)
+Introducing vector notation
+Φ =
+ φ0 φ1
+. . .
+φN
+T
+
+
+--- Page 491 ---
+
+10.13. REMEZ ALGORITHM
+479
+a =
+ a1 a2
+. . .
+aN ε
+T
+we rewrite (10.77) as
+Φ(a) = 0
+(10.78)
+Apparently, (10.78) is a vector form of (10.72), except that now we consider
+it as a generally nonlinear equation. Both the function’s argument a and the
+function’s value Φ(a) have the dimension N + 1, therefore the equation (10.78)
+is fully deﬁned.
+Diﬀerent numeric methods can be applied to solving (10.78). We will be
+particularly interested in the application of multidimensional Newton–Raphson
+method. Expanding Φ(a) into Taylor series at some ﬁxed point a0 we transform
+(10.78) into:
+Φ(a0) + ∂Φ
+∂a (a0) · ∆a + o(∆a) = 0
+(10.79)
+where ∂Φ/∂a is the Jacobian matrix and a = a0+∆a. By discarding the higher
+order terms o(∆a), the equation (10.79) is turned into
+∆a = −
+∂Φ
+∂a (a0)
+−1
+· Φ(a0)
+(10.80)
+The equation (10.80) implies the Newton–Raphson iteration scheme
+an+1 = an −α ·
+∂Φ
+∂a (an)
+−1
+· Φ(an)
+(10.81)
+where the damping factor α is either set to unity, or to a lower value, if the
+nonlinearity of Φ(a) is too strong and prevents the iterations from convergening.
+The initial value a0 is obtained from the initial settings of the parameters an
+and the estimated initial value of ε. As for the rational ˜f(x), the initial value
+of ε can be estimated e.g. as the average error at the control points.
+Similarly to the rational approximation case, the solution of (10.78) doesn’t
+need to be obtained to a very high precision during the intermediate steps of the
+Remez algorithm. However the same tradeoﬀbetween computing the iteration
+step (10.81) and ﬁnding the new control points applies.
+The choice of the initial ˜f(x) can be done based on the same principles. The
+zero error equations (10.71) turn into
+φn(a1, a2, . . . , aN, 0) = 0
+n = 1, . . . , N
+(notice that compared to (10.77) we have set ε to zero and we have N rather
+than N + 1 equations). Letting
+¯Φ =
+ φ1 φ2
+. . .
+φN
+T
+¯a =
+ a1 a2
+. . .
+aN
+T
+we have an N-dimensional nonlinear equation
+¯Φ(¯a) = 0
+which can be solved by the same Newton–Raphson method:
+¯an+1 = ¯an −α ·
+∂¯Φ
+∂¯a (¯a0)
+−1
+· ¯Φ(¯a0)
+(10.82)
+
+
+--- Page 492 ---
+
+480
+CHAPTER 10. SPECIAL FILTER TYPES
+10.14
+Numerical construction of phase splitter
+For the sake of a demonstration example we are now going to use Remez algo-
+rithm to build an approximation of the ideal 90◦allpass phase shifter deﬁned
+by (10.50), while deliberately staying away from the entire framework of el-
+liptic functions. The obtained results shall be identical to the ones previously
+obtained analytically.
+We will retain the mentioned allpass property in the approximation, there-
+fore let H(s) denote the allpass which should approximate the ideal phase shifter
+(10.50). Using serial decomposition, H(s) can be decomposed into series of 2-
+and 1-pole allpasses. Since we aim to have H(s) with as ﬂat (actually, constant
+in the range of interest) phase response as possible, 2-poles seem to be less use-
+ful than 1-poles, due to steeper phase responses of the former (Figs. 10.35 and
+10.36).
+Restricting ourselves to using just 1-poles we have:
+H(s) =
+N
+Y
+n=1
+An(s) =
+N
+Y
+n=1
+ωn −s
+ωn + s
+(10.83)
+where ωn are the cutoﬀs of the 1-pole allpasses An(s). Notice that the speciﬁc
+form of specifying H(s) in (10.83) ensures H(0) = 1 ∀N, that is we wish to have
+a 0◦rather than −180◦phase response at ω = 0.
+Now the idea is the following. Suppose N = 0 in (10.83) (that is we have
+no 1-pole allpasses in the serial decomposition yet). Adding the ﬁrst allpass A1
+at the cutoﬀω1 we make the phase response of (10.83) equal to the one of a
+1-pole allpass (Fig. 10.35). From ω = 0 to ω = ωn the phase response is kind
+of what we expect it to be: it starts at arg H(0) = 0 and then decreases to
+arg H(jωn) = −π/2. However, after ω = ωn it continues to decrease, which is
+not what we want. Therefore we insert another allpass A2 with a negative cutoff
+−ω2:
+H(s) = ω1 −s
+ω1 + s · −ω2 −s
+−ω2 + s
+0 < ω1 < ω2
+Clearly, A2 is unstable. However, we already know that unstable components
+of H(s) are not a problem, since they simply go into the H−1
++
+part of the phase
+splitter.
+The phase response of a negative-cutoﬀallpass (Fig. 10.37) is the inversion
+of Fig. 10.35. Therefore, given suﬃcient distance between ω1 and ω2, the phase
+response of H will ﬁrst drop below −π/2 (shortly after ω = ω1) and then at some
+point turn around and grow back again (Fig. 10.38). Then we insert another
+positive-cutoﬀallpass A3, then a negative-cutoﬀallpass A4 etc., obtaining if not
+an equiripple approximation of −90◦phase response, then something of a very
+similar nature (Fig. 10.39).
+The curve in Fig. 10.39 has two obvious problems. The ripple amplitude is
+way too large. Furthermore, in order to obtain this kind of curve, we need to
+position the cutoﬀs ωn pretty wide apart (4 octaves between the neighboring
+cutoﬀs is a safe bet).
+We would like to position the cutoﬀs closer together,
+thereby reducing the ripple amplitude, however the uniform spacing of the cut-
+oﬀs doesn’t work very well for denser spacings of the cutoﬀs. We need to ﬁnd a
+way to identify the optimum cutoﬀpositions.
+
+
+--- Page 493 ---
+
+10.14. NUMERICAL CONSTRUCTION OF PHASE SPLITTER
+481
+ω
+arg H(jω)
+ωc
+ωc/8
+8ωc
+0
+−π
+−π/2
+−2π
+Figure 10.35: Phase response of a 1-pole allpass ﬁlter.
+ω
+arg H(jω)
+ωc
+ωc/8
+8ωc
+0
+−π
+−2π
+Figure 10.36: Phase response of a 2-pole allpass ﬁlter.
+Using cutoﬀs of alternating signs, we rewrite the transfer function expression
+(10.83) as
+H(s) =
+N
+Y
+n=1
+An(s) =
+N
+Y
+n=1
+(−1)n+1ωn −s
+(−1)n+1ωn + s
+0 < ω1 < ω2 < . . . < ωN
+(10.84)
+(the cutoﬀof A1 needs to be positive in order for the phase response of H to
+have a negative derivative at ω = 0). Considering that the phase response of a
+1-pole allpass with cutoﬀωc is
+H(jω) = −2 arctan ω
+ωc
+the phase response of the serial decomposition (10.84) is
+ϕ(x) = arg H(jω) = 2
+N
+X
+n=1
+(−1)n arctan ω
+ωn
+= 2
+N
+X
+n=1
+(−1)n arctan ex−an (10.85)
+
+
+--- Page 494 ---
+
+482
+CHAPTER 10. SPECIAL FILTER TYPES
+ω
+arg H(jω)
+ωc
+ωc/8
+8ωc
+π
+π/2
+0
+Figure 10.37: Phase response of a negative-cutoﬀ1-pole allpass
+ﬁlter.
+ω
+arg H(jω)
+ω1
+ω2
+0
+−π/2
+−π
+Figure 10.38: Phase response of a pair of a positive-cutoﬀand a
+negative-cutoﬀ1-pole allpass ﬁlters. Frequency scale is logarith-
+mic.
+ω = ex
+ωn = ean
+where x and an are the logarithmic scale counterparts of ω and ωn (essentially
+these are the pitch-scale values, we have just used e rather than 2 as the base
+to simplify the expressions of the derivatives of ϕ).
+The reason to use the
+logarithmic scale in (10.85) is that the phase responses of 1-pole allpasses are
+symmetric in the logarithmic scale, therefore the entire problem gets certain
+symmetry and uniformity.
+Now we are in a position to specify the minimax approximation problem of
+construction of the phase shifter H−90. We wish to ﬁnd the minimax approx-
+imation of f(x) ≡−π/2 on the speciﬁed interval x ∈[xmin, xmax], where the
+approximating function ϕ(x) needs to be of the form (10.85).
+
+
+--- Page 495 ---
+
+10.14. NUMERICAL CONSTRUCTION OF PHASE SPLITTER
+483
+ω
+arg H(jω)
+0
+−π/2
+−π
+Figure 10.39: Phase response of a series of alternating positive-
+cutoﬀand negative-cutoﬀ1-pole allpass ﬁlters. Frequency scale is
+logarithmic.
+The approximating function ϕ(x) has N parameters:
+ϕ(x) = ϕ(x, a1, a2, . . . , aN)
+which can be found by using the Remez algorithm for approximations of general
+form. Notably, for larger N and smaller intervals [xmin, xmax] the problem be-
+comes more and more nonlinear, requiring smaller damping factors α in (10.81)
+and (10.82).
+The damping factors may be chosen by restricting the lengths
+|an+1 −an| and |¯an+1 −¯an| in (10.81) and (10.82).
+In order to further employ the logarithmic symmetry of the problem (al-
+though this is not a must), we may require xmin + xmax = 0 corresponding to
+ωminωmax = 1. Then the following applies.
+- Due to the symmetry ωminωmax = 1 the obtained cutoﬀs ωn will also be
+symmetric: ωnωN+1−n = 1. (Actually they will be symmetric relatively
+to √ωminωmax no matter what the ωmin and ωmax are, but it’s convenient
+to have this symmetry more explicitly visible.)
+- Using this symmetry the number of cutoﬀparameters can be halved (for
+odd N the middle cutoﬀω(N+1)/2 is always at unity and therefore can be
+also excluded from the set of varying parameters). Essentially we simply
+restrict ϕ(x) to be an odd (for odd N) or even (for even N) function of x.
+- The obtained symmetric range [ωmin, ωmax] can be scaled by an arbitrary
+constant A by scaling the allpass cutoﬀs by the same constant:
+[ωmin, ωmax] ←[Aωmin, Aωmax]
+ωn ←Aωn
+Figs. 10.40 and 10.41 contain example approximations of H−90(s) obtained by
+cutoﬀoptimization (for the demonstration purposes, the approximation orders
+have been chosen relatively low, giving the phase ripple amplitude of an order
+
+
+--- Page 496 ---
+
+484
+CHAPTER 10. SPECIAL FILTER TYPES
+of magnitude of 1◦).
+The readers are encouraged to compare these pictures
+(qualitatively, since the speciﬁed ﬁlter orders and bandwidths do not match) to
+Fig. 10.28.
+ω
+arg H(jω)
+1
+1/16
+16
+−80◦
+−85◦
+−90◦
+−95◦
+Figure 10.40:
+8th-order minimax approximation of the ideal
+H−90(s).
+ω
+arg H(jω)
+1
+1/16
+16
+−80◦
+−85◦
+−90◦
+−95◦
+Figure 10.41:
+7th-order minimax approximation of the ideal
+H−90(s).
+Instead of solving the initial approximation equation (10.82) there is a diﬀer-
+ent approach, which generally results in the nonlinearity of Φ(a) not so strongly
+aﬀecting the algorithm convergence. We could take the manually constructed
+(10.84) with 4-octave spaced cutoﬀs ωn+1 = 16ωn as our initial approximation.
+The formal range of interest could contain two additional octaves on each side:
+ωmin = ω1/4, ωmax = 4ωN. Employing the logarithmic symmetry, we center the
+whole range around ω = 1, so that ωminωmax = 1.
+Using (10.81) (in the logarithmic scale x) we reﬁne the initial approximation
+to the ripples of equal amplitude. Then we simply shrink the range a little bit.
+
+
+--- Page 497 ---
+
+SUMMARY
+485
+An eﬃcient shrinking substitution is using the geometric averages:
+ωmin ←√ωminω1
+ωmax ←√ωmaxωN
+(10.86)
+The substitution (10.86) doesn’t aﬀect the control points ˆxn or the zeros ¯xn of
+the Remez algorithm. Therefore after the substitution the Remez algorithm can
+be simply run again. Then the substitution is performed again, and so on, until
+we shrink the interval [ωmin, ωmax] to the exact desired range.34
+Notice that the approximations on the intermediate ranges [ωmin, ωmax] do
+not need to be obtained with a very high precision, since their only purpose is
+to provide a starting point for the next application of the Remez algorithm on a
+smaller range. It is only the Remez algorithm on the exact desired range, which
+needs to be run to a high precision. This can noticeably improve the algorithm’s
+running time.
+SUMMARY
+We have discussed various approaches to the construction of shelving ﬁlters,
+crossovers and Hilbert transformers. The basis for the construction happened
+to be mostly EMQF ﬁlters, with 1st-kind Butterworth as their limiting case.
+The slope control in higher-order shelving ﬁlters was implemented using 2nd-
+kind Butterworth ﬁlters, although EMQF ﬁlters can also be used here with the
+drawback of having ripples in the pass and shelving bands.
+Further reading
+S.J.Orfanidis, Lecture notes on elliptic filter design (available on the au-
+thor’s webpage).
+M.Kleehammer, Mathematical development of the elliptic filter (available
+in QSpace online repository).
+Elliptic filter (Wikipedia artile).
+L.M.Milne-Thomson, Jacobian elliptic functions and theta functions and
+Elliptic Integrals (contained in Handbook of mathematical functions by
+M.Abramowitz and I.A.Stegun, available on the internet).
+34Of course at the last step we simply set ωmin and ωmax to the desired values, rather than
+perform the substitution (10.86).
+
+
+--- Page 498 ---
+
+486
+CHAPTER 10. SPECIAL FILTER TYPES
+

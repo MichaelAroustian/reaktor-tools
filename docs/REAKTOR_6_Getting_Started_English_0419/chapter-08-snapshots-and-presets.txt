@@ -1,0 +1,31 @@
+--- Page 67 ---
+
+8
+Snapshots and Presets
+ 
+Snapshots and Presets, which are REAKTOR's sound preset formats used with Ensembles and
+Instruments, enable you to store and recall the state of Panel controls. When you recall a
+Snapshot, all the Panel controls are restored to the state they were in when the Snapshot was
+originally created.
+Most pre-built Ensembles include a number of Snapshots for the included Instruments, ready
+to be used in your music. Each REAKTOR Instrument can store 16 Snapshot Banks containing
+128 Snapshots each, for a total of 2048 Snapshots.
+While both Snapshots and Presets accomplish the same thing on the surface, the details of
+their use and function differ:
+•
+Snapshots are embedded in the Ensemble file, whereas Presets are external files.
+•
+Snapshots can be recalled using MIDI Program Change messages.
+•
+Presets can be saved when using REAKTOR is Play mode; Snapshots are written into the
+Ensemble file, and so REAKTOR must be on Edit mode in order to create new Snapshots.
+•
+Presets save the state of the Ensemble, whereas Snapshots can be per Instrument.
+•
+An Ensemble can contain only a limited number of Snapshots (2048).
+For more information about Snapshots in REAKTOR, refer to the Diving Deeper docu-
+ment.
+Snapshots and Presets
+ 
+REAKTOR 6 - Getting Started - 67
+

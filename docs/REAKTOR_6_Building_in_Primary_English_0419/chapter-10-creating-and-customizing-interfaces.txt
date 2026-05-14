@@ -1,0 +1,742 @@
+--- Page 143 ---
+
+10
+Creating and Customizing Interfaces
+ 
+REAKTOR gives you several ways to design and customize the graphical user interface (GUI) of
+your creations, from simply setting a custom color scheme to importing your own custom skins
+for controls. This section will cover all topics in this area.
+10.1
+Overview of Panel Elements
+ 
+Any Module designed for use on the instrument panel can be found in the Panel section of the
+Built-In Modules.
+Creating and Customizing Interfaces
+Overview of Panel Elements
+ 
+REAKTOR 6 - Building In Primary - 143
+
+
+--- Page 144 ---
+
+The Panel Modules.
+There are many Panel Modules, all of which are listed in the Module Reference in section
+↑18.5, Panel ↑18.5, Panel.
+There are 3 main types of Panel Modules:
+•
+Simple Controls like Knobs and Buttons. These Modules are controls designed for common
+uses. Knobs and Buttons appear on many instrument and effect interfaces, and these
+Modules are the quickest and easiest way to create these controls.
+Creating and Customizing Interfaces
+Overview of Panel Elements
+ 
+REAKTOR 6 - Building In Primary - 144
+
+
+--- Page 145 ---
+
+•
+Simple Displays like the Level Meter. These Modules display information, but are not a
+control. In other words, they have inputs but no outputs.
+•
+Elements like the Mouse Area or Multi Display. These Modules generally cannot be used
+on their own; they need to be combined with other modules to create a control or display.
+They allow for more flexibility, but are thus more complicated to use.
+Some other Modules also have a display option. For example, the Filter Modules can be set to
+visible in their properties to display a frequency curve.
+The Panel Display of the Ladder Filter.
+The following categories of Modules have optional panel displays:
+•
+Samplers display the waveform of the currently playing sample.
+•
+Envelopes display the envelope plot.
+•
+Filters display the frequency response of the filter.
+◦This includes EQ Modules, but excludes the Modal Bank, Differentiator, and Integra-
+tor.
+•
+The Event Table and Audio Table display the contents of the tables.
+10.2
+Customizing the Header
+ 
+At the top of every new Ensemble or Instrument you create is the Header.
+The Header of a New Ensemble.
+By default it contains the following (from left to right):
+•
+A/B view and minimize buttons.
+Creating and Customizing Interfaces
+Customizing the Header
+ 
+REAKTOR 6 - Building In Primary - 145
+
+
+--- Page 146 ---
+
+•
+The Instrument/Ensemble name.
+•
+Snapshot menu.
+•
+MIDI and OSC input/output indicators.
+•
+Polyphony voice display.
+You can customize the contents of the Header in the View tab of the Properties.
+The Header Display Options.
+In the VISIBLE section of the View tab there is a list of checkboxes, each one controlling the
+visibility of each of the elements listed above.
+•
+Show Header: Toggles the visibility of the entire Header on/off.
+•
+Show AB Buttons: Shows/hides the A/B and minimize buttons.
+•
+Show Label: Toggles Shows/hides the Instrument/Ensemble name label.
+•
+Show Snapshots: Shows/hides the Snapshot menu.
+•
+Show MIDI/OSC: Shows/hides the MIDI and OSC input/output indicators.
+•
+Show Info: Shows/hides the Voices display.
+If the number of Voices is set to 1, the Voices display is automatically hidden.
+Creating and Customizing Interfaces
+Customizing the Header
+ 
+REAKTOR 6 - Building In Primary - 146
+
+
+--- Page 147 ---
+
+10.3
+A/B Views
+ 
+Each Instrument created in a REAKTOR Ensemble can have two panel views, labelled A and B.
+1.
+You can locate the A/B view controls in the Instrument Header.
+The A/B views can be very useful for creating a main interface panel and something like an
+options or settings panel.
+In every Module or Macro with a panel element, in the View tab of its Properties you will see 3
+tabs: A, B, AB.
+The A/B View Tabs.
+These allow you to give each Module a different set of panel properties for each panel view.
+•
+Selecting A means you will be editing the values for the A view only.
+•
+Selecting B means you will be editing the values for the B view only.
+•
+Selecting AB means you will be editing the values for both the A view and the B view.
+You have many options to completely change the look and position of a control between the A
+and B view. You can even make a control only visible in one view.
+In some cases you may want the A and the B view to be the same. In this case you can copy
+the settings for all panel elements from one view to the other from the Instrument Properties:
+1.
+Enter the Instrument Properties and select the View tab.
+2.
+Find the COPY section at the bottom of the View tab. It holds two functions: Copy A->B
+and Copy B->A.
+3.
+Click on the OK button beside the function you wish to perform.
+⇨The View settings from one panel will be copied to the other.
+Creating and Customizing Interfaces
+A/B Views
+ 
+REAKTOR 6 - Building In Primary - 147
+
+
+--- Page 148 ---
+
+Every individual Module/Macro also has this option, so you can perform this function on a sin-
+gle control or display.
+The View tab of the Instrument/Ensemble Properties also gives you BULK ACTIONS to hide or
+show all controls.
+The Bulk Actions.
+You can use these to hide all controls on the B view, and then go through the structure and
+only make a handful of Modules visible on the panel.
+Switching Views for Multiple Instruments
+You can switch between the A and B view of all Instruments contained in an Ensemble at the
+same time.
+1.
+Open the REAKTOR main menu, go to View and select A View or B View under Panel View.
+10.3.1
+Examples in the Factory Library
+ 
+Some of the Ensembles in the Factory Library make use of the A/B Views. Here are a handful
+of examples:
+•
+The Steam Pipe 2 and SubHarmonic synthesizers both use the B view to display the re-
+verb effect controls.
+Creating and Customizing Interfaces
+A/B Views
+ 
+REAKTOR 6 - Building In Primary - 148
+
+
+--- Page 149 ---
+
+•
+The Green Matrix synthesizer uses the B view to display the modulation matrices.
+10.4
+Changing the Color Scheme
+ 
+Any control with a built-in panel display can have its colors customized at the Ensemble/In-
+strument level. This means that for any Instrument in the Ensemble, you can set the indicator
+color for all knobs to a single setting, but you cannot set the color of an individual knob.
+The Color Scheme settings are located in the View tab of the Instrument Properties in a table
+labeled RGB (Red Green Blue).
+The RGB Controls.
+Here, you can select the color of the following elements:
+•
+Panel: The main background color of the Instrument.
+•
+Indicator: Sets the color of the indicator of the knobs and sliders, as well as the on state
+of the buttons and switches.
+•
+Graph Line: Sets the color of lines drawn in any element that uses a graph or plot (eg.
+Filter curves and Tables)
+•
+Graph Fill: Sets the color of the fill area under the Graph Line.
+•
+Graph BG: Sets the background color of the graph.
+•
+Grid: The Event and Audio Tables can have a value grid overlaid on top of the graph. This
+parameter selects the color of the grid.
+The following parameters only apply to Tables which have their Graph property set to 2D Color:
+Creating and Customizing Interfaces
+Changing the Color Scheme
+ 
+REAKTOR 6 - Building In Primary - 149
+
+
+--- Page 150 ---
+
+•
+2D Table Min: Sets the color to represent the minimum value.
+•
+2D Table Max: Sets the color to represent the maximum value.
+•
+2D Table Default: Sets the color to represent the default value (0).
+10.4.1
+Editing Colors
+ 
+You can specify colors for any of the available elements in the table in two ways:
+•
+Entering RGB values.
+•
+Selecting a color using the Choose Color window.
+To manually enter an RGB value:
+1.
+Double-click on the value you wish to edit.
+2.
+Enter a value between 0 and 255.
+3.
+Click away or press [Enter] to apply the changes.
+To select a color using the Color window:
+1.
+Select the element you wish to edit from the RGB table.
+2.
+Click on the open window icon next to Choose Color below the RGB table.
+⇨The Color window will open.
+The Color window displays a number of options that allow you to select colors in a more intui-
+tive way than entering numbers into a table.
+Creating and Customizing Interfaces
+Changing the Color Scheme
+ 
+REAKTOR 6 - Building In Primary - 150
+
+
+--- Page 151 ---
+
+The Color Window as it appears on the Windows Operating System
+1.
+Select a color of your choice and confirm the selection by clicking OK.
+⇨The values in the RGB table will update to those of the chosen color.
+10.4.2
+Saving a Custom Color Scheme
+ 
+REAKTOR allows you to store a custom color scheme that you can store and recall for future
+creations.
+Once you have created a color scheme you like you can store it by following these steps:
+1.
+Open the Select menu next to Color Scheme.
+2.
+Select Save as Custom.
+⇨The current color scheme will be stored as the Custom color scheme.
+Creating and Customizing Interfaces
+Changing the Color Scheme
+ 
+REAKTOR 6 - Building In Primary - 151
+
+
+--- Page 152 ---
+
+To recall the Custom color scheme:
+1.
+Open the Select menu again.
+2.
+Select Set to Custom.
+⇨The color scheme for the Instrument will be set to the last color scheme you saved as the
+Custom color scheme.
+10.5
+Skinning with Custom Images
+ 
+Many of the Panel Modules can have their look altered by importing image files to skin the
+control or display.
+You can also add custom images as the background of the Instrument.
+10.5.1
+Image Formatting
+ 
+REAKTOR can accept BMP, PNG or TGA file formats for images.
+It is not possible for REAKTOR to process images (for example: rotating them or adjusting their
+transparency) and so all frames of an animation should be rendered as images and then stitch-
+ed together to form one long image, like a reel of film.
+The frames of the animation can be arranged either horizontally or vertically, with the lowest
+value state in the 1st frame to the left/top of the file. As an example, an animation for a knob
+could look something like this:
+An example of a knob animation in a filmstrip style image.
+When an image like this is loaded into REAKTOR, you must specify the number of frames, and
+then REAKTOR can divide the image accordingly.
+Faders are an exception as they can accept a single image, which is then used to replace the
+fader handle.
+For creating knob animations like the one above, you can use a free program called 
+KnobMan by g200kg.
+Creating and Customizing Interfaces
+Skinning with Custom Images
+ 
+REAKTOR 6 - Building In Primary - 152
+
+
+--- Page 153 ---
+
+Formatting Images for Buttons
+Buttons can accept 2 or 4 state animations. A 2-state animation will give you the basic on/off
+states, but a 4-state animation will also allow you to customize mouse-pressed states.
+A 2-state button animation will have its frames interpreted like this:
+•
+Frame 1 = off
+•
+Frame 2 = on
+A 4-state button animation will have its frames interpreted like this:
+•
+Frame 1 = off
+•
+Frame 2 = on
+•
+Frame 3 = off, mouse pressed
+•
+Frame 4 = on, mouse pressed
+10.5.2
+Importing an Image
+ 
+As a first example, you can import an image as a custom background for an Instrument:
+1.
+Select the Instrument.
+2.
+In the Properties window, select the View tab.
+3.
+In the section labelled STYLE, open the Bg Image menu (which should currently display
+the text <none>)
+4.
+Select -> Open from file …
+5.
+A dialog window will open allowing you to browse your file system for BMP, PNG and TGA
+image files.
+6.
+Locate and select an image and click Open.
+7.
+The Image Properties window will open, but you can ignore this for now.
+Creating and Customizing Interfaces
+Skinning with Custom Images
+ 
+REAKTOR 6 - Building In Primary - 153
+
+
+--- Page 154 ---
+
+8.
+Click Ok at the bottom of the Image Properties window.
+⇨Your image will now be displayed as the instrument background.
+10.5.3
+The Image Properties Window
+ 
+When loading an image for the first time, you will be presented with the Image Properties win-
+dow. This is where you tell REAKTOR how to read the image file.
+1.
+You can also edit the properties of an image that has already been imported by clicking
+on the open window icon next to Image Properties in the STYLE section of the Properties'
+View tab.
+Creating and Customizing Interfaces
+Skinning with Custom Images
+ 
+REAKTOR 6 - Building In Primary - 154
+
+
+--- Page 155 ---
+
+The Image Properties Window
+The Image Properties window has the following options:
+•
+Name: By default the name of the imported image will be the name of the file you loaded,
+however you can change this by entering new text into this area.
+•
+IMAGE:
+Creating and Customizing Interfaces
+Skinning with Custom Images
+ 
+REAKTOR 6 - Building In Primary - 155
+
+
+--- Page 156 ---
+
+◦Open From File: If you have made adjustments to an image that is used in multiple
+places throughout an Instrument, you do not have to replace each one individually.
+You can use this option to open an image file to replace whichever image you had se-
+lected when you opened the Image Properties window.
+◦Use Alpha Channel: This checkbox tells REAKTOR whether or not the imported image
+uses an alpha channel (i.e. transparency).
+•
+ANIMATION:
+◦Direction: Tells REAKTOR how the frames of the animation are orientated.
+◦Number Of Frames: You can enter the number of frames in the animation here. If the
+imported image is not an animation, this should be set to 1.
+◦Frame Height: Displays the pixel height of each frame in the animation. If the anima-
+tion is vertical, you can manually enter the height of each frame and REAKTOR will
+calculate the number of frames.
+◦Frame Width: Displays the pixel width of each frame in the animation. If the anima-
+tion is horizontal, you can manually enter the width of each frame and REAKTOR will
+calculate the number of frames.
+•
+RESIZABILITY: Certain Panel Modules can be resized by REAKTOR (for example, Macros
+and the backgrounds of the Multi Display and Poly Display). This section contains check-
+boxes to tell REAKTOR if the image is permitted to be resized in such circumstances.
+•
+BORDERS: If an image is set to be resizable in any way, you are able to specify borders
+which will not be resized. This is especially useful for any image used as a background.
+•
+PREVIEW: This area displays a preview of the image after it has been processed by REAK-
+TOR.
+10.6
+The Panel Grid and Borders
+ 
+By default, REAKTOR places controls on a 4 pixel grid. This can be useful for creating clean
+layouts with the built-in panel elements, but when working with custom skins, this restriction
+could be undesirable.
+To turn the 4-pixel grid off:
+Creating and Customizing Interfaces
+The Panel Grid and Borders
+ 
+REAKTOR 6 - Building In Primary - 156
+
+
+--- Page 157 ---
+
+1.
+Click on Settings in the menu bar.
+2.
+Click on Snap to Grid to uncheck this option.
+⇨You will now be able to place controls anywhere on the panel.
+Most controls have their position on the grid calculated from the top left corner of the
+element; however the Knob element is measured from its center.
+Borders
+The borders at the edges of an Instrument panel can be adjusted. This way you can define how
+close panel elements can be placed to the edges.
+The thickness of the borders can be adjusted under BORDERS in the VIEW tab of the Properties.
+Creating and Customizing Interfaces
+The Panel Grid and Borders
+ 
+REAKTOR 6 - Building In Primary - 157
+
+
+--- Page 158 ---
+
+BORDERS in the VIEW Properties
+10.7
+Layering Panel Elements
+ 
+Sometimes it is necessary to layer one panel element on top of another; a common example
+would be placing a Mouse Area Module on top of a Multi Display.
+Layering Using Macros
+When layering panel elements, REAKTOR uses the Macro order to decide which element
+should be placed on top of the others.
+So, in the example case of placing a Mouse Area on top of a Multi Display, you would need to:
+1.
+Create a Macro and place a Mouse Area Module inside it.
+Creating and Customizing Interfaces
+Layering Panel Elements
+ 
+REAKTOR 6 - Building In Primary - 158
+
+
+--- Page 159 ---
+
+2.
+Create a new Macro inside the current Macro.
+3.
+Place a Multi Display inside the new Macro.
+⇨Because the Multi Display is contained in a Macro one level below the Mouse Area, it will
+be placed under of the Mouse Area on the panel.
+This technique is used in the ↑6, Advanced Step Sequencer ↑6, Advanced Step Se-
+quencer tutorial.
+Layering within Macros
+Every Panel Element has a Layer property in the VISIBLE section of the View tab.
+The Layer Property of a Knob
+With this option you can specify the layering of Elements within a Macro.
+Creating and Customizing Interfaces
+Layering Panel Elements
+ 
+REAKTOR 6 - Building In Primary - 159
+
+
+--- Page 160 ---
+
+There are seven available layers that you can assign to the elements, with layer 0 being the
+lowest layer, and layer 6 being the top layer.
+Sub-Macros are also assigned a layer, with all of the Elements contained within that Macro be-
+ing placed in the assigned layer in the parent Macro, and then sorted by their own layering set-
+tings.
+So the previous layering example could also be accomplished using this technique:
+1.
+Create a Mouse Area Module and a Multi Display Module.
+2.
+In the Properties of the Mouse Area, navigate to the View tab.
+3.
+Set the Layer property of the Mouse Area to 5.
+4.
+In the Multi Display Module, set the Layer property to 3.
+⇨The Mouse Area will be placed on top of the Multi Display.
+Editing Layering from the Panel
+All controls and Macros have a secondary menu which can be accessed by holding [Ctrl] +
+[Shift] ([Cmd] + [Shift] on OS X) while right-clicking.
+The Secondary Context Menu
+From this menu you can select several layering commands.
+Creating and Customizing Interfaces
+Layering Panel Elements
+ 
+REAKTOR 6 - Building In Primary - 160
+
+
+--- Page 161 ---
+
+1.
+To view these commands, move the mouse over the Panel Element’s name in the menu.
+The available layering commands are:
+•
+Move to Top Layer: sets the selected Module’s Layer Property to 6
+•
+Move One Layer Up: moves the selected Module up one layer
+•
+Move One Layer Down: moves the selected Module down one layer
+•
+Move to Bottom Layer: sets the selected Module’s Layer Property to 0
+If you do not specify the order of Modules within a Macro, REAKTOR will give top level
+priority to whichever Module is currently selected. This means that the panel element on
+top could change during use, which is often undesirable.
+10.8
+Stacked Macros
+ 
+Stacked Macros are a special kind of Macro that allows you to dynamically show and hide pan-
+el elements.
+Each Macro placed inside a Stacked Macro can be considered as a page or tab on the panel.
+You can only view the panel elements contained in one of these Macros at any one time.
+How you select which Macro is currently on display is by using the Panel Index Module.
+Creating and Customizing Interfaces
+Stacked Macros
+ 
+REAKTOR 6 - Building In Primary - 161
+
+
+--- Page 162 ---
+
+10.8.1
+Using Stacked Macros
+ 
+This short guide will show you how to use a Stacked Macro to create multiple pages of con-
+trols.
+Firstly, you will need to create a few items in the structure:
+1.
+In an empty Ensemble, create a Stacked Macro. It is located in the Panel submenu of the
+Built-In Module menu.
+2.
+Enter the Stacked Macro and create a Panel Index Module.
+3.
+Create 3 empty Macros inside the Stacked Macro and call them Page 1, Page 2, and Page
+3.
+4.
+Inside the Page 1 Macro, create a Knob Module.
+5.
+Inside the Page 2 Macro, create a Fader Module.
+6.
+Inside the Page 3 Macro, create a Button Module.
+When you return to the panel view, you should only be able to see the knob you created in the
+Page 1 Macro.
+Creating and Customizing Interfaces
+Stacked Macros
+ 
+REAKTOR 6 - Building In Primary - 162
+
+
+--- Page 163 ---
+
+The Ensemble Panel
+The Fader and Button are hidden because they are in different Macros.
+To select between these Macros we need to create a control:
+1.
+Enter the Ensemble structure and create a Knob.
+2.
+In the Function tab of the Knob Properties, set the Min value of the knob to 0 and the
+Max value of the knob to 2.
+3.
+Set the Step Size to 1.
+4.
+Rename the knob to "View".
+5.
+Connect the Knob to the Stacked Macro.
+Creating and Customizing Interfaces
+Stacked Macros
+ 
+REAKTOR 6 - Building In Primary - 163
+
+
+--- Page 164 ---
+
+6.
+Inside the Stacked Macro, connect the In Port from the View knob to the input of the
+Panel Index Module.
+⇨Upon returning to the panel view, you should be able to change which Macro, and therefore
+which control type, is displayed by using the View knob.
+Note that when using the View knob, the order of the Macros displayed is the same as
+the order in which they were created.
+When using the Stacked Macro you might notice that the Macro frame is much larger than re-
+quired for the controls you have placed inside it. This is because a Stacked Macro may contain
+several Macros with different numbers and sizes of elements, and it would not be ideal for the
+frame to constantly resize as the user browses through the Macros.
+1.
+The size of the Stacked Macro frame is set in the View tab of the Stacked Macro Proper-
+ties.
+Creating and Customizing Interfaces
+Stacked Macros
+ 
+REAKTOR 6 - Building In Primary - 164
+
+
+--- Page 165 ---
+
+10.9
+Grouping Panel Elements
+ 
+By default, if you want to move the Panel Elements contained within a Macro as one, you need
+to click and drag on the Macro frame. This was fine for some circumstances, but if the Macro
+frame is not being used, it can be awkward moving back and forth between visibility settings
+for the Macro frame.
+To make things easier, all Macros have a Group Panel Elements option, located in the VISIBLE
+section of the View tab, which allows you to group the Panel elements within a Macro and
+move them together as one.
+The Group Panel Elements Property
+When Group Panel Elements is active, you can move all Panel elements contained within the
+Macro by clicking and dragging only one of the elements on the Panel. This is especially useful
+for layered elements or elements that should be treated as one thing (for example, the modu-
+latable knobs in the REAKTOR BLOCKS framework).
+Note that if you have nested Macros, the elements of sub-Macros are not automatically group-
+ed with elements of the parent Macro.
+Note that if you have nested Macros, the elements of sub-Macros are not automatically
+grouped with elements of the parent Macro.
+A context menu is available in the Macro panel element that allows you to group and un-group
+all Macros that are nested within a Macro.
+1.
+To access this menu, hold [Ctrl] + [Shift] ([Cmd] + [Shift] on OS X) while right-clicking on
+the Macro header.
+Creating and Customizing Interfaces
+Grouping Panel Elements
+ 
+REAKTOR 6 - Building In Primary - 165
+
+
+--- Page 166 ---
+
+To Group panel elements of all nested Macros:
+1.
+On the Panel View, hold [Ctrl] + [Shift] ([Cmd] + [Shift] on OS X) and right-click on the
+parent Macro header.
+2.
+Highlight the parent Macro’s name in the menu to display the options sub-menu for the
+Macro.
+3.
+Select Group Panel Elements Recursivly.
+⇨This will activate the Group Panel Elements property of the parent Macro and all Macros
+contained within it.
+If you want to ungroup all Panel Elements:
+1.
+Open the menu again.
+Creating and Customizing Interfaces
+Grouping Panel Elements
+ 
+REAKTOR 6 - Building In Primary - 166
+
+
+--- Page 167 ---
+
+2.
+Navigate to the Macro’s sub menu and select Ungroup Panel Elements Recursivly.
+⇨This will deactivate the Group Panel Elements property for the parent Macro and all Macros
+within it.
+10.10 Panel Ports
+ 
+Ports of Instruments and Macros can be made visible and used on the panel. This way you can
+add modular-style patching to your Instrument.
+Other than REAKTOR Racks, Ensembles do not store connections made between ports
+in the host project (when using REAKTOR as a plug-in). The same applies to Snapshots.
+Connections must be saved with the Ensemble.
+Creating and Customizing Interfaces
+Panel Ports
+ 
+REAKTOR 6 - Building In Primary - 167
+
+
+--- Page 168 ---
+
+Ports of an Instrument and a Macro made visible on the panel
+Connections made between panel ports have the same functionality as connections made in
+the Structure View and are mirrored accordingly.
+Creating and Customizing Interfaces
+Panel Ports
+ 
+REAKTOR 6 - Building In Primary - 168
+
+
+--- Page 169 ---
+
+Connections are mirrored on the panel and in the Structure View
+You can use the A and B view of Instruments to create views with and without ports.
+When using multiple Instruments in the same Ensemble, the View menu allows you to
+conveniently switch between the A and B view of all Instruments at the same time. For
+more information, refer to ↑10.3, A/B Views.
+Creating Panel Ports
+To make a port visible on the panel:
+1.
+Click on the port to select it.
+2.
+Go to the Properties in the side pane and open the View tab.
+Creating and Customizing Interfaces
+Panel Ports
+ 
+REAKTOR 6 - Building In Primary - 169
+
+
+--- Page 170 ---
+
+3.
+Click on the checkbox for On in the section called VISIBLE.
+⇨The port is visible on the panel.
+Macros and Instruments containing panel ports must be placed on the same structural
+level in order to allow for interconnectivity.
+The following additional settings are available for panel ports in the VIEW Properties:
+•
+VISIBLE / Show Label: Shows or hides the label of the port.
+•
+VISIBLE / Layer: Places the port on one of the seven visuals layers on the panel.
+•
+STYLE / Image: Allows for customization of the port’s appearance.
+•
+COPY / Copy A->B, Copy B->A: Copies the port between A and B views.
+Creating and Customizing Interfaces
+Panel Ports
+ 
+REAKTOR 6 - Building In Primary - 170
+

@@ -1,0 +1,360 @@
+--- Page 39 ---
+
+5
+Snapshots and Presets
+ 
+Snapshots and Presets enable you to store and recall the settings of an Instrument's parame-
+ters.
+The basics of storing and recalling Snapshots and Presets are covered in the REAKTOR 6 Get-
+ting Started document. This following section introduces you to more advanced Snapshot tech-
+niques and tools, available from the Snapshot tab in the Side Pane.
+►
+Click on the list icon to view the Presets tab in the Side Pane.
+5.1
+Snapshots for Multiple Instruments
+ 
+Since an Ensemble can contain multiple Instruments, and Instruments can have their own
+Snapshots, there needs to be a way of selecting which list of Snapshots is displayed in the
+Snapshot tab.
+►
+Click on the menu at the top of the Snapshot tab to select an Instrument.
+→
+The Snapshots from the selected Instrument will be displayed in the Snapshot list.
+The Ensemble can also have Snapshots, and so it also has an entry in this menu. The Ensem-
+ble entry is always located at the top and is marked with the prefix Ens - .
+The Snapshot tab can also follow your Instrument selection automatically:
+1.
+Open the menu at the top of the Snapshot list.
+Snapshots and Presets
+Snapshots for Multiple Instruments
+ 
+REAKTOR 6 - Diving Deeper - 39
+
+
+--- Page 40 ---
+
+2.
+Select the Follow instrument selection option.
+With this option active, if you edit some parameters in an Instrument, that Instrument's Snap-
+shots will be displayed in the Snapshot list, and the Snapshot list will always display the Snap-
+shots of the last Instrument you interacted with via the mouse.
+5.2
+Snapshot Master
+ 
+If an Ensemble contains multiple Instruments, Snapshots for all of the included Instruments
+can be recalled at once from the Snapshot Master.
+Recalling a Snapshot from the Snapshot Master will recall the control values for all Instru-
+ments in the Ensemble and the Ensemble itself, including the selected Snapshots for each of
+the Instruments.
+By default the Snapshot Master is the Ensemble.
+The Snapshots of the Snapshot Master are the Snapshots that are used to populate the Snap-
+shot menu in the Toolbar.
+Snapshots and Presets
+Snapshot Master
+ 
+REAKTOR 6 - Diving Deeper - 40
+
+
+--- Page 41 ---
+
+The Snapshot menu in the Toolbar
+5.2.1
+Changing the Snapshot Master
+ 
+The Snapshot Master can be changed from the Ensemble to any of the Instruments inside it.
+To change the Snapshot Master:
+1.
+Select the Ensemble.
+2.
+Open the Ensemble Properties.
+3.
+Select the FUNCTION tab.
+4.
+Find the section called SNAPSHOTS at the bottom of the Properties.
+5.
+In this section, click on the Select Master menu.
+Snapshots and Presets
+Snapshot Master
+ 
+REAKTOR 6 - Diving Deeper - 41
+
+
+--- Page 42 ---
+
+6.
+Select the Instrument you wish to use as the Snapshot Master from this menu and click
+on it.
+→
+The selected Instrument is now the Snapshot Master for the Ensemble.
+5.3
+Bank Name
+ 
+User Presets for Ensembles are located in the following directories:
+•
+On Windows: C:\Users\<User>\Documents\Native Instruments\User Content\Reaktor
+\<Bank Name> \
+•
+On OS X: Macintosh HD:\Users\<User>\Documents\Native Instruments\User Content\Re-
+aktor\<Bank Name> \
+The Bank Name defines the folder into which Presets will be saved. By default this will be the
+Ensemble name, but you can change that if you wish.
+To change the Bank name:
+1.
+Select the Ensemble and open the Properties tab.
+2.
+Navigate to the Function sub-tab.
+3.
+Scroll to the area called BANK PATH.
+Snapshots and Presets
+Bank Name
+ 
+REAKTOR 6 - Diving Deeper - 42
+
+
+--- Page 43 ---
+
+4.
+Enter the name you wish to use in the Bank property.
+→
+The Bank name will be used as the folder name used by Presets for the Ensemble.
+5.4
+Storing and Editing Snapshots
+ 
+Storing and editing snapshots can be done from the Snapshots tab in the Side Pane.
+In order to store and edit Snapshots, you need to have REAKTOR in Edit Mode. See sec-
+tion ↑2.2, Edit Mode ↑2.2, Edit Mode for more information.
+At the bottom of the Snapshot pane are three buttons for storing Snapshots.
+The Snapshot Storage Buttons
+•
+Add: Creates a new Snapshot at the end of the Snapshot list.
+•
+Store: Overwrites the currently highlighted Snapshot.
+•
+Insert: Creates a new Snapshot directly after the currently highlighted Snapshot, moving
+any other Snapshots down one slot in order to make space.
+Snapshots are stored in the Ensemble, so you will need to save the Ensemble or Instru-
+ment in order to make changes to the Snapshots permanent.
+Snapshots and Presets
+Storing and Editing Snapshots
+ 
+REAKTOR 6 - Diving Deeper - 43
+
+
+--- Page 44 ---
+
+If you want to delete a Snapshot, you can do this in two ways:
+►
+Select the Snapshot you wish to delete and press the [Delete] key on your keyboard.
+Alternatively…
+1.
+Right-click on the Snapshot you wish to delete to open the context menu.
+2.
+Select Delete.
+You can select multiple Snapshots by holding the [Shift] key while clicking on the Snap-
+shots.
+►
+You can rename a Snapshot by double-clicking on its current name and typing in a new
+name.
+5.5
+Re-ordering Snapshots
+ 
+You can re-arrange Snapshots in a Bank in a number of ways:
+►
+Double-clicking on the Snapshot number and entering a new number will move the Snap-
+shot to that location, and displace any Snapshots that may be in the way of that action.
+Snapshots and Presets
+Re-ordering Snapshots
+ 
+REAKTOR 6 - Diving Deeper - 44
+
+
+--- Page 45 ---
+
+►
+You can also right-click on any Snapshot in the Snapshot list and select the Sort and
+Compress option to automatically re-order the Snapshots so that no empty slots are left
+between them.
+Sorting Snapshots
+You can also re-organize the Snapshots without permanently re-ordering them:
+1.
+Right-click on any Snapshot to open the Snapshot context menu.
+2.
+Navigate to the Sort By entry to open the sorting sub-menu.
+3.
+Click on an option to select how you wish the Snapshots be organized.
+5.6
+Morph and Random
+ 
+REAKTOR gives you the ability to morph Snapshots, as well as randomize them.
+Snapshots and Presets
+Morph and Random
+ 
+REAKTOR 6 - Diving Deeper - 45
+
+
+--- Page 46 ---
+
+The Morph and Random controls are hidden by default.
+►
+To display the Snapshot Morph and Random controls, click on the Morph + Random ar-
+row at the very bottom of the Snapshot pane.
+The Snapshot Morph and Random Controls
+Morphing Snapshots
+The Snapshot morph feature allows you to blend the parameter values of two different Snap-
+shots.
+To use this feature, you must first select the two snapshots you want to blend.
+1.
+The selected Snapshot will automatically be selected as the first Snapshot, you will see it
+in the box on the left.
+2.
+To change this, simply select a new Snapshot as normal.
+3.
+To select the second Snapshot, click on the box to the right of the Morph area (above the
+Rnd. Merge button). This will set the text in the box to Select …
+4.
+While this text is displayed, select a Snapshot as normal.
+►
+With the two Snapshots selected, blend between them by clicking and dragging on the
+blue slider.
+Snapshots and Presets
+Morph and Random
+ 
+REAKTOR 6 - Diving Deeper - 46
+
+
+--- Page 47 ---
+
+Note that when you move the Morph slider past the 50% mark, selecting a new Snapshot will
+place that Snapshot in the right box.
+Binary controls, like buttons and switches, will not blend with the Morph slider, because they
+can only ever be on or off with no states in between. Instead you select one of the Snapshots
+whose settings will be used for any binary controls in the instrument. By default this is the first
+Snapshot.
+►
+Clicking on the buttons to the left and right of the morph slider will select which Snap-
+shot will be used for button and switch settings.
+The Morph slider has a blend time, which smoothes the movement of the slider.
+►
+To set the Morph time, click and drag vertically on the numeric value between the two
+Snapshot boxes. This will set the smoothing time in seconds.
+You can also set the Morph time by double clicking on this value and entering a specific
+number (from 0 to 60)
+Randomizing Snapshots
+The bottom row in the Morph + Random area contains the Snapshot Randomization controls.
+The Snapshot Randomization Controls
+There are two buttons that randomize the parameter settings of the Instrument in different
+ways:
+•
+Randomize: triggers the randomization of the values based on their current settings.
+•
+Rnd Merge: randomizes each parameter by blending between the two Morphing Snap-
+shots. Each parameter is blended by its own random amount, so this technique produces
+results not possible when doing a straight morph using the Morph slider.
+Snapshots and Presets
+Morph and Random
+ 
+REAKTOR 6 - Diving Deeper - 47
+
+
+--- Page 48 ---
+
+►
+You can set the amount of randomization by editing the value between these buttons, ei-
+ther by clicking and dragging vertically, or by double-clicking and entering a specific val-
+ue (from 0 to 100).
+5.7
+Snapshot Banks
+ 
+The upper half of the Snapshot tab contains the list of Snapshot Banks.
+►
+To display the Snapshot Banks, click on the Snapshot icon labelled Embedded at the top
+of the Snapshot tab.
+Snapshot Banks from ROUNDS
+A Snapshot Bank can contain up to 128 Snapshots, and are a useful way to categorize your
+Snapshots.
+Snapshot Banks appear as sub-menu categories in the Instrument Snapshot Menu, and in the
+Snapshot Menu in REAKTOR's Toolbar.
+Snapshots and Presets
+Snapshot Banks
+ 
+REAKTOR 6 - Diving Deeper - 48
+
+
+--- Page 49 ---
+
+Snapshot Banks as Snapshot Sub-menus
+►
+You can select a Bank by clicking on its name in the Snapshot tab.
+→
+The Snapshot table will display the names of the Snapshots in the selected tab.
+This action will not load a Snapshot, so you can browse the contents of the Banks before
+loading a new Snapshot.
+5.7.1
+Creating and Editing Snapshot Banks
+ 
+The options for creating and editing Snapshot Banks are all found by right-clicking on the
+Snapshot Banks.
+Snapshots and Presets
+Snapshot Banks
+ 
+REAKTOR 6 - Diving Deeper - 49
+
+
+--- Page 50 ---
+
+Editing Options for Banks
+The options available are:
+•
+New Bank: creates a new empty Snapshot Bank and places it in the first available Snap-
+shot Bank slot.
+•
+Save Bank: opens a dialog window, which allows you to save the Snapshot Bank as an ex-
+ternal file. You can use this function to export a Snapshot Bank when you want to share
+it.
+•
+Load Bank: opens a dialog window, from where you can browse your file system for Snap-
+shot Banks.
+Loading a Snapshot Bank will overwrite the contents of the currently selected Snapshot
+Bank, so it is advised to create a new empty bank before loading a Snapshot Bank.
+•
+Clone Bank: creates a duplicate of the selected Snapshot Bank, including duplicates of
+all the Snapshots contained within.
+•
+Init Bank: initializes the Snapshot Bank, deleting all of its Snapshots.
+•
+Delete Bank: removes the Snapshot Bank and deletes its contents.
+•
+Rename Bank: enables renaming of the Snapshot Bank. After selecting this option, type
+in the new name for the bank, then press [enter] / [return] to finish editing.
+Snapshots and Presets
+Snapshot Banks
+ 
+REAKTOR 6 - Diving Deeper - 50
+
+
+--- Page 51 ---
+
+►
+You can also rename a Snapshot Bank by selecting it, pressing the [enter] / [return] key
+on your keyboard, and then typing a new name.
+5.8
+Default Values
+ 
+All parameters that can be stored in a Snapshot have a default value. Generally this is a neu-
+tral or middle setting. For example, an EQ gain slider would have a default setting of 0dB (no
+gain change).
+►
+When in Play Mode, you can set a control to its default value by double-clicking on it.
+When in Edit Mode, double-clicking opens the control's Properties, so there is another way to
+set it to its default value:
+1.
+Right-click ([ctrl] + click on OSX) on the control to open a menu.
+2.
+Select Set to Default from the menu.
+→
+The control will now be set to its default value.
+Snapshots and Presets
+Default Values
+ 
+REAKTOR 6 - Diving Deeper - 51
+

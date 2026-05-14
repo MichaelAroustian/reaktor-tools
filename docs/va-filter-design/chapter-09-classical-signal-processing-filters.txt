@@ -1,0 +1,6997 @@
+--- Page 321 ---
+
+Chapter 9
+Classical signal processing
+filters
+In Chapter 8 we have introduced, among other ideas, Butterworth ﬁlters of
+the 1st kind. In this chapter we are going to construct further similar ﬁlter
+types by allowing the amplitude response to have ripples of equal amplitude
+(a.k.a. equiripples) in the pass- or stop-band, or in both. These ﬁlters as well
+as Butterworth ﬁlters of the 1st kind are the ﬁlter types used in classical signal
+processing. They have somewhat less prominent role in music DSP, therefore
+we ﬁrst concentrated on other ﬁlter types. Still, they are occasionally useful.
+9.1
+Riemann sphere
+Before we begin discussing equiripple ﬁlters we need to go into some detail of
+complex algebra, concerning the Riemann sphere and some derived concepts.
+The key feature of the Riemann sphere is that inﬁnity is treated like any other
+point, and this (among with some other possibilities arising out of using the
+Riemann sphere) will be quite helpful in our discussions. It seems there are a
+number of slightly diﬀerent conventions regarding the Riemann sphere. We are
+going to introduce now one particular convention which will be most useful for
+our purposes.1
+Given a complex plane w = u+jv we introduce the third dimension, thereby
+embedding the plane into the 3-dimensional space (x, y, z). The x and y axes
+coincide with u and v axes, the z axis is directed upwards. The Riemann sphere
+will be the sphere of a unit radius x2 + y2 + z2 = 1 (Fig. 9.1).
+Thus, the
+intersection of the Riemann sphere with the complex plane is at the “equator”
+which in terms of w is simply the complex unit circle |w| = 1. The center of
+projection will be at the “north pole” (0, 0, 1) of the Riemann sphere, which
+thereby is the image of w = ∞. Respectively, the complex unit circle |w| = 1
+coincides with its own projection image on the Riemann sphere.
+We will denote and refer to the points on the Riemann sphere by the complex
+values that they represent. E.g. the “north pole” will be simply denoted as ∞,
+1The general discussion of the idea of the Riemann sphere is not a part of this book.
+Readers unfamiliar with this concept are advised to consult the respective literature.
+309
+
+
+--- Page 322 ---
+
+310
+CHAPTER 9. CLASSICAL SIGNAL PROCESSING FILTERS
+∞
+1
+−j
+w = u + jv
+x
+y
+z
+Figure 9.1: Riemann sphere.
+the “south pole” as 0, the point on the “zero meridian” as 1, the point on the
+90◦meridian as j etc. Some of these points are shown on Fig. 9.1.
+Real Riemann circle
+The 2-dimensional subspace (x, z) of the (x, y, z) space in Fig. 9.1 contains just
+the real axis u of the complex plane and the real axis’s image on the Riemann
+sphere which is a circle of unit radius x2 + z2 = 1 (Fig. 9.2). It will be intuitive
+to refer to this circle as the real Riemann circle.
+ϕ
+ϕ
+2
+u
+(x, z)
+x
+z
+1
+0
+∞
+−1
+Figure 9.2: Real Riemann circle. The 0, 1, ∞, −1 labels denote
+the points on the circle which correspond to these values.
+
+
+--- Page 323 ---
+
+9.1. RIEMANN SPHERE
+311
+We can use the polar angle ϕ (deﬁned as shown in Fig. 9.2) as the coordinate
+on the Riemann circle. One of the reasons for this choice of deﬁnition of ϕ are
+the following convenient mappings between u and ϕ:
+u = 0
+⇐⇒ϕ = 2πn
+u = 1
+⇐⇒ϕ = π
+2 + 2πn
+u = −1 ⇐⇒ϕ = −π
+2 + 2πn
+u = ∞
+⇐⇒ϕ = π + 2πn
+Also, if we restrict ϕ to (−π, π), then
+u = 0 ⇐⇒ϕ = 0
+u > 0 ⇐⇒ϕ > 0
+u < 0 ⇐⇒ϕ < 0
+From Fig. 9.2, using some basic geometry it’s not diﬃcult to ﬁnd that u and ϕ
+are related as
+u = tan ϕ
+2
+(9.1)
+and that
+u =
+x
+1 −z
+(9.2a)
+By introducing the “homogeneous” coordinate ¯z = 1 −z the equation (9.2a)
+can be rewritten in a more intuitive form:
+u = x/¯z
+(9.2b)
+Conversely, using Fig. 9.2 and equation (9.1) we have
+x = sin ϕ =
+2u
+u2 + 1
+(9.3a)
+z = −cos ϕ = u2 −1
+u2 + 1
+(9.3b)
+¯z =
+2
+u2 + 1
+(9.3c)
+Symmetries on the real Riemann circle
+Certain symmetries between a pair of points on the real axis correspond to
+symmetries on the real Riemann circle. Speciﬁcally, from (9.1) we obtain:
+u1 + u2 = 0
+⇐⇒ϕ1 + ϕ2 = 2πn
+(9.4a)
+u1u2 = 1
+⇐⇒ϕ1 + ϕ2 = π + 2πn
+(9.4b)
+u1u2 = −1 ⇐⇒ϕ1 −ϕ2 = π + 2πn
+(9.4c)
+or, by restricting ϕ1 and ϕ2 to [−π, π]
+u1 + u2 = 0
+⇐⇒ϕ1 + ϕ2 = 0
+(9.5a)
+u1u2 = 1
+⇐⇒ϕ1 + ϕ2
+2
+= ±π
+2
+(9.5b)
+u1u2 = −1 ⇐⇒ϕ1 −ϕ2 = ±π
+(9.5c)
+Fig. 9.3 illustrates.
+
+
+--- Page 324 ---
+
+312
+CHAPTER 9. CLASSICAL SIGNAL PROCESSING FILTERS
+1
+∞
+−1
+0
+1/u
+u
+−1/u
+−u
+Figure 9.3: Symmetries of the values on the real Riemann circle.
+Coordinate relationships for the Riemann sphere
+The equations (9.2) and (9.3) generalize to the 3-dimensional space (x, y, z)
+containing the complex plane w = u+jv and the Riemann sphere x2+y2+z2 = 1
+in an obvious way as:
+u =
+x
+1 −z = x/¯z
+(9.6a)
+v =
+y
+1 −z = y/¯z
+(9.6b)
+w = u + jv = x + jy
+¯z
+(9.6c)
+and
+x =
+2u
+|w|2 + 1
+(9.7a)
+y =
+2v
+|w|2 + 1
+(9.7b)
+z = |w|2 −1
+|w|2 + 1
+(9.7c)
+¯z =
+2
+|w|2 + 1
+(9.7d)
+(9.7e)
+The equation (9.1) can be generalized if we restrict ϕ to [0, π], in which case
+|w| = tan ϕ
+2
+(9.8)
+In principle we could also introduce the spherical azimuth angle, which is simply
+equal to arg w, but we won’t do it in this book.
+Imaginary Riemann circle
+The (y, z) subspace of the (x, y, z) space in Fig. 9.1 contains just the imaginary
+axis v of the complex plane and the imaginary axis’s image on the Riemann
+sphere which is a circle of unit radius x2 + y2 = 1. We will refer to this circle
+as the imaginary Riemann circle.
+
+
+--- Page 325 ---
+
+9.2. ARCTANGENT SCALE
+313
+There are no essential diﬀerences to the real Riemann circle.
+The same
+illustrations and formulas hold, except that we should use v in place of u. Fig. 9.4
+provides a simple illustration of the circla and its symmetries. Note that the
+reciprocal symmetries change sign if expressed in terms of the complex variable
+w, since 1/jv = −j/v.
+j
+∞
+−j
+0
+−1/w
+w
+1/w
+−w
+Figure 9.4: Symmetries of the values on the imaginary Riemann
+circle, where w = jv, v = Im w.
+9.2
+Arctangent scale
+From the Riemann circle one can derive a special scale which will be useful
+for plotting function graphs with interesting behavior around inﬁnity.
+One
+commonly known special scale is a logarithmic scale x′ = log x which maps
+the logical values x to the geometric positions x′ on the plot.
+In a similar
+fashion, we introduce the arctangent scale
+x′ = 2 arctan x
+(9.9)
+which is using the polar angle ϕ of the real Riemann circle as the geometric
+position x′. It is easy to notice that (9.9) is equivalent to (9.1), where we have
+x in place of u and x′ in place of ϕ.
+The actangent scale warps the entire real axis (−∞, +∞) into the range
+(−π, π). Due to the periodic nature of the Riemann circle’s polar angle it is not
+unreasonable to require the scale x′ to be periodic as well, in which case we can
+also support the value x = ∞which will map to π + 2πn.
+Treating the inﬁnity like any other point, the arctangent scale provides a
+convenient means for plotting the functions where the range of the values of
+interest includes inﬁnity. E.g. we could plot the graph of the cosecant function
+y = csc x = 1/ sin x using the arctangent scale for the function’s value axis, as
+illustrated by Fig. 9.5
+Symmetries in the arctangent scale
+The symmetries of a graph plotted in the arctangent scale are occurring in agree-
+ment with Riemann circle symmetries (9.4) and (9.5) (illustrated in Fig. 9.3).
+Speciﬁcally:
+1. Mutually opposite values are symmetric with respect to points 0 and ∞.
+
+
+--- Page 326 ---
+
+314
+CHAPTER 9. CLASSICAL SIGNAL PROCESSING FILTERS
+x
+y
+π
+2
+−π
+2
+π
+−π
+3π
+2
+−3π
+2
+1
+−1
+∞
+−1
+0
+Figure 9.5: Graphs of y = sin x (dashed) and y = csc x = 1/ sin x
+(solid) using arctangent scale for the ordinate.
+2. Mutually reciprocal values are symmetric with respect to points 1 and −1.
+3. Values whose product is −1 map are spaced by the distance equal to the
+half of the arctangent scale’s period, that is e.g. to the distance between
+−1 and 1 or between 0 and ∞.
+One can observe all of these properties if Fig. 9.5, where the third property
+can be observed between the csc x and the half-period-shifted sin x.
+9.3
+Rotations of Riemann sphere
+We are going to introduce two special transformations of the complex plane:
+ρ+1(w) = 1 + w
+1 −w
+(9.10a)
+ρ−1(w) = w −1
+w + 1
+(9.10b)
+where w ∈C∪∞. It is easy to check by direct substitution that ρ−1(ρ+1(w)) =
+ρ+1(ρ−1(w)) = w, that is the transformations ρ1 and ρ−1 are each other’s
+inverses.2 As we shall see, ρ±1 are simply rotations of the Riemann sphere by
+90◦in two opposite directions.
+Letting w = u + jv where u and v are the real and imaginary parts of w, we
+have
+w′ = u′ + jv′ = ρ+1(w) = 1 + w
+1 −w = 1 + (u + jv)
+1 −(u + jv) = (1 + u) + jv)
+(1 −u) + jv =
+=
+ (1 + u) + jv
+ (1 −u) + jv
+
+ (1 −u)2 + v2
+= (1 −u2 −v2) + 2jv
+1 + u2 + v2 −2u
+= (1 −|w|2) + 2jv
+1 + |w|2 −2u
+That is
+u′ =
+1 −|w|2
+1 + |w|2 −2u
+2One could also notice that (9.10) are very similar to the bilinear transform and its inverse,
+where the latter two have an additional scaling by T/2.
+
+
+--- Page 327 ---
+
+9.3. ROTATIONS OF RIEMANN SPHERE
+315
+v′ =
+2v
+1 + |w|2 −2u
+On the other hand,
+|w′|2 =
+
+1 + w
+1 −w
+
+2
+= |1 + w|2
+|1 −w|2 = (1 + u)2 + v2
+(1 −u)2 + v2 = 1 + |w|2 + 2u
+1 + |w|2 −2u
+and
+|w′|2 + 1 = (1 + |w|2 + 2u) + (1 + |w|2 −2u)
+1 + |w|2 −2u
+= 2
+1 + |w|2
+1 + |w|2 −2u
+from where by (9.7d)
+¯z′ =
+2
+|w′|2 + 1 = 1 + |w|2 −2u
+1 + |w|2
+Then, using (9.7) we obtain
+x′ = ¯z′u′ = 1 −|w|2
+1 + |w|2 = −z
+y′ = ¯z′v′ =
+2v
+1 + |w|2 = y
+z′ = 1 −¯z′ = (1 + |w|2) −(1 + |w|2 −2u)
+1 + |w|2
+=
+2u
+1 + |w|2 = x
+That is x′ = −z, y′ = y, z′ = x which is simply a rotation by 90◦around the
+y axis in the direction from the (positive) x axis towards the (positive) z axis.
+Thus ρ+1 simply rotates the Riemann sphere around the imaginary axis of the
+complex plane w by 90◦in the direction from 1 to ∞, or, which is the same,
+in the direction from 0 to 1 (where by 0, 1 and ∞we mean the points on the
+Riemann sphere which are the projection images of w = 0, w = 1 and w = ∞
+respectively). The points ±j are thereby untouched, which can be also seen by
+directly evaluating ρ+1(±j) = ±j. The transformation ρ−1 being the inverse of
+ρ+1 simply rotates in the opposite direction.
+In terms of the real Riemann circle ρ±1 clearly correspond to a counterclock-
+wise (for ρ+1) or clockwise (for ρ−1) rotation by 90◦(Fig. 9.6).3 Respectively,
+in the arctangent scale they correspond to shifts by a quarter of the arctangent
+scale’s period.
+The imaginary Riemann circle is rotated into the unit circle |w′| = 1, which is
+its own image on the Riemann sphere. Therefore for ρ+1 the polar angle ϕ from
+Fig. 9.2 becomes the polar angle in the complex plane (since ϕ = 0 ⇐⇒w = 0
+and since arg ρ+1(0) = arg 1 = 0), therefore ϕ = arg ρ+1(w) and by (9.1) we
+have
+ρ+1
+
+j tan ϕ
+2
+
+= ejϕ
+This can also be veriﬁed by direct substitution, where it’s easier to use the
+inverse transformation:
+ρ−1(ejϕ) = = ejϕ −1
+ejϕ + 1 = ejϕ/2 −e−jϕ/2
+ejϕ/2 + e−jϕ/2 =
+3This is also the reason for the notation ρ+1: the subscript simply indicates the result of
+the transformation of w = 0.
+
+
+--- Page 328 ---
+
+316
+CHAPTER 9. CLASSICAL SIGNAL PROCESSING FILTERS
+1
+∞
+−1
+0
+Figure 9.6: Transformation of the real Riemann circle by ρ+1.
+= j ejϕ/2 −e−jϕ/2
+2j
+·
+2
+ejϕ/2 + e−jϕ/2 = j tan ϕ
+2
+For ρ−1 the polar angle ϕ gets mapped into arg ρ−1(w) = π −ϕ. Conversely a
+polar angle equal to π −ϕ will be mapped into arg ρ−1(w) = ϕ, thus
+ejϕ = ρ−1
+
+j tan π −ϕ
+2
+
+= ρ−1
+
+j tan
+π
+2 −ϕ
+2
+
+= ρ−1
+
+j
+tan ϕ
+2
+
+Summing up:
+ρ+1
+
+j tan ϕ
+2
+
+= ejϕ
+(9.11a)
+ρ−1
+
+j
+tan ϕ
+2
+
+= ejϕ
+(9.11b)
+ρ−1
+ ejϕ
+= j tan ϕ
+2
+(9.12a)
+ρ+1
+ ejϕ
+=
+j
+tan ϕ
+2
+(9.12b)
+Note that (9.12) do not simply give the inverse versions of (9.11), but also reﬂect
+the fact the complex unit circle gets rotated into the imaginary Riemann circle.
+Symmetries
+The transformations of symmetries by ρ±1 can be derived in an intuitive way
+from the symmetries on the real Riemann circle and the arctangent scale and
+from the fact that these transformations are ±90◦rotations of the real Riemann
+circle or (equivalently) shifts of the arctangent scale by the scale’s quarter period,
+if we assume w ∈R ∪∞.
+Particularly, a ±90◦rotation of the real Riemann circle maps 0 and ∞to ±1
+and vice versa. Respectively, points on the Riemann circle which are symmetric
+relatively to 0 and ∞map to points symmetric relatively to ±1 and vice versa.
+Thus, mutually opposite values map to mutually reciprocal values and vice
+versa:
+ρ+1(w)ρ+1(−w) = 1
+(9.13a)
+
+
+--- Page 329 ---
+
+9.3. ROTATIONS OF RIEMANN SPHERE
+317
+ρ−1(w)ρ−1(−w) = 1
+(9.13b)
+ρ+1(w) + ρ+1(1/w) = 0
+(9.13c)
+ρ−1(w) + ρ−1(1/w) = 0
+(9.13d)
+Fig. 9.7 illustrates, where more properties are immediately visible. E.g. one
+could notice that ρ±1(w) are obtained by rotating w by ±90◦, therefore the
+results are 180◦apart, which means:
+ρ+1(w)ρ−1(w) = −1
+(9.14)
+or that rotating the opposite points ±w by 90◦in opposite directions produces
+opposite points:
+ρ±1(−w) = −ρ∓1(w)
+(9.15)
+etc.
+1
+∞
+−1
+0
+ρ+1(w) = ρ−1(1/w)
+ρ+1(−w) = ρ−1(−1/w)
+ρ+1(1/w) = ρ−1(−w)
+ρ+1(−1/w) = ρ−1(w)
+w
+−w
+1/w
+−1/w
+Figure 9.7: Symmetries of the transformations ρ±1 on the real
+Riemann circle, where they represent 90◦rotations.
+The formulas (9.13), (9.14) and other similarly obtained symmetry-related
+properties of ρ±1 work not only for w ∈R ∪∞but actually for any w ∈
+C ∪∞which can be veriﬁed algebraically. However, the interpretation of these
+symmetries in terms of the real Riemann circle obviously works only for w ∈
+R ∪∞.
+The imaginary Riemann circle gets rotated by ρ±1 into the complex unit
+circle, where the results of the two transformations are thereby symmetric rela-
+tively to the imaginary axis. Fig. 9.8 illustrates some of the symmetries arising
+out of this rotation. More illustrations of this kind can be created, particularly
+for the transformation of the values lying on the complex unit circle, but the
+ones we are already having should be suﬃcient for our purposes in this book.
+Unit circle rotations
+The Riemann sphere rotations ρ±1 can be described as rotations of the Riemann
+sphere around the imaginary axis or as rotations of the real Riemann circle.
+Similarly the Riemann sphere rotations around the vertical axis z can be thought
+of as rotations of the unit circle.
+Apparently, such rotations are simply achived by a multiplications of com-
+plex values by a unit-magnitude complex constant, where we are not restricted
+to rotations by multiples of 90◦.
+We won’t need a special notation for this
+
+
+--- Page 330 ---
+
+318
+CHAPTER 9. CLASSICAL SIGNAL PROCESSING FILTERS
+0
+j
+−1
+−j
+ρ+1(j tan ϕ) = ejϕ
+ρ+1(−j tan ϕ) = e−jϕ
+ρ+1
+
+j
+tan ϕ
+
+= −e−jϕ
+ρ+1
+
+−j
+tan ϕ
+
+= −ejϕ
+Figure 9.8: Symmetries of the results of the transformation ρ+1 of
+the imaginary axis (lying on the complex unit circle).
+transformation and will simply write
+w′ = aw
+(|a| = 1)
+Obviously
+|w′| = |w|
+arg w′ = arg w + arg a
+The rotations by +90◦and −90◦are simply multiplications by j and −j respec-
+tively.
+There is not much more to say in this respect as this rotation is pretty trivial.
+Imaginary rotations
+We could also wish to rotate the imaginary Riemann circle. We will denote the
+respective transformations as ρ±j, where the subscript, as with ρ±1, denotes the
+image of the zero after the transformation.
+We could rotate the imaginary circle by doing the three steps in succession:
+1. First, we rotate the Riemann sphere by 90◦around its “vertical” axis,
+thereby turning the imaginary Riemann circle into the real Riemann circle,
+where w = ±j is transformed into w = ±1 respectively, while 0 and ∞
+stay in place. Such rotation is simply achieved by multiplying w by −j.
+2. Now we apply ρ±1 to rotate the real circle.
+3. We convert the real circle back to the imaginary one by multiplying the
+rotation result by j.
+Therefore we simply have
+ρ±j(w) = jρ±1(−jw) = −jρ∓1(jw)
+(9.16)
+(where the second expression is obtained in the same way as the ﬁrst one, except
+that we rotate the Riemann sphere in the other direction, both vertically and
+horizontally).
+In order to distinguish between ρ±1 and ρ±j we could refer to the former as
+real rotations of the Riemann sphere and to the latter as imaginary rotations
+of the Riemann sphere.
+
+
+--- Page 331 ---
+
+9.4. BUTTERWORTH FILTER REVISITED
+319
+9.4
+Butterworth filter revisited
+In Chapter 8 we have developed the lowpass Butterworth ﬁlters of the 1st kind
+(also simply known as Butterworth ﬁlters) as a Butterworth transformation of
+the 1-pole lowpass ﬁlter, where we also mentioned that the tranditional deﬁni-
+tion of the Butterworth ﬁlter simply deﬁnes the (lowpass) Butterworth ﬁlter as
+a (stable) ﬁlter whose amplitude response is
+|H(jω)|2 =
+1
+1 + ω2N
+(ω ∈R)
+(9.17)
+Apparently both deﬁnitions are equivalent.
+We could generalize this idea by replacing ωN in (9.17) by some other poly-
+nomial function f(ω):
+|H(jω)|2 =
+1
+1 + f 2(ω)
+(ω ∈R)
+(9.18)
+The practical application of (9.18) essentially follows the steps of the But-
+terworth transformation of the 1st kind, which includes solving 1 + f 2 = 0
+to obtain the poles of |H(s)|2 and then discarding the right-semiplane poles,
+thereby eﬀectievely obtaining the desired transfer function H(s) expressed in
+the cascade form. Note that there are two implicit conditions which need to be
+fulﬁlled in order for this procedure to work:
+- There is the symmetry of the poles of |H(s)|2 with respect to the real axis:
+if s is a pole then so is s∗(where s∗may be the same pole as s if s is real).
+This is necessary in order for H(s) to be a real function of s.
+- There is the pairwise symmetry of the poles |H(s)|2 with respect to the
+imaginary axis: if s is a pole then −s∗is another pole (it must be another
+pole even if s = −s∗, in which case it simply means that the pole is
+duplicated).
+This guarantees that we can split the poles into the left-
+and right-semiplane halves with identical contributions to the amplitude
+response. Therefore by discarding the right-semiplane half of the poles,
+we eﬀectively go from |H(jω)|2 to |H(jω)|.
+We could expect that these properties will not be fulﬁlled for an arbitrary f(ω).
+However, let’s require that
+- The function f(ω) is a real function of ω.
+- The function f(ω) is odd or even.
+The readers can convince themselves that under these restrictions the poles of
+|H(s)|2 deﬁned by (9.18) will have the necessary symmetries with respect to the
+real and imaginary axes.
+Rational f(ω)
+We could allow f(ω) to be not just a polynomial but a rational function. In this
+case H(s) has not only poles, but also zeros at locations where f(ω) has poles
+and respectively the denominator of |H(jω)|2 turns to ∞, which means that
+both |H(jω)|2 and |H(jω)| turn to zero. In order to see that the multiplicities
+
+
+--- Page 332 ---
+
+320
+CHAPTER 9. CLASSICAL SIGNAL PROCESSING FILTERS
+of the zeros of H(s) are equal to the multiplicities of the respective poles of of
+f(ω) simply consider
+|H(jω)|2 =
+1
+1 + P 2
+1 (ω)
+P 2
+2 (ω)
+=
+P 2
+2 (ω)
+P 2
+1 (ω) + P 2
+2 (ω)
+Thus the set of zeros of |H(jω)|2 is the duplicated set of zeros of P2(ω), how-
+ever after switching to H(jω) we should drop the duplicates, being left only
+with a single set of zeros of P2(ω), which are the poles of f(ω).
+Note that
+H(s) shouldn’t have more zeros than poles, which means that the order of the
+denominator of f(ω) should not exceed the order of the numerator of f(ω).
+In order for H(s) to be real, its zeros must be conjugate symmetric, which
+will be ensured if f(ω) is real odd or even function. Indeed, in this case the
+poles of f(ω) are both conjugate symmetric and symmetric with respect to the
+origin, which implies that they are also symmetric with respect to the imaginary
+ω axis, which is the same as the symmetry with respect to the real s axis.
+Representations of linear scaling
+We are now going to develop another way of looking at the Butterworth ﬁlter
+generating function f(x) = xN. It will be highly useful with other functions
+f(x) occurring in place of f(x) = xN in (9.18).
+Let f(x) = xN. Since xN = exp(N ln x), we can write
+f(x) = exp(N ln x)
+(9.19)
+Introducing auxiliary variables u and v we can rewrite (9.19) as a set of equa-
+tions:
+x = exp u
+v = Nu
+f(x) = exp v
+which also allows to deﬁne f(x) implicitly as a function satisfying the equation
+f(exp u) = exp(Nu)
+(9.20)
+We could consider x and f(x) as representations of u and v, where the connection
+between the preimages u and v and their respective representations x and f(x) is
+achieved via the exponential mapping x = exp u (Fig. 9.9). In terms of preimage
+domain the function f(x) = xN is simply a multiplication by N.
+Now consider that the function exp u is periodic in the imaginary direction:
+exp u = exp(u + 2πj)
+Therefore preimages are 2πj-periodic, that is if u is a representation of x, then
+so is u + 2πjn ∀n ∈Z (Fig. 9.10).
+A multiplication by an integer in the preimage domain v = Nu expands one
+period Im u ∈[0, 2π] to N periods Im v ∈[0, 2πN]. Respectively the function
+f(x) takes each value N times as x goes across all possible values in C. Con-
+versely, a division by an integer u = v/N shrinks N periods to one period and
+
+
+--- Page 333 ---
+
+9.4. BUTTERWORTH FILTER REVISITED
+321
+Representation
+domain
+Preimage
+domain
+x
+xN
+u
+Nu
+xN = exp Nu
+x = exp u
+v = Nu
+f(x) = xN
+Figure 9.9: The preimage and representations domains.
+Re u
+Im u
+0
+2πj
+4πj
+6πj
+−2πj
+−4πj
+−6πj
+Figure 9.10: Periods of the preimage of the representation x =
+exp u. Each strip (where there is no diﬀerence between gray and
+white strips) denotes a preimage of the entire complex plane with
+the exception of zero.
+The preimages denoted by the dots are
+preimages of one and the same value.
+a previously single value of f(x) turns into N diﬀerent values of x. This is an-
+other possible way to explain the fact that the equation xN = a has N diﬀerent
+solutions. Fig. 9.11 demonstrates the result of transformation of all preimages
+in Fig. 9.10 by a division by 2 corresponding to the equation u = v/2. Notice
+that the preimages in Fig. 9.11 correspond to two diﬀerent representation val-
+ues, while the peimages in Fig. 9.10 were corresponding to one and the same
+representation value.
+The preimage of the real axis x ∈R consists of two “horizontal” lines Im u =
+0 and Im u = π, or, more precisely, of their periodic repetitions Im u = 2πn
+and Im u = π + 2πn, where n ∈Z. The line Im u = 0 (and its repetitions)
+
+
+--- Page 334 ---
+
+322
+CHAPTER 9. CLASSICAL SIGNAL PROCESSING FILTERS
+Re u
+Im u
+0
+2πj
+4πj
+6πj
+−2πj
+−4πj
+−6πj
+Figure 9.11: Transformation of the preimage points in Fig. 9.10 by
+division by 2.
+corresponds to the positive real numbers, the line Im u = π (and its repetitions)
+corresponds to the negative real numbers. The preimage of the zero x = 0 exists
+only in the limiting sense Re u →−∞. Thus the multiplication of u by N is
+mapping the preimage of the real axis onto itself, therefore this multiplication’s
+representation xN maps the real axis onto itself.
+The “vertical” lines Re u = a are preimages of circles of radius ea, where
+moving upwards along such lines corresponds to the counterclockwise movement
+along the respective circle (Fig. 9.12), Particularly the imaginary axis is the
+preimage of the unit circle (note that a section of such line extending over a
+single imaginary period Im u ∈[b, b + 2π) is suﬃcient to generate all possible
+values on such circle). Multiplication by N maps the imaginary axis onto itself,
+thereby its representation xN maps the unit circle onto itself. A single preimage
+period [0j, 2πj] is thereby mapped to N periods [0, 2πjN], which corresponds
+to the unit circle being mapped to itself “N times”. We will shortly see that
+the mapping of the unit circle onto itself is the reason for the Butterworth poles
+being located on the unit circle.
+Even/odd poles
+The poles of (9.18) are given by 1 + f 2 = 0, which can be rewritten as f = ±j.
+In the Butterworth case the solutions of f = ±j were interleaved on the unit
+circle and also corresponded to even and odd values of n in the solution formula
+for 1+f 2 = 0, where f = j was deﬁning the even poles and f = −j was deﬁning
+the odd poles.
+We will take eﬀort to keep the same correspondence between the equations
+f = ±j and the even/odd values of n for other functions f(ω). In that regard
+it is instructive to ﬁrst review the Butterworth case, but now using the just
+introduced linear scaling representation form, as it will then nicely generalize to
+
+
+--- Page 335 ---
+
+9.4. BUTTERWORTH FILTER REVISITED
+323
+Re u
+Im u
+0
+2πj
+4πj
+−2πj
+−4πj
+Re x
+Im x
+0
+Figure 9.12: A circular trajectory and its preimage.
+other f(ω) that we are going to use.
+Let ω move along the unit circle in the counterclockwise direction. Its preim-
+age u deﬁned by ω = exp u will respectively move upwards along the imaginary
+axis and so will v = Nu. Respectively f(ω) = exp v moves along the unit circle
+in the counterclockwise direction, just N times faster, so while f(ω) completes
+one circle, ω will complete only 1/N-th of a circle. The value of f(ω) will be
+passing through the points j and −j, since they are lying on the unit circle. At
+these moments the value of ω will be the solution of the equations f(ω) = j
+and f(ω) = −j respectively (Figs. 9.13 and 9.14). There will be no other solu-
+tions since if ω moves in a circle of any other radius, this circle will map to a
+circle of a non-unit radius and f(ω) will not go through the points ±j. Thus
+Fig. 9.14 contains the full set of Butterworth poles, where the interleaving of
+the white/black dots on the circle in Fig. 9.14 arises from the interleaving of the
+white/black dots on the circular tajectory in Fig. 9.13.
+Re v
+Im v
+0
+2πj
+−2πj
+Re f(ω)
+Im f(ω)
+0
+Figure 9.13: f(ω) moving in a unit-radius circular trajectory, the
+points f(ω) = ±j and their preimages.
+
+
+--- Page 336 ---
+
+324
+CHAPTER 9. CLASSICAL SIGNAL PROCESSING FILTERS
+Re u
+Im u
+0
+2πj
+−2πj
+Re ω
+Im ω
+0
+Figure 9.14: Transformation of Fig. 9.13 by u = v/N (for N = 2).
+The white and black dots on the circle are even/odd Butterworth
+poles in terms of ω.
+Apparently, the passing of f(ω) through ±j corresponds to
+v = jπ
+1
+2 + n
+
+where f(ω) = j occurs at even n and f(ω) = −j occurs at odd n. The value of
+u at these moments is
+u = jπ
+1
+2 + n
+N
+and the value of ω is
+ω = exp
+
+jπ
+1
+2 + n
+N
+
+which is pretty much the same as the expression (8.13) we have developed before.
+The even/odd values of n still correspond to the solutions of f = j and f = −j
+respectively and thus we have a constency in referring to the solutions of f = j
+as even poles and to the solutions of f = −j as odd poles.
+Lowpass, bandpass and highpass filters
+If we want H(s) in (9.18) to be a (unit cutoﬀ) lowpass ﬁlter, then we should
+impose some additional requirements on f(ω):
+f(ω) ≈0
+for ω ≪1
+f(ω) ≈∞
+for ω ≫1
+(9.21)
+where around ω = 1 the absolute magnitude of f(ω) should smoothly grow from
+0 to ∞. Apparently the Butterworth ﬁlter’s function f(ω) = ωN satisﬁes these
+requirements.
+Similarly to Butterworth ﬁlter, with other ﬁlter types arising from (9.18)
+we will not be constructing f(x) which give a highpass or bandpass response.
+Instead, highpass and bandpass ﬁlters can be simply obtained by LP to HP and
+LP to BP substitutions respectively.
+
+
+--- Page 337 ---
+
+9.5. TRIGONOMETRIC FUNCTIONS ON COMPLEX PLANE
+325
+9.5
+Trigonometric functions on complex plane
+The trigonometric functions, such as sin x, cos x, tan x and so on can be evalu-
+ated for complex argument values. In that regard they occur to be closely related
+to the hyperbolic functions sinh x, cosh x, tanh x and so on. The extention to
+x ∈C can be obtained by simply evaluating the formulas
+cosh x = ex + e−x
+2
+(9.22)
+sinh x = ex −e−x
+2
+(9.23)
+tanh x = sinh x
+cosh x
+(9.24)
+cos x = ejx + e−jx
+2
+= cosh jx
+(9.25)
+sin x = ejx −e−jx
+2j
+= −j sinh jx
+(9.26)
+tan x = sin x
+cos x = 1
+j · ejx −e−jx
+ejx + e−jx = −j tanh jx
+(9.27)
+etc., where the function ex is allowed to take complex argument values. Notice
+that thereby we immediately obtain the “imaginary argument properties”:
+sin jx = j sinh x
+(9.28a)
+cos jx = cosh x
+(9.28b)
+sinh jx = j sin x
+(9.28c)
+cosh jx = cos x
+(9.28d)
+etc., where intuitively we assume x ∈R, but the formulas also work for x ∈C.
+By direct evaluation one could verify that all basic properties and fundamen-
+tal trigonometric and hyperbolic identities continue to hold in complex domain.
+Particularly
+sin(−x) = −sin x
+cos(−x) = cos x
+cos(x + 2π) = cos x
+cos(x −π/2) = sin x
+sin2 x + cos2 x = 1
+sinh(−x) = −sinh x
+cosh(−x) = cosh x
+cosh2 x −sinh2 x = 1
+etc. Also, apparently, conjugation commutes with the respective functions:
+sin x∗= (sin x)∗
+cos x∗= (cos x)∗
+sinh x∗= (sinh x)∗
+cosh x∗= (cosh x)∗
+
+
+--- Page 338 ---
+
+326
+CHAPTER 9. CLASSICAL SIGNAL PROCESSING FILTERS
+etc.
+A direct corollary of (9.28) and the trigonometric formulas for the sum
+of arguments are the formulas allowing to express a trigonometric function a
+complex argument via the real and imaginary parts of the argument. E.g.
+cos(u + jv) = cos u cos jv −sin u sin jv = cosh v cos u −j sinh v sin u
+(9.29a)
+sin(u + jv) = sin u cos jv + cos u sin jv = cosh v sin u + j sinh v cos u
+(9.29b)
+etc.
+Periodicity
+Since the periodicity property is retained in the complex domain, the former real
+periods of the trigonometric functions turn into strips on the complex plane. E.g.
+the 2π periods of cos x are shown in Fig. 9.15.
+Re x
+Im x
+0
+2π
+4π
+−2π
+−4π
+Figure 9.15: Periods of cos x in the complex plane. All dots are
+preimages of one and the same value.
+Due to the even symmetry of the cosine, almost every value occurs twice on
+a period (as illustrated by the dots in Fig. 9.15). That is if the value y occurs
+at x (that is y = cos x), then y also occurs at −x. The exceptions are being
+cos x = 1 and cos x = −1, which are mapped to themselves by x ←−x if the
+periodicity of cos x is taken into account.
+Inverse functions
+Inverting (9.22) and (9.23) we obtain
+cosh−1 x = ln
+
+x ±
+p
+x2 −1
+
+sinh−1 x = ln
+
+x ±
+p
+x2 + 1
+
+The principal value of the complex square root is deﬁned as
+√x = exp ln x
+2
+=
+p
+|x| · exp j arg x
+2
+(9.30)
+
+
+--- Page 339 ---
+
+9.5. TRIGONOMETRIC FUNCTIONS ON COMPLEX PLANE
+327
+where arg x ∈[−π, π],4 in which case Re √x ≥0 ∀x ∈C thereby (9.30) is a
+generalization of arithmetric square root of real argument to complex domain.
+Notice that (9.30) gives the values on the upper imaginary semiaxis for real
+x < 0 (provided arg x = π for x < 0).
+The principal value of ln x is deﬁned in the usual way:
+ln x = ln |x| + j arg x
+Respectively we can introduce the principal values of cosh−1 and sinh−1 as:
+cosh−1 x = ln
+
+x +
+p
+x2 −1
+
+(9.31a)
+sinh−1 x = ln
+
+x +
+p
+x2 + 1
+
+(9.31b)
+where we chose the signs in front of the square roots in such as way as to ensure
+that cosh−1 x ≥0 ∀x ≥1 and sinh−1 x ∈R ∀x ∈R.
+The formulas (9.31a), (9.31b) raise concerns of numerical robustness in cases
+where the two terms under the logarithm sign are nearly opposite. By recipro-
+cating the values under the logarithm signs we can rewrite them equivalently
+as
+cosh−1 x = −ln
+
+x −
+p
+x2 −1
+
+(9.31c)
+sinh−1 x = −ln
+p
+x2 + 1 −x
+
+(9.31d)
+where the choice between (9.31a), (9.31b) and (9.31c), (9.31d) should be made
+based on comparing the complex arguments of the two terms under the loga-
+rithm sign. We should choose the formulas where we are adding two numbers
+whose complex arguments are not further than 90◦apart. Particularly, for real
+x we may write
+sinh−1 x = sgn x · ln
+
+|x| +
+p
+x2 + 1
+
+(x ∈R)
+(9.31e)
+whereas the formula (9.31a) already works well for real x ≥1.
+Using (9.28) we can construct the principal values:
+arccos x = −j cosh−1 x =
+= −j ln
+
+x +
+p
+x2 −1
+
+= j ln
+
+x −
+p
+x2 −1
+
+(9.32a)
+arcsin x = −j sinh−1 jx =
+= −j ln
+
+jx +
+p
+1 −x2
+
+= j ln
+p
+1 −x2 −jx
+
+(9.32b)
+However besides the precision issues there are issues related to the principal
+values of arg x switching leaf on the negative real axis. Technically this means
+that there is a discontinuity in the principal values of √and ln on the negative
+real axis. With (9.31) this was generally tolerable, as the discontinuities weren’t
+4We specifically leave it undefined, whether arg x = π or −π for negative real numbers,
+as this is anyway a line on which the principal value of arg x has a discontinuity and thus,
+considering the usual computation precision losses, one often can’t rely on the exact value of
+arg x being returned for x < 0.
+
+
+--- Page 340 ---
+
+328
+CHAPTER 9. CLASSICAL SIGNAL PROCESSING FILTERS
+arising for the “usual” values of the argument, which are x ≥1 for cosh−1 x
+and x ∈R for sinh−1 x, since neither the argument of the square root nor the
+argument of the logarithm become real negative in such cases. With (9.32a), on
+the other hand, we do have a negative expression under the square root for real
+x ∈(−1, 1), which is the most important argument range.
+We could therefore adjust (9.32a) to
+arccos x = −j ln
+
+x + j
+p
+1 −x2
+
+= j ln
+
+x −j
+p
+1 −x2
+
+(9.32c)
+The formulas (9.32b) and (9.32c) work well for x ∈[−1, 1], particularly precision-
+wise it doesn’t matter which of the two options in (9.32b) and (9.32c) are taken
+for x ∈[−1, 1], however they exibit a discontinuity for real x : |x| > 1. On the
+other hand, for purely imaginary argument values the formula (9.32b) can be
+rewritten essentially as (9.31e) to automatically choose the best option precision-
+wise:
+arcsin jx = j sinh−1 x = j sgn x · ln
+
+|x| +
+p
+x2 + 1
+
+(x ∈R)
+(9.32d)
+Preimages of the real line with respect to cos x
+By (9.29a) cos x attains purely real values iﬀx ∈R or Re x = πn where n ∈Z.
+However, due to periodicity and evenness properties, each value is attained
+inﬁnitely many times. We would like to choose a principal preimage of the real
+line with respect to cos x. That is, we are interested in a (preferably continuous)
+minimal set of points, whose image under transformation y = cos x is R.
+Note, that we do not really have to choose this principal preimage, as the
+discussions where we are going to refer to it should lead to exactly the same
+results no matter which of the preimages of the real line is taken. However,
+for the sake of clarity of discussion it is convenient to have an unambiguous
+reference preimage.
+Apparently there are inﬁnitely many choice possibilities, among which there
+are at least several “reasonable” ones. For the purposes of this text we will
+choose the principal preimage as shown in Fig. 9.16.
+The same ﬁgure also
+shows the periodic repetitions of the principal preimage.5
+This principal preimage of the real axis thereby consists of three parts:
+x ∈[0, π]
+⇐⇒y ∈[−1, 1]
+x ∈[0, +j∞)
+⇐⇒y ∈[1, +∞)
+x ∈[π, π + j∞) ⇐⇒y ∈(−∞, −1]
+Apparently the principal preimage alone doesn’t cover all preimage points of
+the real line. Neither does it if we add its periodic repetitions in Fig. 9.16, since
+the lower-semiplane points of lines Re x = πn are still not included. We can
+include them by simply rotating all preimages in Fig. 9.16 around the origin,
+which corresponds to multiplication of all points x by −1. Notice that by adding
+periodic repetitions we addressed the periodicity of cos x, while by adding the
+preimages multiplied by −1 we addressed the evenness property of cos x.
+5Notice that the principal preimage in Fig. 9.16 doesn’t necessarily coincide with the set
+of values returned by the formulas (9.32), particularly since the arccos formulas in (9.32)
+exhibit discontinuities either for x ∈[−1, 1] or for real x : |x| > 1. The main reason to choose
+this specific preimage is that its generalization to the case of Jacobian elliptic cosine will be
+convenient for our purposes.
+
+
+--- Page 341 ---
+
+9.5. TRIGONOMETRIC FUNCTIONS ON COMPLEX PLANE
+329
+Re x
+Im x
+0
+π
+2π
+−π
+−2π
+Figure 9.16: The principal preimage (solid line) of the real axis,
+with respect to y = cos x, and its periodic repetitions (dashed
+lines).
+Representations of horizontal preimage lines by cos x
+Equation (9.29a) implies that if the imaginary part v is ﬁxed and the real part
+u is varying, that is the argument of the cosine is moving in a line parallel to the
+real axis, then the value of cos(u+jv) is moving along an ellipse in the complex
+plane, the real semiaxis of the ellipse being equal to cosh v and the imaginary
+semiaxis being equal to sinh v. Fig. 9.17 illustrates. At v = 0 the real semiaxis
+is 1 and the imaginary semiaxis is zero. As |v| grows both semiaxes grow, the
+imaginary semiaxis staying smaller than the real one in absolute magnitude
+(Fig. 9.18). Both semiaxes become equal in the limit v →∞where the ellipse
+turns into a circle.
+u
+v
+0
+2π
+4π
+−2π
+−4π
+Re y
+Im y
+0
+y = cos(u + jv)
+Figure 9.17: An elliptic trajectory and two its preimages.
+The
+picture is qualitative. In reality, for this kind of ellipse proportions
+the preimages would need to be located much closer to the real
+line.
+Given v > 0 and increasing u, the movement of the point cos(u + jv) along
+the ellipse will be in the negative (clockwise) direction, due to the −sign in front
+of the imaginary part in (9.29a). Respectively the positive (counterclockwise)
+
+
+--- Page 342 ---
+
+330
+CHAPTER 9. CLASSICAL SIGNAL PROCESSING FILTERS
+−1
+1
+−j
+j
+0
+Re y
+Im y
+y = cos(u + jv)
+Figure 9.18: A family of elliptic trajectories generated from hori-
+zontal preimages v = const < 0.
+direction movement will occur either for a decreasing u or for a negative v,
+where the latter is illustrated in Fig. 9.17.
+The even symmetry of the cosine (cos(−x) = cos x) implies that for each
+horizontal trajectory u + jv of the cosine’s argument, there is a symmetric
+trajectory −(u + jv) which produces exactly the same cosine trajectory. This
+other trajectory is shown in Fig. 9.17 by the dashed line. Notice how this is
+related to the fact that ﬂipping the sign of v ﬂips the direction of the movement
+along the ellipse: ﬂipping the sign of v is the same as ﬂipping the sign of the
+entire cosine’s argument (that is ﬂipping the signs of both u and v), which leaves
+the elliptic trajectory unaﬀected, and then ﬂipping the sign of u, which reverts
+the direction of movement of both u + jv and cos(u + jv).
+From the fact that the semiaxes of the ellipse are cosh v and sinh v and
+therefore their absolute magnitudes are monotonically growing with |v| (as one
+can see in Fig. 9.18) we can deduce that ellipses corresponding to diﬀerent v
+do not overlap, except for a switch from v to −v, which simply changes the
+direction of the movement along the ellipse. That is for a given ellipse with
+cosh v and sinh v semiaxes there are only two preimages, as shown in Fig. 9.17.
+An exception occurs when the imaginary semiaxis of the ellipse is zero, in which
+case there is only one preimage, which is the real line.
+Representations of horizontal preimage lines by sec x
+The secant function sec x = 1/ cos x is obviously 2π-periodic. In fact it bears
+quite a few further similarities to cos x, which are easier to see if we write it in
+the polar form:
+|sec x| =
+1
+|cos x|
+(9.33a)
+arg sec x = −arg cos x
+(9.33b)
+
+
+--- Page 343 ---
+
+9.5. TRIGONOMETRIC FUNCTIONS ON COMPLEX PLANE
+331
+Consider a horizontal line u + jv (where u is varying and v = const) and its
+respective representation y = sec(u + jv). According to (9.33), y moves in an
+ellipse-like curve around the origin, as shown in Fig. 9.19. At smaller magnitudes
+of v the curve begins to look more like a ﬁgure of 8 (Fig. 9.20). The curve is not
+an ellipse anymore due to the reciprocation in (9.33a). On the other hand, by
+(9.33b) the “angular velocity” is the same as with y = cos x, except that is has
+the opposite sign, therefore the rotation is happening in the opposite direction.
+Therefore for an increasing u we get counterclockwise rotation iﬀv > 0 rather
+than iﬀv < 0.
+u
+v
+0
+2π
+4π
+−2π
+−4π
+Re y
+Im y
+0
+y = sec(u + jv)
+Figure 9.19: A quasielliptic trajectory and two its preimages (qual-
+itatively).
+−1
+1
+−j
+j
+0
+Re y
+Im y
+y = sec(u + jv)
+Figure 9.20: A family of quasielliptic trajectories generated from
+horizontal preimages v = const > 0.
+
+
+--- Page 344 ---
+
+332
+CHAPTER 9. CLASSICAL SIGNAL PROCESSING FILTERS
+9.6
+Chebyshev polynomials
+An N-th order Chebyshev polynomial is deﬁned as:
+TN(x) = cos (N arccos x)
+(9.34)
+Fig. 9.21 illustrates. Notice the bipolar oscillations of equal amplitude (referred
+to as equiripples) on the range [−1, 1]. As one can see in Fig. 9.21, the equiripple
+amplitude is unity.
+Somewhat surprisingly, (9.34) can be equivalently written as an N-th order
+real polynomial of x at any N ∈N, e.g. for N = 4 we have T4(x) = 8x4−8x2+1,
+which is why they are called polynomials.
+x
+TN(x)
+1
+−1
+1
+-1
+0
+Figure 9.21:
+Chebyshev polynomials of even (solid) and odd
+(dashed) orders.
+Note that arccos x takes complex values for x > 1 and x < −1. We will
+also often assume x taking complex values, therefore arccos x and TN(x) will be
+complex as well. For |x| > 1 even though arccos x becomes complex, the value
+cos(N arccos x) is still real, and so is the polynomial itself.
+A proper discussion of Chebyshev polynomials falls outside the scope of the
+book, as the respective information can be easily found elsewhere. Here we shall
+concentrate on the details which will be important for our purposes.
+Chebyshev polynomials as representations of linear scaling
+Introducing auxiliary variables u and v we rewrite (9.34) as
+x = cos u
+v = Nu
+TN(x) = cos v
+or, in the implicit form:
+TN(cos u) = cos(Nu)
+(9.35)
+Thus the function TN(x) is a representation of the linear scaling v = Nu, the
+mapping function being x = cos u. Note that by multiplying the whole preimage
+domain by j we obtain a diﬀerent (but equivalent) representation:
+x = cosh u
+
+
+--- Page 345 ---
+
+9.6. CHEBYSHEV POLYNOMIALS
+333
+v = Nu
+TN(x) = cosh v
+which gives us another equivalent expression for (9.34)
+TN(x) = cosh
+ N cosh−1 x
+
+(9.36)
+and its respective implicit form
+TN(cosh u) = cosh(Nu)
+In our discussion we will stick to using the cosine-based representation. The
+readers may draw parallels to the hyperbolic cosine-based representation if they
+wish.
+In case of Butterworth ﬁlter-generating functions xN represented via exp u
+mapping, the preimages were 2πj-periodic.
+This time they are 2π-periodic.
+Additionally there is an even symmetry: u and −u are preimages of the same
+x.
+Considering the eﬀect the linear scaling v = Nu on the principal preimage
+of the real line shown in Fig. 9.16, we obtain the following:
+- The principal real half-period [0, π] is expanded to to [0, πN], which is re-
+sponsible for the occurrence of the equiripples on the segment x ∈[−1, 1].
+Since N is integer, other real half-periods expand similarly, without gener-
+ating yet more representation values of f(x). Thus f(x) is a single-valued
+function.
+- The principal preimage [0, +j∞) of x ∈[1, +∞) maps onto itself. The
+non-principal preimages [2πn + 0j, 2πn + j∞) of x ∈[1, +∞) map onto
+some other preimages [2πNn + 0j, 2πNn + j∞) of x ∈[1, +∞). Similar
+mappings occur for the preimages of x ∈[1, +∞) located in the lower
+complex semiplane. Thus x ∈[1, +∞) is mapped by TN(x) onto itself,
+corresponding to the monotonically growing behavior of TN(x) for x ≥1.
+- The principal preimage [π + 0j, π + j∞) of x ∈(−∞, −1] is mapped
+onto [πN + 0j, πN + j∞), which is a preimage of x ∈[1, +∞) is N is
+even and of x ∈(−∞, −1] if N is odd. The non-principal preimages of
+x ∈(−∞, −1] (both those in the upper complex semiplane and in the
+lower complex semiplane) are mapped similarly. Thus x ∈(−∞, −1] is
+mapped by TN(x) onto itself if N is odd, or onto x ∈[1, +∞) if N is even,
+corresponding to the monotonic behavior of TN(x) for x ≤−1.
+Notice that these results correspond to the graphs in Fig. 9.21.
+Now consider a line Im u = β (where β is some real constant value) parallel
+to the real axis in the preimage domain. Such lines are are, as we know from
+the previous discussion of the cosine of complex argument, the preimages of
+ellipses of various sizes, where the size grows with |β| (Fig. 9.18). These ellipses
+are also not overlapping each other, except that the ellipses corresponding to β
+and −β are identical (but have opposite orientations). Therefore TN(x) maps
+any ellipse from this family onto another ellipse from this family and vice versa,
+similarly to how xN mapped the unit circle onto itself and mapped circles onto
+
+
+--- Page 346 ---
+
+334
+CHAPTER 9. CLASSICAL SIGNAL PROCESSING FILTERS
+other circles. This time, however, the ellipse which is mapped onto itself, is the
+one with a zero imaginary semiaxis.
+Notice that since the line Im u = β is mapped to Im v = Nβ, the line stays
+in the same (upper or lower) semiplane after such mapping and goes in the same
+(to the right or to the left) direction. Thus, if x is moving in an ellipse in a
+counterclockwise or respectively clockwise direction, then TN(x) moves in the
+same direction.
+Even/odd property
+Since cos(u±π) = −cos u, a negation of x corresponds to a shift of its preimage
+u by π.
+Respectively v is shifted by Nπ, which will result in a negation of
+TN(x) if N is odd and will not change TN(x) is N is even. Therefore TN(x) is
+even/odd if N is even/odd:
+TN(−x) = (−1)NTN(x)
+(9.37)
+Values at special points
+The principal preimage of x = 1 is u = 0. Therefore v = 0 and TN(x) = 1.
+Therefore
+TN(1) = 1
+By (9.37)
+TN(−1) = (−1)N
+The principal preimage of x = 0 is u = π/2. Respectively v = Nπ/2 and
+TN(0) = Re jN =
+(
+0
+if N is odd
+(−1)N/2
+if N is even
+where Re jN is a way of writing the sequence 1, 0, −1, 0, . . . in the same way how
+(−1)N is a way of writing the sequence 1, −1, 1, −1, . . ..
+Leading coefficient
+Knowing that TN(x) is a real polynomial of order N, we can obtain its leading
+coeﬃcient aN by evaluating the limit
+aN =
+lim
+x→+∞
+TN(x)
+xN
+=
+lim
+x→+∞
+cosh(N cosh−1 x)
+xN
+=
+lim
+x→+∞
+exp(N cosh−1 x)
+2xN
+=
+=
+lim
+x→+∞
+exp(N ln 2x)
+2xN
+=
+lim
+x→+∞
+(2x)N
+2xN
+=
+lim
+x→+∞
+2NxN
+2xN
+= 2N−1
+For the purposes of this book’s material, we won’t need to be able to explicitly
+ﬁnd the other coeﬃcients and will therefore skip this topic.
+Zeros
+Rather than being interested in the values of the coeﬃcients of Chebyshev poly-
+nomials, for our purposes it will be more practical to know the locations of their
+zeros. Letting TN(x) = 0 we have
+v = π
+1
+2 + n
+
+
+
+--- Page 347 ---
+
+9.6. CHEBYSHEV POLYNOMIALS
+335
+Respectively
+u = π
+1
+2 + n
+N
+and
+x = cos
+
+π
+1
+2 + n
+N
+
+which means that the zeros are
+zn = cos
+
+π
+1
+2 + n
+N
+
+(9.38)
+where there are N distinct values corresponding to 0 < u < π. Notice that the
+zeros are all real and lie within (−1, 1). Also notice that zn = −zN−1−n, there-
+fore the zeros are positioned symmetrically around the origin. Consequently, if
+N is odd, one of zn will be at the origin.
+Using (9.38) we can write TN(x) in the factored form:
+TN(x) = xN∧1 ·
+Y
+zn>0
+x2 −z2
+n
+1 −z2n
+(9.39)
+where we are taking the product only over the positive zeros using the symmetry
+of the zeros relatively to the origin, and the odd factor xN∧1 (where N ∧1
+denotes bitwise conjunction) appears only for odd N where one of the zeros is
+at the origin. The normalizations by (1 −z2
+n) are simply appearing from the
+requirement that each factor must be equal to 1 at x = 1, so that TN(x) = 1.
+Renormalized Chebyshev polynomials
+The factored form (9.39) oﬀers some nice insights into the comparison of the
+behavior of TN(x) and xN. Writing xN is a comparable factored form we have
+xN = xN∧1 ·
+Y
+zn>0
+x2
+(9.40)
+where “taking the product over zn > 0” means that we are having as many
+factors as there are positive zeros in the Chebyshev polynomial TN(x). Thus
+the diﬀerence between xN and TN(x) is that the factors x2 are replaced by
+(x2 −z2
+n)/(1 −z2
+n).
+Apparently, if zn →0 ∀n then (x2−z2
+n)/(1−z2
+n) →x2 and respectively (9.39)
+is approaching xN. Unfortunately we cannot express this as simply TN(x) →
+xN, since the zeros of TN(x) are ﬁxed.
+To mathematically express this variation of zeros, we can notice that the
+value of (9.39) at x = 1 is always unity. Therefore we can introduce the poly-
+nomials
+ˆ
+T N(x, λ) = TN(x/λ)
+TN(1/λ)
+(9.41)
+to which we refer as renormalized Chebyshev polynomials.
+By construction
+ˆ
+T N(1, λ) = 1 ∀λ, while the zeros of
+ˆ
+T N(x, λ) are
+ˆ
+zn = λzn. Therefore
+ˆ
+T N(x, λ) = xN∧1 ·
+Y
+zn>0
+x2 −(λzn)2
+1 −(λzn)2
+(9.42)
+
+
+--- Page 348 ---
+
+336
+CHAPTER 9. CLASSICAL SIGNAL PROCESSING FILTERS
+and
+lim
+λ→0ˆ
+T N(x, λ) = xN
+The formula (9.41) cannot be evaluated for λ = 0, however we apparently can
+take the limit at λ →0 as the value of TN(x, 0) and thus
+ˆ
+T N(x, 0) = xN
+ˆ
+T N(x, 1) = TN(x)
+Notice that the formula (9.42) perfectly works at λ = 0.
+Since the equiripple amplitude of TN(x) is unity, by (9.41) the equiripple
+amplitude of
+ˆ
+T N(x) is 1/TN(1/λ). The equiripple range x ∈[−1, 1] of TN(x)
+is respectively transformed into the equiripple range x ∈[−λ, −λ] of
+ˆ
+T N(x, λ).
+Thus λ simultaneously controls the equiripple amplitude and the equiripple
+range of
+ˆ
+T N(x, λ) (Fig. 9.22).
+x
+T7(x, λ)
+ˆ
+1
+−1
+1
+-1
+0
+Figure 9.22: Renormalized Chebyshev polynomial
+ˆ
+T 7(x, λ) for λ =
+1 (solid), λ = 0.93 (dashed) and λ = 0 (thin dashed).
+As we won’t need λ < 0, we won’t consider that option. As for the large
+values of λ, it will be practical to restrict the value of λ so that |λzn| < 1 ∀n.
+Apparently this means λmax = 1/ max{zn} where 0 ≤λ < λmax. Notice that
+since |zn| < 1 ∀n, it follows that λmax > 1.
+Often it will be even more practical to restrict λ to 0 ≤λ ≤1. At λ = 1
+the equiripple amplitude of
+ˆ
+T N(x, λ) is already unity. As λ grows further the
+equiripple amplitude quickly grows, reaching ∞at λ = λmax. Also the equiripple
+range exceeds [−1, 1], which could become inconvenient for our purposes.
+In order to simplify the notation, often we will omit the λ parameter, un-
+derstanding it implicitly, and simply write
+ˆ
+T N(x) instead of
+ˆ
+T N(x, λ).
+Slope at |x| ≥1
+Let’s compare the factors of (9.42) and (9.40). Computing the diﬀerences:
+x2 −(λzn)2
+1 −(λzn)2 −x2 = x2 −(λzn)2 −x2 + (λzn)2x2
+1 −(λzn)2
+= (λzn)2(x2 −1)
+1 −(λzn)2
+(9.43)
+and taking into account that 0 < zn < 1, we notice that for |x| > 1 and
+0 < λ ≤λmax the diﬀerences (9.43) are strictly positive and respectively the
+
+
+--- Page 349 ---
+
+9.7. CHEBYSHEV TYPE I FILTERS
+337
+factors of (9.42) are larger than those of (9.40). In the range x > 1, since all
+factors are positive, we have
+ˆ
+T N(x) > xN
+(x > 1, N > 1)
+By the even/odd symmetries of
+ˆ
+T N(x) and xN:
+|
+ˆ
+T N(x)| > |xN|
+(|x| > 1, N > 1)
+From (9.43) we can also notice that the diﬀerence grows with λ, thus at larger λ
+the polynomial
+ˆ
+T N(x) exceeds xN (in absolute magnitude) by a larger amount.
+At λ = 1 we have
+ˆ
+T N(x) = TN(x). For this speciﬁc case we would like
+to get a more exact estimation of the steepness of the slope at x = 1, to get
+an idea of how much steeper is the slope of TN(x) compared to xN. We have
+already seen that the leading coeﬃcient of TN(x) is 2N−1, which means that at
+x →∞the polynomial TN(x) grows 2N−1 times faster than xN. It would be
+also informative to compare their slope at x = 1.
+An attempt to compute the derivative of TN(x) at x = 1 in a straightforward
+manner results in an uncertainty, thus it’s easier to take a way around. At points
+inﬁnitely close to x = 1 we expand the cosine into Taylor series up to the second
+order term:
+x = cos u = 1 −u2
+2
+TN(x) = cos v = 1 −v2
+2
+This scaling by N times in the preimage domain (v = Nu) corresponds to
+scaling by N 2 times in the representation domain (v2 = N 2u2) and we obtain
+d
+dxTN(x)
+
+x=1 = N 2
+On the other hand
+d
+dxxN
+x=1 = N
+Thus at x = 1 Chebyshev polynomials grow N times faster than xN.
+9.7
+Chebyshev type I filters
+Chebyshev (or, more precisely, Chebyshev type I) ﬁlters arise by using renormal-
+ized Chebyshev polynomials
+ˆ
+T N(ω) as f(ω) in (9.18).6 The main motivation
+to use renormalized Chebyshev polynomials instead of ωN (which is used in
+Butterworth ﬁlters) is that, as we already know they grow faster than ωN for
+|ω| > 1, which results in a steeper transition band compared to Butterworth
+ﬁlters. The tradeoﬀis that in order to achieve a steeper transition band we need
+6Classically, Chebyshev filters are obtained from Chebyshev polynomials TN(ω) by letting
+f(ω) = εTN(ω) where ε > 0 is some small value. This way however usually requires some
+cutoff correction afterwards. The way how we introduce Chebyshev filters is essentially the
+same, but directly results in a better cutoff positioning. One way is related to the other via
+(9.44) combined with a cutoff adjustment by the factor λ.
+
+
+--- Page 350 ---
+
+338
+CHAPTER 9. CLASSICAL SIGNAL PROCESSING FILTERS
+to allow ripples in the passband. At the same time, the analytical expressions
+(9.34) and (9.36) allow to easily obtain the function inversion of the polyno-
+mial, allowing analytical computation of the ﬁlter’s internal variables (such as
+pole positions) for arbitrarily high polynomial orders N, which would have been
+impossible for polynomials of a fully general form.
+Thus, in (9.18) we let
+f(ω) =
+ˆ
+T N(ω)
+that is
+|H(jω)|2 =
+1
+1 +
+ˆ
+T 2
+N(ω)
+The λ parameter of
+ˆ
+T N(ω) is aﬀecting the equiripple amplitude of
+ˆ
+T N and
+thereby the equiripple amplitude in the passband of |H(jω)|. It is convenient
+to introduce the additional variable
+ε =
+1
+TN(1/λ)
+(9.44)
+which is simply equal to the equiripple amplitude of
+ˆ
+T N.
+Using (9.44) we
+particularly may write
+f(ω) =
+ˆ
+T N(ω) = εTN(ω/λ)
+Notice that (9.44) allows to compute ε from λ and vice versa. Therefore, if
+we are given a desired equiripple band [−λ, λ], we thereby have speciﬁed λ and
+can use (9.44) to compute ε. Conversely, if we are given a desired equiripple
+amplitude (which is a more common case), we thereby have speciﬁed ε and can
+invert (9.44) to compute λ:
+1
+λ = T −1
+N (1/ε) = cosh
+ 1
+N cosh−1 1
+ε
+
+(where T −1
+N
+denotes the inverted function TN).
+The amplitude response |H(jω)| is thus varying within [1/
+√
+1 + ε2, 1] on
+the equiripple range ω ∈[−λ, λ]. On the other hand, λ (or, equivalently, ε)
+aﬀects the slope of
+ˆ
+T N (and respectively the slope of |H(jω)|) at ω = 1. The
+slope steepness is thereby traded against the equiripple amplitude, where steeper
+slopes are achieved at larger equiripple amplitudes. Fig. 9.23 illustrates.
+Poles of Chebyshev type I filters
+We have mentioned that the (9.34) is actually a polynomial of x. Therefore the
+denominator of (9.18) is a polynomial of ω and we can ﬁnd the roots of this
+polynomial, which are simultaneously the poles of |H(s)|2 = H(s)H(−s). The
+equation for these poles is thus
+1 +
+ˆ
+T 2
+N(ω) = 0
+or
+ˆ
+T N(ω) = ±j
+or
+εTN(ω/λ) = ±j
+
+
+--- Page 351 ---
+
+9.7. CHEBYSHEV TYPE I FILTERS
+339
+ω
+|H(jω)|, dB
+1
+1/8
+8
+0
+-6
+-12
+-18
+Figure 9.23: Chebyshev type I ﬁlter’s amplitude responses for N =
+4 and ε = 1 (solid), ε = 0.6 (dashed) and ε = 0 (Butterworth, thin
+dashed).
+or, introducing ¯ω = ω/λ
+TN(¯ω) = ±j
+ε
+(9.45)
+It is quite helpful to use the interpretation of TN in terms of representation
+preimage domain to solve (9.45). Recall that TN maps ellipses (of a special
+ellipse family, where the real and imaginary semiaxes a and b are related as
+a2 −b2 = 1, so that they can be represented as a = cosh β, b = sinh β for
+some β) to ellipses (of the same family). In the preimage domain these ellipses
+correspond to lines Im u = β parallel to the real axis.
+Suppose ¯ω is moving in such an ellipse. This corresponds to its preimages
+moving along two lines Im u = ±β. Let u be one of the preimages in Im u = β,
+to which we will refer as the principal preimage. Respectively the full family
+of preimages is ±u + 2πn.
+The principal preimage v of TN(¯ω) is therefore
+v = Nu, moving along the line Im v = Nβ. The full family of preimages of
+TN(¯ω) is respectively ±Nu + 2πNn and is moving along the lines Im v = ±Nβ.
+Therefore TN(¯ω) is moving in an ellipse whose real and imaginary semiaxes are
+cosh Nβ and sinh Nβ respectively.
+We wish TN(¯ω) to move in a counterclockwise direction along an ellipse which
+goes through the ±j/ε points.
+Then at the moments when TN(¯ω) = ±j/ε
+we will obtain solutions of (9.45). We additionally wish the real part of the
+preimage v of TN(¯ω) to be increasing during such movement,7 therefore for a
+counterclockwise movement of TN(¯ω) we need Im v = Nβ < 0. Therefore, in
+order for the ellipse to go through ±j/ε, the imaginary semiaxis sinh Nβ of this
+ellipse must be equal to −1/ε and thus we obtain:
+β = −1
+N sinh−1 1
+ε
+7This choice is arbitrary, we simply better like the option of increasing real part of v.
+Alternatively we could let the real part of v decrease, obtaining β > 0. However then we
+would need to have a negative coefficient in front of n in (9.46).
+
+
+--- Page 352 ---
+
+340
+CHAPTER 9. CLASSICAL SIGNAL PROCESSING FILTERS
+According to (9.29a), the purely imaginary values of a cosine are attained
+when the real part of the cosine’s argument is equal to π( 1
+2 + n), where n ∈Z.
+Thus, the values ±j/ε will be attained by TN(¯ω) at
+v = jNβ + π
+1
+2 + n
+
+(9.46)
+where, since β < 0, the value TN(¯ω) = j/ε is attained at n = 0 and other even
+values of n. Thus, the solutions of the even pole equation f = j will occur at
+even values of n. Fig. 9.24 illustrates.
+Re v
+Im v
+0
+2π
+Re TN(¯ω)
+Im TN(¯ω)
+0
+TN(¯ω) = cos v
+Figure 9.24: Preimages of TN(¯ω) = ±j/ε (qualitatively, the scales
+of the real and imaginary axes in the v plane are not equal).
+From (9.46) we obtain
+u = jβ + π
+1
+2 + n
+N
+where there are 2N essentially diﬀerent preimages of ¯ω occuring at 2N consecu-
+tive values of n all lying on the line Im u = β. Going back to the representation
+domain we obtain ¯ω lying on the respective ellipse:
+¯ω = cos
+
+jβ + π
+1
+2 + n
+N
+
+(9.47)
+Fig. 9.25 illustrates.
+Switching to ω = λ¯ω we have:
+ω = λ cos
+
+jβ + π
+1
+2 + n
+N
+
+(9.48)
+Note that formally allowing n to take real values and letting n = −1/2 we
+obtain u = jβ and ω = λ cos(jβ) = λ cosh β which is a real positive value.
+Since the imaginary part of the cosine’s argument is negative, the values of
+ω are moving counterclockwise for increasing n, starting from the value on
+the positive real semiaxis occuring at n = −1/2.
+That is, the values of ω
+are moving counterclockwise starting from the positive real semiaxis. As we
+already found out, the values occurring at even/odd n correspond to even/odd
+poles respectively, and thus the even and odd poles are interleaved on the ellipse.
+Switching from ω to s = jω we obtain the expression for the poles:
+s = jλ cos
+
+jβ + π
+1
+2 + n
+N
+
+=
+
+
+--- Page 353 ---
+
+9.7. CHEBYSHEV TYPE I FILTERS
+341
+Re u
+Im u
+0
+2π
+Re ¯ω
+Im ¯ω
+0
+¯ω = cos u
+Figure 9.25: Transformation of Fig. 9.24 by u = v/N (for N = 2).
+The white and black dots on the ellipse are even/odd Chebyshev
+poles in terms of ¯ω. (The picture is qualitative, as the scales of the
+real and imaginary axes in the u plane are not equal.)
+= λ sinh β sin π
+1
+2 + n
+N
++ jλ cosh β cos π
+1
+2 + n
+N
+(9.49)
+Since the values of ω are moving counterclockwise starting from the real positive
+semiaxis, the values of s are moving counterclockwise starting from the imagi-
+nary “positive” semiaxis, which means that starting at n = 0 we ﬁrst obtain the
+stable poles at n = 0, . . . , N −1. The next N values of n will give the unstable
+poles.
+Note that since ( 1
+2 + n)/N never takes integer values, the real part of s is
+never zero and there are no poles on the imaginary axis. The poles are also
+symmetric relatively to the real and imaginary axes and we can discard the half
+of the poles located in the right complex semiplane in the same way how we did
+it with the Butterworth ﬁlter. Figs. 9.26 and 9.27 illustrate.8
+In Figs. 9.26 and 9.27 one could notice that the poles are condensed close
+to the imaginary axis while the Butterworth poles were evenly spacing. This is
+easily explained in terms of (9.29a), which gives
+tan arg cos(u + jv) = −sinh v sin u
+cosh v cos u = −tan u · tanh v
+Now, if tanh v had been equal to 1, we would have had arg cos(u + jv) = −u,
+which would have resulted in an even angular distribution of poles. However,
+since | tanh v| < 1, the poles are located closer to the real axis in the ω plane or
+closer to the imaginary axis in the s plane.
+Gain adjustments
+Having obtained the poles and keeping in mind that there are no zeros, we can
+obtain the transfer function in the form
+H(s) = g ·
+Y
+1
+s −pn
+8It might seem that the imaginary semiaxes of the ellipses in Figs. 9.26 and 9.27 are of
+unit length. This is not exactly so, although they are very close, being equal to approximately
+1.00003 and 1.00004 respectively.
+
+
+--- Page 354 ---
+
+342
+CHAPTER 9. CLASSICAL SIGNAL PROCESSING FILTERS
+−1
+1
+−j
+j
+0
+Re s
+(−Im ω)
+Im s
+(Re ω)
+Figure 9.26: Chebyshev type I ﬁlter’s even (white) and odd (black)
+poles for N = 6 (including the poles of H(−s)).
+−1
+1
+−j
+j
+0
+Re s
+(−Im ω)
+Im s
+(Re ω)
+Figure 9.27: Chebyshev type I ﬁlter’s even (white) and odd (black)
+poles for N = 5 (including the poles of H(−s)).
+where the gain g could be obtained by evaluating the above product at ω = 0
+and comparing to H(0). It could be a bit more practical though, to write H(s)
+as a product of 1-pole lowpasses with unity passband gains:
+H(s) = g ·
+Y
+1
+s/(−pn) + 1
+(9.50)
+
+
+--- Page 355 ---
+
+9.7. CHEBYSHEV TYPE I FILTERS
+343
+where −pn are the (possibly complex) cutoﬀs and where the coeﬃcient g is
+diﬀerent than in the previous formula. For (9.50) we are having H(0) = g and
+thus, using (9.18), we can obtain g from
+H(0) =
+1
+p
+1 +
+ˆ
+T 2
+N(0)
+=
+1
+p
+1 + ε2T 2
+N(0)
+=
+1
+1 + ε2 (Re jN)2 =
+=
+
+
+
+1
+1 + ε2
+for N even
+1
+for N odd
+(9.51)
+Another option is to obtain the leading gain g from the requirement |H(j)| =
+1/
+√
+2 arising from
+|H(j)|2 =
+1
+1 +
+ˆ
+T 2
+N(1) = 1
+2
+However this might accidentally result in a 180◦phase response at ω = 0, (since
+we used |H(j)| rather than H(j) as a reference) therefore one needs to be careful
+in this regard.
+Using the default normalization of the Chebyshev ﬁlter’s gain given by (9.51),
+we obtain the amplitude response varying within [1/
+√
+1 + ε2, 1] on the range
+ω ∈[−λ, λ]. We could choose some other normalizations, though. E.g. we could
+require |H(0)| = 1, which will be automatically achieved if we simply let g = 1
+in (9.50). Or we could require the ripples to be symmetric relatively to the zero
+decibel level, which is achieved by multiplying (9.51) by (1 + ε2)1/4:
+H(0) =
+s
+√
+1 + ε2
+1 + ε2T 2
+N(0)
+so that |H(jω)| varies within [1/(1 + ε2)1/4, (1 + ε2)1/4] within the equiripple
+band.
+Butterworth limit
+Since at λ →0 we have
+ˆ
+T N(x) →xN, in the limit λ →0 Chebyshev type I
+ﬁlter turns into a Butterworth ﬁlter of the same order N.
+Simultaneously the ellipse semiaxes λ sinh β and λ cosh β in (9.49) are both
+approaching the unity length. Indeed, letting ε →0 (which is equivalent to
+λ →0), we have
+1
+λ = cosh
+ 1
+N cosh−1 1
+ε
+
+∼exp
+ 1
+N cosh−1 1
+ε
+
+=
+= exp ln
+ ε−1 +
+√
+ε−2 −1
+
+N
+=
+
+ε−1 +
+p
+ε−2 −1
+1/N
+∼
+ 2ε−11/N
+cosh β = cosh
+
+−1
+N sinh−1 1
+ε
+
+∼exp
+ 1
+N sinh−1 1
+ε
+
+=
+= exp ln
+ ε−1 +
+√
+ε−2 + 1
+
+N
+=
+
+ε−1 +
+p
+ε−2 + 1
+1/N
+∼
+ 2ε−11/N
+Thus 1/λ and cosh β are asymptotically identical and therefore λ cosh β →1.
+In a similar way we can show that λ sinh β →1.
+
+
+--- Page 356 ---
+
+344
+CHAPTER 9. CLASSICAL SIGNAL PROCESSING FILTERS
+9.8
+Chebyshev type II filters
+Chebyshev polynomials TN(x) have equiripple behavior on [−1, 1] and grow to
+inﬁnity outside of that range. By reciprocating the argument: TN(1/x), we
+obtain equiripple behavior on |x| ≥1 and inﬁnite growth for x →0. By further
+reciprocating the value of the polynomial: 1/TN(1/x), we have again small
+values on the range [−1, 1], while for |x| ≥1 the polynomial’s value exhibits
+equiripple oscillations around inﬁnity. We therefore introduce the function
+T
+N(x) =
+1
+TN(1/x)
+where Fig. 9.28 illustrates the behavior of
+T
+N. We will refer to
+T
+N(x) as a
+double-reciprocated (once in argument and once in value) Chebyshev polynomial.
+x
+T
+6(x)
+1
+−1
+1
+-1
+0
+Figure 9.28: Double-reciprocated Chebyshev polynomial
+T
+N.
+The equiripple oscillations around inﬁnity are also better visible in the arc-
+tangent scale (Fig. 9.29). More speciﬁcally, on [1, +∞) and (−∞, −1] the value
+oscillates between ±1 and ∞, never becoming less than 1 in the absolute mag-
+nitude. We could refer to that fact by saying that the amplitude of these os-
+cillations around ∞is unity, thereby taking the minimum absolute magnitude
+of the oscillating value as the oscillation amplitude, even though that might
+be considered some kind of a misnomer. We will be using this deﬁnition of
+amplitude of oscillations around inﬁnity further in the text.
+We also introduce the renormalized version of the double-reciprocated Cheby-
+shev polynomials by double-reciprocating
+ˆ
+T N:
+ˆ
+T
+N(x, λ) =
+1
+ˆ
+T N(1/x, λ) = TN(1/λ)
+TN(1/λx) =
+T
+N(λx)
+T
+N(λ)
+(9.52)
+where we have
+ˆ
+T
+N(1, λ) = 1. Notice that we didn’t reciprocate the λ parameter.
+The idea is that 0 ≤λ ≤1 and that
+ˆ
+T
+N(x, 0) =
+1
+ˆ
+T N(1/x, 0) =
+1
+1/xN = xN
+
+
+--- Page 357 ---
+
+9.8. CHEBYSHEV TYPE II FILTERS
+345
+x
+T
+N(x)
+∞
+∞
+1
+−1
+1
+∞
+−1
+−1
+0
+Figure 9.29: Double-reciprocated Chebyshev polynomials of even
+(solid) and odd (dashed) orders, using arctangent scale in both
+axes.
+ˆ
+T
+N(x, 1) =
+1
+ˆ
+T N(1/x, 1) =
+1
+1/TN(1/x) =
+T
+N(x)
+Fig. 9.30 illustrates. As usual, we will often omit the λ parameter, understanding
+it implicitly.
+x
+T
+6(x, λ)
+ˆ
+∞
+∞
+1
+−1
+1
+∞
+−1
+−1
+0
+Figure 9.30: Renormalized double-reciprocated Chebyshev poly-
+nomial
+ˆ
+T
+6(x, λ) for λ = 1 (solid), λ = 0.93 (dashed) and λ = 0
+(thin dashed).
+By (9.52) the amplitude of the equiripples of
+ˆ
+T
+N(x) is TN(1/λ). By using
+the same equation (9.44) as we have been using for Chebyshev type II ﬁlters we
+have TN(1/λ) = 1/ε, that is the equiripple amplitude is 1/ε. This is actually
+a convenient notation, since in this case we are having smaller (closer to ∞)
+
+
+--- Page 358 ---
+
+346
+CHAPTER 9. CLASSICAL SIGNAL PROCESSING FILTERS
+equiripples at smaller ε. We also thereby have:
+ˆ
+T
+N(x) =
+1
+εTN(1/λx) =
+T
+N(λx)
+ε
+By writing the Chebyshev polynomial as a polynomial:
+TN(x) =
+N
+X
+n=0
+anxn
+we ﬁnd that the double-reciprocated Chebyshev polynomial is a rational func-
+tion of x:
+T
+N(x) =
+1
+N
+X
+n=0
+anx−n
+=
+xN
+N
+X
+n=0
+anxN−n
+The same apparently is true for
+ˆ
+T
+N(x) and therefore we could try using
+ˆ
+T
+N(ω)
+as f(ω) in (9.18).
+Letting f(ω) =
+ˆ
+T
+N(ω) in (9.18) we obtain a Chebyshev type II ﬁlter, this
+time trading the ripples in the stopband against the transition band’s rolloﬀ
+(Fig. 9.31). The stopband peaks are achieved at
+ˆ
+T
+N(ω) = 1/ε, thus the ripple
+amplitude is 1/
+√
+1 + ε−2.
+ω
+|H(jω)|
+1
+1/8
+8
+1
+0.5
+0
+Figure 9.31: Chebyshev type II ﬁlter’s amplitude responses for N =
+6 and ε = 0.5 (solid), ε = 0.1 (dashed) and ε = 0 (Butterworth,
+thin dashed). Notice the usage of the linear amplitude scale, which
+is chosen in order to be able to show the amplitude response zeros.
+T
+N(x) as representations of linear scaling
+In order to ﬁnd the poles of a Chebyshev type II ﬁlter we are going, as usual, to
+interpret the function
+T
+N(x) as a representation of the linear scaling v = Nu.
+This time we need the following mapping:
+x =
+1
+cos u = sec u
+
+
+--- Page 359 ---
+
+9.8. CHEBYSHEV TYPE II FILTERS
+347
+v = Nu
+T
+N(x) =
+1
+cos v = sec v
+Same as with TN(x), the multiplication by N expands the principal real pe-
+riod [0, 2π] to [0, 2πN] and there are similar transformations of the preimages
+of the real axis. The transformations of quasielliptic curves (shown in Fig. 9.20)
+which are representations of horizontal lines Im u = const in the preimage do-
+main are also occurring in a similar fashion, each such curve being transformed
+into another such curve.
+Poles of Chebyshev type II filters
+The pole equation is
+1 +
+ˆ
+T
+2
+N(ω) = 0
+The even/odd pole equations are respectively
+ˆ
+T
+N(ω) = ±j
+or
+T
+N(λω)
+ε
+= ±j
+or, introducing ¯ω = λω
+T
+N(¯ω) = ±jε
+where the “+” sign corresponds to the even poles and the “−” sign to odd poles.
+Suppose ¯ω is moving in a counterclockwise direction in a quasielliptic curve
+which is a representation of Im u = β (where, according to our previous discus-
+sion of the properties of the x = 1/ cos u mapping, β > 0). This results in a
+similar counterclockwise motion of
+T
+N(¯ω). We wish
+T
+N(¯ω) to pass through the
+points ±jε going counterclockwise.
+At this point we could follow similar steps as we did for Chebyshev type I
+ﬁlters, using the preimage linear scaling interpretation of
+T
+N to obtain the points
+¯ω where
+T
+N(¯ω) = ±jε. However we also could notice that
+T
+N(¯ω) = ±jε ⇐⇒
+TN(¯ω−1) = ∓j/ε.
+Therefore we could reuse the results of our discussion of
+Chebyshev type I ﬁlters, where we needed TN to go clockwise through ∓j/ε.
+That is, we need the value of TN to move in the same trajectory going through
+the same points as in the Chebyshev type I case, just in the opposite direction.
+This can be achieved by ﬂipping its preimage line Im v = Nβ from the lower
+semiplane to the upper semiplane. Therefore the values of TN passing through
+∓j/ε going clockwise should occur at sinh Nβ = 1/ε and thus
+β = 1
+N sinh−1 1
+ε
+The other diﬀerence to the case of Chebyshev type I ﬁlters is that the argument
+of TN is ¯ω−1 rather than ¯ω. Therefore we need to replace ¯ω in (9.47) with ¯ω−1
+obtaining
+¯ω−1 = cos
+
+jβ + π
+1
+2 + n
+N
+
+
+
+--- Page 360 ---
+
+348
+CHAPTER 9. CLASSICAL SIGNAL PROCESSING FILTERS
+and
+ω−1 = λ cos
+
+jβ + π
+1
+2 + n
+N
+
+Since s = jω = j/ω−1, we have −1/s = −ω−1/j = jω−1 and thus
+−s−1 = jλ cos
+
+jβ + π
+1
+2 + n
+N
+
+=
+= λ sinh β sin π
+1
+2 + n
+N
++ jλ cosh β cos π
+1
+2 + n
+N
+(9.53)
+The poles of Chebyshev type II ﬁlters are therefore negated reciprocals of the
+poles of Chebyshev type I ﬁlters.9 By the interpretation of
+T
+N as linear scaling
+in the preimage domain, Chebyshev type II poles should lie on quasielliptic
+trajectories, such as the ones shown in Fig. 9.19 and Fig. 9.20. Notice that,
+despite the negated reciprocation, the formula (9.53) still ﬁrst gives the stable
+poles, due to the ﬂipped sign of β compared to (9.49).
+Zeros of Chebyshev type II filters
+According to our discussion in Section 9.4 of using rational f(ω), Chebyshev
+type II ﬁlters also should have zeros, which in terms of ω coincide with poles of
+f(ω). The zero equation is thereby
+ˆ
+T
+N(ω, λ) = ∞
+or
+T
+N(λω) = ∞
+or, equivalently,
+TN(1/λω) = 0
+(9.54)
+The solutions of (9.54) thereby obtained from the zeros zn of TN (given by
+(9.38)) by
+1
+λω = zn = cos
+
+π
+1
+2 + n
+N
+
+or
+ω−1 = λ cos
+
+π
+1
+2 + n
+N
+
+or, in terms of s
+−s−1 = jλ cos
+
+π
+1
+2 + n
+N
+
+An additional consideration arises at odd N where one of the values given by
+(9.38) occurs at the origin, which after the reciprocation gives the inﬁnity. This
+9Alternatively one could notice that the poles of Chebyshev type II (lowpass) filters are
+identical to the poles of Chebyshev type I hipass filters, since both can be obtained from the
+poles of Chebyshev type I lowpass filters by the LP to HP transformation. If Chebyshev type
+II lowpass poles are obtained this way, the order of their enumeration will be symmetrically
+flipped relatively to the one of the prototype Chebyshev type I lowpass poles.
+That is, if
+Chebyshev type I poles are going counterclockwise starting from the “positive” imaginary
+axis, then Chebyshhev type II poles obtained by the LP to HP tranfromation will be going
+clockwise from the “negative” imaginary axis (thereby stable poles will be converted to stable
+poles, but the even/odd property of the poles will be switched if N is even).
+
+
+--- Page 361 ---
+
+9.9. JACOBIAN ELLIPTIC FUNCTIONS
+349
+means that there is no corresponding ﬁnite zero of H(s) and no corresponding
+factor in the numerator of H(s). Respectively the order of the numerator of
+H(s) becomes 1 less than the order of the denominator. This automatically
+results in H(∞) = 0, that is H(s) has a zero at the inﬁnity, as required by the
+reciprocation of the values given by (9.38). Fig. 9.32 provides an example.
+−1
+1
+−j
+j
+0
+Re s
+(−Im ω)
+Im s
+(Re ω)
+Figure 9.32: Poles (white and black dots) and zeros (white squares)
+of a Chebyshev type II ﬁlter of order N = 5. Each of the zeros
+is duplicated, but the duplicates are dropped together with the
+unstable poles.
+Filter gain
+Since there are no ripples in the passband, there is little reason to attempt
+any gain adjustments and the ﬁlter gain needs simply to be chosen from the
+requirement H(0) = 1, thereby deﬁning the leading gain coeﬃcient g of the
+cascade form (8.1).
+Butterworth limit
+Since
+ˆ
+T
+N(x, 0) = xN in the limit λ →0 Chebyshev type II ﬁlter turns into
+Butterworth ﬁlter.
+Notice that the pole formula (9.53) is essentially the negated reciprocal of
+(9.49). On the other hand, negation and/or reciprocation turn Butteworth poles
+into themselves (if nonstable poles are included), therefore, since in the limit
+(9.49) gives Butterworth poles, (9.53) also does the same.
+9.9
+Jacobian elliptic functions
+The next class of equiripple ﬁlters which we would like to introduce are elliptic
+ﬁlters. Chebyshev ﬁlters were based on the cosine function and required a wider
+
+
+--- Page 362 ---
+
+350
+CHAPTER 9. CLASSICAL SIGNAL PROCESSING FILTERS
+spectrum of trigonometric and hyperbolic functions for their analysis. Similarly,
+elliptic ﬁlters are based on Jacobian elliptic cosine function and require other
+Jacobian elliptic functions for their analysis. Since Jacobian elliptic functions
+are not a part of widely spread common knowledge, on the contrary, the freely
+available resources are rather scarce, we are going to introduce them and discuss
+their properties relevant for this book’s material.
+Additional information can be found in the reference texts listed at the end
+of this chapter. The results presented here and in the rest of this chapter without
+any kind of proof or justiﬁcation are either taken directly or derived from these
+texts.
+Elliptic integrals of the first kind
+One of the most common ways to introduce Jacobian elliptic functions is as
+some kind of special inverses of the elliptic integral of the ﬁrst kind, which we
+therefore will brieﬂy discuss ﬁrst.
+The elliptic integral of the first kind is the function notated F(ϕ, k) deﬁned
+by the formula:
+F(ϕ, k) =
+Z ϕ
+0
+dθ
+p
+1 −k2 sin2 θ
+(9.55)
+The parameter k is referred to as elliptic modulus. Normally 0 ≤k ≤1. At
+k = 0 we simply have F(ϕ, 0) = ϕ.
+The value of F(ϕ, k) at ϕ = π/2 is often of a particular interest, which
+motivates the introduction of the complete elliptic integral of the first kind:
+K(k) = F(π/2, k)
+Respectively we are having
+K(0) = F(π/2, 0) = π
+2
+(9.56a)
+K(1) = F(π/2, 1) =
+Z π/2
+0
+dθ
+p
+1 −sin2 θ
+=
+Z π/2
+0
+dθ
+cos θ = ∞
+(9.56b)
+The graph of K(k) is shown in Fig. 9.33. Notice that K(k) grows with k (which
+is obvious from (9.55)).
+The elliptic modulus is sometimes expressed as k = sin α where α is referred
+to as the modular angle. Given a modular angle α, often one also needs the
+complementary modular angle α′ which is simply deﬁned as
+α′ = π
+2 −α
+Respectively there is the complementary elliptic modulus:
+k′ =
+p
+1 −k2
+and the complementary complete elliptic integral of the ﬁrst kind:
+K′(k) = K(k′) = F(π/2, k′)
+Notice that k′ decreases as k increases and vice versa. On the other hand
+K(k) is a monotonically increasing function. Therefore the ratio K′(k)/K(k)
+monotonically decreases with growing k. Fig. 9.34 illustrates, where we use the
+modular angle in the abscissa scale in order to make the symmetry between K
+and K′ explicitly visible.
+
+
+--- Page 363 ---
+
+9.9. JACOBIAN ELLIPTIC FUNCTIONS
+351
+k
+K(k)
+1
+π/2
+π
+0
+Figure 9.33: Complete elliptic integral of the ﬁrst kind K(k).
+α
+K, K′
+π/2
+π/2
+π
+3π/2
+0
+Figure 9.34: Complete elliptic integral of the ﬁrst kind K (solid
+line) and the complemetary complete elliptic integral of the ﬁrst
+kind K′ (dashed line), plotted against the modular angle α.
+Jacobian elliptic functions
+There are 12 diﬀerent Jacobian elliptic functions but we will concentrate only
+on 6 of them. The ones we introduce will bear strong similarities to certain
+trigonometric and/or hyperbolic functions, becoming equal to them in the limit.
+We will deﬁne Jacobian elliptic functions in terms of the so called amplitude,
+which is deﬁned as a function ϕ = am(x, k), which is the inverse of the elliptic
+integral of the ﬁrst kind:
+F(am(x, k), k) = x
+(9.57)
+That is, for a given x the function ϕ = am(x, k) gives such ϕ that F(ϕ, k) = x.
+Note that since in the limit k →0 we have F(ϕ, 0) = ϕ, we are respectively
+having am(x, 0) = x.
+As with elliptic integral F(ϕ, k), the second argument k serves a role of the
+function’s parameter, the “primary” argument of the function being x. Often
+this parameter is simply omitted and understood implicitly: ϕ = am x. Even
+more commonly, this is done for Jacobian elliptic functions (which are having
+
+
+--- Page 364 ---
+
+352
+CHAPTER 9. CLASSICAL SIGNAL PROCESSING FILTERS
+exactly the same arguments as the amplitude).
+Now, from the six Jacobian elliptic functions that we are going to introduce,
+the four of our primary interest will be:
+- Jacobian elliptic “sine” sn(x, k) is deﬁned by the equation
+sn(x, k) = sin ϕ
+(9.58)
+where ϕ = am(x, k). Or simply, sn(x, k) = sin am(x, k).
+Fig. 9.35 provides example graphs of sn x, where we could also notice
+that sn x is 4K-periodic. The value K is simply a short notation for the
+complete elliptic integral K(k), evaluated for the same modulus k which is
+used in sn(x, k). Please also note that the graphs in Fig. 9.35 are plotted
+“in terms of K”, that is diﬀerent abscissa scales are used for diﬀerent
+graphs in the same ﬁgure. This has been done in order to provide a better
+visual comparison of diﬀerent sn(x, k) with diﬀerent periods.
+Since the limit k →0 we have ϕ = am(x, 0) = x, the elliptic sine turns
+into into sn(ϕ, 0) = sin ϕ.
+- Jacobian elliptic “cosine”10 cd(x, k) is deﬁned by the equation:
+cd(x, k) =
+cos ϕ
+p
+1 −k2 sin2 ϕ
+(9.59)
+where ϕ = am(x, k). Fig. 9.36 illustrates, where one could observe that
+cd x is 4K-periodic. Apparently cd(x, 0) = cos x.
+- Jacobian elliptic “tangent”/elliptic “hyperbolic sine” sc(x, k) is deﬁned by
+the equation:
+sc(x, k) = tan ϕ
+(9.60)
+where ϕ = am(x, k). Fig. 9.37 illustrates, where one could observe that
+sc x is 2K-periodic.
+Apparently sc(x, 0) = tan x. However, the function sc x also bears strong
+similarities to the hyperbolic sine, becoming equal to it in the limit k →1.
+In this book we will be mostly using the similarity of sc to sinh, therefore
+we will typically refer to sc as elliptic “hyperbolic sine”.
+- Jacobian elliptic “hyperbolic cosine” nd(x, k) is deﬁned by the equation:
+nd(x, k) =
+1
+p
+1 −k2 sin2 ϕ
+(9.61)
+where ϕ = am(x, k). Fig. 9.38 illustrates, where one could observe that
+nd x is 2K-periodic.
+This function becomes equal to cosh in the limit
+k →1.
+10There is yet another Jacobian elliptic function, which is simply equal to cos ϕ rather than
+(cos ϕ)/
+p
+1 −k2 sin2 ϕ. Depending on the purpose either of these functions may be referred
+to as elliptic cosine. Each of these two functions inherits different properties of cos ϕ. For the
+purposes of this book we will need the one defined by (9.59) and this is the one to which we
+will refer to as elliptic cosine.
+
+
+--- Page 365 ---
+
+9.9. JACOBIAN ELLIPTIC FUNCTIONS
+353
+We will also introduce two “auxiliary” functions:
+- Jacobian elliptic “cosecant” ns x = 1/ sn x (Fig. 9.39)
+- Jacobian elliptic “secant” dc x = 1/ cd x (Fig. 9.40).
+Since these two are simply reciprocals of sn and cd, we won’t be discussing them
+much, however they will be used occasionally.
+From the previous discussion we could conclude that 4K is the common
+period of all six introduced elliptic functions (where the elliptic “trigonomet-
+ric” functions are 4K-periodic and the elliptic “hyperbolic” functions are 2K-
+periodic). For that reason K = K(k) is referred to as the quarter-period.
+x
+sn x
+K
+−K
+2K
+−2K
+3K
+−3K
+1
+-1
+0
+Figure 9.35: Jacobian elliptic sine for k = 0.8 (dashed) and k =
+0.999 (solid).
+x
+cd x
+K
+−K
+2K
+−2K
+3K
+−3K
+1
+-1
+0
+Figure 9.36: Jacobian elliptic cosine for k = 0.8 (dashed) and
+k = 0.999 (solid).
+x
+sc x
+K
+−K
+2K
+−2K
+3K
+−3K
+1
+2
+0
+Figure 9.37: Jacobian elliptic “hyperbolic sine” (or “trigonometric
+tangent”) for k = 0.5 (dashed) and k = 0.94 (solid).
+
+
+--- Page 366 ---
+
+354
+CHAPTER 9. CLASSICAL SIGNAL PROCESSING FILTERS
+x
+nd x
+K
+−K
+2K
+−2K
+3K
+−3K
+1
+2
+0
+Figure 9.38: Jacobian elliptic “hyperbolic cosine” k = 0.8 (dashed)
+and k = 0.94 (solid). The maxima are at 1/k′.
+x
+ns x
+K
+−K
+2K
+−2K
+3K
+−3K
+1
+2
+0
+−1
+−2
+Figure 9.39: Jacobian elliptic cosecant k = 0.8 (dashed) and k =
+0.999 (solid).
+x
+dc x
+K
+−K
+2K
+−2K
+3K
+−3K
+1
+2
+0
+−1
+−2
+Figure 9.40: Jacobian elliptic secant k = 0.8 (dashed) and k =
+0.999 (solid).
+Complex argument
+Jacobian elliptic functions can be generalized to complex argument values. Re-
+markably, all of the six introduced functions can be obtained from each other
+by shifts and/or rotations of the argument in the complex plane (with some
+possible scaling of the resulting function’s value).
+Before discussing any Jacobian elliptic function on the complex plane we
+need to introduce the imaginary quarter period K′ which is simply equal to
+the complementary complete elliptic integral: K′ = K′(k) = K(k′). Jacobian
+elliptic functions are also periodic in the imaginary direction, where the elliptic
+‘trigonometric” functions are 2jK′-periodic and the elliptic ‘hyperbolic” func-
+tions are 4jK′-periodic, e.g. cd(x, k) = cd(x + 2jK′, k).
+The real and imaginary quarter periods create a virtual grid on the complex
+
+
+--- Page 367 ---
+
+9.9. JACOBIAN ELLIPTIC FUNCTIONS
+355
+plane (Fig. 9.41). We will be particularly interested in the values that Jacobian
+elliptic functions are taking along the lines of this grid.
+Re x
+j Im x
+−3K
+−2K
+−K
+0
+K
+2K
+3K
+−jK′
+−2jK′
+jK′
+2jK′
+Figure 9.41: Quarter-period grid.
+Let’s start with cd x. It turns out that the values of cd x on this grid are
+always equal to the (possibly scaled by some real or imaginary coeﬃcient) values
+of one of the six introduced Jacobian functions evaluated for the real or the
+imaginary part of cd x. Fig. 9.42 illustrates.
+u
+v
+cd u
+k−1dc u
+cd u
+k−1dc u
+nd′ v
+−jsc′ v
+−nd′ v
+jsc′ v
+nd′ v
+jsc′ v
+0
+1
+0
+−1
+0
+1
+j/
+√
+k
+1/
+√
+k
+−j/
+√
+k
+−1/
+√
+k
+j/
+√
+k
+1/
+√
+k
+∞
+1/k
+∞
+−1/k
+∞
+1/k
+−j/
+√
+k
+1/
+√
+k
+j/
+√
+k
+−1/
+√
+k
+−j/
+√
+k
+1/
+√
+k
+0
+1
+0
+−1
+0
+1
+∞
+1/k
+∞
+−1/k
+∞
+1/k
+−j/
+√
+k
+1/
+√
+k
+j/
+√
+k
+−1/
+√
+k
+−j/
+√
+k
+1/
+√
+k
+I
+IV
+III
+II
+I
+IV
+I
+II
+III
+IV
+IV
+I
+II
+III
+IV
+Figure 9.42: Values of cd x = cd(u+jv) on the quarter-period grid.
+
+
+--- Page 368 ---
+
+356
+CHAPTER 9. CLASSICAL SIGNAL PROCESSING FILTERS
+The expressions at the ends of the quarter-grid lines in Fig. 9.42 are what
+cd(x, k) is equal to on each of these lines, where the notation is u = Re x, v =
+Im x. E.g. for x = u+jK′ the function’s value is cd x = cd(u+jK′) = k−1 dc u.
+For x = K the function’s value is cd x = cd(K + jv) = −j sc′ v = −j sc(v, k′),
+that is the primed notation denotes the usage of the complementary elliptic
+modulus. Apparently, the complementary modulus needs to be used for all grid
+lines parallel to the imaginary axis, since the quarter period in that direction is
+K′.
+The roman numerals in the middle of the grid cells denote the complex
+quadrant to which the values of cd x belong for x inside the respective grid
+cell. The quadrants are numbered starting from the positive real semiaxis in
+the counterclockwise direction. Fig. 9.42 also shows the function values at the
+intersections of the grid lines. Additionally the values exactly in the middle
+between the horizontal grid lines are shown.
+E.g. cd(jK′/2) = 1/
+√
+k.
+The
+readers are encouraged to compare the values listed in Fig. 9.42 to the graphs
+in Figs. 9.35 through 9.40.
+Similarly to how the trigonometric sine is obtained from the trigonometric
+cosine by a shift by the quarter-period π/2 (which also holds for complex ar-
+guments), the Jacobian sine is obtained from the Jacobian cosine by a shift by
+the quarter period K: sn x = cd(x −K). Respectively, the content of Fig. 9.42
+becomes shifted by K resulting in the picture in Fig. 9.43.
+u
+v
+sn u
+k−1ns u
+sn u
+k−1ns u
+jsc′ v
+nd′ v
+−jsc′ v
+−nd′ v
+jsc′ v
+−nd′ v
+−1
+0
+1
+0
+−1
+0
+−1/
+√
+k
+j/
+√
+k
+1/
+√
+k
+−j/
+√
+k
+−1/
+√
+k
+j/
+√
+k
+−1/k
+∞
+1/k
+∞
+−1/k
+∞
+−1/
+√
+k
+−j/
+√
+k
+1/
+√
+k
+j/
+√
+k
+−1/
+√
+k
+−j/
+√
+k
+−1
+0
+1
+0
+−1
+0
+−1/k
+∞
+1/k
+∞
+−1/k
+∞
+−1/
+√
+k
+−j/
+√
+k
+1/
+√
+k
+j/
+√
+k
+−1/
+√
+k
+−j/
+√
+k
+II
+I
+IV
+III
+II
+III
+IV
+I
+II
+III
+III
+IV
+I
+II
+III
+Figure 9.43: Values of sn x = sn(u+jv) on the quarter-period grid.
+From Fig. 9.42 one could notice that cd(jv, k) = nd(v, k′).
+It turns out
+that this equality holds not only for real v but for any complex v. That is,
+Jacobian hyperbolic cosine can be obtained from Jacobian cosine by rotation of
+
+
+--- Page 369 ---
+
+9.9. JACOBIAN ELLIPTIC FUNCTIONS
+357
+the complex plane by 90◦and swapping of k and k′ (which eﬀectively swaps K
+and K′).11 Fig. 9.44 illustrates.
+u
+v
+nd u
+jsc u
+−nd u
+−jsc u
+nd u
+−jsc u
+cd′ v
+k−1dc′ v
+cd′ v
+k−1dc′ v
+1
+1/
+√
+k′
+1/k′
+1/
+√
+k′
+1
+1/
+√
+k′
+1/k′
+0
+j/
+√
+k′
+∞
+−j/
+√
+k′
+0
+−j/
+√
+k′
+∞
+−1
+−1/
+√
+k′
+−1/k′
+−1/
+√
+k′
+−1
+−1/
+√
+k′
+−1/k′
+0
+−j/
+√
+k′
+∞
+j/
+√
+k′
+0
+j/
+√
+k′
+∞
+1
+1/
+√
+k′
+1/k′
+1/
+√
+k′
+1
+1/
+√
+k′
+1/k′
+0
+−j/
+√
+k′
+∞
+j/
+√
+k′
+0
+j/
+√
+k′
+∞
+IV
+I
+II
+III
+IV
+I
+IV
+III
+II
+I
+I
+IV
+III
+II
+I
+Figure 9.44: Values of nd x = nd(u + jv) on the quarter-period
+grid.
+In a similar fashion, in Fig. 9.43 one could notice that sn(jv, k) = j sc(v, k′).
+This equality also holds not only for real v but for any complex v. That is,
+Jacobian hyperbolic sine can be obtained from Jacobian sine by rotation of the
+complex plane by 90◦clockwise, swapping of k and k′ and dividing the result
+by j (or, equivalently, multiplying by −j). Alternatively, recalling that sn is
+obtained from cd by a shift by a real quarter period, we could have simply
+shifted the content of Fig. 9.44 downwards by an imaginary quarter period and
+divided it by j. Fig. 9.45 illustrates.
+The functions dc x and ns x are easily obtainable from Figs. 9.42 and 9.43
+by a shift by one imaginary period (and a multiplication by k).
+Properties of Jacobian elliptic functions
+There are lots of analogies between trigonometric/hyperbolic and Jacobian ellip-
+tic functions including similarities between their shapes, which one can see from
+Figs. 9.35 through 9.40. We are going to list some of the properties of Jacobian
+elliptic functions comparing them against similar properties of their trigonomet-
+ric/hyperbolic counterparts, where possible. The value of the argument x will
+be assumed complex, unless otherwise noted. It is highly recommended to refer
+11Both cd and nd are even functions. Therefore it doesn’t matter in which direction to
+rotate by 90◦.
+
+
+--- Page 370 ---
+
+358
+CHAPTER 9. CLASSICAL SIGNAL PROCESSING FILTERS
+u
+v
+sc u
+jnd u
+−sc u
+−jnd u
+sc u
+−jnd u
+jsn′ v
+jk′−1ns′ v
+jsn′ v
+jk′−1ns′ v
+0
+1/
+√
+k′
+∞
+−1/
+√
+k′
+0
+−1/
+√
+k′
+∞
+j
+j/
+√
+k′
+j/k′
+j/
+√
+k′
+j
+j/
+√
+k′
+j/k′
+0
+−1/
+√
+k′
+∞
+1/
+√
+k′
+0
+1/
+√
+k′
+∞
+−j
+−j/
+√
+k′
+−j/k′
+−j/
+√
+k′
+−j
+−j/
+√
+k′
+−j/k′
+0
+1/
+√
+k′
+∞
+−1/
+√
+k′
+0
+−1/
+√
+k′
+∞
+−j
+−j/
+√
+k′
+−j/k′
+−j/
+√
+k′
+−j
+−j/
+√
+k′
+−j/k′
+IV
+I
+II
+III
+IV
+III
+II
+I
+IV
+III
+III
+II
+I
+IV
+III
+Figure 9.45: Values of sc x = sc(u+jv) on the quarter-period grid.
+to Figs. 9.35 through 9.40 and to Figs. 9.42 through 9.45 while studying the
+properties below.
+- Reduction to trigonometric/hyperbolic functions at k →0 or k →1:
+sn(x, 0) = sin x
+(9.62a)
+cd(x, 0) = cos x
+(9.62b)
+sc(x, 0) = tan x
+(9.62c)
+nd(x, 0) ≡1
+(9.62d)
+sc(x, 1) = sinh x
+(9.62e)
+nd(x, 1) = cosh x
+(9.62f)
+ns(x, 0) = csc x
+(9.62g)
+dc(x, 0) = sec x
+(9.62h)
+- The functions are analytic (except at their poles).
+- Real function values for real argument x ∈R:
+sn x ∈R
+sin x ∈R
+etc.
+- The functions commute with complex conjugation:
+sn x∗= (sn x)∗
+sin x∗= (sin x)∗
+
+
+--- Page 371 ---
+
+9.9. JACOBIAN ELLIPTIC FUNCTIONS
+359
+etc.
+- Odd/even symmetries
+sn(−x) = −sn x
+sin(−x) = −sin x
+cd(−x) = cd x
+cos(−x) = cos x
+sc(−x) = −sc x
+sinh(−x) = −sinh x
+nd(−x) = nd x
+cosh(−x) = cosh x
+- Imaginary argument
+sn(jx, k) = j sc(x, k′)
+sin(jx) = j sinh x
+(9.63a)
+cd(jx, k) = nd(x, k′)
+cos(jx) = cosh x
+(9.63b)
+sc(jx, k) = j sn(x, k′)
+sinh(jx) = j sin x
+(9.63c)
+nd(jx, k) = cd(x, k′)
+cosh(jx) = cos x
+(9.63d)
+where we intuitively assume x ∈R, although the properties hold for any
+x ∈C.
+- Periodicity along real axis:
+sn(x + 4K) = sn x
+sin(x + 2π) = sin x
+cd(x + 4K) = cd x
+cos(x + 2π) = cos x
+sc(x + 2K) = sc x
+n/a
+nd(x + 2K) = nd x
+n/a
+and along imaginary axis:
+sn(x + 2jK′) = sn x
+n/a
+cd(x + 2jK′) = cd x
+n/a
+sc(x + 4jK′) = sc x
+sinh(x + 2jπ) = sinh x
+nd(x + 4jK′) = nd x
+cosh(x + 2jπ) = cos xh
+Note that the periodicity property of sn x and cd x along the imaginary
+axis is the dual of the periodicity property of sc x and nd x along the real
+axis, the duality arising from the imaginary argument property.
+- Shift by function’s half-period12 in the real direction
+sn(x ± 2K) = −sn x
+sin(x ± π) = −sin x
+(9.65a)
+cd(x ± 2K) = −cd x
+cos(x ± π) = −cos x
+(9.65b)
+sc(x ± K) = −1/k′ sc x
+n/a
+(9.65c)
+nd(x ± K) = 1/k′ nd x
+n/a
+(9.65d)
+and in the imaginary direction
+sn(x ± jK′) = 1/k sn x
+n/a
+(9.65e)
+12Note that here (and further where we specifically refer to function’s period, or half- or
+quarter-period) we mean the period of the function itself, rather than one of the least common
+periods 4K and 4K′ of all Jacobian elliptic functions.
+
+
+--- Page 372 ---
+
+360
+CHAPTER 9. CLASSICAL SIGNAL PROCESSING FILTERS
+cd(x ± jK′) = 1/k cd x
+n/a
+(9.65f)
+sc(x ± 2jK′) = −sc x
+sinh(x ± jπ) = −sinh x
+(9.65g)
+nd(x ± 2jK′) = −nd x
+cosh(x ± jπ) = −cosh x
+(9.65h)
+- Shift by function’s quarter-period
+sn(x + K) = cd x
+sin(x + π/2) = cos x
+(9.66a)
+cd(x −K) = sn x
+cos(x −π/2) = sin x
+(9.66b)
+sc(x + jK′) = j nd x
+sinh(x + jπ/2) = j cosh x
+(9.66c)
+nd(x + jK′) = j sc x
+cosh(x + jπ/2) = j sinh x
+(9.66d)
+- Symmetry around function’s quarter-period point (this follows from the
+odd/even symmetries and the shift by function’s half-period property) in
+the real direction:
+sn(2K −x) = sn(x)
+sin(π −x) = sin x
+(9.67a)
+cd(2K −x) = −cd(x)
+cos(π −x) = −cos x
+(9.67b)
+sc x sc(K −x) = 1/k′
+n/a
+(9.67c)
+nd x nd(K −x) = 1/k′
+n/a
+(9.67d)
+and in the imaginary direction:
+sn x sn(jK′ −x) = −1/k
+n/a
+(9.67e)
+cd x cd(jK′ −x) = 1/k
+n/a
+(9.67f)
+sc(2jK′ −x) = sc x
+sinh(jπ −x) = sinh x
+(9.67g)
+nd(2jK′ −x) = −nd x
+cosh(jπ −x) = −cosh x
+(9.67h)
+- Pythagorean theorem
+sn2 x + cd2 x = 1 + k2 sn2 x cd2 x
+sin2 x + cos2 x = 1
+(9.68)
+(we won’t need the respective properties for the “hyperbolic” functions).
+There is another useful Pythagorean-like identity:
+k2 cd2 x + k′2 nd2 x = 1
+(9.69)
+- Sum of arguments
+cd(x + y, k) =
+cd x cd y −sn x sn y
+1 −k2 sn x sn y cd x cd y
+(9.70)
+cos(x + y) = cos x cos y −sin x sin y
+(we won’t need the respective properties for the other functions).
+- Complex argument
+cd(u + jv, k) =
+cd u nd′ v −j sn u sc′ v
+1 −jk2 sn u sc′ v cd u nd′ v
+(9.71)
+cos(u + jv) = cos u cosh v −j sin u sinh v
+where nd′ v = nd(v, k′), sc′ v = sc(v, k′).
+This is a direct corollary of
+(9.70). One can use (9.71) to show that the values of cd on a single grid
+cell in Fig. 9.42 belong to one and the same complex quadrant.
+
+
+--- Page 373 ---
+
+9.9. JACOBIAN ELLIPTIC FUNCTIONS
+361
+- Logarithmic derivative
+d
+dx ln cd x = −k′2 sc x nd x
+d
+dx ln cos x = −tan x
+(9.72a)
+d2
+dx2 ln cd x = k
+
+k cd2 x −
+1
+k cd2 x
+
+d2
+dx2 ln cos x = −
+1
+cos2 x
+(9.72b)
+Periodicity
+As we already mentioned, Jacobian elliptic functions are periodic in real and
+imaginary direction.
+E.g. cd x is 4K- and 2jK′-periodic.
+Thus the periods
+of cd x are rectangles in the complex plane, the horizontal dimension of each
+rectangle being equal to 4K and the vertical dimension being equal to 2K′.
+Fig. 9.46 illustrates.
+Re x
+Im x
+0
+4K
+8K
+−4K
+−8K
+K′
+2K′
+−K′
+−2K′
+Figure 9.46: Periods of cd x in the complex plane. All dots are
+preimages of one and the same value.
+Due to the even symmetry of the elliptic cosine, almost every value occurs
+twice on a period (as illustrated by the dots in Fig. 9.46). That is if the value
+y occurs at x (that is y = cd x), then y also occurs at −x. The exceptions
+are being cd x = ±1 and cd x = ±1/
+√
+k, which are mapped to themselves by
+x ←−x if the periodicities of cd x are taken into account.
+Similar considerations apply to sn x, sc x and nd x.
+Preimages of the real line
+By (9.71) cd x attains purely real values iﬀx ∈R or Re x = 2Kn where n ∈Z,
+which is also illustrated by Fig. 9.42. Similarly to cos x, we would like to choose
+a principal preimage of the real line with respect to the transformation y = cd x.
+Since cd x →cos x for k →0, we would like the principal real line preimage for
+cd x to approach to the respective principal preimage for cos x as k →0. Under
+this requirement there is only one choice, which is shown in Fig. 9.47.
+This principal preimage of the real axis thereby consists of ﬁve parts:
+x ∈[0, 2K]
+⇐⇒y ∈[−1, 1]
+x ∈[0, jK′]
+⇐⇒y ∈[1, 1/k]
+
+
+--- Page 374 ---
+
+362
+CHAPTER 9. CLASSICAL SIGNAL PROCESSING FILTERS
+Re x
+Im x
+0
+2K
+4K
+−2K
+−4K
+K′
+2K′
+−K′
+Figure 9.47: The principal preimage (solid line) of the real axis,
+with respect to y = cd x, and its periodic repetitions (dashed lines).
+x ∈[2K, 2K + jK′]
+⇐⇒y ∈[−1/k, 1]
+x ∈[jK′, jK′ + K)
+⇐⇒y ∈[1/k, +∞)
+x ∈(jK′ + K, jK′ + 2K] ⇐⇒y ∈(−∞, −1/k]
+where Fig. 9.42 can serve as additional reference.
+The punctured point at x = K + jK′ in Fig. 9.47 corresponds to y = ∞.
+In principle it can be included into the preimage if we consider the extended
+complex plane C ∪∞as the codomain of cd x, in which case the preimage
+consists only of four parts:
+x ∈[0, 2K]
+⇐⇒y ∈[−1, 1]
+x ∈[0, jK′]
+⇐⇒y ∈[1, 1/k]
+x ∈[2K, 2K + jK′]
+⇐⇒y ∈[−1/k, 1]
+x ∈[jK′, jK′ + 2K] ⇐⇒y ∈[1/k, −1/k]
+where [1/k, −1/k] = [1/k, +∞) ∪∞∪(−∞, −1/k] denotes a range on the real
+Riemann circle containing the inﬁnity in its middle.
+As with cos x, the principal preimage alone doesn’t cover all preimage points
+of the real line. Neither does it if we add its periodic repetitions in Fig. 9.47,
+since we are convering only half of the entire length of each of the lines Re x =
+πn. We can cover the remaining halves by rotating all preimages in Fig. 9.47
+around the origin, which corresponds to multiplication of all points x by −1.
+Notice that by adding periodic repetitions we addressed the periodicity of cd x,
+while by adding the preimages multiplied by −1 we addressed the evenness
+property of cd x.
+9.10
+Normalized Jacobian elliptic functions
+In Fig. 9.42 we can observe that the “four building blocks” of the Jacobian
+cosine’s values on the quarter-period grid lines are cd, k−1 dc, nd′, j sc′, −nd′
+and −j sc′. Plotting these functions in the arctangent scale we obtain the picture
+in Fig. 9.48.
+
+
+--- Page 375 ---
+
+9.10. NORMALIZED JACOBIAN ELLIPTIC FUNCTIONS
+363
+x
+y
+K
+−K
+2K
+−2K
+3K
+−3K
+K′
+2K′
+−K′
+−2K′
+1
+−1
+∞
+−1
+y = k−1/2
+y = −k−1/2
+y = −k−1/2
+0
+Figure 9.48: cd(x, k), nd(x, k′), k−1 dc(x, k) and sc(x, k′).
+The collection of the function graphs in Fig. 9.48 has obvious symmetries
+with respect to the horizontal lines y = 0 and y = ∞. It is also approximately
+symmetric with respect to y = ±1/
+√
+k (where, since k < 1, it follows that
+1/
+√
+k > 1, so the line y = 1/
+√
+k is located above y = 1). This approximate
+symmetry obviously arises from the reciprocal symmetries due to (9.67):
+nd(K′ −x, k′) = 1/k nd(x, k′)
+(9.73a)
+sc(K′ −x, k′) = 1/k sc(x, k′)
+(9.73b)
+k−1 dc(x, k) = 1/k cd(x, k)
+(9.73c)
+(where (9.73c) is not due to (9.67) but simply follows from the deﬁnition of the
+dc function: dc(x, k) = 1/ cd(x, k)).
+Therefore the centers of this reciprocal symmetry are at ±1/
+√
+k. By multi-
+plying all functions plotted in Fig. 9.48 by
+√
+k we will shift the centers of the
+reciprocal symmetry to y = ±1. Thus consideration motivates the introduction
+of normalized Jacobian elliptic functions
+cd(x, k) =
+√
+k cd(x, k)
+sn(x, k) =
+√
+k sn(x, k)
+dc(x, k) = 1/
+√
+k · dc(x, k) = 1/ cd(x, k)
+ns(x, k) = 1/
+√
+k · ns(x, k) = 1/ sn(x, k)
+sc(x, k) =
+√
+k′ sc(x, k)
+nd(x, k) =
+√
+k′ nd(x, k)
+(note that for the “hyperbolic” functions we are using
+√
+k′ rather than
+√
+k for
+the normalization!). Thereby (9.73) become:
+nd(K′ −x, k′) = 1/ nd(x, k′)
+(9.74a)
+
+
+--- Page 376 ---
+
+364
+CHAPTER 9. CLASSICAL SIGNAL PROCESSING FILTERS
+sc(K′ −x, k′) = 1/ sc(x, k′)
+(9.74b)
+dc(x, k) = 1/ cd(x, k)
+(9.74c)
+and Fig. 9.48 turns into Fig. 9.49.
+x
+y
+K
+−K
+2K
+−2K
+3K
+−3K
+K′
+2K′
+−K′
+−2K′
+1
+−1
+∞
+−1
+0
+Figure 9.49: cd(x, k), nd(x, k′), dc(x, k) and sc(x, k′).
+Apparently, cd, dc, nd
+′, j sc′, −nd
+′ and −j sc′ are the building blocks of cd x
+in the same way how cd, k−1 dc, nd′, j sc′, −nd′ and −j sc′ are the building
+blocks of cd x. Fig. 9.50 illustrates. Notice that we don’t need non-unity scaling
+by k−1 anymore, only shifts, rotations and scaling by ±j are required to convert
+between the respective functions. Fig. 9.51 provides a similar illustration for nd.
+The diagrams Fig. 9.43 and 9.45 are transformed in a similar way.
+For normalized elliptic functions the reciprocal symmetries of (9.67) take
+the form
+sc x sc(K −x) = 1
+(9.75a)
+nd x nd(K −x) = 1
+(9.75b)
+sn x sn(jK′ −x) = −1
+(9.75c)
+cd x cd(jK′ −x) = 1
+(9.75d)
+with the analogous shift properties (9.65) taking the form
+sc x sc(x ± K) = −1
+(9.76a)
+nd x nd(x ± K) = 1
+(9.76b)
+sn x sn(x ± jK′) = 1
+(9.76c)
+cd x cd(x ± jK′) = 1
+(9.76d)
+
+
+--- Page 377 ---
+
+9.10. NORMALIZED JACOBIAN ELLIPTIC FUNCTIONS
+365
+u
+v
+cd u
+dc u
+cd u
+dc u
+nd
+′ v
+−jsc′ v
+−nd
+′ v
+jsc′ v
+nd
+′ v
+jsc′ v
+0
+√
+k
+0
+−
+√
+k
+0
+√
+k
+j
+1
+−j
+−1
+j
+1
+∞
+1/
+√
+k
+∞
+−1/
+√
+k
+∞
+1/
+√
+k
+−j
+1
+j
+−1
+−j
+1
+0
+√
+k
+0
+−
+√
+k
+0
+√
+k
+∞
+1/
+√
+k
+∞
+−1/
+√
+k
+∞
+1/
+√
+k
+−j
+1
+j
+−1
+−j
+1
+I
+IV
+III
+II
+I
+IV
+I
+II
+III
+IV
+IV
+I
+II
+III
+IV
+Figure 9.50: Values of cd x = cd(u+jv) on the quarter-period grid
+(compare to Fig. 9.42).
+u
+v
+nd u
+jsc u
+−nd u
+−jsc u
+nd u
+−jsc u
+cd′ v
+dc′ v
+cd′ v
+dc′ v
+√
+k′
+1
+1/
+√
+k′
+1
+√
+k′
+1
+1/
+√
+k′
+0
+j
+∞
+−j
+0
+−j
+∞
+−
+√
+k′
+−1
+−1/
+√
+k′
+−1
+−
+√
+k′
+−1
+−1/
+√
+k′
+0
+−j
+∞
+j
+0
+j
+∞
+√
+k′
+1
+1/
+√
+k′
+1
+√
+k′
+1
+1/
+√
+k′
+0
+−j
+∞
+j
+0
+j
+∞
+IV
+I
+II
+III
+IV
+I
+IV
+III
+II
+I
+I
+IV
+III
+II
+I
+Figure 9.51: Values of nd x = nd(u + jv) on the quarter-period
+grid (compare to Fig. 9.44).
+
+
+--- Page 378 ---
+
+366
+CHAPTER 9. CLASSICAL SIGNAL PROCESSING FILTERS
+Derivatives
+In terms of normalized functions the logarithmic derivative formulas (9.72) take
+the form
+d
+dx ln cd x = −k′ sc x nd x
+(9.77a)
+d2
+dx2 ln cd x = k
+
+cd
+2 x −
+1
+cd
+2 x
+
+(9.77b)
+By checking the complex quadrants of the values of sc and nd in Figs. 9.44
+and 9.45, one could establish that the ﬁrst logarithmic derivative is lying in the
+lower complex semiplane on even imaginary periods and in the upper complex
+semiplane on odd imaginary periods:
+Im d
+dx ln cd x < 0
+for Im x ∈(2n′K′, (2n′ + 1)K′)
+Im d
+dx ln cd x > 0
+for Im x ∈((2n′ + 1)K′, (2n′ + 2)K′)
+or simply
+sgn Im d
+dx ln cd x = (−1)n′+1
+for Im x ∈(2n′K′, (2n′ + 1)K′)
+(9.78)
+where n′ is the imaginary quarter period index.
+The second logarithmic derivative is apparently lying in the upper complex
+semiplane if cd x is in the I or III complex quadrant and in the lower complex
+semiplane if cd x is in the II or IV complex quadrant:
+Im d
+dx2 ln cd x > 0
+if cd x ∈I or III
+Im d
+dx2 ln cd x < 0
+if cd x ∈II or IV
+or, using Fig. 9.50,
+sgn Im d
+dx2 ln cd x = (−1)n+n′+1
+(9.79)
+where n and n′ are respectively the real and imaginary quarter period indices.
+Horizontal and vertical preimage lines of cd x
+The formulas (9.77) can be used to obtain more information about the behavior
+of cd x (and respectively cd x) on its quarter periods. For cos x this kind of in-
+formation can be directly obtained from the complex argument formula (9.29a).
+For cd x the same formula (9.71) is a bit more complicated and cannot be as
+easily used for analysis.
+Given u = Re x, v = Im x we obtain:
+d
+du arg cd(u + jv) = d
+du Im ln cd(u + jv) = Im d
+du ln cd(u + jv) =
+= Im d
+dx ln cd x
+(9.80a)
+
+
+--- Page 379 ---
+
+9.10. NORMALIZED JACOBIAN ELLIPTIC FUNCTIONS
+367
+d
+dv ln | cd(u + jv)| = d
+dv Re ln cd(u + jv) = Re d
+dv ln cd(u + jv) =
+= Re j d
+jdv ln cd(u + jv) = Re j d
+dx ln cd(u + jv) =
+= −Im d
+dx ln cd x
+(9.80b)
+d2
+du2 arg cd(u + jv) = d2
+du2 Im ln cd(u + jv) = Im d2
+du2 ln cd(u + jv) =
+= Im d2
+dx2 ln cd x
+(9.80c)
+d2
+dv2 arg cd(u + jv) = d2
+dv2 Im ln cd(u + jv) = Im d2
+dv2 ln cd(u + jv) =
+= −Im d2
+dx2 ln cd x
+(9.80d)
+Suppose the point x = u+jv is moving horizontally to the right within the n′-th
+imaginary quarter period, that is ˙u > 0 and v = const ∈(2n′K′, (2n′ + 1)K′).
+Then we have the following.
+- By (9.80a) and (9.78)
+sgn d
+du arg cd(u + jv) = sgn Im d
+dx ln cd x = (−1)n′+1
+(9.81a)
+therefore the value of cd x is moving clockwise on even imaginary quarter
+periods and counterclockwise on odd imaginary quarter periods. By (9.71)
+and using the complex quadrants in Fig. 9.42 or 9.50 as a reference, we
+additionally ﬁnd that
+arg cd(Kn + jv) = (−1)n′+1 · π
+2 n
+(9.81b)
+that is at integer multiples of K (u = Kn) the value of cd x is crossing the
+real and imaginary axes, starting with the real axis at u = 0. Fig. 9.52
+illustrates. The family of curves generated by such horizontal preimage
+lines in shown in Fig. 9.53.
+- By (9.80c) and (9.79)
+sgn d
+du2 arg cd(u + jv) = sgn Im d
+dx2 ln cd x = (−1)n+n′+1
+(9.81c)
+Comparing (9.81c) to (9.81a) and (9.81b) we ﬁnd that, given ˙u = const,
+the trajectories in Fig. 9.53 are speeding up when going away from the
+real axis and slowing down when going towards the real axis.
+Now suppose the point x = u + jv is moving in a vertical line towards the
+top: ˙v > 0, u = const ∈(2nK, (2n + 1)K).
+- By (9.80b) and taking into account (9.78)
+sgn d
+dv | cd(u + jv)| = −sgn Im d
+dx ln cd x = (−1)n′
+(9.82a)
+
+
+--- Page 380 ---
+
+368
+CHAPTER 9. CLASSICAL SIGNAL PROCESSING FILTERS
+u
+v
+0
+4K
+8K
+−4K
+−8K
+K′
+2K′
+−K′
+−2K′
+Re y
+Im y
+0
+y = cd(u + jv)
+Figure 9.52: A quasielliptic trajectory and its preimages.
+The
+picture is qualitative.
+Particularly, the principal preimage line,
+shown by the solid arrow line, is actually closer to the real axis (it
+must be closer that K′/2).
+−1
+1
+−j
+j
+0
+Re y
+Im y
+y = cd(u + jv)
+Figure 9.53: A family of quasielliptic trajectories generated from
+horizontal preimages v = const ∈[−K′, 0]. The unit circle trajec-
+tory occurs at v = −K′/2.
+where n′ is the imaginary quarter period index corresponding to the cur-
+rent value of v. That is | cd x| will be increasing on even imaginary quarter
+periods and decreasing on odd imaginary quarter periods.
+In fact, the movement trajectories will be as shown in Fig. 9.54, where the
+movement around y = 1 will be occurring on even real quarter-periods
+and the movement around y = −1 will be occurring on odd real quarter-
+periods. At the even boundaries u = 2nK the movement will be oscillating
+along the real line between (−1)n√
+k and (−1)n/
+√
+k. At the odd bound-
+
+
+--- Page 381 ---
+
+9.10. NORMALIZED JACOBIAN ELLIPTIC FUNCTIONS
+369
+aries u = (2n + 1)K the movement will be occurring along the entire
+imaginary axis looping through the ∞, going downwards all the time if n
+is even and going upwards all the time if n is odd (referring to Fig. 9.50 is
+recommended for understanding these boundary cases). The trajectories
+in Fig. 9.54 complete a full cycle over one imaginary period 2K′ of cd x.
+- By (9.80d) and (9.79)
+sgn d
+dv2 arg cd(u + jv) = −sgn Im d
+dx2 ln cd x = (−1)n+n′
+(9.82b)
+Equation (9.82b) means that the second derivative of arg cd x doesn’t
+change sign during vertical motion within a single imaginary quarter pe-
+riod. This doesn’t seem much, but it will be a quite useful property.
+0
+Re y
+Im y
+y = cd(u + jv)
+Figure 9.54: A family of trajectories generated from vertical preim-
+ages u = const. Notice that the trajectories intersect the unit circle
+(shown by the dashed line) at right angles.
+Since | cd x| monotonic in the vertical direction on a single quarter period
+and arg cd x is monotonic in the horizontal direction, it follows that within a
+single quarter-period grid cell the function cd x is taking each value no more than
+once. Respectively, the quasielliptic curves in Fig. 9.53 are all distinct (that is
+they don’t intersect or overlap) within a single imaginary quarter-period of the
+domain of cd x. Conversely, each imaginary quarter period of the domain of cd x
+contains exactly one preimage of any given such curve, as shown in Fig. 9.52.
+In a similar way one can argue the distinctness of the curves in Fig. 9.54.
+Unit circle symmetries
+In Figs. 9.53 and 9.54 we have speciﬁcally highlighted the unit circle, which is
+related some of the properties of cd x. It turns out that cd x has some symmetries
+in respect to the unit circle and its preimage.
+Let’s take two points jK′/2 + x and jK′/2 + x∗, which are located sym-
+metrically to the line Im x = jK′/2 on the complex plane, and consider the
+product
+cd(jK′/2 + x)
+ cd(jK′/2 + x∗)
+∗= cd(jK′/2 + x)
+ cd(x −jK′/2)∗∗=
+= cd(x + jK′/2) cd(x −jK′/2) =
+
+
+--- Page 382 ---
+
+370
+CHAPTER 9. CLASSICAL SIGNAL PROCESSING FILTERS
+= cd(x + jK′/2) cd
+ (x + jK′2) −jK′
+= 1
+where the latest is by (9.76d). That is the corresponding values of the Jacobian
+elliptic cosine are conjugate-reciprocal:
+cd(jK′/2 + x)
+ cd(jK′/2 + x∗)
+∗= 1
+(9.83)
+and the line Im x = jK′/2 is the axis of the conjugate-reciprocal symmetry of
+cd x. From the evenness property of the elliptic cosine (and the fact that x in
+(9.83) is arbitrary) it follows that
+cd(−jK′/2 + x)
+ cd(−jK′/2 + x∗)
+∗= 1
+that is the line Im x = −jK′/2 is also the axis of the conjugate-reciprocal
+symmetry of cd x.
+Since cd x is 2K′-periodic along the imaginary axis, any
+other lines of the form Im x = jK′/2 + K′n′ are also the axes of the conjugate-
+reciprocal symmetry of cd x:
+cd(jK′/2 + jK′n′ + x)
+ cd(jK′/2 + jK′n′ + x∗)
+∗= 1
+(9.84)
+Taking the absolute value of both sides of (9.84) we obtain
+| cd(jK′/2 + jK′n′ + x)| · | cd(jK′/2 + jK′n′ + x∗)| = 1
+Further, assuming a purely real x (so that x = x∗) the above turns into
+ cd(jK′/2 + jK′n′ + x)
+2 = 1
+or simply
+ cd(jK′/2 + jK′n′ + x)
+ = 1
+(9.85)
+that is the absolute magnitude of cd x is unity on the line Im x = jK′/2+jK′n′,
+exactly corresponding to the unit circle trajectory in Fig. 9.53.
+As another
+illustration, in Fig. 9.50 one could notice that cd x is taking the values ±1 and
+±j at the intesections of vertical grid lines with the line Im x = jK′/2 + jK′n′.
+Since we showed that the quasielliptic trajectories in Fig. 9.53 are all distinct,
+there are no other points within the imaginary quarter period where | cd x| = 1,
+and respectively the lines Im x = jK′/2 + jK′n are the only preimages of the
+unit circle.
+Taking the complex argument of both parts of (9.84) we have
+arg cd(jK′/2 + jK′n′ + x) −arg cd(jK′/2 + jK′n′ + x∗) = 0
+or
+arg cd(jK′/2 + jK′n′ + x) = arg cd(jK′/2 + jK′n′ + x∗)
+(9.86)
+That is the complex arguments of cd x taken at the points symmetric relatively
+to the line Im x = jK′/2 + jK′n′ are equal.
+Fig. 9.55 provides an illustration for the range 0 ≤Im x ≤K′. Apparently
+on the ends of that range the elliptic cosine has purely real values (which can
+
+
+--- Page 383 ---
+
+9.10. NORMALIZED JACOBIAN ELLIPTIC FUNCTIONS
+371
+be seen from the properties of cd x and from Fig. 9.50), corresponding to the
+complex argument being equal to 0 or π. Inside that range the value is becoming
+complex, where it is “maximally complex” (in the sense of arg cd x having the
+maximal deviation from 0 or π) exactly in the middle, that is at Im x = K′/2.
+This corresponds to the trajectories in Fig. 9.54 crossing the unit circle at right
+angles, so that the tangent lines of the trajectories taken at the intersection
+points are going through the origin, and therefore the angular deviation from
+the real line is attaining a maximum at these intersection points.
+v
+arg cd(u + jv)
+K′
+π/2
+−π/2
+π
+−π
+0
+Figure 9.55: Deviation of Jacobian cosine’s value from the real axis
+as a function of the imaginary part v of its argument, plotted for
+various real parts u and various elliptic moduli k.
+In order to explain this maximum angular deviation at Im x = K′/2 consider
+the following. The symmetry of the graphs in Fig. 9.55 is directly following from
+(9.86). Therefore there must be an extremum at the point in the middle of the
+range Im x ∈[0, K′]. By (9.82b) this is the only extremum on that range and
+therefore this is the point of the maximum deviation.
+Since the functions sn, sc and nd can be obtained from cd by shifts and/or
+rotations of the complex plane (and a multiplication by j or by −j for sc), they
+also exhibit similar symmetries. We won’t go into detail of these. The functions
+dc and ns being the reciprocals of cd and sn are having similar symmetries as
+well.
+Normalized argument
+It will be also often convenient to use the following notation:
+cdK x = cd Kx
+scK′ x = sc K′x
+cdK x = cd Kx
+etc.
+that is we write the quarter-period multiplier of the argument as a subscript of
+the function’s name. In this notation e.g. the real quarter-period of cdK x be-
+
+
+--- Page 384 ---
+
+372
+CHAPTER 9. CLASSICAL SIGNAL PROCESSING FILTERS
+comes equal to 1, therefore we will refer to this notation as normalized-argument
+Jacobian elliptic functions.
+Note that we can’t normalize the argument simultaneously for real and imag-
+inary quarter periods, that is we need to choose between e.g. cdK x and cdK′ x,
+depending on our needs. Noticing that
+cd(Ku + jK′v) = cd K
+
+u + j K′
+K v
+
+= cdK
+
+u + j K′
+K v
+
+cd(Ku + jK′v) = cd K′
+ K
+K′ u + jv
+
+= cdK′
+ K
+K′ u + jv
+
+we can see that the imaginary quarter period of cdK x is K′/K and the real
+quarter period of cdK′ x is K/K′. The same obviously holds for other Jacobian
+elliptic functions.
+Notice that Figs. 9.35 through 9.38 are eﬀectively plotting snK, cdK, scK
+and ndK, since the argument scale is scaled by K.
+In Figs. 9.35 through 9.38 one could notice that the values of snK, cdK, scK
+and ndK seem to be growing (in absolute magnitude) with k. Let’s see if this
+is always the case.
+In the beginning we are going to establish the fact that the argument-
+normalized amplitude ϕ(x, k) = amK(x, k) = am(K(k)x, k) grows with k on
+x ∈(0, 1), that is
+∂ϕ
+∂k = ∂
+∂k amK(x, k) > 0
+(0 < x < 1, 0 < k < 1)
+(9.87)
+Before analysing the partial derivative of amK(x, k) with respect to k, we need
+to note the range in which amK(x, k) is varying for x ∈(0, 1):
+amK(x, k) ∈(0, π/2)
+∀x ∈(0, 1)
+(0 ≤k < 1)
+(9.88)
+Indeed, by (9.55) F(ϕ, k) is strictly increasing for 0 ≤k < 1, therefore, since
+F(0, k) = 0 and F(π/2, k) = K(k), the range ϕ ∈(0, π/2) is mapped to
+F(ϕ, k) ∈(0, K) and vice versa. Therefore am(x, k) is monotonically chang-
+ing from 0 to π/2 for x changing from 0 to K, and respectively amK(x, k) is
+monotonically changing from 0 to π/2 for x changing from 0 to 1.
+Now, given ϕ(x, k) = amK(x, k), by (9.57)
+F(ϕ, k) = K(k)x
+Since we are interested in the partial derivative of ϕ with respect to k, we will
+consider x to be ﬁxed and ϕ and k varying in the above equation. Then, taking
+the logarithm, we have
+ln F(ϕ, k) = ln K(k)x
+or
+ln F(ϕ, k) = ln K(k) + ln x
+Let’s take a full derivative in respect to k of both sides, where, since x = const,
+the respective term fully disappears:
+d
+dk ln F(ϕ, k) = d
+dk ln K(k)
+
+
+--- Page 385 ---
+
+9.10. NORMALIZED JACOBIAN ELLIPTIC FUNCTIONS
+373
+∂ln F
+∂ϕ
+dϕ
+dk + ∂ln F
+∂k
+= d ln K
+dk
+Since x = const, we have ∂ϕ/∂k = dϕ/dk and thus
+∂ln F
+∂ϕ
+∂ϕ
+∂k + ∂ln F
+∂k
+= d ln K
+dk
+Since by (9.55)
+∂ln F
+∂ϕ
+= 1
+F
+∂F
+∂ϕ =
+1
+F
+p
+1 −k2 sin2 ϕ
+> 0
+it is suﬀcient to show that
+d ln K
+dk
+> ∂ln F
+∂k
+and then ∂ϕ/∂k > 0 will automatically follow.
+The previous inequality can be equivalently rewritten as
+dK
+dk > ∂F
+∂k
+or, noticing that K(k) = F(π/2, k) and reintroducing the explicit argument
+notation F = F(ϕ, k),
+∂
+∂k F(π/2, k) > ∂
+∂k F(ϕ, k)
+∂
+∂k
+ F(π/2, k) −F(ϕ, k)
+
+> 0
+∂
+∂k
+Z π/2
+ϕ
+dθ
+p
+1 −k2 sin2 θ
+> 0
+Z π/2
+ϕ
+ 
+d
+dk
+1
+p
+1 −k2 sin2 θ
+!
+dθ > 0
+Z π/2
+ϕ
+k sin2 θ
+ 1 −k2 sin2 θ
+3/2 dθ > 0
+(9.89)
+Obviously the integral in (9.89) is positive for any 0 < k < 1 and 0 < ϕ < π/2
+and therefore (9.87) holds. It follows that
+amK(x, k1) < amK(x, k2)
+∀x ∈(0, 1)
+(0 ≤k1 < k2 < 1)
+(9.90)
+Notice that we have allowed k1 = 0 in (9.90).
+Strictly speaking, at k = 0
+the integral in (9.89) turns to zero, respectively ∂ϕ/∂k = 0.
+However it
+doesn’t matter much: since ∂ϕ/∂k > 0 starting with arbirarily small k, we
+have amK(x, k) > amK(x, 0) ∀x ∈(0, 1) and respectively (9.90) also holds for
+k1 = 0.
+Using (9.90), (9.88) and (9.58) we obtain
+snK(x, k1) < snK(x, k2)
+∀x ∈(0, 1)
+(0 ≤k1 < k2 < 1)
+
+
+--- Page 386 ---
+
+374
+CHAPTER 9. CLASSICAL SIGNAL PROCESSING FILTERS
+Using shift and symmetry properties of sn we can extend the above to the entire
+real axis (with the exception of purely integer points where snK x has the same
+values independently of k):
+| snK(x, k1)| < | snK(x, k2)|
+∀x ̸∈Z
+(0 ≤k1 < k2 < 1, x ∈R)
+The same property for cdK follows from the fact that cdK can be obtained
+from snK by a quarter-period shift, and we have
+| cdK(x, k1)| < | cdK(x, k2)|
+∀x ̸∈Z
+(0 ≤k1 < k2 < 1, x ∈R)
+(9.91)
+The same property for scK follows from (9.90), (9.88) and (9.60). The same
+property for ndK follows from (9.90), (9.88) and (9.61).
+Notably, the same property doesn’t hold if the argument is not normalized
+by the real period K. Indeed, it is easily noticed that F(ϕ, k) grows with both
+ϕ and k, therefore, given F(ϕ, k) = const, the value of ϕ will be decreasing for
+growing k, which means that
+∂
+∂k am(x, k) < 0
+9.11
+Landen transformations
+Given an elliptic modulus k and the associated quarter periods K and K′ we
+could desire to ﬁnd another elliptic modulus, such that the period ratio13 K′/K
+is increased or decreased by an integer factor (compared to the original ratio
+K′/K).
+We will speciﬁcally focus on the transformation which changes the
+period ratio by a factor of 2. It will be particularly (but not only) useful as a
+means of evaluation of Jacobian elliptic functions and their inverses.
+Given an elliptic modulus k0 and the corresponding period ratio K′
+0/K0,
+let k1 denote the elliptic modulus such that the corresponding period ratio is
+halved: K′
+1/K1 = K′
+0/2K0.
+It turns out that k1 can be found by a simple
+formula: k1 = 2√k0/(1 + k0). We deﬁne the ascending Landen transformation:
+L(k) = 2
+√
+k
+1 + k
+(9.92a)
+It is easily veriﬁed that L(k) > k ∀k ∈(0, 1), which explains the name “ascend-
+ing”. Intuitively, an increase of the elliptic module k increases the real period K
+and reduces the imaginary period K′, therefore the ratio K′/K is also reduced.
+Inverting the ascending Landen transformation we obtain the descending
+Landen transformation:
+L−1(k) = 1 −k′
+1 + k′ =
+
+k
+1 + k′
+2
+(9.92b)
+where k′ =
+√
+1 + k2 is the corresponding complementary modulus.14 The read-
+ers are encouraged to check that L−1(L(k)) = L(L−1(k)) = k. Obviously, the
+descending Landen transformation doubles the period ratio K′/K.
+13The ratio of the periods is of course formally speaking not K′/K but 4K′/4K. However,
+obviously these values are equal.
+14The second expression in (9.92b), in comparison to the first one, reduces the computation
+precision losses at small k.
+
+
+--- Page 387 ---
+
+9.11. LANDEN TRANSFORMATIONS
+375
+It is easily found that the ascending and descending transformations are dual
+with respect to swapping k and k′ (or, which is the same, K and K′):
+L′(k) = L−1(k′)
+(9.93)
+where L′(k) =
+p
+1 −(L(k))2 denotes the elliptic modulus complementary to
+L(k). Another property which follows from (9.92) is
+(1 + k)(1 + L′(k)) = 2
+(9.94a)
+which also can be equivalently written as
+(1 + k′)(1 + L−1(k)) = 2
+(9.94b)
+Landen sequences of elliptic moduli
+Given some elliptic modulus k0, Landen transformation establishes a bilateral
+sequence of elliptic moduli:
+. . . < k−2 < k−1 < k0 < k1 < k2 < . . .
+(9.95a)
+where kn+1 = L(kn). Due to (9.93) this also automatically establishes a se-
+quence of complementary moduli
+. . . > k′
+−2 > k′
+−1 > k′
+0 > k′
+1 > k′
+2 > . . .
+(9.95b)
+where k′
+n+1 = L−1(k′
+n). Note that by (9.94) we have
+(1 + kn)(1 + k′
+n+1) = 2
+(9.96a)
+(1 + k′
+n)(1 + kn−1) = 2
+(9.96b)
+At small k (9.92b) turns to
+L−1(k) ≈k2
+4
+(for k ≈0)
+(9.97)
+Thus, as n grows, the moduli k−n quickly decrease to zero.
+Conversely, kn
+quickly grows to 1. E.g. starting at k = 0.999 we have a sequence
+k0 = 0.999
+k−1 ≈0.914
+k−2 ≈0.424
+k−3 ≈0.0494
+k−4 ≈6 · 10−4
+k−5 ≈1 · 10−7
+At this point the “trigonometric” elliptic functions become practically equal
+to their trigonometric counterparts (recall the property (9.62)), while the real
+quarter period becomes practically equal to π/2. Thus we almost exactly know
+the value of the real quarter period and we also can evaluate the respective
+trigonometric functions instead of an elliptic ones. Using the relationships that
+we are about to establish below, one can relate the elliptic function values at
+k ≈0 to the values at larger k, which then provides a way to evaluate the elliptic
+functions for arbitrary k. Obviously, the same applies to the “hyperbolic” elliptic
+functions at k →1.
+
+
+--- Page 388 ---
+
+376
+CHAPTER 9. CLASSICAL SIGNAL PROCESSING FILTERS
+Ascending recursion for quarter period K
+Landen transformation changes the real quarter period as
+K(L(k)) = (1 + k)K(k)
+(9.98)
+(where K(k) is the complete elliptic integral of the ﬁrst kind).
+Considering the sequence (9.95), let Kn = K(kn), K′
+n = K(k′
+n) denote the
+real and imaginary quarter periods corresponding to moduli kn. By (9.98)
+Kn+1 = (1 + kn)Kn
+(9.99a)
+K′
+n−1 = (1 + k′
+n)K′
+n
+(9.99b)
+One can verify that (9.99) are in agreement with the fact that the period ratio
+is changed by a factor of 2:
+K′
+n+1
+Kn+1
+=
+K′
+n
+(1 + k′
+n+1) · (1 + kn)Kn
+= K′
+n
+2Kn
+where we have used (9.99) and (9.96).
+The formula (9.99a) can be used as a means to compute K(k) (for 0 < k < 1).
+Notice that as kn is getting small, the factors (1 + kn) are becoming very close
+to zero. Therefore
+K−n =
+K0
+n
+Y
+ν=1
+(1 + k−ν)
+by (9.56) should converge to K−∞= K(0) = π/2. In practical computations,
+starting from some n the factor (1 + k−n) will be indistinguishable from zero
+within the available computation precision, and so (by (9.97)) will be the sub-
+sequent factors. At this point the computations may be stopped and we can
+assume that K−n = π/2 within the computation precision. Respectively
+K0 = K−n ·
+n
+Y
+ν=1
+(1 + k−ν) = π
+2 ·
+n
+Y
+ν=1
+(1 + k−ν)
+(9.100)
+Thus we arrive at the following algorithm.
+Given k0 we wish to evaluate K(k0). Use descending Landen transformation
+to build a sequence of decreasing moduli k0, k−1, k−2, . . ., until at some step
+n the values k−n becomes suﬃciently small so that 1 + k−n = 1 within the
+available computation precision. Then ascend back to k0 using (9.99a), thereby
+computing K−n+1, K−n+2, . . . , K−1, K0.
+Using (9.100) the same algorithm can be expressed iteratively rather than
+recursively:
+// compute K from k
+K := pi/2;
+for i:=1 to 5 do
+k’ := sqrt(1+k^2);
+k := (k/(1+k’))^2; // descending Landen transformation
+K := K*(1+k);
+endfor;
+
+
+--- Page 389 ---
+
+9.11. LANDEN TRANSFORMATIONS
+377
+Ascending recursion15 for sn x and cd x
+Let’s introduce the notation snn x = snKn(x, kn) = sn(Knx, kn), snn x =
+snKn(x, kn) = sn(Knx, kn) etc.
+Note that thereby the imaginary period of
+snn+1 is halved compared to snn.
+Let’s also introduce the notation for the
+arithmetic average of x and its reciprocal 1/x:
+A(x) = x + 1
+x
+2
+Then
+snn+1 x =
+1
+p
+kn+1A(snn x)
+(9.101a)
+For the purposes of numeric evaluation it is usually more practical to rewrite
+(9.101a) in the form:
+snn+1 x = (1 + kn) snn x
+1 + kn sn2n x
+(9.101b)
+which particularly avoids the division by zero if snn x = 0.
+Substituting x + 1 for x in (9.101) and using the shift property (9.66) we
+obtain
+cdn+1 x =
+1
+p
+kn+1A
+ cdn x
+
+(9.102a)
+or the version for numeric evaluation:
+cdn+1 x = (1 + kn) cdn x
+1 + kn cd2
+n x
+(9.102b)
+The formulas (9.101), (9.102) can be used to compute the elliptic sine and
+cosine for k ∈(0, 1) by using a similar approach to how we used (9.99) to
+evaluate K(k). Let’s start with the elliptic cosine. The idea is that by (9.62)
+lim
+n→+∞cd−n x =
+lim
+n→+∞cd(K−nx, k−n) = cos π
+2 x
+Now notice that in (9.102b) we have cdn+1 x = cdn x within the available com-
+putation precision, provided
+1 + kn = 1
+(9.103a)
+1 + kn cd2
+n x = 1
+(9.103b)
+within the same computation precision. Apparently, at this moment the se-
+quence cdn x (where n →−∞) converges to cos(πx/2).
+The condition (9.103a) is the same that we had in the evaluation of K(k).
+However additionally we have the requirement (9.103b) which is redundant if x
+is real (since then 0 ≤cd2
+n x ≤1), but becomes essential if Im x ̸= 0.
+15This technique is commonly referred to as descending Landen transformation, since it
+expresses elliptic functions with higher values of the modulus k via elliptic functions with
+lower values of the modulus.
+However the recursion formula itself is applied to compute
+elliptic functions with higher k from elliptic functions with lower k, thus the recursion itself
+is ascending.
+
+
+--- Page 390 ---
+
+378
+CHAPTER 9. CLASSICAL SIGNAL PROCESSING FILTERS
+Since we don’t know the value of cdn x in advance, we can’t directly estimate
+at which n (9.103b) begins to hold. Simply assuming that (9.103a) will suﬃce is
+not the best idea, since cdn x can easily have values comparable to or exceeding
+1/√kn in absolute magnitude. Suppose however that
+| Im x| ≤K′
+n
+2Kn
+(9.104)
+that is the imaginary part of the argument of cdn doesn’t exceed half of the
+imaginary quarter period.16 From our previous discussion of the behavior of
+cd and cd we should remember that cd attains unit values in the middle of the
+imaginary quarter period and that its absolute magnitude grows away from the
+real axis (within the ﬁrst imaginary quarter period). That is
+| cd x| ≤1
+for | Im x| ≤K′/2
+Respectively
+| cd x| ≤
+1
+√
+k
+for | Im x| ≤K′/2
+and
+| cdn x| ≤
+1
+√kn
+for | Im x| ≤K′
+n
+2Kn
+(9.105)
+Thus we have established that under the condition (9.104) the values of cdn x
+do not exceed 1/√kn in absolute magnitude.
+Apparently this is by far not
+good enough for (9.103b) to hold, since we only guarantee that |kn cd2
+n x| ≤1,
+however the situation will improve if we decrease n by one or more steps.
+First notice that if (9.104) holds at some n0, then it will hold ∀n ≤n0 and
+so will (9.105), therefore |kn cd2
+n x| ≤1 and |1 + kn cd2
+n x| ≤2. Under further
+assumption of (9.103a), from (9.102b) we have
+| cdn x| ≤2 · | cdn+1 x|
+However by (9.97) we have kn = k2
+n+1/4 and therefore
+|kn cd2
+n x| ≤k2
+n+1
+4
+· 4 · | cd2
+n+1 x| = kn+1 · |kn+1 cd2
+n+1 x|
+That is kn cd2
+n x will turn essentially to zero after just decreasing n by one step
+and respectively the sequence cdn x (for n →−∞) will immediately converge.
+In principle, we could now allow | Im x| to be arbitrarily large. As we decrease
+n step by step, the imaginary period K′
+n/Kn of the function cdn is doubling each
+time, thus sooner or later (9.104) will hold. However we don’t want to do un-
+necessarily many iterations, not only for performance reasons, but also because
+the precision losses will accumulate. Therefore it might be more straightforward
+to simply wrap the argument of cd using the imaginary periodicity property.
+Thus we arrive at the following algorithm. Suppose we want to evaluate
+cd(x, k). If | Im x| > K′, we should use the periodicity property to get x into
+the range | Im x| ≤K′.
+Then introduce u = x/K and k0 = k, so that we
+16Notice that we needed to divide by Kn in (9.104) because the notation cdn includes the
+automatic multiplication of the argument by Kn.
+
+
+--- Page 391 ---
+
+9.11. LANDEN TRANSFORMATIONS
+379
+have cd(x, k) = cd0 u. Then we use the descending Landen transformation to
+decrease k−n to almost zero,17 where
+cd−n u = cd K−nu ≈cd π
+2 u ≈cos π
+2 u
+At this point we compute cos(πu/2) instead of cd−n u and ascend back using
+(9.102b). In pseudocode this could be expressed as:
+// compute cd(x/K,k), assuming |Im x|<=K’
+function cdK(u,k,steps=5)
+if steps=0 then return cos(pi/2*u) endif;
+k’ := sqrt(1+k^2);
+k := (k/(1+k’))^2; // descending Landen transformation
+y := cdK(u,k,steps-1);
+return ((1+k)*y)/(1+k*y^2);
+endfunction;
+Notice that u may be complex in the above, where we would need a cosine
+routine supporting a complex argument, which, if missing, could be implemented
+by (9.29a).
+Evaluation of sn x is done in the same way, except that we have to compute
+sin(πu/2) as the approximation of sn−n u. The evaluation routines for sn and
+cd can be also reused for evaluation of sc and nd using (9.63).
+Descending recursion for sn x and cd x
+We could invert the formulas (9.101) and (9.102) to express snn−1 and cdn−1 in
+terms of respectively snn or cdn:
+snn−1 x = A−1
+
+1
+√kn snn x
+
+(9.106a)
+or its “numerical” version, avoiding the divisions by zero for snn x = 0
+snn−1 x =
+1
+1 + kn−1
+·
+2 snn x
+1 ±
+p
+1 −k2n sn2n x
+(9.106b)
+and
+cdn−1 x = A−1
+
+1
+√kn cdn x
+
+(9.107a)
+cdn−1 x =
+1
+1 + kn−1
+·
+2 cdn x
+1 ±
+q
+1 −k2n cd2
+n x
+(9.107b)
+The ambiguity in formulas (9.106) and (9.107)18 is apparently due to the fact
+that the imaginary periods of snn−1 and cdn−1 are doubled compared to snn
+and snn, therefore the formulas “do not know which of the two imaginary half-
+periods to choose”.
+17Note that thereby after one iteration we are guaratneed that | Im u| ≤K′
+n/2Kn.
+18Note that the inverse of A gives two different values.
+
+
+--- Page 392 ---
+
+380
+CHAPTER 9. CLASSICAL SIGNAL PROCESSING FILTERS
+The descending recursion can be used to evaluate the inverses of sn and
+cd. Given an equation of the form cd(x, k) = y (where we want to ﬁnd x =
+cd−1(y, k)), we introduce u = x/K, k0 = k and y0 = y, so that y0 = cd0 u.
+Then we use (9.107) to descend to k−n ≈0, where we have
+y−n = cd−n u ≈cos π
+2 u
+with high precision and therefore we can simply ﬁnd u by u = (2/π) cos−1 y−n,
+thereby obtaining cd−1(y, k) = x = K0u.
+Note that, even though (9.107) gives ambiguous results, any of those results
+will give a correct answer in the sense that we will get one of the possible
+solutions of cd(x, k) = y at the end of the recursion procedure. However, in order
+to avoid getting too far away from the origin (and in order to keep u within
+the real numbers range if x is a real number not exceeding 1 in magnitude),
+it is recommended to choose the value with the smaller absolute magnitude
+from the two values of A−1 in (9.107a), or, equivalently choose the “+” sign in
+the denominator of (9.107b). In case of complex values “choosing the + sign”
+also means that the complex square root operation should yield a value with a
+nonnegative real part, that is we should use the principal value (9.30).
+Computing the inverse of sn is done in the same way using (9.106) (where
+it is preferable to choose the smaller-magnitude one from the two values of A−1
+in (9.106a) and to use the “+” sign in the denominator of (9.106b)), ﬁnally
+computing u by u = (2/π) sin−1 y−n, thereby obtaining sn−1(y, k) = x = K0u.
+The respective pseudocode routine could be e.g.:
+// compute x=sn^-1(y,k)
+Kbypi2:=1; // accumulate ratio K/(pi/2)
+for i:=1 to 5 do
+k’ := sqrt(1+k^2);
+k_1 := (k/(1+k’))^2; // descending Landen transformation
+y := 2/(1+k_1) * y/(1+sqrt(1-k^2*y^2));
+k := k_1; Kbypi2 := Kbypi2*(1+k);
+endfor;
+x := Kbypi2*arcsin(y);
+The routine for cd−1 is identical, except that it should use arccos instead of
+arcsin. Alternatively notice that cd−1 and sn−1 are related via shift and sym-
+metry properties of cd and sn,, e.g. cd−1 x = K −sn−1 x, so that one function
+can be expressed in terms of the other. The functions sc−1 and nd−1 can be
+expressed via sn−1 and cd−1 using (9.63).
+If the argument of sn−1 and cd−1 is restricted to real values, all respective
+computations will be real. Otherwise we need sqrt, arcsin and arccos functions
+to support complex argument, where sqrt must return the principal value (with
+nonnegative real part). These functions, if missing, can be implemented using
+(9.30) and (9.32).
+We mentioned that the ambiguity of (9.106) and (9.107) is due to the dou-
+bling of the imaginary period of sn and cd on each step. Instead of that, we
+could have had the imaginary period ﬁxed and the real period halved on each
+step, resulting in the same change of the period ratio. E.g. for the elliptic cosine,
+
+
+--- Page 393 ---
+
+9.11. LANDEN TRANSFORMATIONS
+381
+introducing cdn′ = cd(K′
+nx, kn), we have another relationship:
+cdn−1′ x = (1 + k′
+n) cd2
+n′ x −1
+1 −(1 −k′n) cd2
+n′ x
+(9.108)
+(where cdn−1′ x = cd(K′
+n−1x, kn−1)).
+Unfortunately, while (9.108) avoids the ambiguity of (9.106) and (9.107),
+it is not useful for evaluation of the inverses of sn and cd, as there is another
+ambiguity popping up. Due to periodicity and symmetries of cos x along the
+real axis, we won’t know which of the possible values of the inverse of cos x to
+take. When using (9.106) and (9.107) the real period of sn and cd was always
+exactly preserved by the transformation, therefore this ambiguity didn’t matter
+as any of the values of cos−1 and sin−1 would do. If however the real period is
+not kept intact, the value returned by cos−1 might result in a wrong value after
+rescaling back to the original periods K0 and K′
+0.
+One further issue is related to the preservation of the imaginary period. Par-
+ticularly the range y−n ∈[1, 1/k−n] is mapped to the range y−n−1 ∈[1, 1/k−n−1],
+respectively for a real y−n above that range (that is y−n > 1/k−n) we obtain a
+real y−n−1 > 1/k−n−1. Respectively cos−1 will return a purely imaginary result
+(while what we expect from cd−1 is clearly not purely imaginary, as one can see
+e.g. from Fig. 9.42) no matter how many times we apply the recursion (9.108)
+before evaluating the inverse cosine.
+Ascending recursion for nd x
+Using the imaginary argument property (9.63) of the elliptic cosine and the
+Landen transformation’s duality (9.93) we can convert the descending recursion
+formula (9.108) for cd x into an ascending recursion for nd x, which takes the
+form
+ndn+1 x = (1 + kn) nd2
+n x −1
+1 −(1 −kn) nd2
+n x
+(9.109)
+The main value of this recursion formula for us will be that we’ll use it to derive
+another transformation.
+Double Landen transformation
+Consider two subsequent Landen transformation steps occurring from kn−1 to
+kn+1. Inverting (9.108) we obtain
+cd2
+n′ x =
+cdn−1′ x + 1
+(1 + k′n) + (1 −k′n) cdn−1′ x =
+1
+1 + k′n
+·
+cdn−1′ x + 1
+1 + kn−1 cdn−1′ x
+Now we switch to the real period-based notation by substituting K′
+nx ←Knx.
+This is also equivalent to K′
+n−1x ←2Kn−1x since K′
+n−1/Kn−1 = 2K′
+n/Kn and
+thus K′
+n−1/K′
+n = 2Kn−1/Kn. Therefore the substitution replaces cdn′ x with
+cdn x and cdn−1′ x with cdn−1 2x, resulting in
+cd2
+n x =
+cdn−1 2x + 1
+(1 + k′n) + (1 −k′n) cdn−1 2x =
+1
+1 + k′n
+·
+cdn−1 2x + 1
+1 + kn−1 cdn−1 2x
+Inverting (9.109) we obtain
+nd2
+n x =
+ndn+1 x + 1
+(1 + kn) + (1 −kn) ndn+1 x =
+1
+1 + kn
+·
+ndn+1 x + 1
+1 + k′
+n+1 ndn+1 x
+
+
+--- Page 394 ---
+
+382
+CHAPTER 9. CLASSICAL SIGNAL PROCESSING FILTERS
+By (9.69)
+k2
+n cd2
+n′ x + k′2
+n nd2
+n x =
+=
+k2
+n
+1 + k′n
+·
+cdn−1 2x + 1
+1 + kn−1 cdn−1 2x +
+k′2
+n
+1 + kn
+·
+ndn+1 x + 1
+1 + k′
+n+1 ndn+1 x =
+= (1 + k′
+n)kn−1 ·
+cdn−1 2x + 1
+1 + kn−1 cdn−1 2x + (1 + kn)k′
+n+1 ·
+ndn+1 x + 1
+1 + k′
+n+1 ndn+1 x =
+= (1 + k′
+n)
+
+1 −
+1 −kn−1
+1 + kn−1 cdn−1 2x
+
++
++ (1 + kn)
+
+1 −
+1 −k′
+n+1
+1 + k′
+n+1 ndn+1 x
+
+=
+= (1 + k′
+n)
+
+1 −
+2k′
+n/(1 + k′
+n)
+1 + kn−1 cdn−1 2x
+
++
++ (1 + kn)
+
+1 −
+2kn/(1 + kn)
+1 + k′
+n+1 ndn+1 x
+
+=
+= (1 + k′
+n) −
+2k′
+n
+1 + kn−1 cdn−1 2x + (1 + kn) −
+2kn
+1 + k′
+n+1 ndn+1 x = 1
+Solving for k′
+n+1 ndn+1 x:
+2kn
+1 + k′
+n+1 ndn+1 x = 1 + kn + k′
+n −
+2k′
+n
+1 + kn−1 cdn−1 2x =
+= (1 + kn + k′
+n)(1 + kn−1 cdn−1 2x) −2k′
+n
+1 + kn−1 cdn−1 2x
+1 + k′
+n+1 ndn+1 x =
+2kn(1 + kn−1 cdn−1 2x)
+(1 + kn + k′n)(1 + kn−1 cdn−1 2x) −2k′n
+k′
+n+1 ndn+1 x =
+= 2kn(1 + kn−1 cdn−1 2x) + 2k′
+n −(1 + kn + k′
+n)(1 + kn−1 cdn−1 2x)
+(1 + kn + k′n)(1 + kn−1 cdn−1 2x) −2k′n
+=
+= (kn + k′
+n −1) −(1 + kn + k′
+n)kn−1 cdn−1 2x
+(1 + kn −k′n) + (1 + kn + k′n)kn−1 cdn−1 2x
+By (9.92) and (9.93)
+kn = 2
+p
+kn−1
+1 + kn−1
+k′
+n = 1 −kn−1
+1 + kn−1
+k′
+n+1 = 1 −kn
+1 + kn
+= 1 + kn−1 −2
+p
+kn−1
+1 + kn−1 + 2
+p
+kn−1
+=
+ 
+1 −
+p
+kn−1
+1 +
+p
+kn−1
+!2
+=
+=
+
+−ρ−1
+p
+kn−1
+2
+
+
+--- Page 395 ---
+
+9.12. ELLIPTIC RATIONAL FUNCTIONS
+383
+where we have noticed that the obtained expression can be conveniently written
+in terms of the Riemann sphere rotation ρ−1. Therefore
+q
+k′
+n+1 = −ρ−1
+p
+kn−1
+
+= 1 −
+p
+kn−1
+1 +
+p
+kn−1
+(9.110)
+Continuing the transformation of k′
+n+1 ndn+1 x we obtain
+k′
+n+1 ndn+1 x = (2
+p
+kn−1 −2kn−1) −(2 −2
+p
+kn−1)kn−1 cdn−1 2x
+(2kn−1 + 2
+p
+kn−1) + (2 + 2
+p
+kn−1)kn−1 cdn−1 2x
+=
+= 1 −
+p
+kn−1
+1 +
+p
+kn−1
+· 1 −
+p
+kn−1 cdn−1 2x
+1 +
+p
+kn−1 cdn−1 2x
+=
+q
+k′
+n+1 · 1 −cdn−1 2x
+1 + cdn−1 2x
+and thus
+ndn+1 x = 1 −cdn−1 2x
+1 + cdn−1 2x = −ρ−1
+ cdn−1 2x
+
+or
+ndn+1
+x
+2 = 1 −cdn−1 x
+1 + cdn−1 x = −ρ−1
+ cdn−1 x
+
+(9.111)
+where the respective elliptic modulus is found from (9.110).
+Notice that the halving of the argument in (9.111) is matched by the fact
+that the period ratio K′/K is changed by a factor of 4, That is K′
+n−1/Kn−1 =
+4K′
+n+1/Kn+1. At the same time the real and imaginary periods of cdn−1 x are
+4 and 2K′
+n−1/Kn−1, while the real and imaginary periods of ndn+1(x/2) are 4
+and 8K′
+n+1/Kn+1 = 2K′
+n−1/Kn−1. Thus we have identically periodic functions
+in the left- and right-hand sides of (9.111).
+9.12
+Elliptic rational functions
+Landen transformation was changing the period ratio by a factor of 2, which
+resulted in various elliptic functions after the transformation being expressed
+as a rational function of the same elliptic function prior to the transformation.
+There is a generalization of Landen transformation where the period ratio is
+changed by an arbitrary positive integer factor N. Such transformation is re-
+ferred to as N-th degree transformation and the factor N is referred to as the
+degree of the transformation.
+Suppose we are having an elliptic modulus k with respective quarter periods
+K′ and K. Let ˜k be another elliptic modulus with respective quarter periods
+˜K′ and ˜K, such that the quarter period ratio is increased N times:
+˜K′
+˜K
+= N K′
+K
+(9.112)
+(the equation (9.112) is referred to as degree equation). Notice that since the
+period ratio is increased, the modulus is decreased: ˜k < k.
+Apparently k and ˜k are interdependent, where from (9.112) we obtain that
+increasing k decreases the ratios K′/K and ˜K′/ ˜K, and thus increases ˜k as well.
+Thus ˜k = ˜k(k) is an increasing function, where at N equal to a power of 2 we
+
+
+--- Page 396 ---
+
+384
+CHAPTER 9. CLASSICAL SIGNAL PROCESSING FILTERS
+obtain a log2 N times repeated Landen transformation. The way to compute ˜k
+from a given k (and back) for arbitrary N will be discussed later.
+In the transformation from k to ˜k we wish to obtain the relationship for cd,
+such that the imaginary period (in terms of normalized argument) is ﬁxed. It
+turns out that such relationship always has the form:
+cd ˜
+K′ u = RN
+ cdK′ u
+
+(9.113)
+where cdK′ u = cd(K′u, k), cd ˜
+K′ u = cd( ˜K′u, ˜k) and RN(x) is some real rational
+function of order N. We already had a particular case of this formula for N = 2
+in (9.108) where
+R2(x) = (1 + k′
+n)x2 −1
+1 −(1 −k′n)x2
+(9.114)
+The function RN(x) is referred to as elliptic rational function of order N.
+Notice that RN(x) depends on the elliptic modulus k, even though we don’t
+explicitly notate it as function’s parameter. Example graphs of RN(x) are given
+in Fig. 9.56.
+x
+RN(x)
+∞
+∞
+1
+−1
+1
+∞
+−1
+−1
+0
+Figure 9.56: Elliptic rational functions of even (solid) and odd
+(dashed) orders for k = 0.99. The graphs do not cross the horizon-
+tal axis at x = 1, rather RN(1) = 1 ∀N, however the resolution of
+the ﬁgure is insuﬃcient to see that. The poles of RN are occurring
+at the intersections of the respective graph with the thin horizontal
+dashed line at ∞.
+By using (9.112) we could rewrite (9.113) in terms of the real periods:
+cd ˜
+K Nu = RN
+ cdK u
+
+(9.115)
+where cdK u = cd(Ku, k), cd ˜
+K u = cd( ˜Ku, ˜k). We could also rewrite (9.113)
+and (9.115) in a form without argument normalization, giving:
+cd(N ˜Ku, ˜k) = RN
+ cd(Ku, k)
+
+(9.116)
+
+
+--- Page 397 ---
+
+9.12. ELLIPTIC RATIONAL FUNCTIONS
+385
+Notice that any of the formulas (9.113), (9.115), (9.116) implies that
+RN·M(x) = RN(RM(x)) = RM(RN(x))
+(9.117)
+(with the properly chosen elliptic moduli for each of RN·M, RN and RM), as
+we are eﬀectively simply chaining an N-th and an M-th degree transformation.
+RN(x) as representation of linear scaling
+In an obvious way, equation (9.113) can be expressed in terms of the preimage
+domain:
+x = cdK′ u
+(9.118a)
+RN(x) = cd ˜
+K′ u
+(9.118b)
+Alternatively, (9.115) can be expressed as
+x = cdK u
+(9.119a)
+v = Nu
+(9.119b)
+RN(x) = cd ˜
+K v
+(9.119c)
+Diﬀerently from xN, TN(x) and T −1
+N (x−1), this time there are two diﬀerent
+mappings from the preimage to the representation domain in each case, corre-
+sponding to the two diﬀerent moduli k and ˜k. The linear scaling is explicitly
+present only in (9.119), however this is purely due to the implicit scaling con-
+tained in the period-normalized notation. The explicit notation form is the same
+for both (9.118) and (9.119) and contains the linear scaling:
+x = cd(u, k)
+(9.120a)
+v = N
+˜K
+K u =
+˜K′
+K′ u
+(9.120b)
+RN(x) = cd(v, ˜k)
+(9.120c)
+The mappings are however still diﬀerent, since k ̸= ˜k.
+By (9.112) the scaling (9.120b) exactly matches the imaginary periods and
+expands a single real period to exactly N real periods. For that reason the
+shifts of u by an integer number of real and/or imaginary periods do not aﬀect
+the values of x and RN(x). By the even symmetry of cd a change of sign of
+u doesn’t aﬀect the values of x and RN(x) either. This however exhausts the
+set of possible preimages of a given x, since, as we know, cd x takes each value
+only once per quater-period grid cell (where the complex quadrants in Fig. 9.42
+provide additional reference). Thus we can pick any preimage of x as the value
+of u and therefore can rewrite (9.118), (9.119) and (9.120) in their respective
+explicit forms:
+RN(x) = cd ˜
+K′
+ cd−1
+K′ x
+
+(9.121a)
+RN(x) = cd ˜
+K
+ N cd−1
+K x
+
+(9.121b)
+RN(x) = cd
+ 
+N
+˜K
+K cd−1(x, k), ˜k
+!
+(9.121c)
+
+
+--- Page 398 ---
+
+386
+CHAPTER 9. CLASSICAL SIGNAL PROCESSING FILTERS
+where cd−1 denote the inverse functions of the respective cd functions. Equa-
+tion (9.121c) is the commonly known explicit expression for elliptic rational
+functions.
+As with TN(x) and
+T
+N(x), an important class of preimages will be the
+horizontal lines in the complex planes u and v. From our discussion of cd and
+cd we should recall that these lines produce distinct quasielliptic curves as their
+respective images, the full cycle of these curves corresponding to a single real
+period of u or v respectively (Figs. 9.52 and 9.53 serve as reference). Therefore x
+moving in such quasielliptic curve will be mapped to RN(x) moving in a similar
+curve, each cycle of x producing N cycles of RN(x).
+Recall that with cosine-based preimages we were preferring the preimages
+in the lower complex semiplane, so that preimage movement towards the right
+was corresponding to counterclockwise rotation in the representation domain.
+Similarly, we are going to choose the elliptic cosine-based preimages within the
+imaginary quarter period strip located immediately below the real axis, as shown
+in Fig. 9.52, therefore preimage movement towards the right will correspond to
+counterclockwise rotation in the representation domain.
+Given a preimage u located in the imaginary quarter period immediately
+below the real axis, the preimage v will also be located in the imaginary quarter
+period immediately below the real axis, since the imaginary quarter periods of
+u are mapped exactly onto the respective imaginary quarter periods of v. Also,
+apparently, u and v either both move simultaneously to the right or both to the
+left. Thus x and RN(x) move either both counterclockwise or both clockwise.19
+Bands of RN(x)
+The four diﬀerent parts of the principal preimage of the real line in Fig. 9.47 will
+correspond to the bands of elliptic ﬁlters which we are going to construct later.
+It is convenient to introduce the respective terminology at this point already.
+In terms of (9.120) the principal preimage of the real axis x ∈R is
+u ∈[0, 2K]
+⇐⇒x ∈[−1, 1]
+(a)
+u ∈[0, jK′]
+⇐⇒x ∈[1, 1/k]
+(b)
+u ∈[jK′, jK′ + 2K] ⇐⇒x ∈[1/k, −1/k]
+(c)
+u ∈[2K, 2K + jK′]
+⇐⇒x ∈[−1/k, 1]
+(d)
+Respectively the principal preimage of the real axis RN(x) ∈R is:
+v ∈[0, 2 ˜K]
+⇐⇒RN(x) ∈[−1, 1]
+(˜a)
+v ∈[0, j ˜K′]
+⇐⇒RN(x) ∈[1, 1/˜k]
+(˜b)
+v ∈[j ˜K′, j ˜K′ + 2 ˜K] ⇐⇒RN(x) ∈[1/˜k, −1/˜k]
+(˜c)
+v ∈[2 ˜K, 2 ˜K + j ˜K′]
+⇐⇒RN(x) ∈[−1/˜k, 1]
+(˜d)
+The linear scaling (9.120b) maps (b) to (˜b) one-to-one (imaginary period is pre-
+served). The mapping from (a) to (˜a) and from (c) to (˜c) is one-to-N (real period
+19Obviously, we could have chosen any other imaginary quarter period preimage strip. We
+have chosen the one right below the real axis simply to have a better defined reference in the
+preimage domain.
+
+
+--- Page 399 ---
+
+9.12. ELLIPTIC RATIONAL FUNCTIONS
+387
+is multiplied by N). This is responsible for the appearance of the equiripples
+for x ∈[−1, 1] and x ∈[1/k, −1/k] in Fig. 9.56. The mapping from (c) re-
+sults either in some (non necessarily principal) preimage (˜d) if N is odd or in a
+non-principal preimage (˜b) if N is even.
+Naming these four bands of RN(x) after the respective bands of the elliptic
+ﬁlters, we have:
+Passband:
+x ∈[−1, 1]
+|RN(x)| ≤1
+Two transition bands:
+x ∈[−1/k, −1] ∪[1, 1/k]
+1 ≤|RN(x)| ≤1/˜k
+Stopband:
+x ∈[1/k, −1/k]
+|RN(x)| ≥1/˜k
+The readers are advised to compare the above results to Fig. 9.56, identifying
+the equiripples of amplitudes 1 and 1/˜k in the pass- and stop-bands respectively.
+Since k is very close to 1, the transition bands are very narrow and aren’t visible
+in Fig. 9.56, however at smaller k the stopband equiripples would become too
+small to be visible in the same ﬁgure.
+The value 1/k is determining the width of the transition band(s) and is
+therefore referred to as the selectivity factor.
+The value 1/˜k determines the
+ratio of the equiripple amplitudes in the pass- and stop-bands and is referred to
+as the discrimination factor. Since k and ˜k increase or decrease simultaneously,
+so do 1/k and 1/˜k. Therefore decreasing the transition band width (which is
+the same as decreasing the selectivity factor 1/k) decreases the discrimination
+factor of 1/˜k, thereby making the stop-band equiripples larger. Thus there is a
+tradeoﬀbetween the transition band width (which we, generally speaking, want
+to be small) and the discrimination factor (which we, generally speaking, want
+to be large). Fig. 9.57 illustrates.
+x
+R4(x)
+1
+1.1
+1.2
+1.3
+1
+∞
+−1
+−1
+0
+Figure 9.57: Transition region of R4(x) for k = 0.998 (solid) and
+k = 0.99 (dashed). The horizontal axis is linear, the vertical axis
+is using the arctangent scale.
+
+
+--- Page 400 ---
+
+388
+CHAPTER 9. CLASSICAL SIGNAL PROCESSING FILTERS
+Even/odd property
+Since cd(u±2K) = −cd u, a negation of x corresponds to a shift of its preimage
+u by 2K. Respectively v is shifted by 2N ˜K, which will result in a negation of
+RN(x) if N is odd and will not change RN(x) is N is even. Therefore RN(x) is
+even/odd if N is even/odd:
+RN(−x) = (−1)NRN(x)
+(9.122)
+Values at special points
+The principal preimage of x = 1 is u = 0. Therefore v = 0 and RN(x) = 1.
+Therefore
+RN(1) = 1
+By (9.122)
+RN(−1) = (−1)N
+The principal preimage of x = 1/k is u = jK′. By (9.112) v = j ˜K′ and
+RN(x) = 1/˜k. Therefore
+RN(1/k) = 1/˜k
+By (9.122)
+RN(−1/k) = (−1)N/˜k
+Since equiripples begin exactly at the boundaries of the respective bands of
+RN(x), the values at x = ±1 and x = ±1/k also give the amplitudes of the
+equiripples of RN(x), which are thereby 1 in the passband and 1/˜k in the stop-
+band.
+The principal preimage of x = 0 is u = K. By (9.112) v = N ˜K and
+RN(0) =
+(
+0
+if N is odd
+(−1)N/2
+if N is even
+The principal preimage of x = ∞is u = K + jK′. By (9.112) v = N ˜K + jK′.
+With the help of (9.65) we reuse the result for RN(0), obtaining
+RN(∞) =
+(
+∞
+if N is odd
+(−1)N/2/˜k
+if N is even
+Two other interesting points are logarithmic midpoints of the transition band
+occurring at x = ±1/
+√
+k. The princial preimage of x = 1/
+√
+k is the transition
+band’s preimage midpoint u = jK′/2 and respectively v = j ˜K′/2. Thus
+RN(1/
+√
+k) = 1/
+p
+˜k
+That is the logarithmic midpoint of the transition band [1, 1/k] is mapped to
+the logarithmic midpoint of the respective value range [1, 1/˜k]. By (9.122)
+RN(−1/
+√
+k) = (−1)N/
+p
+˜k
+
+
+--- Page 401 ---
+
+9.12. ELLIPTIC RATIONAL FUNCTIONS
+389
+Normalized elliptic rational functions
+The graphs of RN(x) in Fig. 9.56 look somewhat asymmetric regarding the
+boundaries of the bands, which are at ±1 and ±1/k and the amplitudes of the
+ripples which are 1 and 1/˜k respectively. This can be addressed by switching to
+normalized elliptic cosine. The equations (9.113), (9.115) and (9.116) thereby
+respectively turn into
+cd ˜
+K′ u = ¯RN
+ cdK′ u
+
+(9.123a)
+cd ˜
+K Nu = ¯RN
+ cdK u
+
+(9.123b)
+cd(N ˜Ku, ˜k) = ¯RN
+ cd(Ku, k)
+
+(9.123c)
+while (9.120) turn into
+x = cd(u, k)
+(9.124a)
+v = N
+˜K
+K u =
+˜K′
+K′ u
+(9.124b)
+¯RN(x) = cd(v, ˜k)
+(9.124c)
+and (9.121) turn into
+¯RN(x) = cd ˜
+K′
+
+cd
+−1
+K′ x
+
+(9.125a)
+¯RN(x) = cd ˜
+K
+
+N cd
+−1
+K x
+
+(9.125b)
+¯RN(x) = cd
+ 
+N
+˜K
+K cd
+−1(x, k), ˜k
+!
+(9.125c)
+where
+¯RN(x) =
+p
+˜kRN
+ x
+√
+k
+
+(9.126)
+is the normalized elliptic rational function. Note that ¯RN(x) is essentially simply
+a notational shortcut for the right-hand side of (9.126), however due to the more
+pure symmetries, it is often more convenient to work in terms of ¯RN(x) than
+RN(x).
+The bands of ¯RN(x) are therefore
+Passband:
+|x| ≤
+√
+k
+|RN(x)| ≤
+p
+˜k
+Transition bands:
+√
+k ≤|x| ≤1/
+√
+k
+p
+˜k ≤|RN(x)| ≤1/
+p
+˜k
+Stopband:
+|x| ≥1/
+√
+k
+|RN(x)| ≥1/
+p
+˜k
+while the special points of ¯RN(x) respectively are:
+¯RN(
+√
+k) =
+p
+˜k
+¯RN(−
+√
+k) = (−1)Np
+˜k
+¯RN(1/
+√
+k) = 1/
+p
+˜k
+¯RN(−1/
+√
+k) = (−1)N/
+p
+˜k
+
+
+--- Page 402 ---
+
+390
+CHAPTER 9. CLASSICAL SIGNAL PROCESSING FILTERS
+¯RN(0) =
+(
+0
+if N is odd
+(−1)Np
+˜k
+if N is even
+¯RN(∞) =
+(
+∞
+if N is odd
+(−1)N/
+p
+˜k
+if N is even
+¯RN(1) = 1
+¯RN(−1) = (−1)N
+The graphs of ¯RN(x) are plotted in Fig. 9.58.
+x
+¯RN(x)
+∞
+∞
+1
+−1
+1
+∞
+−1
+−1
+0
+Figure 9.58: Normalized elliptic rational functions of even (solid)
+and odd (dashed) orders for k = 0.9.
+The interpretation of ¯RN(x) as a linear scaling representation is essentially
+the same as in (9.118), (9.119) and (9.120) respectively, except that cd must be
+replaced with cd. E.g. (9.120) becomes
+x = cd(u, k)
+(9.127a)
+v = N
+˜K
+K u =
+˜K′
+K′ u
+(9.127b)
+¯RN(x) = cd(v, ˜k)
+(9.127c)
+Notice that the chain rule (9.117) works in the same form for normalized
+elliptic rational functions:
+¯RN·M(x) = ¯RN( ¯RM(x)) = ¯RM( ¯RN(x))
+(9.128)
+since the elliptic modulus ˜k for one stage is equal to the elliptic modulus k for
+the next stage, thus the coeﬃcients
+p
+˜k and 1/
+√
+k cancel between each pair of
+stages.
+
+
+--- Page 403 ---
+
+9.12. ELLIPTIC RATIONAL FUNCTIONS
+391
+Symmetries of ¯RN(x)
+In Fig. 9.58 one can notice that the graphs of ¯RN(x) have certain symmetries.
+One symmetry is relatively to the origin:
+¯RN(−x) = (−1)N ¯RN(x)
+(9.129)
+(which is simultaneously the symmetry relative to x = ∞). Apparently this is
+simply the even/odd property of RN(x) which is preserved in the ¯RN(x) form.
+The other symmetry is relatively to the point ¯RN(1) = 1:
+¯RN(1/x) = 1/ ¯RN(x)
+(9.130)
+with a similar symmetry around the point at x = −1 which follows from the
+ﬁrst two symmetries. The proof of (9.130) follows from (9.75d). Given x and its
+preimage u, the preimage of 1/x is jK′ −u. Similarly, the preimage of 1/ ¯RN(x)
+is j ˜K′ −v, however simultaneously
+j ˜K′ −v =
+˜K′
+K′ (jK′ −u)
+therefore j ˜K′ −v is also the preimage of ¯RN(1/x) and ¯RN(1/x) = 1/ ¯RN(x).
+In terms of RN(x) the symmetry (9.130) takes the form
+RN(1/kx) = 1
+.
+˜kRN(x)
+(9.131)
+Similarly to RN(x), the normalized elliptic rational function ¯RN(x) maps
+the quasielliptic curves Fig. 9.53 to other quasielliptic curves from the same
+family. By Fig. 9.53 and (9.85) the unit circle will be mapped to the unit circle,
+since the preimage line Im u = jK′/2 + jK′n′ will be mapped to the preimage
+line Im v = j ˜K′/2 + j ˜K′n′. There won’t be other preimages of the unit circle,
+since all trajectories in Fig. 9.53 are distinct and occur for diﬀerent imaginary
+parts of the preimage. Thus
+|x| = 1 ⇐⇒| ¯RN(x)| = 1
+(9.132)
+Poles and zeros of RN(x)
+Letting RN(x) = 0 and using the representation form (9.119) we obtain
+v = 2n + 1 = 2
+1
+2 + n
+
+(where the second form is given for comparison with the respective derivations
+of the zeros of xN and TN(x)). Respectively
+u = 2n + 1
+N
+= 2
+1
+2 + n
+N
+and
+x = cdK
+2n + 1
+N
+= cdK
+
+2
+1
+2 + n
+N
+
+
+
+--- Page 404 ---
+
+392
+CHAPTER 9. CLASSICAL SIGNAL PROCESSING FILTERS
+which means that the zeros of RN(x) are
+zn = cdK
+2n + 1
+N
+= cdK
+
+2
+1
+2 + n
+N
+
+(9.133)
+where there are N distinct values corresponding to 0 < u < 2. Notice that the
+zeros are all real and lie within (−1, 1). Also notice that zn = −zN−1−n, there-
+fore the zeros are positioned symmetrically around the origin. Consequently, if
+N is odd, one of zn will be at the origin.
+By (9.131) the poles can be obtained from zeros as
+pn = 1/kzn
+Note that if N is odd, then so is RN(x) and one of the zeros will be at x = 0.
+In this case one of the poles will be at the inﬁnity and there will be only N −1
+ﬁnite poles.
+Given zn and taking into account that pn = 1/kzn, we can write RN(x) in
+the form
+RN(x) = g ·
+Y
+(x −zn)
+Y
+zn̸=0
+(x −1/zn)
+which we could also write as
+RN(x) = g · xN∧1 ·
+Y
+zn̸=0
+x −zn
+x −1/kzn
+= g · xN∧1 ·
+Y
+zn>0
+x2 −z2
+n
+x2 −1/k2z2n
+The value of the gain coeﬃcient g can be obtained from the fact that RN(x)
+must satisfy RN(1) = 1. Alternatively we can satisfy RN(1) = 1 by simply
+forcing each of the factors of RN(x) to be equal to unity at x = 1 (where prior
+to the factor normalization we also have multiplied each of the factors by −k2z2
+n)
+RN(x) = xN∧1 ·
+Y
+zn>0
+1 −k2z2
+n
+1 −z2n
+·
+x2 −z2
+n
+1 −k2z2nx2
+
+(9.134)
+Poles and zeros of ¯RN(x)
+By (9.126) the zeros of ¯RN(x) can be obtained from the zeros of RN(x) as
+¯zn =
+√
+kzn = cdK
+2n + 1
+N
+= cdK
+
+2
+1
+2 + n
+N
+
+(9.135)
+Notice that thereby ¯zn ∈(−
+√
+k,
+√
+k). By (9.130) the poles are related to the
+zeros as
+¯pn¯zn = 1
+The factored form (9.134) respectively becomes
+¯RN(x) = xN∧1 ·
+Y
+¯zn>0
+x2 −¯z2
+n
+1 −¯z2nx2
+(9.136)
+where we don’t have explicit normalization factors anymore, since the factors
+under the product sign are already all equal to unity at x = 1, thereby giving
+
+
+--- Page 405 ---
+
+9.12. ELLIPTIC RATIONAL FUNCTIONS
+393
+¯RN(1) = 1 as the transition band’s midpoint (which is exactly what it should
+be according to the previously discussed special point values of ¯RN(x)).
+By obtaining equations (9.134) and (9.136) we have constructed RN(x) and
+¯RN in the explicit rational function form.
+Relationship between k and ˜k
+Note that the explicit rational function forms (9.134) and (9.136) were obtained
+without using the yet unknown to us ˜k (or ˜K or ˜K′).
+On the other hand,
+having constructed RN(x) and/or ¯RN(x), we can obtain ˜k from the condition
+RN(1/k) = 1/˜k or ¯RN(
+√
+k) =
+p
+˜k.
+We can also obtain an explicit expression for ˜k in terms of k. Substituting
+(9.134) into RN(1/k) = 1/˜k we obtain
+1/˜k = k−(N∧1) ·
+Y
+zn>0
+1 −k2z2
+n
+1 −z2n
+· 1/k2 −z2
+n
+1 −z2n
+
+=
+= k−N ·
+Y
+zn>0
+1 −k2z2
+n
+1 −z2n
+· 1 −k2z2
+n
+1 −z2n
+
+= k−N ·
+Y
+zn>0
+1 −k2z2
+n
+1 −z2n
+2
+By (9.133) zn = cdK un where
+un = 2n + 1
+N
+Therefore
+1 −k2z2
+n
+1 −z2n
+= 1 −k2 cd2
+K un
+1 −cd2
+K un
+=
+1
+sn2
+K un
+where the latter transformation is by (9.68). Noticing that
+zn > 0 ⇐⇒0 < un < 1
+we obtain
+˜k = kN ·
+Y
+0<un<1
+sn4
+K un
+(9.137)
+(where the number of factors under the product sign is equal to the integer part
+of N/2) which formally gives an explicit expression for ˜k. However practically
+this expression is exactly the same as ˜k = 1/RN(1/k) and thus we can simply
+ﬁnd ˜k (and respectively ˜K) from the latter condition.
+Finding k from ˜k can be done by using the duality of the N-th degree
+transformation in respect to k and k′ (which is pretty much the same as the
+respective duality of the Landen transformation). Let ˜k = N(k) denote the
+N-th degree transformation of k deﬁned by (9.137) (or by explicit usage of
+RN(1/k) = 1/˜k or ¯RN(
+√
+k) =
+p
+˜k). If the ratio K′/K is decreased N times by
+the N-th degree transformation from k to ˜k, then the ratio K/K′ is increased N
+times, which means we are performing an N −1-th degree transformation from
+k′ to ˜k′, that is ˜k′ = N −1(k′). Conversely, ˜k′ and k′ are related via an N-th
+degree transformation: k′ = N(˜k′), which by (9.137) means
+k′ = ˜k′N ·
+Y
+0<un<1
+sn4
+˜
+K′ un
+(9.138)
+
+
+--- Page 406 ---
+
+394
+CHAPTER 9. CLASSICAL SIGNAL PROCESSING FILTERS
+Renormalized elliptic rational functions
+Similarly to renormalized Chebyshev polynomials we introduce renormalized
+elliptic rational functions where we will renormalize only ¯RN(x) (although we
+could take similar steps to renormalize RN(x) as well):
+ˆ
+¯RN(x, λ) =
+¯RN(x/λ)
+¯RN(1/λ)
+(9.139)
+As with renormalized Chebyshev polynomials, the parameter λ aﬀects the bands
+of the elliptic rational functions and the equiripple amplitudes. Apparently the
+passband of
+ˆ
+¯RN(x) is |x| ≤λ
+√
+k, while the stopband is |x| ≥λ/
+√
+k.
+Thus
+if λ becomes smaller, the passband shrinks while the stopband simultaneously
+expands and vice versa. The equiripple amplitudes in the pass and stop-bands
+are becoming equal to
+p
+˜k/ ¯RN(1/λ) and 1/
+p
+˜k ¯RN(1/λ) respectively. Therefore
+both values increase if λ grows and decrease if λ becomes smaller, which means
+that the equiripple sizes in the pass- and stop-bands are traded against each
+other20 (Fig. 9.59). Notice that thereby a smaller bandiwith of the pass- or
+stop-band corresponds to a smaller equiripple amplitude in the same band and
+vice versa.
+x
+¯R4(x)
+∞
+∞
+1
+−1
+1
+∞
+−1
+−1
+0
+Figure 9.59: Renormalized elliptic rational function for λ = 1
+(solid), λ = k1/4 (small dashes) and λ = k−1/4 (large dashes).
+As the used elliptic modulus k = 0.9 is pretty close to 1, the cor-
+responding variations of the transition band width are not well
+visible.
+The reasonable range of λ is equal to the transition band [
+√
+k, 1/
+√
+k]. For λ
+within this range the equiripples (both in the pass- and stopbands) do not grow
+further than to unit amplitude. As a somewhat excessive range of λ we could
+take (max{¯zn}, 1/ max{¯zn}), limiting λ between the zeros and poles of ¯RN(x).
+In this case the equiripples may become arbitrarily large.
+As with renormalized Chebyshev polynomials, we may omit the parameter
+λ, understanding it implicitly, and simply write
+ˆ
+¯RN(x).
+20By the earlier given definition of the amplitude of oscillations around infinity, the size of
+the stop-band equiripples is smaller if the formal amplitude of the equiripples is larger.
+
+
+--- Page 407 ---
+
+9.12. ELLIPTIC RATIONAL FUNCTIONS
+395
+Relation to xN, TN(x) and
+T
+N(x)
+In (9.136) it is easily noticed that at ¯zn →0 the right-hand side turns into xN.
+On the other hand |¯zn| ≤
+√
+k, therefore, if k →0, then ¯zn →0 and respectively
+by (9.136)
+lim
+k→0
+¯RN(x) = xN
+(9.140)
+or simply ¯RN(x) = xN for k = 0 (Fig. 9.60).
+x
+¯R4(x)
+∞
+∞
+1
+−1
+1
+∞
+−1
+−1
+0
+Figure 9.60:
+Normalized elliptic rational function for k = 0.9
+(solid), k = 0.7 (dashed) and k = 0 (thin dashed).
+At k →0 we have cd x →cos x and cdK x →cos πx/2, therefore (9.115)
+turns into
+cos π
+2 Nu = RN
+
+cos π
+2 u
+
+By replacing πu/2 with u it can be equivalently written as
+cos Nu = RN
+ cos u
+
+which is identical to (9.35). Therefore RN(x) becomes identical to TN and thus
+we have
+lim
+k→0 RN(x) = TN(x)
+(9.141)
+or simply RN(x) = TN(x) for k = 0. Notice that as K′ →∞and 1/k →∞,
+the transition band of RN(x) becomes inﬁnitely large in both preimage and
+representation domains, while the stopband |x| ≥1/k disappears into inﬁnity.
+Using (9.126) and (9.139) we can express the approaching to TN(x) in terms
+of ¯RN(x) and
+ˆ
+¯RN(x):
+lim
+k→0
+¯RN
+
+x
+√
+k
+
+p
+˜k
+= lim
+k→0 ˆ
+¯RN
+
+x, 1/
+√
+k
+
+= TN(x)
+(9.142)
+where we had to take the limit to avoid divisions and multiplications by zero.
+By the deﬁnition of
+T
+N(x) equation (9.142) can be rewritten as
+lim
+k→0
+¯RN
+
+x
+√
+k
+
+p
+˜k
+=
+1
+T
+N(1/x)
+
+
+--- Page 408 ---
+
+396
+CHAPTER 9. CLASSICAL SIGNAL PROCESSING FILTERS
+Substituting 1/x for x and reciprocating both sides
+lim
+k→0
+p
+˜k
+¯RN
+√
+k/x
+ =
+T
+N(1/x)
+By (9.130) and (9.139)
+lim
+k→0
+p
+˜k ¯RN
+
+x/
+√
+k
+
+= lim
+k→0 ˆ
+¯RN
+
+x,
+√
+k
+
+=
+T
+N(1/x)
+(9.143)
+Transition band slope of ¯RN(x)
+By (9.140) ¯RN(x) turns into xN at k = 0. On the other hand at the transition
+band’s midpoint x = 1 we have ¯RN(x) = xN = 1 ∀k. It would be therefore
+interesting to compare the slopes of ¯RN(x) and xN within the transition band.
+In order to do that we are going to take similar steps to what we did in the
+comparison of TN(x) and xN. Comparing (9.136) to (9.40) we compare their
+individual factors by computing their respective diﬀerences:
+x2 −¯z2
+n
+1 −¯z2nx2 −x2 = x2 −¯z2
+n −x2 + ¯z2
+nx4
+1 −¯z2nx2
+= ¯z2
+n(x4 −1)
+1 −¯z2nx2
+(9.144)
+Assuming k > 0, we have 0 < ¯zn <
+√
+k < 1 in the above. Thus in the range
+1 < |x| < 1/ max{¯zn} the diﬀerences (9.144) are strictly positive and the factors
+of (9.136) are larger than those of (9.40). Since for 1 < x < 1/ max{¯zn} all
+factors of (9.136) and (9.40) are positive, we have
+¯RN(x) > xN
+(1 < x < 1/ max{¯zn}, N > 1)
+By the even/odd symmetries of ¯RN(x) and xN:
+| ¯RN(x)| > |xN|
+(1 < |x| < 1/ max{¯zn}, N > 1)
+By the symmetry (9.130) and by the same symmetry of xN
+| ¯RN(x)| < |xN|
+(max{¯zn} < |x| < 1, N > 1)
+Note that thereby our discussion has completely covered the band |x| ∈
+(max{¯zn}, 1/ max{¯zn}) which also includes the entire transition band |x| ∈
+[
+√
+k, 1/
+√
+k]. From (9.144) we can also notice that the diﬀerence grows in mag-
+nitude as ¯zn grow in magnitude. However by (9.135) and (9.91) the absolute
+magnitudes of ¯zn should simply grow with k. Thus the diﬀerences (9.144) grow
+with k and respectively ¯RN(x) deviates stronger for xN within the transition
+band as k grows (which can be seen in Fig. 9.59).
+In order to explicitly compute the derivative of ¯RN(x) at the transition
+midpoint x = 1, we will evaluate the derivative of cd u at u = jK′/2 (which is
+the point where cd u = 1). By (9.72)
+d
+du cd u = d
+du
+√
+k cd u =
+√
+k cd u · d
+du ln cd u = −
+√
+k · k′2 cd u sc u nd u
+
+
+--- Page 409 ---
+
+9.12. ELLIPTIC RATIONAL FUNCTIONS
+397
+We already know that cd(jK′/2) = 1/
+√
+k.
+The value of nd(jK′/2) can be
+obtained by (9.69) giving
+nd2 jK′
+2
+= 1
+k′2
+
+1 −k2 cd2 jK′
+2
+
+= 1
+k′2
+
+1 −k2 cd2 jK′
+2
+
+= 1
+k′2 (1 −k) =
+= 1 −k
+1 −k2 =
+1
+1 + k
+By Fig. 9.44, (9.63) and Fig. 9.36 we choose the positive result of taking the
+square root
+nd jK′
+2
+=
+1
+√
+1 + k
+By (9.66)
+sc jK′
+2
+= j nd −jK′
+2
+= j nd jK′
+2
+=
+j
+√
+1 + k
+Thus
+ d
+du cd
+ jK′
+2
+
+= −
+√
+k · k′2 · 1
+√
+k
+·
+j
+√
+1 + k ·
+1
+√
+1 + k =
+= −j k′2
+1 + k = −j 1 −k2
+1 + k = −j(1 −k)
+Now by (9.127) the function ¯RN(x) is obtained as a sequence of three transfor-
+mations. Diﬀerentiating each of these transformations at the point correspond-
+ing to x = 1 we obtain
+du
+dx =
+dx
+du
+−1
+=
+1
+−j(1 −k)
+dv
+du = N
+˜K
+K =
+˜K′
+K′
+d ¯RN
+dv
+= −j(1 −˜k)
+and thus
+d ¯RN
+dx
+= d ¯RN
+dv
+· dv
+du · du
+dx = 1 −˜k
+1 −k N
+˜K
+K = 1 −˜k
+1 −k ·
+˜K′
+K′
+(at x = 1)
+(9.145)
+At k = 0 we have ˜k = 0, K = ˜K = π/2 and therefore ¯R′
+N(1) = N corresponding
+to the fact that ¯RN(x) = xN. At higher k the derivative grows (Fig. 9.61).
+In order to convince ourselves that ¯R′
+N(1) →+∞for k →1 we could notice
+that ˜K′ →π/2, and K′ →π/2, therefore ˜K′/K′ →1. Now, for a given k, the
+value ˜k will obviously decrease with growing N (as we are using a higher degree
+transformation of the period ratio). Therefore (1 −˜k)/(1 −k) can be bounded
+from below by its own value at N = 2. A bit later in the text we will obtain
+an explicit expression for ¯R′
+2(1) where it will be obvious that ¯R′
+2(1) →+∞as
+k →1. Therefore (1 −˜k)/(1 −k) →+∞at N = 2, and so it does for all other
+N > 2.
+
+
+--- Page 410 ---
+
+398
+CHAPTER 9. CLASSICAL SIGNAL PROCESSING FILTERS
+k
+¯R′
+4(1)
+1
+4
+0
+Figure 9.61: Transition midslope derivative of ¯R4(x) for various k.
+Transition band slope of RN(x)
+By (9.141) the elliptic rational function RN(x) turns into a Chebyshev polyno-
+mial of the same order N. We would be now in the position to compare their
+slopes within the transition band of RN(x).
+Comparing the factors of (9.134) and (9.42) (where in (9.42) we let λ = 1
+to turn
+ˆ
+T N(x) into TN(x)) we ﬁrst pretend that the zeros of RN(x) and TN(x)
+are identical. In that case the diﬀerence of the respective factors is
+1 −k2z2
+n
+1 −z2n
+·
+x2 −z2
+n
+1 −k2z2nx2 −x2 −z2
+n
+1 −z2n
+= x2 −z2
+n
+1 −z2n
+·
+ 1 −k2z2
+n
+1 −k2z2nx2 −1
+
+=
+= x2 −z2
+n
+1 −z2n
+· 1 −k2z2
+n −1 + k2z2
+nx2
+1 −k2z2nx2
+= x2 −z2
+n
+1 −z2n
+· k2z2
+n(x2 −1)
+1 −k2z2nx2
+(9.146)
+Since within the transition band [1, 1/k] of RN(x) we have 1 −k2z2
+nx2 > 0 and
+x2 −z2
+n > 0, the diﬀerence (9.146) is positive for x ∈(1, 1/k] (for 0 < k < 1).21
+By (9.133) and (9.91) the zeros zn grow with k. On the other hand, the
+zeros zn of RN(x) become equal to Chebyshev polynomial’s zeros at k = 0.
+Thus the zeros of TN(x) are smaller in absolute magnitude than those of RN.
+Temporarily notating Chebyshev polynomial’s zeros as λnzn where 0 < λn < 1
+(assuming k > 0), we notice that
+x2 −z2
+n
+1 −z2n
+−x2 −(λnzn)2
+1 −(λnzn)2 =
+x2 −z2
+n
+1 −z2n
+−x2
+
+−
+x2 −(λnzn)2
+1 −(λnzn)2 −x2
+
+=
+= z2
+n(x2 −1)
+1 −z2n
+−(λnzn)2(x2 −1)
+1 −(λnzn)2
+(9.147)
+where we have used (9.43). That is the diﬀerence (9.147) is again positive for
+x > 1 and it is growing with λn →0 (which corresponds to the growing k).
+Adding (9.147) and (9.146) we obtain
+1 −k2z2
+n
+1 −z2n
+·
+x2 −z2
+n
+1 −k2z2nx2 −x2 −λnz2
+n
+1 −λnz2n
+=
+21Actually the same holds a bit further than within the tranistion band, namely within
+[1, 1/k max{zn}] but for simplicity we’ll talk of transition band.
+
+
+--- Page 411 ---
+
+9.12. ELLIPTIC RATIONAL FUNCTIONS
+399
+= x2 −z2
+n
+1 −z2n
+· k2z2
+n(x2 −1)
+1 −k2z2nx2 +
+z2
+n(x2 −1)
+1 −z2n
+−(λnzn)2(x2 −1)
+1 −(λnzn)2
+
+> 0
+(9.148)
+where x ∈(1, 1/k]. By our preceding discussion (9.148) becomes larger at larger
+k.
+Since all involved factors are greater than unity in the transition band of
+RN(x), it follows that RN(x) > TN(x) in that range and the diﬀerence grows
+with k. By even/odd symmetries of the respective functions we have
+|RN(x)| > |TN(x)|
+(|x| ∈(1, 1/k], k > 0, N > 1)
+and the diﬀerence becomes larger with k.
+Elliptic rational functions of order 2N
+Constructing an elliptic rational function of a power-of-2 order is especially easy,
+since we can combine the explicit expression (9.114) for R2(x) with the chain
+rule (9.117) to build functions of other power-of-2 orders.
+It is therefore also helpful to have a ready explicit expression for ¯R2(x). By
+(9.114) and (9.126)
+¯R2(x) =
+p
+˜k ·
+(1 + k′)x2
+k −1
+1 −(1 −k′)x2
+k
+=
+p
+˜k ·
+1 + k′
+√
+1 −k′2 x2 −1
+1 −
+1 −k′
+√
+1 −k′2 x2
+=
+p
+˜k ·
+r
+1 + k′
+1 −k′ x2 −1
+1 −
+r
+1 −k′
+1 + k′ x2
+Recalling that for R2(x)
+˜k = L−1(k) = 1 −k′
+1 + k′
+we further obtain
+¯R2(x) =
+p
+˜k ·
+x2
+p
+˜k
+−1
+1 −x2p
+˜k
+= x2 −
+p
+˜k
+1 −x2p
+˜k
+(9.149)
+Multiple expressions of the form (9.149) (with diﬀerent ˜k related through Landen
+transformation) can be chained to obtain ¯RN(x) for other power-of-2 orders.
+The derivative at x = 1 is
+¯R′
+2(1) =
+2x
+
+1 −x2p
+˜k
+
++ 2x
+p
+˜k
+
+x2 −
+p
+˜k
+
+
+1 −x2p
+˜k
+2
+
+x=1
+=
+=
+2
+
+1 −
+p
+˜k
+
++ 2
+p
+˜k
+
+1 −
+p
+˜k
+
+
+1 −
+p
+˜k
+2
+= 2 1 +
+p
+˜k
+1 −
+p
+˜k
+(9.150)
+It is left as an excercise for the reader to verify that (9.150) is a particular case
+of (9.145).
+Notably, by (9.110), the formula (9.150) can be rewritten as ¯R′
+2(1) = 2/
+p
+k′
+1
+where k′
+1 is a complementary modulus to k1 where k1 = L(k).
+
+
+--- Page 412 ---
+
+400
+CHAPTER 9. CLASSICAL SIGNAL PROCESSING FILTERS
+9.13
+Elliptic filters
+Elliptic ﬁlters are obtained by using renormalized elliptic rational functions
+ˆ
+¯RN(ω) as f(ω) in (9.18).22 The main motivation to use renormalized elliptic
+rational functions instead of ωN and
+ˆ
+T N(ω) is that, as we already know they
+grow faster than ωN and
+ˆ
+T N(ω) within their transition bands, which results
+in a steeper transition band’s slope. The tradeoﬀis that in order to achieve a
+steeper transition band we need to allow ripples in the pass- and stop-bands.
+Thus, in (9.18) we let
+f(ω) =
+ˆ
+¯RN(ω)
+that is
+|H(jω)|2 =
+1
+1 +
+ˆ
+¯R2
+N(ω)
+The λ parameter of
+ˆ
+¯RN(ω) is aﬀecting the equiripple amplitudes of
+ˆ
+¯RN and
+thereby the equiripple amplitude in the pass- and stop-bands of |H(jω)|. It is
+convenient to introduce the additional variable
+ε =
+1
+¯RN(1/λ)
+(9.151)
+Using (9.151) we particularly may write
+f(ω) =
+ˆ
+¯RN(ω) = ε ¯RN(ω/λ)
+Given a desired ﬁlter order N, we still have two further freedom degrees to
+play with, corresponding to the parameters k and λ, where, as we should recall
+from the discussion of elliptic rational functions, k deﬁnes the tradeoﬀbetween
+the transition bandwidth and the ripple amplitudes, and λ deﬁnes the tradeoﬀ
+between the ripple amplitudes in the pass- and stop-bands. One of the possible
+scenarios to compute the elliptic ﬁlter parameters can be therefore the following.
+Suppose we are given the desired ﬁlter order N and the desired pass- and stop-
+band boundaries (where the passband boundary must be to the left of ω = 1
+and the stopband boundary must be to the right of ω = 1). Recalling that the
+pass- and stop-bands of
+ˆ
+¯RN are (in the positive frequency range) [0, λ
+√
+k] and
+[λ/
+√
+k, +∞) respectively, we can ﬁnd λ and k.
+Another scenario occurs if we are given the discrimination factor 1/˜k. By
+(9.137) this deﬁnes selectivity factor 1/k and respectively the transition band
+width, but we can still play with λ to control the tradeoﬀbetween the pass- and
+stop-band ripples.
+Since the passband amplitude of ¯RN is
+√
+k, the amplitude response |H(jω)| is
+varying within [1/
+√
+1 + kε2, 1] in the passband. Since the stopband amplitude of
+¯RN is 1/
+√
+k, the amplitude response |H(jω)| is varying within [0, 1/
+p
+1 + ε2/k]
+in the stopband. The value of ε therefore aﬀects the tradeoﬀbetween the equirip-
+ple amplitudes of |H(jω)| in the pass- and stop-bands. Since ε depends on λ,
+22Classically, elliptic filters are obtained from elliptic rational functions RN(ω) by letting
+f(ω) = εRN(ω) where ε > 0 is some small value. This way however usually requires some
+cutoff correction afterwards. The way how we introduce Chebyshev filters is essentially the
+same, but directly results in a better cutoff positioning and better symmetries. Particularly
+EMQF filters directly arise at λ = 1. One way is related to the other via ε = 1/RN(1/
+√
+kλ)
+combined with a cutoff adjustment by the factor
+√
+kλ.
+
+
+--- Page 413 ---
+
+9.13. ELLIPTIC FILTERS
+401
+this is consistent with our previous conclusion that λ aﬀects the tradeoﬀbe-
+tween the equiripple amplitudes of
+ˆ
+¯RN, where a smaller bandwidth of the pass-
+or stop-band corresponds to smaller equiripples within the respective band. Re-
+member that the range of λ is generally restricted to [
+√
+k, 1/
+√
+k] (or just a little
+bit wider). Fig. 9.62 illustrates.
+ω
+|H(jω)|
+1
+1/8
+8
+1
+0.5
+0
+Figure 9.62: Elliptic ﬁlter’s amplitude responses for N = 5, k =
+0.98 and λ = 1 (solid) and λ = k−1/4 (dashed). Notice the usage
+of the linear amplitude scale, which is chosen in order to be able
+to show the amplitude response zeros.
+Poles of elliptic filters
+Since
+ˆ
+¯RN(ω) is a rational function, the transfer function deﬁned by (9.18) will
+have poles and zeros. The equation for the poles of |H(s)|2 = H(s)H(−s) is
+1 +
+ˆ
+¯R2
+N(ω) = 0
+or
+ˆ
+¯RN(ω) = ±j
+or
+ε ¯RN(ω/λ) = ±j
+(9.152)
+or, introducing ¯ω = ω/λ
+¯RN(¯ω) = ±j
+ε
+(9.153)
+where the “+” sign corresponds to the even poles and the “−” sign to odd poles.
+Recall the interpretation of ¯RN as a representation of linear scaling of the
+preimage, which is given by (9.127). Suppose ¯ω is moving in a counterclockwise
+direction in a quasielliptic curve which is a representation of some preimage line
+Im u = β (Figs. 9.52, 9.53). Earlier we have agreed to chose the preimages within
+the imaginary quarter period right below the real axis, that is β ∈(−jK′, 0). In
+this case the counterclockwise movement in the representation domain assumes
+that u is moving towards the right.
+
+
+--- Page 414 ---
+
+402
+CHAPTER 9. CLASSICAL SIGNAL PROCESSING FILTERS
+Since v = u ˜K′/K′, the corresponding line in the preimage of ¯RN(¯ω) is Im v =
+˜β, where ˜β = β ˜K′/K′. Therefore Im v ∈(−j ˜K′, 0), that is the line also goes
+within the imaginary quarter period right below the real axis. Obviously, since
+u moves towards the right, so does v, and ¯RN(¯ω) moves in a counterclockwise
+direction.
+We wish ¯RN(¯ω) to pass through the points ±j/ε going counterclockwise.
+By (9.71) the intersections of the quasielliptic curve ¯RN(¯ω) with the imaginary
+axis are occuring at ±j sc(˜β, ˜k′), therefore we choose
+˜β = −sc −1(1/ε, ˜k′)
+(which thereby belongs to (−˜K′, 0))23 and
+β = K′
+˜K′
+˜β = −K′
+˜K′ sc −1(1/ε, ˜k′) = −K
+N ˜K
+sc −1(1/ε, ˜k′)
+According to (9.71) the purely imaginary values of cd(v, ˜k) are attained when
+the real part of the elliptic cosine’s argument is equal to (2n+1) ˜K, where n ∈Z.
+Thus, the values ±j/ε will be attained by ¯RN(¯ω) at
+v = j ˜β + (2n + 1) ˜K
+(9.154)
+where, since ˜β < 0, the value ¯RN(¯ω) = j/ε is attained at n = 0 and other even
+values of n. Thus, the solutions of the even pole equation f = j will occur at
+even values of n. Fig. 9.63 illustrates.
+Re v
+Im v
+0
+4 ˜K
+˜K′
+2 ˜K′
+−˜K′
+−2 ˜K′
+Re ¯RN(¯ω)
+Im ¯RN(¯ω)
+0
+¯RN(¯ω) = cd(v, ˜k)
+Figure 9.63: Preimages of ¯RN(¯ω) = ±j/ε (qualitatively).
+From (9.154) we obtain
+u = jβ +
+K
+N ˜K
+(2n + 1) ˜K = jβ + K 2n + 1
+N
+= jβ + 2K
+1
+2 + n
+N
+23Instead of −sc −1(1/ε, ˜k′), which can be expected to have an unambiguous principal
+value, one can equivalently compute −cd
+−1(j/ε, ˜k′), however, as there are multiple solutions
+to the equation cd(x, ˜k′) = j/ε, one needs to be careful to be sure that the cd
+−1 routine
+returns the same value as would have been obtained by using sc −1. In principle any solution
+of cd(x, ˜k′) = j/ε would do, but may result in a different order of iteration of elliptic filter’s
+poles, so that the unstable poles will be obtained first.
+
+
+--- Page 415 ---
+
+9.13. ELLIPTIC FILTERS
+403
+where there are 2N essentially diﬀerent preimages of ¯ω occuring at 2N consecu-
+tive values of n all lying on the line Im u = β. Going back to the representation
+domain we obtain ¯ω lying on the respective quasiellipse:
+¯ω = cd
+
+jβ + K 2n + 1
+N
+, k
+
+Fig. 9.64 illustrates.
+Re u
+Im u
+0
+4K
+K′
+2K′
+−K′
+−2K′
+Re ¯ω
+Im ¯ω
+0
+¯ω = cd(u, k)
+Figure 9.64: Transformation of Fig. 9.63 by u = Kv/N ˜K (for
+N = 2). The white and black dots on the quasielliptic curve are
+even/odd elliptic poles in terms of ¯ω. (The picture is qualitative.)
+Switching to ω = λ¯ω:
+ω = λ cd
+
+jβ + K 2n + 1
+N
+, k
+
+It is easily checked that the values of ω are moving counterclockwise starting
+from the positive real semiaxis, where the values occurring at even/odd n cor-
+respond to even/odd poles respectively.
+Switching from ω to s = jω we obtain the expression for the poles:
+s = jλ cd
+
+jβ + K 2n + 1
+N
+, k
+
+(9.155)
+Since the values of ω are moving counterclockwise starting from the real positive
+semiaxis, the values of s are moving counterclockwise starting from the imagi-
+nary “positive” semiaxis, which means that starting at n = 0 we ﬁrst obtain the
+stable poles at n = 0, . . . , N −1. The next N values of n will give the unstable
+poles.
+For ﬁlter orders which are powers of 2 one can solve the equation (9.153) in
+an easier way using (9.149) and (9.128).
+Zeros of elliptic filters
+The zeros of H(s), if expressed in terms of ω coincide with the poles of f(ω) =
+ˆ
+¯RN(ω, λ), which can be found from the poles ¯pn = 1/¯zn of ¯RN(ω) as
+ˆ
+¯pn = λ¯pn =
+
+
+--- Page 416 ---
+
+404
+CHAPTER 9. CLASSICAL SIGNAL PROCESSING FILTERS
+λ/¯zn, where ¯zn are given by (9.135). By s = jω the zeros can be reexpressed in
+terms of s. For ﬁlter orders which are powers of 2 there is a simpler way using
+(9.149) and (9.128).
+One should remember that for odd N the function ¯RN has a zero at the origin
+which doesn’t have a corresponding ﬁnite pole of ¯RN, respectively there is no
+corresponding ﬁnite zero of H(s) and no corresponding factor in the numerator
+of H(s). Respectively the order of the numerator of H(s) is N −1 rather than
+N, and the zero at the iniﬁnity occurs automatically due to the order of the
+numerator being less than the order of the denominator. Fig. 9.65 provides an
+example.
+−1
+1
+−j
+j
+0
+Re s
+(−Im ω)
+Im s
+(Re ω)
+Figure 9.65: Poles (white and black dots) and zeros (white squares)
+of an elliptic ﬁlter of order N = 5. Each of the zeros is duplicated,
+but the duplicates are dropped together with the unstable poles.
+In Fig. 9.65 one can notice that the poles are more condensed closer to the
+imaginary axis. Apparently, this is due to (9.81c) and the related explanation.
+Gain adjustments
+The default normalization of the elliptic ﬁlter’s gain is according to (9.18):
+H(0) =
+1
+q
+1 +
+ˆ
+¯R2
+N(0)
+=
+1
+q
+1 + ε2 ¯R2
+N(0)
+=
+1
+q
+1 + ε2 (Re jN)2 ˜k
+(9.156)
+which thereby deﬁnes the leading gain coeﬃcient of the cascade form imple-
+mentation (8.1).
+We could also ﬁnd the leading gain from the requirement
+|H(j)|2 = 1/2, but we should mind the possibility of accidentally obtaining a
+180◦phase response at ω = 0.
+With the leading gain deﬁned this way the amplitude response varies within
+[1/
+p
+1 + ˜kε2, 1] in the passband. We could choose some other normalizations,
+though. E.g. we could require H(0) = 1. Or we could require the passband
+
+
+--- Page 417 ---
+
+SUMMARY
+405
+ripples to be symmetric relatively to the zero decibel level, which is achieved by
+multiplying (9.156) by (1 + ˜kε2)1/4:
+H(0) =
+s p
+1 + ˜kε2
+1 + ε2 ¯R2
+N(0)
+so that |H(jω)| varies within [1/(1 + ˜kε2)1/4, (1 + ˜kε2)1/4] within the passband.
+Elliptic minimum Q filters
+At λ = 1 we have
+ˆ
+¯RN(ω) = ¯RN(ω), thus f(ω) attains the reciprocal symmetry
+(9.130). Simultaneously, by (9.151) ε = 1, respectively
+˜β = −sc −1(1, ˜k′) = −˜K′/2
+β = K′
+˜K′
+˜β = −K/2
+while (9.155) turns into
+s = j cd
+
+j K
+2 + K 2n + 1
+N
+, k
+
+(9.157)
+By Fig. 9.53 and (9.85) the poles of H(s) are all lying on the unit circle.24
+Further, by Figs. 9.54, 9.55 and the associated discussion, the values of cd in
+(9.157) are having the maximum possible angular deviation (among the ones
+arising from diﬀerent values for k) from the real axis. Respectively, the poles
+given by (9.157) are having the maximum possible angular deviation from the
+imaginary axis, which means that the corresponding cascade 2-pole sections will
+have the minimum possible resonances. Therefore elliptic ﬁlters arising at λ = 1
+are referred to as elliptic minimum Q filters, or shortly EMQF.
+Butterworth and Chebyshev limits
+By (9.140) at k = 0 EMQF ﬁlters turn into Butterworth ﬁlters. By (9.142)
+at k →0 and λ = 1/
+√
+k elliptic ﬁlters turn into Chebyshev type I ﬁlters. By
+(9.143) at k →0 and λ =
+√
+k elliptic ﬁlters turn into Chebyshev type II ﬁlters.
+SUMMARY
+Classical signal processing ﬁlters are deﬁned in terms of the squared amplitude
+response equation (9.18). By choosing diﬀerent function types as f(ω) in (9.18)
+one obtains the respective ﬁlter types:
+Butterworth
+f(x) = xN
+Chebyshev type I
+f(x) =
+ˆ
+T N(x)
+Chebyshev type II
+f(x) =
+ˆ
+T
+N(x)
+Elliptic
+f(x) =
+ˆ
+¯RN(x)
+24From a slightly different angle, since λ = 1 and ε = 1, the pole equation turns into
+¯RN(ω) = ±j. By (9.132) the solutions are lying on the unit circle.
+
+
+--- Page 418 ---
+
+406
+CHAPTER 9. CLASSICAL SIGNAL PROCESSING FILTERS
+

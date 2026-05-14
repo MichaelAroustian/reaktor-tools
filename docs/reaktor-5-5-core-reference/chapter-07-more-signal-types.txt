@@ -1,0 +1,273 @@
+--- Page 133 ---
+
+7
+More Signal Types
+ 
+7.1
+Float Signals
+ 
+ 
+The most common signal type used for DSP (digital signal processing) on modern personal 
+computers is floating point (float for short). Floats can represent a wide range of values, as 
+large as 1038 (in 32 bit mode) or even 10308 (in 64 bit mode). As useful as they are, floats 
+have a drawback – limited precision. The precision is higher in 64 bit mode, but it is still 
+limited.
+The precision of float values is limited for technical reasons. If it weren’t limited, float values 
+would require an infinite amount of memory to store and processing them would require an 
+infinitely fast CPU. It’s similar to the impossibility of writing the full decimal representation of 
+a transcendental number, such as π, on a finite piece of paper. Even if you can somehow 
+compute all the digits (which is not always possible for transcendental numbers), you will 
+eventually run out of paper (and time).
+The signals and memory storage that we have been discussing so far use 32 bit floating 
+point numbers for their representation. Reaktor Core also offers the possibility of using 64 
+bit floats, should you need higher precision (or a larger value range, although it’s difficult 
+to imagine that 10-38 to 1038 is not a large enough range).
+By default all processing in Reaktor Core is done in 32 bit floats. This doesn’t exactly mean 
+that the signals are really processed as 32 bit floats, but rather that at minimum, 32 bit floats 
+will be used for processing (although 64 bit floats may occasionally be used for intermediate 
+results).
+You can change the floating point precision for individual modules as well as for whole 
+macros. For individual modules you do so in the module’s FP Precision (floating point pre­
+cision) property:
+More Signal Types
+ 
+REAKTOR 5.5 - Core Reference - 133
+
+
+--- Page 134 ---
+
+▪
+default means use whatever precision is the default for the current structure
+▪
+32 bit use minimum 32 bits of precision
+▪
+64 bit use minimum 64 bits of precision
+Changing the precision for a module means that the processing within that module will be 
+done using the precision specified and that the output value will be generated using the 
+same precision.
+You can also change the default precision for whole structures by right-clicking on the 
+background and selecting Owner Properties to open the properties of the owner module:
+More Signal Types
+Float Signals
+ 
+REAKTOR 5.5 - Core Reference - 134
+
+
+--- Page 135 ---
+
+So changed, the default precision will be effective for all modules inside the current struc­
+ture, including macros, as long as they do not define their own precision (or in the case of 
+macros, if a new default precision is defined for their respective inside structures).
+Normal floating point signals of 32 and 64 bit precision are fully compatible with each other 
+and can be freely interconnected. OBC signals of different precision are not compatible with 
+each other (because you cannot have storage that is simultaneously 32 and 64 bit). Also, for 
+OBC signals ‘default’, ’32 bit’ and ’64 bit’ settings are all considered different and incompati­
+ble, because the effective default precision can be changed by changing the properties of one 
+of the owning macros.
+The input and output modules of top-level structures of core cells always send and receive 32 
+bit floats, because that is the type of the signal used for Reaktor primary-level event and audio 
+connections.
+7.2
+Integer Signals
+ 
+There is another data type commonly supported by modern CPUs, and actually this one is 
+more fundamental to the digital world than floats. It is the integer type. Integer numbers 
+are represented and processed with infinite precision. Although the precision of integers is 
+infinite, the range of representable integer values is limited. For 32 bit integers the values 
+can go up to more than 109.
+Infinite precision for storage and processing of integer values is possible because they don’t 
+have any decimal digits after the period, so you can write them using a finite number of digits. 
+Let’s write down the number of seconds in an hour: 3, 6, 0, 0, done. It’s that easy. If you try 
+to write down the value of π you cannot do it completely: 3, 1, 4, 1, stop. Not complete, OK 
+let’s write a couple more digits: 5, 9, stop. Still not complete, and so on. With an integer 
+number you can do it completely and precisely: 3600, that’s it.
+While floating point is a natural choice for values that are changing continuously, as are 
+audio signals, for discretely changing values (for example, counters) integers may be a 
+more appropriate choice.
+More Signal Types
+Integer Signals
+ 
+REAKTOR 5.5 - Core Reference - 135
+
+
+--- Page 136 ---
+
+Many Reaktor Core modules can be switched to integer mode, in which case they expect 
+integer signals at their inputs; they process them as integers (that means with infinite pre­
+cision); and they produce the integer outputs. Examples of such modules include arith­
+metic modules like adder, multiplier, or subtractor. There are even some modules that can 
+be used only on integers.
+Minimum 32 bit length is guaranteed for Reaktor Core integer values.
+Switching between float and integer types (if it’s supported by the module) is done in the 
+Signal Type property of the module:
+A module set to integer type will process the input values as integers and produce integer 
+output values. You can tell that a module is in integer state by the fact that its signal in­
+puts and outputs look different:
+There is no such thing as default signal type for macros. The reason is that normally you 
+wouldn’t build structures that process integers in exactly the same way as structures proc­
+essing floats and vice versa (although you might for some relatively simple structures).
+More Signal Types
+Integer Signals
+ 
+REAKTOR 5.5 - Core Reference - 136
+
+
+--- Page 137 ---
+
+Integer signals can be freely interconnected with floats, but the wires created between dif­
+ferent type signals will perform signal conversion, which can use a certain amount of CPU. 
+At the time of this writing, the extra CPU usage is somewhat noticeable on PCs and quite 
+significant on Macs. The OBC connections of float and integer types are not compatible 
+with each other, of course.
+There can also be information loss during such conversions. In particular, large integers 
+cannot be precisely represented by floats, and obviously, floats cannot be precisely repre­
+sented by integers. Large floats (larger than the largest representable integer) cannot be 
+represented as integers at all, in which case the result of the conversion in undefined. 
+During float-to-integer conversion, the values will be rounded approximately to the nearest 
+integer. We say approximately because the result of rounding 0.5 can be either 0 or 1, al­
+though you can rely on the fact that 0.49 will be rounded to 0, and 0.51 to 1.
+It is important to understand that turning the processing mode of an operation to integer 
+and converting of a floating point result of the same operation to an integer is not the 
+same. Let’s consider an example. Here we are adding two numbers 2.4 and 4.3 as floats. 
+The result is clearly 6.7, which when converted to integer will produce 7. So the output of 
+the following structure is 8:
+Now if we change the mode of the first adder to integer, instead of adding 2.4 and 4.3 we 
+will add their rounded versions which are 2 and 4 respectively, producing 6. So the result 
+is 7:
+Clock inputs completely ignore their incoming values, therefore they are normally always 
+floats. Furthermore, signal type conversion will not be performed for the signals that are 
+used only as clocks:
+More Signal Types
+Integer Signals
+ 
+REAKTOR 5.5 - Core Reference - 137
+
+
+--- Page 138 ---
+
+Here the clock input of the Read module is still float although the module has been set to 
+integer mode (the OBC ports look the same regardless whether they are float or integer).
+Integer feedback is automatically resolved in the same way as float feedback – by inserting an 
+integer mode Z^-1 module (of course no denormal canceling is needed here).
+7.3
+Building an Event Counter
+ 
+Let’s build an event counter macro. The function of this macro is similar to an event accu­
+mulator, but instead of summing the values of events, this one will just count them. Inte­
+ger signal type seems a logical choice for counting:
+The output and all built-in modules have been set to integer mode here. The ILatch macro 
+is used instead of Latch for resetting the circuitry. It does exactly the same (and can be 
+found in the same menu), buts work on integer signals. Also, an integer modulation macro 
+is used (it’s found in Expert Macro > Modulation > Integer menu). Both inputs do not need 
+to be set to integer mode, because they provide only clock signals.
+If we take a look at the structure of the event core cell containing this macro:
+More Signal Types
+Building an Event Counter
+ 
+REAKTOR 5.5 - Core Reference - 138
+
+
+--- Page 139 ---
+
+we’ll see that the output of this module is not set to the integer mode (it’s also not possi­
+ble to set it to integer mode). That’s because the core cell being a Reaktor primary level 
+module on the outside must output a normal primary-level event, which is a float value.
+Here is a testing structure for the counter module:
+And the resulting panel:
+7.4
+Building a Rising Edge Counter Macro
+ 
+Now we are going to discuss a sign comparison technique which you might sometimes 
+need in building Reaktor Core structures. Sign comparison is a special way of comparing 
+two numbers, in which you ignore their values and pay attention only to their signs (plus or 
+minus). Naturally, plus is considered greater than minus. So for example:
+▪
+3.1 is sign-greater than –1.4
+▪
+2.1 is sign-equal to 5.0
+▪
+4.5 is sign-equal to –2.9
+Beware that the sign of zero is undefined, which means that result of any sign comparison in­
+volving a zero value can be arbitrary.
+More Signal Types
+Building a Rising Edge Counter Macro
+ 
+REAKTOR 5.5 - Core Reference - 139
+
+
+--- Page 140 ---
+
+Of course you could have implemented the sign comparison using several Comparison 
+modules and several Routers, but there is a more efficient way. The sign comparison can 
+be done in Reaktor Core structures using the Compare Sign module (Built‑In Module >
+Flow > Compare Sign):
+This module produces a BoolCtl signal at the output, so that you can connect it to a Rout­
+er.
+One of the possible uses of such a module is detecting the rising edges of an incoming 
+signal. Below we are going to build a rising edge counter Reaktor Core macro:
+Note that the output is set to integer mode because the count is an integer value.
+The first thing we are going to need inside is an edge detector macro to convert the detect­
+ed edge to an event:
+This is how the detector macro can be implemented:
+More Signal Types
+Building a Rising Edge Counter Macro
+ 
+REAKTOR 5.5 - Core Reference - 140
+
+
+--- Page 141 ---
+
+The chain at the bottom keeps the previous input signal value. As you can see the new 
+value is stored after the old one is read. The last Write module in the chain performs the 
+initialization job for the previous value storage. We initialize the storage to –1 so that the 
+first positive value will be counted as a rising edge.
+Having a Write module at the end of an OBC chain is another way (as opposed to Merge) to 
+initialize the storage. It must be the last Write module in the chain in order to overwrite the 
+results stored by upstream Write modules.
+The Router controlled by the Sign Comparison module will gate the events, letting through 
+only those where a sign change from negative to positive occurs.
+It’s not clear whether such a module will send an event during initialization or not, partic­
+ularly because the storage is still zero at the time of initialization event processing, and 
+the sign of zero is undefined. We can modify this structure in order to avoid sending an 
+event during the initialization:
+More Signal Types
+Building a Rising Edge Counter Macro
+ 
+REAKTOR 5.5 - Core Reference - 141
+
+
+--- Page 142 ---
+
+The ES Ctl module is an event sensitive control. The control signal produced by this mod­
+ule is true only if there is an incoming event at the input of this module. Because this in­
+put is disconnected in the above structure, which means it’s connected to a zero constant, 
+the only time the control signal is true is at initialization. So the second router will block 
+any event occurring during initialization and let all others through.
+Note that here we have an example of a module that does not send any event from its output 
+during initialization.
+Now that we have a detector module we can connect it to the counting circuitry that we 
+already have:
+The function of the above circuitry should be clear: The Detect module sends an event 
+each time it detects a rising edge, these events are counted by the Evt Cnt module.
+To test it, let’s put this macro into an audio core cell, and count the rising edges of a saw­
+tooth waveform. The internal structure of the core cell will look like:
+and the primary level test structure:
+More Signal Types
+Building a Rising Edge Counter Macro
+ 
+REAKTOR 5.5 - Core Reference - 142
+
+
+--- Page 143 ---
+
+(Don’t forget to set the Meter properties as in previous examples.)
+Here is what you should see in the panel:
+The speed of the number change in the meter must correspond to the frequency of the os­
+cillator, defined by the pitch knob. At the pitch value of zero the oscillator frequency is 
+approximately 8 Hz, so the numbers should increment at approximately the rate of 8 per 
+second.
+More Signal Types
+Building a Rising Edge Counter Macro
+ 
+REAKTOR 5.5 - Core Reference - 143
+

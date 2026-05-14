@@ -1,0 +1,584 @@
+--- Page 15 ---
+
+2
+REAKTOR Core Fundamentals
+ 
+2.1
+An Introduction to Core Cells
+ 
+REAKTOR Core is a special level of functionality within REAKTOR with a distinct set of fea-
+tures. Similarly to the main part of REAKTOR (which we will refer to as the Primary level of
+REAKTOR), the Core level is also using a graphical signal flow paradigm. However, there are a
+number of important differences in the details between the Primary and the Core levels:
+•
+REAKTOR Core is using an integrated run-time compiler, allowing efficient processing of
+highly detailed low-level Structures.
+•
+The low-level Structure building features of REAKTOR Core make it specifically suitable
+for implementing custom DSP algorithms.
+•
+The details of the rules of signal processing in REAKTOR Core are different from Primary
+level and are tailored to the needs of the DSP algorithm design.
+•
+REAKTOR Core is using a different set of basic Modules and a different Macro library.
+The REAKTOR Core Structures exist inside special wrapper objects called Core Cells. Core
+Cells can be considered as a special kind of Primary level Macros, where the difference is that
+inside Core Cells there is a different world of REAKTOR Core.
+In order to create a new blank Core Cell right-click somewhere in the background of the REAK-
+TOR Structure and select New Core Cell from the context menu:
+REAKTOR Core Fundamentals
+An Introduction to Core Cells
+ 
+REAKTOR 6 - - 15
+
+
+--- Page 16 ---
+
+Creating a new Core Cell from the context menu.
+The prebuilt Core Cells from the factory and user libraries can be found in the Library menu
+among Primary Macros and Instruments.
+Core Cells look like a special type of the Primary level Modules:
+A Core Cell.
+Similarly to Primary level Macros, Core Cells have internal Structures, which can be navigated
+to by double-clicking the Core Cell.
+REAKTOR Core Fundamentals
+An Introduction to Core Cells
+ 
+REAKTOR 6 - - 16
+
+
+--- Page 17 ---
+
+2.2
+Core Structures
+ 
+Core level Structures (or simply 'Core Structures') are the Structures contained inside Core Cells
+and Core Macros. These Structures look like follows:
+The internal Structure of a Core Cell.
+The most obvious difference from the Primary Structure is the frame with three different areas
+(1), (2) and (3).
+(1) Normal Modules area: The bigger area in the middle (referred to as the normal Modules area
+or simply normal area) is where the majority of the Structure's Modules (more specifically, the
+so-called normal Modules) are typically located. The Core level Macros are also inserted here
+among the other normal Modules.
+(2) Input area: The smaller area on the left is where the input port Modules are located.
+(3) Output area: The smaller area on the right is where the output port Modules are located.
+The three areas can contain only the Modules of the respective flavor, that is the normal area
+can contain only the normal Modules and the input and output areas can contain only the in-
+put and output port Modules respectively.
+The normal Modules can be moved freely in both horizontal and vertical directions. The input
+and output port Modules can be moved only vertically. Their vertical positions specify the order
+in which they appear on the outside of the Core Cell or a Core level Macro. Changing their rela-
+tive vertical positions changes their outside order.
+REAKTOR Core Fundamentals
+Core Structures
+ 
+REAKTOR 6 - - 17
+
+
+--- Page 18 ---
+
+In order to create a new Module in a Core Structure, right-click on the background inside of
+one of these three areas. Depending on which of the three areas is clicked, a context menu with a
+different list of available Modules appears.
+1.
+For example, right-click on the normal area to access the normal Modules:
+Pretty much any editing done to a Core Cell Structure will cause it to recompile. For
+small and simple Core Cells the compilation typically happens very quickly, but for large
+or complicated Core Cells it might take noticeable amounts of time. During the compila-
+tion, the progress is displayed in REAKTOR's toolbar by an orange gradient moving over
+the CPU load display:
+Structure Shrinking
+As more Modules are inserted into the Structure and/or moved around within the Structure, the
+enclosing frame will grow to accommodate the Modules. The frame never shrinks back though.
+REAKTOR Core Fundamentals
+Core Structures
+ 
+REAKTOR 6 - - 18
+
+
+--- Page 19 ---
+
+1.
+In order to make the frame shrink back, right-click on the background somewhere within
+the Structure and select Compact Board from the context menu.
+The shrinking will not change the distances between the Modules (except possibly the distances
+from the inputs and the outputs to the normal Modules). There is also some hard-coded minimum
+size which the shrinking will not go beyond.
+2.3
+Built-in Modules
+ 
+The ideas and conventions behind the groups of Modules available in the Built-In Module sub-
+menu of the normal area context menu are discussed in different places of the manual accord-
+ing to their function. The information about specific Modules can be found directly within the
+software in the Module's info.
+•
+Const: The Core constants are very similar to the Primary level constants. See section
+↑4.4, Initialization for additional details.
+REAKTOR Core Fundamentals
+Built-in Modules
+ 
+REAKTOR 6 - - 19
+
+
+--- Page 20 ---
+
+The value of the Core constants cannot be changed in the name field of the Properties, one has to
+use the dedicated value property field:
+•
+Math: See sections ↑4.1, Events and ↑4.2, Processing Order.
+•
+Bit: This group is simply an extension of the Math group dedicated to the integer bit arith-
+metic.
+•
+Flow: See section ↑4.8, Routing and Merging.
+•
+Memory: See sections ↑4.3, Object Bus Connections (OBC) and ↑4.7, Arrays.
+•
+Scoped Bus: See section ↑3.3, Scoped Buses.
+•
+Bundle: See section ↑3.4, Bundles.
+•
+Macro: See section ↑2.6, Core Macros.
+2.4
+Core Connection Types
+ 
+REAKTOR Core Structures are using several different types of connections. Respectively there
+are different types of the input and output ports of the Modules used inside Core. These types
+fall into several different classes.
+The connections between ports of different classes are not possible. Whether the connections
+between different port types within the same class are possible varies from one class to anoth-
+er.
+REAKTOR Core Fundamentals
+Core Connection Types
+ 
+REAKTOR 6 - - 20
+
+
+--- Page 21 ---
+
+2.4.1
+Scalar
+ 
+Scalar is the most commonly used class. Scalar connections can be either of float (floating-
+point) or int (integer) type, of which float is more commonly used.
+A connection between float ports.
+A connection between int ports.
+All scalar types are connection-compatible to each other (meaning it is possible to connect a
+float output to an int input or vice versa). The values of one type will be automatically convert-
+ed into another wherever necessary:
+A float output connected to an int input.
+Upon conversion from float to an int the value is rounded to the nearest integer.
+For the values which are exactly in between, the rounding direction is conceptually un-
+defined. For example, 1.5 can be rounded to 1 or to 2. It is not advisable to rely on a
+specific direction of that rounding for any of such 'exactly-in-between' values, even if it
+seems fully consistent and reliable in the current REAKTOR version. The rounding could
+change e.g. on a different hardware architecture or for whatever other reason. As a gen-
+eral rule one should not rely on the implementation details which are undefined by the
+specification, especially if they are explicitly mentioned as undefined.
+REAKTOR Core Fundamentals
+Core Connection Types
+ 
+REAKTOR 6 - - 21
+
+
+--- Page 22 ---
+
+Type Configuration
+For many of Core's built-in Modules, particularly for those which perform mathematical opera-
+tions, the scalar type can be reconfigured in the Properties:
+Scalar configuration properties of an adder.
+The Signal Type property can be switched between Float and Int. The FP Precision setting (ap-
+plicable only to the float mode) can be Default, 32 bit or 64 bit. Normally it should be left at
+Default, which means that the Module will use the default floating point precision of the given
+Structure, where the latter (unless reconfigured by the builder) is 32 bit. The 64 bit precision
+is needed in exceptional cases. The precision is not reflected visually in the look of Modules,
+ports or connections. The precision does not affect the compatibility of connections either, au-
+tomatic precision conversion will occur wherever necessary.
+Conceptually, a 32 bit float precision setting does not guarantee that it will have exactly 32 bit
+precision. It means that the precision will be at least 32 bits. The same holds for 64 bit.
+The 32 bit float is the type used by Primary audio and event connections.
+2.4.2
+OBC
+ 
+The OBC class is used for identification of the memory storage items (see the discussion in
+section ↑4.3, Object Bus Connections (OBC)), where the items can be of latch (for single varia-
+bles) or array type. Each of these types can be float or integer.
+REAKTOR Core Fundamentals
+Core Connection Types
+ 
+REAKTOR 6 - - 22
+
+
+--- Page 23 ---
+
+A connection between float OBC ports of type latch.
+A connection between int OBC ports of type latch.
+A connection between float OBC ports of type array.
+A connection between int OBC ports of type array.
+Differently from the scalar connections, the OBC connections of different types are not com-
+patible to each other.
+Type Configuration
+Similarly to the scalar processing Modules, most of the OBC Modules feature the possibility of
+type configuration in the Properties:
+REAKTOR Core Fundamentals
+Core Connection Types
+ 
+REAKTOR 6 - - 23
+
+
+--- Page 24 ---
+
+OBC configuration properties of a Read Module.
+Besides affecting the OBC port types, these properties also affect the type of the memory stor-
+age associated with the OBC Module.
+Differently from scalar processing Modules, the float OBC connections of different precision
+settings are not compatible to each other. Particularly, the Default precision setting is not
+compatible to the others (e.g. it is not compatible to 32 bit setting even if the actual precision
+corresponding to the Default setting is 32 bit). Normally the Default precision setting should
+be used. See sections ↑2.5.3, Properties and ↑2.6.3, Properties for further details of precision
+control.
+2.4.3
+BoolCtl
+ 
+The BoolCtl class contains a single type, which is also called BoolCtl (Boolean control). These
+connections are used for router control signals (see section ↑4.8, Routing and Merging).
+A connection between BoolCtl ports.
+The BoolCtl type does not have any further configuration parameters.
+2.4.4
+Bundle
+ 
+Bundles are 'multiwire cable' connections. They are simply containers for the nested connec-
+tions.
+REAKTOR Core Fundamentals
+Core Connection Types
+ 
+REAKTOR 6 - - 24
+
+
+--- Page 25 ---
+
+A connection between Bundle ports.
+The Bundle type itself does not have any configuration parameters. However the contents of
+the cable vary depending on its source. In principle any Bundle output can be connected to
+any Bundle inputs, but the connection may still be considered erroneous if the contents of the
+incoming Bundle do not match the expectations of the connection destination's owner. See
+section ↑3.4, Bundles for further details about using the Bundle connections.
+2.4.5
+Connection Defaults
+ 
+Inputs which are left unconnected still normally have a defined functionality. This functionality
+can be specifically defined by each Module for each of its inputs separately. Particularly, a
+Macro builder can specify the meaning of the disconnected Macro inputs for each of its inputs
+(see section ↑2.6.1, Inputs). In practice, however, there are most commonly used defaults.
+These defaults are used for the Macro inputs, unless specifically overridden by the Macro
+builder, and are also used for the built-in Modules, unless the Module's documentation says
+otherwise.
+•
+Scalar inputs default to a zero constant. This means that the input behaves exactly as if
+there was a zero constant connected to it, including the initialization behavior (see sec-
+tion ↑4.4, Initialization).
+•
+Non-array OBC inputs default to a unique storage location. This rule is abundantly used in
+storage manipulation (see section ↑4.3, Object Bus Connections (OBC)).
+•
+Array OBC inputs, unless explicitly specified otherwise, should not be left disconnected. A
+disconnected array OBC input has undefined semantics, except that it is guaranteed not
+to affect the correctly connected OBC memory.
+•
+BoolCtl inputs default to a false signal.
+•
+Bundle inputs default to an empty Bundle.
+REAKTOR Core Fundamentals
+Core Connection Types
+ 
+REAKTOR 6 - - 25
+
+
+--- Page 26 ---
+
+2.5
+Core Cells in Detail
+ 
+2.5.1
+Inputs
+ 
+There are only two different input port Module types available in the Core Cell's input port area
+context menu: In and TableRef.
+The Core Cell's input port area context menu.
+The TableRef input port type is described separately in the Building in Primary document. The
+Building in Core document deals exclusively with the Core Cell input ports of type In:
+A Core Cell input port Module.
+REAKTOR Core Fundamentals
+Core Cells in Detail
+ 
+REAKTOR 6 - - 26
+
+
+--- Page 27 ---
+
+Input Properties
+The Properties of a Core Cell input port allow you to specify the port's name and select be-
+tween the Audio and Event-mode of the port:
+Properties of a Core Cell input port Module.
+The Audio/Event-mode specifies whether the input will appear as a Primary level audio or event
+port on the outside of the Core Cell.
+In the Info Properties tab one can specify the hint text for the port.
+2.5.2
+Outputs
+ 
+There is only one output port Module type available in the Core Cell's output port area context
+menu: Out.
+REAKTOR Core Fundamentals
+Core Cells in Detail
+ 
+REAKTOR 6 - - 27
+
+
+--- Page 28 ---
+
+The Core Cell's output port area context menu.
+A Core Cell output port Module.
+Output Properties
+The Properties of a Core Cell's output port are similar to those of the Core Cell input port:
+REAKTOR Core Fundamentals
+Core Cells in Detail
+ 
+REAKTOR 6 - - 28
+
+
+--- Page 29 ---
+
+Properties of the Core Cell output port Module.
+The Audio/Event-mode specifies whether the output will appear as a Primary level audio or
+event port on the outside of the Core Cell.
+The additional Allow Audio Events checkbox is an advanced option for the event-mode outputs.
+By default, the event-mode outputs block internal Core events that are originating from an audio
+source (those are the events obtained directly or indirectly from audio-mode inputs of the Core
+Cell and from the default internal clock sources of the Core Cell). This is important in order to
+avoid events being sent inadvertently from the Core Cell's outputs to the Primary level at audio
+rate, which is quite CPU-intensive. If you enable this checkbox, the event-mode output will not
+block any events. This option should be used with care. For the audio-mode outputs this check-
+box does not have any effect.
+In the Info Properties tab one can specify the hint text for the port.
+2.5.3
+Properties
+ 
+The Core Cells feature two distinct sets of Properties: the 'inside' (Core level) and the 'outside'
+(Primary level) ones.
+The outside Properties of a Core Cell are accessible when the Core Cell is selected within the
+Primary Structure: They contain the Primary level configuration settings of the Core Cell.
+REAKTOR Core Fundamentals
+Core Cells in Detail
+ 
+REAKTOR 6 - - 29
+
+
+--- Page 30 ---
+
+The outside Properties of a Core Cell.
+The inside Properties of a Core Cell are accessible by clicking the background of the Core
+Cell's internal Structure:
+The inside Properties of a Core Cell.
+The Core Cell name and (editable) Info properties are shared between the inside and the out-
+side Properties and can be equally accessed from either side.
+REAKTOR Core Fundamentals
+Core Cells in Detail
+ 
+REAKTOR 6 - - 30
+
+
+--- Page 31 ---
+
+The FP Precision property selects the meaning of the 'default' setting of the float type objects
+(Modules and ports) within the Core Cell's Structure. Simply put, the floating-point computa-
+tions inside the Core Cell will be performed at this precision, unless explicitly overridden for
+certain elements within the Structure.
+•
+Default: use the system-default setting, whatever that is. Technically this is 32 bit, the
+same as within Primary level. This setting should be used whenever possible (that is, un-
+less there is a special reason to use a different setting).
+•
+32 bit: use 32 bit floats by default
+•
+64 bit: use 64 bit floats by default
+2.6
+Core Macros
+ 
+Conceptually seen, a Core Macro is not different from a Primary level Macro. This is simply a
+container Module which has another Core Structure inside:
+A Core Macro.
+REAKTOR Core Fundamentals
+Core Macros
+ 
+REAKTOR 6 - - 31
+
+
+--- Page 32 ---
+
+1.
+To create a new blank Macro, right-click in the normal area of a Core Structure and select
+New Macro from the context menu.
+In the normal area context menu next to the Built-In Module submenu there is a Library sub-
+menu containing the factory library and the user library Macros:
+REAKTOR Core Fundamentals
+Core Macros
+ 
+REAKTOR 6 - - 32
+
+
+--- Page 33 ---
+
+The Library submenu in the Core Macro's normal area context menu.
+The internal Structures of Core Macros are very much like the ones of Core Cells, except that
+the available input and output port types are different.
+2.6.1
+Inputs
+ 
+The input types available in the input port area context menu of a Macro Structure correspond
+to different connection classes available in Core (see section ↑2.4, Core Connection Types for
+the connection classes and type discussion).
+REAKTOR Core Fundamentals
+Core Macros
+ 
+REAKTOR 6 - - 33
+
+
+--- Page 34 ---
+
+The Core Macro's input port area context menu.
+•
+In: Creates a scalar type port. This is the most commonly used port type, which can be
+configured to float or int, of which float is most commonly used.
+•
+OBC: Creates an OBC type port.
+•
+BoolCtl: Creates a BoolCtl type port.
+•
+Bundle: Creates a Bundle type port.
+A Core Macro input port Module of float type.
+The set of available properties of an input port Module varies depending on the Module type.
+Here one can switch the signal type between float and integer, control the floating point preci-
+sion etc.
+REAKTOR Core Fundamentals
+Core Macros
+ 
+REAKTOR 6 - - 34
+
+
+--- Page 35 ---
+
+Default Connection
+Differently from Core Cell port Modules, which have only an output, the Macro input port Mod-
+ules also feature an input. This input is typically left disconnected and is only used if one
+wants to override the default behavior of the corresponding port on the outside of the Macro.
+Technically, if a Macro input (on the outside of the Macro) is disconnected, the input connec-
+tion of the corresponding input port Module inside the Macro will be used instead. So, if there
+is e.g. a constant of 1 connected to the 'default' input of the input port Module, then a discon-
+nected Macro port will default to 1 rather than 0:
+A Core Macro input port Module with a non-zero default signal.
+2.6.2
+Outputs
+ 
+The output types available in the output port area context menu of a Macro Structure are ex-
+actly the same as the input types. Except for the absence of the 'default connection' function-
+ality, the output port configuration is exactly the same as that of the inputs.
+2.6.3
+Properties
+ 
+The Properties of a Macro can be accessed in two different ways:
+1.
+Select the Macro from the outside, from the Structure it is contained in.
+2.
+Left-click on the Structure background inside the Macro.
+In other words, the inside and the outside Properties of a Macro are identical.
+REAKTOR Core Fundamentals
+Core Macros
+ 
+REAKTOR 6 - - 35
+
+
+--- Page 36 ---
+
+Properties of a Core Macro.
+•
+FP Precision: controls the default precision of the float-type objects (Modules and ports)
+inside the Macro. It allows to specify the precision of the floating point computations in-
+side the entire Macro (including the nested Macros), except for the areas which are ex-
+plicitly configured to different precision settings. Usually this property should be left in
+the Default setting.
+◦Default: use the same precision as the Structure that contains the Macro.
+◦32 bit: objects configured to default precision will use 32 bit precision floats (notice,
+that formally these objects are still considered to be configured to the default preci-
+sion!) The respective float ports (scalar and OBC) on the outside of the Macro will ap-
+pear as explicitly configured to 32 bit. In particular, a float OBC port which is config-
+ured to the default precision setting will appear as a default-precision port on the in-
+side of the Macro and as a 32 bit precision port on the outside of the Macro.
+◦64 bit: the same as 32 bit, except the precision is 64 bit.
+•
+Solid: controls the solidity of the Macro. Affects the resolution of the feedback loops (see
+section ↑4.10.3, Nonsolid Macros and Feedback Loops) and the visibility of the Scoped
+Buses (see section ↑3.3.6, Solid Areas). This property must be left in the 'On' state unless
+the Macro explicitly needs to be non-solid, otherwise it may make the Structure more
+REAKTOR Core Fundamentals
+Core Macros
+ 
+REAKTOR 6 - - 36
+
+
+--- Page 37 ---
+
+prone to difficult to find building errors and sometimes unnecessarily increase compila-
+tion times. The nonsolid Macros can be told visually by ragged edges, while their internal
+Structures can be told by dashed frames:
+•
+Look: controls the outside look of the Macro. There are large, medium and small settings:
+•
+Pin Alignment: controls whether the ports of the Macro should be aligned to the top, cen-
+ter or bottom in the outside look:
+•
+Select Icon / Clear Icon: allows to load or unload a picture to be displayed in the outside
+look of the Macro. It is recommended to use a picture with an alpha channel (in PNG or
+TGA format).
+2.7
+Saving Core Cells and Core Macros
+ 
+Similarly to the Primary Macros it is possible to save Core Cells and Core Macros as individual
+files as well as load them back into the Structure.
+REAKTOR Core Fundamentals
+Saving Core Cells and Core Macros
+ 
+REAKTOR 6 - - 37
+
+
+--- Page 38 ---
+
+1.
+To save a Core Cell or a Core Macro, right-click it and select Save Core Cell As… or
+Save As… respectively.
+The Save As… function can also be used for built-in Core Modules. They are saved to the same
+file format as Core Macros. One can use this to save built-in Core Modules with preconfigured
+Properties, if desired.
+REAKTOR Core Fundamentals
+Saving Core Cells and Core Macros
+ 
+REAKTOR 6 - - 38
+
+
+--- Page 39 ---
+
+1.
+To load Core Cell and Core Macro files back, right-click on the background of the Primary
+or Core Structure (for Core Macros/Modules the right-click has to be within the normal
+area) and select Library > Load….
+Similarly to the user library folder "Primary" for Primary level objects, there is a folder called
+"Core" for Core level objects. The folders and the Core objects located in this folder will show
+up in the Library submenu after a separator.
+Notice that while Core Macros and Modules belong to the "Core" folder, the Core Cells
+belong to the "Primary" folder, since they are inserted from the Primary level and respec-
+tively need to be available in the Primary level context menu.
+REAKTOR Core Fundamentals
+Saving Core Cells and Core Macros
+ 
+REAKTOR 6 - - 39
+

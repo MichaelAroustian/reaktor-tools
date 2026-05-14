@@ -1,0 +1,396 @@
+--- Page 75 ---
+
+5
+Basic Step Sequencer
+ 
+5.1
+Overview
+ 
+Event signals in REAKTOR behave differently from audio signals: audio signals constantly send
+values at the audio rate, whereas event signals can have their timing controlled. Events can be
+triggered, and thus can be used to trigger other events.
+This process of triggering timed events is ideal for creating step sequencers, which is what the
+following tutorial will cover.
+5.1.1
+Previous Knowledge
+ 
+This tutorial assumes you have read the previous chapters of this document, and so are famili-
+ar with the following concepts:
+•
+How to navigate around REAKTOR's Edit view
+•
+Understanding the difference between audio and event signals
+•
+Understanding the difference between monophonic and polyphonic signals
+•
+How to create wires between ports
+•
+How to create Macros and Modules
+5.1.2
+The Theory
+ 
+A basic step sequencer sends a sequence of values at timed intervals. They are commonly
+used to create musical patterns by sequencing the pitch of a synthesizer's oscillators, or they
+can be used to modulate sound parameters to create rhythmic effects. It is also common to
+sync a sequencer to the tempo of a project.
+Common hardware step sequencers have a row of knobs to set the sequence of values, with
+each knob representing a step in the sequence. A clock signal is used to progress the se-
+quence: when a clock tick is received, the sequencer advances to the next step, outputting the
+current step's value.
+Basic Step Sequencer
+Overview
+ 
+REAKTOR 6 - Building In Primary - 75
+
+
+--- Page 76 ---
+
+In REAKTOR, our clock signal will be created using timed events.
+5.2
+Tutorial
+ 
+5.2.1
+Setting Up
+ 
+In order to test the sequencer, you will need to create a single oscillator:
+1.
+Create a new empty Ensemble.
+2.
+Enter the structure and create a Sine Oscillator Module.
+3.
+Create a button and attach it to the A (amplitude) input port of the Sine Oscillator.
+4.
+Rename the button to "Test Tone"
+5.
+In the button's Properties, change the On Value to 0.75. This sets the output amplitude
+of the Sine Oscillator when the button is on. An output amplitude of 1 can overload RE-
+AKTOR's output and should be avoided.
+6.
+Create a Constant for the P (pitch) input of the oscillator by right-clicking on the port and
+selecting Create Constant.
+7.
+Connect the output of the Sine Oscillator to the Ensemble's main Out ports.
+⇨The oscillator is now ready to be used. Pressing the Test Tone button activates the Oscilla-
+tor with a MIDI pitch of 60 (middle C). We recommend to lower the volume of your loud-
+speakers before testing the oscillator.
+Basic Step Sequencer
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 76
+
+
+--- Page 77 ---
+
+Next, you will create a Macro inside which you will build your sequencer:
+1.
+Create a new Macro.
+2.
+Re-name it to "Sequencer".
+5.2.2
+Building the Basic Sequencer
+ 
+As mentioned in the Overview, a sequencer uses a clock to move between steps in a sequence,
+so you will start building your sequencer by creating a clock source.
+1.
+Enter the Sequencer Macro structure.
+2.
+Create a Clock Oscillator Module.
+3.
+Create a Constant at the A input port by right-clicking on the port and selecting Create
+Constant.
+4.
+Create a Knob at the F input port using the same right-click method, but this time select-
+ing Create Control.
+Using the right-click method to create constants and controls usually sets their Proper-
+ties to commonly used values.
+You have now created a clock source (the Clock Oscillator) which outputs events with a value
+of 1 at a rate specified by the frequency at the F input. Each of these events is followed by an
+event of 0, producing a kind of square wave with a frequency of F.
+Since the sequencer structure will ignore the value of these events, only using them to trigger
+additional events, you will need to filter out the 0 value events, as these double the frequency
+of events.
+1.
+Create a Separator Module. This Module splits events depending on whether or not their
+value is above or below a certain threshold (Thld).
+2.
+For this case, the threshold should be 0, so you can leave the Thld port empty as it de-
+faults to 0
+Basic Step Sequencer
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 77
+
+
+--- Page 78 ---
+
+3.
+Connect the Out port of the Clock Oscillator to the In port of the Separator.
+⇨The Hi output port of the Separator Module will now act as the output of our clock.
+Each event produced by this clock needs to trigger a value to increase by one. This value will
+be used to select the steps in the sequencer.
+You can build this using the Counter Module.
+1.
+Create a Counter Module.
+2.
+Connect the Hi output of the Separator to the Up port of the Counter.
+⇨Every time the clock sends an event, the Counter will increase by one.
+With this basic counting structure in place, you can move on to creating a Module for setting
+the values the Counter will address. For this tutorial, you will use a Module called the Event
+Table. This Module holds a table of values (if you are familiar with programming, you may like
+to think of it as a 2D array), and is perfect for quickly creating step sequences.
+1.
+Create an Event Table Module.
+2.
+In the Event Table Properties, locate the SIZE section in the Function tab.
+Basic Step Sequencer
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 78
+
+
+--- Page 79 ---
+
+3.
+Click on the Set button.
+4.
+A window will open, asking you to set the table size for the event table.
+5.
+You will be creating a 16 step sequencer, so set the X value to 16 and leave the Y value
+at 1.
+6.
+Click Apply.
+⇨You have created a table of 16 values.
+Next, you will need to set the range of the values in the table. This sequencer will be used to
+control the pitch of the Sine Oscillator you created earlier, so the range should be +/- one oc-
+tave (+/- 12 semi-tones).
+1.
+In the Event Table Properties, locate the VALUE RANGE section in the Function tab.
+2.
+Set the Max value to 12 and the Min value to -12.
+Basic Step Sequencer
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 79
+
+
+--- Page 80 ---
+
+3.
+Set the Stepsize to 1. The Num Step property should automatically update to 24 when
+you do this.
+You have created a table of values with a possible range of -12 to +12. You now need to create
+a way of editing these values.
+The Event Table has a panel element which shows the values in the table. With the following
+additional settings, you will also be able to edit them from the panel:
+1.
+Go to the Ensemble Panel view.
+2.
+Unlock the Panel and rearrange the controls so they are no longer on top of one another.
+Basic Step Sequencer
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 80
+
+
+--- Page 81 ---
+
+3.
+Right-click on the Event Table and click on the Table Draw Mode option.
+4.
+Lock the Panel.
+⇨You will now be able to draw on the Event Table to edit the values in the sequencer.
+To complete the sequencer, you need to connect the Counter to the Event Table.
+The output of the Counter will select an X position in the Event Table using the RX (Read X)
+input, and then trigger the Event Table to output the value at that position using the R (Read)
+input.
+Triggering two inputs from a single output in this way can be sensitive to the ordering of
+events. In this case the RX input needs to receive the Counter output event before the R input.
+To control the order of the events, you can use an Order Module.
+1.
+Navigate to the Sequencer structure.
+2.
+Create an Order Module.
+3.
+Connect the output of the Counter to the input of the Order Module.
+4.
+Connect output 1 of the Order Module to the RX input of the Event Table.
+Basic Step Sequencer
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 81
+
+
+--- Page 82 ---
+
+5.
+Connect output 2 of the Order Module to the R input of the Event Table.
+⇨The Order Module now ensures that RX receives the Counter value before R.
+Simple cases like this may not require an Order Module; however it is good practice to
+use them to ensure that events are processed as planned.
+Testing the Sequencer
+With your sequencer complete, you can connect it to the Sine Oscillator for testing:
+1.
+Create an Out Port Module in the Sequencer Macro.
+2.
+Connect the Out port of the Event Table to the input of the Out Port Module.
+3.
+Navigate to the top level of the Ensemble structure.
+4.
+Create an Add Module.
+Basic Step Sequencer
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 82
+
+
+--- Page 83 ---
+
+5.
+Use the Add Module to add the sequencer output to the Constant at the P input of the
+Sine Oscillator, like this:
+When you return to the Ensemble Panel, you can draw a sequence by clicking and dragging on
+the Event Table. You can then listen to this sequence by activating the Test Tone button.
+Editing and Testing the Sequencer
+Changing the Freq value will alter the rate at which the sequence plays.
+5.2.3
+Adding Tempo Sync
+ 
+It is common for step sequencers like the one you have just created to be synchronized to the
+host tempo. This can be further improved by synchronizing to the song position, not just the
+tempo.
+REAKTOR has a Song Position Module that allows you to access the current playback position
+of the host in 1/96 note resolution.
+Basic Step Sequencer
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 83
+
+
+--- Page 84 ---
+
+In this next step of the tutorial, you will replace the clock you previously created with this Song
+Position Module.
+Before you build anything new, remove all of the Modules that are a part of the clock function-
+ality:
+1.
+Enter the structure of the Sequencer Macro.
+2.
+Select the Modules pictured below. You can select them all at once by clicking and drag-
+ging with the mouse to create a box around them.
+3.
+Delete them by pressing the [Delete] key on your keyboard.
+Now you can replace the old clock structure with a Song Position Module.
+1.
+Create a Song Position (MIDI In) Module.
+The Song Position Module has two outputs: the top one outputs event signals and the
+lower one outputs an audio signal. Both outputs send the host song position at 1/96
+note resolution.
+Basic Step Sequencer
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 84
+
+
+--- Page 85 ---
+
+2.
+Connect the event (top) output to the input of the Order Module. You are using the event
+output as it sends a single event with each song position value, and thus can also be used
+as a clock source.
+When you return to the panel and test the sequencer, you may notice that it is not running.
+This is because the song position will not change unless the transport is running, and if the
+song position does not change then the Song Position Module will not output any events.
+1.
+Start the transport by pressing the play button in the Toolbar, or by pressing [Space] on
+your keyboard.
+With the transport running, the sequence will start playing. However, the sequence is running
+at a fast 1/96 rate, so you need to adjust the structure to control this.
+By using a divider that truncates (rounds down), you can control the resolution of the Song
+Position, and thus the rate of the sequencer.
+1.
+Create a Modulo Module. This Module outputs the truncated result of a division function.
+2.
+Wire the event output of the Song Position Module to the A input of the Modulo Module.
+3.
+Create a Constant and connect it to the B input of the Modulo Module.
+4.
+In order to get a 1/16 rate, you need to divide the 1/96 position by 6 (96/6 = 16), so set
+the Constant to 6.
+5.
+Connect the Div output of the Modulo Module to the input of the Order Module.
+⇨The sequencer now runs at 1/16 rate.
+Basic Step Sequencer
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 85
+
+
+--- Page 86 ---
+
+Even though you have reduced the resolution of the song position to 1/16 notes, the Modulo
+Module is still outputting events at a 1/96 rate. So instead of outputting the following values
+and events:
+0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, etc…
+It is now outputting the following at the same rate:
+0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, etc…
+To optimize the structure, the sequencer should filter out repeated values. Fortunately REAK-
+TOR includes a Step Filter Module to do just that.
+1.
+Create a Step Filter Module and connect it between the Modulo and Order Modules, like
+this:
+The Tol (tolerance) input of the Step Filter can remain disconnected since the default
+value works with this structure.
+With the Step Filter connected, a new event will only be sent to the Event Table when the val-
+ue changes.
+Although this optimization did not change the final output of the Ensemble in any no-
+ticeable way, this technique is very important. If a structure uses events to trigger
+sounds, filtering repeated values ensures that the sounds are only triggered when the
+value changes.
+The final step in creating this sequencer is to add control over the rate. Changing the value at
+the B input of the Modulo Module will do this, however a knob is not ideal as you do not need
+a large range of values, only those that produce commonly used musical note divisions.
+The List Module allows you to create a menu with any number of entries, each with specified
+names and values. Using this Module, you can create a menu of musical note divisions, but
+output the number required to get that rate from the Song Position Module.
+To find the values needed, just use the simple formula: value = 96*rate. For example, if
+you want quarter notes the value = 96 * (1/4) = 96/4 = 24.
+•
+You can now use the Rate Menu to specify the rate of the sequencer using musical note
+divisions.
+Basic Step Sequencer
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 86
+
+
+--- Page 87 ---
+
+5.3
+Going Further
+ 
+You can use a sequencer to control any parameter, not just pitch. Try saving the Sequencer
+Macro and importing it into other Ensembles. Be sure to set the Macro to Mono, and to change
+the Range values of the Event Table accordingly.
+You can use further event handling and a Single Delay Module to create swing:
+A Sequencer with Swing
+5.3.1
+Related Factory Content
+ 
+Any sequencer in the Factory Library will be built on the basic concepts you have just learnt.
+However, there are two Ensembles in particular that uses Event Table Modules in their se-
+quencers: Atmotion and Vierring. Both of these Ensembles can be found in the Sequenced
+Synthesizers section of the Factory Library.
+Basic Step Sequencer
+Going Further
+ 
+REAKTOR 6 - Building In Primary - 87
+
+
+--- Page 88 ---
+
+The Step Sequencers of Atmotion
+Basic Step Sequencer
+Going Further
+ 
+REAKTOR 6 - Building In Primary - 88
+

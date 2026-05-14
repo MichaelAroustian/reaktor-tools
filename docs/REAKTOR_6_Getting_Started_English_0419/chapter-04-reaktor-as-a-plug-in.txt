@@ -1,0 +1,152 @@
+--- Page 37 ---
+
+4
+REAKTOR as a Plug-in
+ 
+REAKTOR as a plug-in
+A common use case for REAKTOR is loading it as a plug-in in a host sequencer. When using
+the REAKTOR plug-in in a host sequencer project, you typically make changes to the Ensem-
+ble by tweaking its knobs and other Panel elements. These changes are saved as part of your
+host sequencer project.
+The same applies to using REAKTOR Racks for patching with Blocks. All settings including the
+arrangement of Blocks and the connections made between them are saved and recalled with
+your host sequencer project.
+REAKTOR as a Plug-in
+ 
+REAKTOR 6 - Getting Started - 37
+
+
+--- Page 38 ---
+
+When working with an Ensemble, the REAKTOR plug-in also stores a link to the loaded Ensem-
+ble file. When you re-load a host project, REAKTOR looks for the Ensemble file, loads it, and
+then applies any control changes you may have made.
+By default, the REAKTOR plug-in opens in Play Mode, meaning that the Ensemble Structure
+and the Ensemble’s advanced settings are locked. This protects any loaded Ensemble, allowing
+you to use it as an instrument or effect without needing to worry about accidentally altering the
+Ensemble and losing the changes you may have made.
+You can still enter Edit Mode in the REAKTOR plug-in and make changes to the Structure or
+the Ensemble’s advanced settings, but this means you will need to save and manage your En-
+semble file in addition to your host sequencer project (see section ↑4.1, Editing Ensembles
+and Automatic Saving).
+4.1
+Editing Ensembles and Automatic Saving
+ 
+When you are using the REAKTOR plug-in in Edit Mode and the Ensemble is modified in such
+way that the changes are not saved in the host sequencer’s project, the Save Ensemble button
+in the Toolbar turns red, indicating that these changes will be lost when closing the project:
+The red Save Ensemble Button
+To preserve the changes you have made, you need to create a local copy of the Ensemble. A
+link to this local copy is saved in the host sequencer’s project and the Ensemble will be auto-
+matically loaded the next time you open the project.
+To save a local copy of the Ensemble:
+REAKTOR as a Plug-in
+Editing Ensembles and Automatic Saving
+ 
+REAKTOR 6 - Getting Started - 38
+
+
+--- Page 39 ---
+
+1.
+Click on the Save Ensemble button in the Toolbar.
+2.
+In the file dialog, choose the desired location and name for the local copy of your Ensem-
+ble and click Save.
+REAKTOR as a Plug-in
+Editing Ensembles and Automatic Saving
+ 
+REAKTOR 6 - Getting Started - 39
+
+
+--- Page 40 ---
+
+⇨A local copy of your Ensemble is saved and the Save Ensemble button turns from red to
+grey, indicating that all changes have been saved.
+The next time the Save Ensemble button turns red to indicate that changes will be lost
+when closing the project, you can simply click on it to save the changes to your previ-
+ously created local copy.
+Enabling Automatic Saving
+You can also enable automatic saving of the Ensemble. Again, a local copy of the Ensemble is
+created, however it is saved automatically every time you save the host sequencer’s project.
+This way, you do not have to keep track of the save status of the Ensemble as long as your host
+sequencer’s project is saved correctly.
+To enable automatic saving of the Ensemble:
+1.
+Click on the Enable Automatic Saving with Host button in the Toolbar.
+REAKTOR as a Plug-in
+Editing Ensembles and Automatic Saving
+ 
+REAKTOR 6 - Getting Started - 40
+
+
+--- Page 41 ---
+
+2.
+In the file dialog, choose the desired location and name for the local copy of your Ensem-
+ble and click Save.
+⇨The Enable Automatic Saving with Host button lights up, indicating that automatic saving
+of your Ensemble is now enabled. The local copy of the Ensemble is saved every time you
+save your host sequencer’s project, and will be automatically loaded the next time you
+open the project.
+You can disable automatic saving by clicking on the lit Enable Automatic Saving with
+Host button. This resets the automatic saving, and you can click on the button again to
+enable automatic saving with a new local copy of your Ensemble.
+ 
+REAKTOR as a Plug-in
+Editing Ensembles and Automatic Saving
+ 
+REAKTOR 6 - Getting Started - 41
+
+
+--- Page 42 ---
+
+4.2
+Resolving a Broken Ensemble Link
+ 
+Since the REAKTOR plug-in loads the Ensemble that linked in your host sequencer project
+from an external file, it is possible for the link to the Ensemble to become broken, for example
+if you rename the folder where the Ensemble is located.
+If this happens, REAKTOR reports that it cannot find the linked Ensemble and asks you locate
+it:
+REAKTOR Ensemble not found
+To locate the Ensemble file and re-establish the link, follow the instructions below:
+1.
+Click the LOCATE ENSEMBLE button.
+REAKTOR as a Plug-in
+Resolving a Broken Ensemble Link
+ 
+REAKTOR 6 - Getting Started - 42
+
+
+--- Page 43 ---
+
+2.
+In the file dialog, navigate to your Ensemble file and select it.
+REAKTOR as a Plug-in
+Resolving a Broken Ensemble Link
+ 
+REAKTOR 6 - Getting Started - 43
+
+
+--- Page 44 ---
+
+3.
+Click open to confirm your selection.
+REAKTOR as a Plug-in
+Resolving a Broken Ensemble Link
+ 
+REAKTOR 6 - Getting Started - 44
+
+
+--- Page 45 ---
+
+⇨The Ensemble is loaded, and the re-established link can be saved in your host sequencer
+project. 
+Alternatively, you can click the IGNORE button to permanently break the link to the En-
+semble file and start using REAKTOR from scratch.
+REAKTOR as a Plug-in
+Resolving a Broken Ensemble Link
+ 
+REAKTOR 6 - Getting Started - 45
+

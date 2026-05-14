@@ -18,9 +18,10 @@ Usage:
     python pdf_to_chapters.py ~/Downloads/some_other.pdf --toc-start 5 --toc-pages 4 --debug
 
 Known settings:
-    Reaktor 6 Building in Core:   --toc-start 4  --toc-pages 5   --page-offset 0
-    Reaktor 5.5 Core Reference:   --toc-start 4  --toc-pages 12  --page-offset 0
-    VA Filter Design 2.1.0:       --toc-start 5  --toc-pages 4   --page-offset 12
+    Reaktor 6 Building in Primary: --toc-start 4  --toc-pages 11  --page-offset 0
+    Reaktor 6 Building in Core:    --toc-start 4  --toc-pages 5   --page-offset 0
+    Reaktor 5.5 Core Reference:    --toc-start 4  --toc-pages 12  --page-offset 0
+    VA Filter Design 2.1.0:        --toc-start 5  --toc-pages 4   --page-offset 12
 
 Options:
     pdf                 Path to the PDF file
@@ -114,7 +115,7 @@ def parse_toc(page):
             continue
 
         lines = [l.strip() for l in block[4].splitlines() if l.strip()]
-        if len(lines) < 2:
+        if not lines:
             continue
 
         first = lines[0]
@@ -131,13 +132,19 @@ def parse_toc(page):
                     continue
 
             # Format 2: section alone + title (possibly wrapped across lines) + page_num
-            # Find page number by scanning backwards for last purely numeric line
+            # Special case: if line[2] is a number and line[3] is a sub-section (e.g. "1.1"),
+            # the chapter page is at index 2 — don't scan backward past it.
             if len(lines) >= 3:
-                pn_idx = None
-                for j in range(len(lines) - 1, 0, -1):
-                    if re.match(r'^\d+$', lines[j]):
-                        pn_idx = j
-                        break
+                if (len(lines) > 3
+                        and re.match(r'^\d+$', lines[2])
+                        and re.match(r'^\d+\.\d+', lines[3])):
+                    pn_idx = 2
+                else:
+                    pn_idx = None
+                    for j in range(len(lines) - 1, 0, -1):
+                        if re.match(r'^\d+$', lines[j]):
+                            pn_idx = j
+                            break
                 if pn_idx and pn_idx >= 2:
                     title = clean_title(' '.join(lines[1:pn_idx]))
                     entries.append((section, title, int(lines[pn_idx])))

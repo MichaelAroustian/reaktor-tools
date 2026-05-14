@@ -1,0 +1,1986 @@
+--- Page 666 ---
+
+13
+Event Processing
+ 
+Event Processing Modules are used for counting Events and keeping track of their values, 
+for logical operations, for splitting and merging control signals, and for timing. You’ll also 
+find Modules here for shaping and randomizing control signals. Additionally, there’s a full-
+featured lookup table in the form of the Event Table Module which can be put to various 
+uses such as sequencers or even for buffering Event data.
+13.1
+Accumulator
+ 
+Fig. 13.1 Accumulator Module
+13.1.1
+Overview
+ 
+The Accumulator Module adds up the values of subsequent Events that arrive at the "In" 
+input port. The value of each Event at the input is added to the total value stored in the 
+Module. Each time an Event arrives at either input port, an Event carrying the new sum as 
+its value is sent from the output port. Use the "Set" input port to set the internal state of 
+the Module to any desired value.
+Application
+The Accumulator Module can be used to monitor the sum of accumulated Events which 
+then can be clipped, or trigger a new Event, if a threshold has been released. For example, 
+use it for Structures that implement a "stopwatch", as shown in the example below.
+13.1.2
+Ports
+ 
+Input Ports
+▪
+(In) "In" is the input port for the Events whose values are to be summed up by the Mod­
+ule. An Event at this input port creates an Event at the output port.
+Event Processing
+Accumulator
+ 
+REAKTOR 5.5 - Module Reference - 666
+
+
+--- Page 667 ---
+
+▪
+(Set) "Set" is the Event input port for (re)setting the internal state of the Module. The 
+value of an Event at this input port determines the new value to which values from 
+subsequent Events at the "In" input port are added. An Event at this input port triggers 
+an Event at the output port.
+Output Ports
+▪
+(Out) "Out" Event output port for the accumulated total value.
+13.1.3
+Example: Stopwatch
+ 
+In this example (shown in the Structure below) you will build a stopwatch that runs at 
+Control Rate. The output of this Structure is a constant stream of Events at the Control 
+Rate, where each Event carries the total time that has passed since the last stopwatch re­
+set Event.
+First, you need a constant stream of Events at the Control Rate. The "CR" (Control Rate) 
+output port of the System Info Module (↑14.20, System Info) is the perfect solution, since 
+each Event additionally carries the Control Rate as its value. After converting the value 
+carried by each Event to the time interval between them in milliseconds, you will use the 
+Accumulator Module to sum up these time increments, resulting in real clock that runs at 
+Control Rate.
+First, you need to convert the Control Rate value (in Hz) carried by the Events stemming 
+from the "CR" output port to the corresponding time interval (in milliseconds). As can be 
+seen in the Structure below, you just need to divide 1000 by the Event signal from the 
+"CR" output port). However, this calculation needs to be done only once after the Control 
+Rate has been set. Therefore you can conserve CPU resources by making the 1/ CR calcu­
+lation only once for every new Control Rate by using the Step Filter Module (↑13.17, Step 
+Filter). Connect the Step Filter Module between the System Info (↑14.20, System Info) 
+and Divide Modules (↑4.8, Divide, /) (shown in the Structure below) and leave the "Tol" 
+(tolerance) input port disconnected (zero). This way you make sure that a new "CR" Event 
+is sent to the Divide Module only if the Control Rate has been changed. This is a handy 
+trick for conserving CPU resources.
+Event Processing
+Accumulator
+ 
+REAKTOR 5.5 - Module Reference - 667
+
+
+--- Page 668 ---
+
+Fig. 13.2 The Structure for a simple Control Rate stopwatch.
+Now that you have calculated the time increment in milliseconds between two Events at 
+Control Rate, you need to make sure that Events carrying this value are sent at the Control 
+Rate to the Accumulator Module. You could use a Value Module (↑13.15, Value) to do 
+this, or alternatively, just connect the "CR" output port to an input port of a Logic OR Mod­
+ule (↑13.9, Logic OR). Since the "CR" value is always positive, the Logic OR Module will 
+sent an Event with the value "1" (true) from its output port. Multiply the output of the Di­
+vide Module (↑4.8, Divide, /) with the "1" sent from the Logic OR Module and feed it into 
+the "In" input port of the Accumulator Module (↑13.1, Accumulator). The Divide Module 
+multiplies 1 * T at the Control Rate, where "T" is the time interval in milliseconds that you 
+calculated above. Now the Accumulator Module adds up the time interval values at a con­
+stant rate and the resulting output is a stopwatch that counts time at the Control Rate, in 
+unit milliseconds. Additionally, add an input for the reset signal for the Accumulator. 
+Again, you could use the Value Module, or just connect the "reset" input port to a Multiply 
+Module (↑4.5, Multiply, X) with one input port disconnected. Any incoming Event at the 
+"reset" input will then cause the Multiply Module to send the value "0" to the "Set" input 
+port of the Accumulator Module (↑13.1, Accumulator) and in turning resetting it to "0", as 
+would be the case for a simple stopwatch.
+13.2
+Counter
+ 
+Fig. 13.3 Counter Module
+Event Processing
+Counter
+ 
+REAKTOR 5.5 - Module Reference - 668
+
+
+--- Page 669 ---
+
+13.2.1
+Overview
+ 
+The Counter Module keeps track of the number of positive incoming Events. A positive 
+Event at the "Up" input port adds an increment of "1" to the internal state of the Counter 
+Module. A positive Event at the "Down" input port reduced the internal state of the Coun­
+ter Module by "1". Use the "Set" input port to set the internal state to any desired value. 
+Each time an Event that changes the internal state of the Module arrives at an input port, 
+an Event with the new value of the internal state is sent from the output port.
+Application
+A common use for the Counter Module is to track the positions of sequencers. Another ex­
+ample where you can use the Counter Module is when keeping track of the number of ac­
+tive MIDI notes at an Instrument's MIDI In. This might be useful when creating special­
+ized unison spread or chord effects, where one played MIDI note causes the synthesizer to 
+play several notes at once. Because you have a limited number of Polyphonic Voices in the 
+Instrument (and limited CPU resources), keeping track of the number of active Voices 
+helps you distribute the synthesizer's notes to the Polyphonic Voices in the most optimal 
+manner. For such an application you would use Gate On and Gate Off signals from the 
+Gate Module (↑2.3, Gate) to increment and decrement the internal state of the Counter 
+Module. The internal state would then correspond to the number of active MIDI notes. 
+Make sure that the Event stemming from the Gate Off event is positive valued.
+13.2.2
+Ports
+ 
+Input Ports
+▪
+(Set) "Set" is the Event input port for (re)setting the counter value. The value of an 
+Event at this input port determines the new value of the internal state of the Counter 
+Module. An Event at this input port creates an Event at the output port.
+▪
+(Up) "Up" is the Event input port for counting up. Only Events with a positive, nonzero 
+value have an effect here, incrementing the internal state of the Module and its output 
+value by one. A positive Event at this input port creates an Event at the output port.
+▪
+(Dn) "Dn" (down) is the Event input port for counting down. Only Events with a positive, 
+nonzero value have an effect here, decrementing the internal state of the Module and 
+its output value by one. A positive Event at this input port creates an Event at the out­
+put port.
+Event Processing
+Counter
+ 
+REAKTOR 5.5 - Module Reference - 669
+
+
+--- Page 670 ---
+
+Output Ports
+▪
+(Out) "Out" is the Event output port for the counter value (internal state of the Module).
+13.2.3
+Example 1: Logic Event Counter
+ 
+The Counter Module in combination with Compare (↑4.12, Compare) and Logic Modules 
+can be a powerful tool for algorithmic sequencing. The example shown in the figure below 
+utilizes the comparison of three incoming values: "A", "B", and "C". Depending on the rela­
+tion of these values to each other at any given point in time, the Counter Module will ei­
+ther increment or decrement its internal state. The Logic EXOR Module sends a "1" valued 
+Event from its upper output port if only one (but not both) of its input ports receive the 
+value "1". Such an Event would increment the Counter Module. If both input ports of the 
+Logic EXOR Module receive the value "1" or both "0", its "Not" output port will send a "1" 
+valued Event. This will cause the Counter Module to decrement its internal state.
+Fig. 13.4 Compare, Logic, and Counter Modules make a useful combination for algorithmic sequencing.
+13.2.4
+Example 2: Multiplex Sequencer
+ 
+This example shows how to build a sequencer with variable length, but with a maximum of 
+16 steps. The first part of the Structure is shown in the figure below. There you see that 
+the core of the sequencer is a Multiplex 16 Module (↑8.5, Multiplex 16 Sequencer) and 
+the values of the steps are received from Knob Modules (↑1.1, Fader/Knob) at the input 
+ports "0" to "15". The sequence length of the step at which the sequencer "folds back" to 
+the first step, is set with the knob labeled "Length" at the "Len" input port. The actual po­
+sition of the sequencer is received at the "Pos" (position) input port in the form of a regular 
+Events with incremental values. The value of the Event determines the sequencer position 
+where values greater than "Len" are "folded back" to the set sequencer range.
+Event Processing
+Counter
+ 
+REAKTOR 5.5 - Module Reference - 670
+
+
+--- Page 671 ---
+
+Fig. 13.5 Multiplex Sequencer example 2
+In this example, the "Pos" values are ultimately received from the Sync Clock Module 
+(↑2.15, Sync Pulse) which sends clock Events at regular time intervals, synchronized to 
+the MIDI Clock. The rate of outgoing Events can be set at the Sync Clock Module's (↑2.15, 
+Sync Pulse) Function page, with the Rate drop-down menu. In order to get regular Events 
+carrying incremental values, the Counter Module has been used. Each Event from the 
+Sync Clock Module (↑2.15, Sync Pulse) increments the output of the Counter Module by 
+one, which then ends up being used as the "Pos" value for the Multiplex 16 Module (↑8.5, 
+Multiplex 16 Sequencer). At the Counter Module's "Set" input port you should have a But­
+ton Module (↑1.2, Button). In its Function page, set the Button Module (↑1.2, Button) to 
+Trigger Mode and its "Max" value to zero. This enables you to reset the sequencer to its 
+first position from the Instrument Panel.
+As an additional feature, the XY Module (↑1.14, XY) has been used to graphically track the 
+current sequencer position. The final Structure with this implemented is shown in the first 
+figure at the end of the example and the final Panel representation of the sequencer is 
+shown at the last figure at the end of the example. Please look at that figure to see where 
+we are headed with the XY Module. The XY Module should be configured to draw a rectan­
+gle from the coordinates (Step, 0) to (Step + 1, 1). This corresponds to going to its View 
+page and choosing the Rectangle menu entry from the Object Type drop-down menu (shown 
+in the figure below). Also, you don't need a cursor and therefore choose the None menu 
+entry from the Cursor Type drop-down menu (also shown in the figure below). While you are 
+Event Processing
+Counter
+ 
+REAKTOR 5.5 - Module Reference - 671
+
+
+--- Page 672 ---
+
+already in the XY Module's View page, disengage the Show Label and Show Value checkboxes 
+and set the Height and Width edit fields so that the XY Module's Panel representation looks 
+similar to what is depicted in the last figure of this example.
+Fig. 13.6 To draw a rectangle from (X1, Y1) to (X2, Y2), choose the Rectangle menu entry from the Object Type drop-down 
+menu.
+The rectangle object type causes the XY Module's Panel representation to draw a rectangle 
+from the coordinates (X1, Y1) to the coordinates (X2, Y2). We want to turn the XY Module 
+(↑1.14, XY) into a row of 16 "imaginary" rectangles, each corresponding to one of the 16 
+steps in the sequencer. This is done the easiest when each box has the dimensions 1 by 
+1. For this reason, it is necessary to set the range of displayed values correctly in the XY 
+Module's Function page. Set the "Min" and "Max" values for the X coordinate to "0" and 
+"16", respectively. "Min" and "Max" for the Y coordinate should be "0" and "1", respective­
+ly. This is shown in the figure below.
+Fig. 13.7 Use the Min and Max edit fields to set the range for the X and Y coordinates to [0 … 16] and [0 … 1], respective­
+ly.
+Now that you have configured the XY Module (↑1.14, XY), you just need to feed the cor­
+rect values from the Multiplex 16 Module (↑8.5, Multiplex 16 Sequencer) to the input 
+ports for the corresponding coordinates. Remember you wish to draw a rectangle from the 
+coordinates (Step, 0) to (Step + 1, 1). As shown in the Structure depicted below, connect 
+the "Stp" (step) output port off the Multiplex 16 Module to the "X1" input port of the XY 
+Module, and the value Step + 1 (using an Add Module, see ↑4.2, Add, +) to the "X2" input 
+port. Furthermore, connect the constant value "1" to the "Y2" input port. Your resulting 
+Structure should look like the first figure below and its Instrument Panel counterpart 
+should look similar to what is shown in the second figure. Numeric Display Modules (↑1.8, 
+Meter) have been added at the "Stp" and "Bar" output ports to give you quantitative visual 
+access to the step and bar positions of the sequencer.
+Event Processing
+Counter
+ 
+REAKTOR 5.5 - Module Reference - 672
+
+
+--- Page 673 ---
+
+Fig. 13.8 The Structure for a simple sequencer with variable length and a simple step position display.
+An additional feature to add would be that resetting the MIDI Clock also causes the se­
+quencer position to be reset as well. For this, a reset operation should send the value "0" 
+to the Counter Module's "Set" input port. Use a Start/Stop Module (↑2.13, Start/Stop) for 
+this "reset" Event source. Since the "Rst" output port sends an Event with value "1", use a 
+Value Module to change the Event's value to "0" and the a Merge Module to merge this 
+reset signal with that received from the "Reset" button.
+Fig. 13.9 The Instrument Panel of the simple sequencer.
+13.3
+Randomize
+ 
+Fig. 13.10 Randomize Module
+Event Processing
+Randomize
+ 
+REAKTOR 5.5 - Module Reference - 673
+
+
+--- Page 674 ---
+
+13.3.1
+Overview
+ 
+The Randomize Module randomizes the incoming signal with adjustable spread. The val­
+ues of the Events arriving at the "In" input port are modified with a pseudorandom positive 
+or negative offset in the range defined by the "Rng" (range) input port: Out = In + X, where 
+–Rng ≤ X ≤ Rng. That is, X is a random value in the range [-Rng … Rng]. The seed for 
+creating different pseudorandom sequences used by the Randomize Module is set using 
+the Set Random Module (↑14.24, Set Random).
+Application
+Use the Randomize Module to program your own random unison spread effect. For this 
+you would need to allocate several Polyphonic Voices to one pitch value where each Voice 
+then has a small offset from the original pitch to create a unison spread effect. Of course, 
+you can use the Randomize Module to add a bit of variation to all sorts of parameters, 
+starting from MIDI velocity values to filter cutoff frequency values. In the latter case you 
+would make sure that the original cutoff frequency value is sent as an Event each time a 
+new note is played. This way each time you play a note, the (perhaps otherwise static) cut­
+off frequency is varied by a random offset in the range [- Rng … Rng].
+13.3.2
+Ports
+ 
+Input Ports
+▪
+(Rng) "Rng" (range) is the Audio input port for controlling the range of the random sig­
+nal modification.
+▪
+(In) "In" is the Event input port for the signal to be randomized.
+Output Ports
+▪
+(Out) "Out" is the Event output port for the randomized signal.
+13.3.3
+Example: Voice Spread
+ 
+For unison spread effects, the Randomize Module (↑13.3, Randomize) gives a random val­
+ue offset for each incoming Voice. This example, shown in the figure below, demonstrates 
+this effect by making the offset for each Voice visible from the Instrument Panel using a 
+From Voice Module (↑14.12, From Voice) and a Numeric Display Module (↑1.8, Meter). 
+Use a Button Module (↑1.2, Button) for the incoming signal. In its Function page, set it to 
+Event Processing
+Randomize
+ 
+REAKTOR 5.5 - Module Reference - 674
+
+
+--- Page 675 ---
+
+Trigger Mode and both the "Min" and "Max" values to "0", using the corresponding edit 
+fields. This way every time you press the button on the Instrument Panel, an Event with 
+the value "0" (at each Voice) is sent to the "In" input port of the Randomize Module. Now 
+create a control for the "Rng" (range) input port by right-clicking the input port and choos­
+ing the Create Control menu entry.
+In the example, the number of Polyphonic Voices of the parent Instrument has been set to 
+"3" or higher. To extract the value carried by a Polyphonic Voice, use the From Voice Mod­
+ule (↑14.12, From Voice). Insert three From Voice Modules and connect the lower input of 
+each to the Randomize Module's output. Connect Constants with the values "1", "2", "3", 
+each to one From Voice Module's "V" (Voice) input port. As shown in the Structure below, 
+the first From Voice Module outputs the value (including random offset) carried by the first 
+Voice, the second From Voice Module outputs the value carried by the second Voice, and 
+so on. Insert three Numeric Display Modules (↑1.8, Meter) into the Structure to display 
+these values on the Instrument Panel. Remember to engage the Always Active checkbox for 
+at least one of the Numeric Display Modules to activate the Structure. The second figure 
+below shows the Instrument Panel where the button has sent a value "0" and the "Rng" 
+value is "0.52". Sending another zero valued Event to the "In" input port creates a new 
+random offset for each Voice.
+Fig. 13.11 The Structure to test the Voice spreading function of the Randomize Module.
+Fig. 13.12 With the From Voice Modules you can see how the Randomize Module spreads out the values for the different 
+Voices.
+Event Processing
+Randomize
+ 
+REAKTOR 5.5 - Module Reference - 675
+
+
+--- Page 676 ---
+
+13.4
+Event Frequency Divider
+ 
+Fig. 13.13 Event Frequency Divider Module
+13.4.1
+Overview
+ 
+The Event Frequency Divider Module creates an Event pulse signal at its output port based 
+on the frequency of positive Events at the "Trig" (trigger) input port. If the signal at the 
+"Trig" input port is a train of positive Events at constant frequency, then the effect of the 
+Frequency Divider Module is to divide the frequency of the input Events by a number con­
+trolled by the input "N" and send a pulse signal with the resulting frequency from the out­
+put port.
+Technically, the first positive Event at the "Trig" input port (trigger Event) causes the out­
+put signal to be set to "1". Depending on the value at the "W" (width) input port, the out­
+put will return to "0" after a number of an trigger Events and return again to "1" after "N" 
+trigger Events.
+Application
+The Frequency Divider Module is the Event counterpart of the Frequency Divider Module. 
+You can use it to get Clock Events at arbitrary note rates by connecting the output of the 
+Clock Module (↑2.14, Clock) to the "Trig" (trigger) input port. The initial clock rate is equal 
+to 96th notes, but by specifying N = 24 at the "N" input port, for example, you can get a 
+clock signal that runs at the rate of quarter notes. This is useful when choosing the rate at 
+which a sequencer runs, for example.
+Event Processing
+Event Frequency Divider
+ 
+REAKTOR 5.5 - Module Reference - 676
+
+
+--- Page 677 ---
+
+13.4.2
+Ports
+ 
+Input Ports
+▪
+(N) "N" (division factor) is the Audio input port for controlling the number of incoming 
+trigger Events that comprise one period of the output pulse signal. N < 2 corresponds 
+to no frequency division, 2 ≤ N < 2.99 corresponds to division by 2, 3 ≤ N < 3.99 
+corresponds to division by 3, etc.
+▪
+(W) "W" is the Audio input port controlling the pulse width of the output signal. The 
+range of values at this input port should be [0 … 1] which corresponds to [0% ... 
+100%] of the output pulse period. After an initial positive Event at the output port, W 
+= 0 causes the output signal to return zero already at the next trigger Event at the 
+"Trig" input port. In the same situation W = 0.5 causes the output signal to return to 
+zero after half the period determined by "N". And for W = 1 the output signal perma­
+nently keeps the value "1".
+▪
+(Trig) "Trig" (trigger) is the input port for trigger (clock) Events whose frequency is to be 
+divided (e.g. MIDI Clock pulses). An Event is only considered a trigger Event if it has a 
+positive, nonzero value.
+▪
+(Rst) "Rst" (reset) is the Event input port for resetting the internal counter in order to 
+force a synchronous start of the outgoing pulse signal. Connect this input port to a 
+MIDI Start signal from a Start/Stop Module (↑2.13, Start/Stop) if using the Event Fre­
+quency Divider for MIDI synchronization. A reset happens only if an Event with a posi­
+tive, nonzero value reaches this input port.
+Output Ports
+▪
+(Out) "Out" is the Event output port for the pulse signal that has a frequency deter­
+mined by the frequency of the trigger Events at the "Trig" input port and the division 
+factor at the "N" input port.
+13.4.3
+Example: 1/16th Notes Event Source
+ 
+The Clock Module (↑2.14, Clock) is a source of Events that run at a constant rate of 96th 
+notes, synced to the MIDI Clock. To get arbitrary note divisions, combine the Clock Module 
+with the Frequency Divider Module. As shown in the Structure below, connect the Clock 
+Module to the Frequency Divider Module's "Trig" input port. To get a Gate On Events (fol­
+lowed by Gate Off Events) running at the rate of sixteenth notes, send the value "6" to the 
+Event Processing
+Event Frequency Divider
+ 
+REAKTOR 5.5 - Module Reference - 677
+
+
+--- Page 678 ---
+
+"N" input port. This is because 96 / 6 = 16. To allocate an equal time interval for the Gate 
+On values as to the Gate Off values at the Frequency Divider Module's output, send the 
+value "0.5" to the "W" (width) input port.
+Fig. 13.14 Use the Frequency Divider Module to get arbitrary note divisions from the Clock Module.
+13.5
+Control Shaper 1
+ 
+Fig. 13.15 Control Shaper 1 Module
+13.5.1
+Overview
+ 
+The Control Shaper 1Module is a signal shaper consisting of a piecewise linear transfer 
+function with three breakpoints. The input signal should be in the range [0 … 1]. You can 
+specify the Shaper's output value for In = 0, In = 0.5, and In = 1 at the "0", "50", and 
+"100" input ports, respectively. The shaping function is linearly interpolated for input val­
+ues between these breakpoints.
+Application
+The Control Shaper Modules are used to shape control signals. When building a synthesiz­
+er framework, the control signals stemming from knobs and faders are often shaped to 
+achieve a better "feel" when tweaking them. Use the Control Shaper Modules to control the 
+shape of these control curves. You can also try sending the output signal of the LFO Mod­
+ule (↑9.1, LFO) trough a Shaper Module to get more interesting LFO shapes for modula­
+tion.
+Event Processing
+Control Shaper 1
+ 
+REAKTOR 5.5 - Module Reference - 678
+
+
+--- Page 679 ---
+
+13.5.2
+Ports
+ 
+Input Ports
+▪
+(100) "100" is the Audio input port for the output value when In = 1 (100%). When 
+disconnected, the value "0" is used for this input port.
+▪
+(50) "50" is the Audio input port for the output value when In = 0.5 (50%). When dis­
+connected, the value "0" is used for this input port.
+▪
+(0) "0" is the Audio input port for the output value when In = 0 (0%). When discon­
+nected, the value "0" is used for this input port.
+▪
+(In) "In" is the Event input port for the signal to be shaped.
+Output Ports
+▪
+(Out) "Out" is the Event output port for the shaped signal.
+13.5.3
+Example: Simple Shaped Resonance Parameter
+ 
+You might want to control the resonance parameter of a filter. For filter resonance values 
+close to "1", small changes in the resonance parameter can have a great effect on the fil­
+ter's output signal. For lower filter resonance values the audible effect of such changes is 
+comparatively small. To shape the signal accordingly, send the "resonance" knob's output 
+signal through the Control Shaper 1 BP Module, as shown in the figure below. Send the 
+constant value "1" to the "100" input port (the default value for the "0" input port is al­
+ready zero). Since we want relatively precise control for resonance values above 0.98 at 
+the cost of precision for the lower resonance values, connect a Constant with the value 
+"0.98" to the "50" input port. This means that when you turn the "resonance" knob from 
+"0" to "0.5", the Shaper Module's output signal goes from "0" to "0.98". Turning the knob 
+from "0.5" to "1" corresponds to Shaper output values "0.98" to "1". Hence, you have half 
+of your knob's movement range dedicated to control resonance values which correspond 
+nearly bringing the filter to self-oscillation.
+Event Processing
+Control Shaper 1
+ 
+REAKTOR 5.5 - Module Reference - 679
+
+
+--- Page 680 ---
+
+Fig. 13.16 The Structure for an implementation of the Control Shaper 1 BP Module.
+13.6
+Control Shaper 2
+ 
+Fig. 13.17 Control Shaper 2 Module
+13.6.1
+Overview
+ 
+The Control Shaper 2 Module is a signal shaper consisting of a piecewise linear transfer 
+function with four breakpoints. The input signal should be in the range [0 … 1]. You can 
+specify the Shaper's output value for In = 0, In = 0.33, In = 0.66, and In = 1 at the "0", 
+"33","66", and "100" input ports, respectively. The shaping function is linearly interpolat­
+ed for input values between these breakpoints.
+Application
+The Control Shaper Modules are used to shape control signals. When building a synthesiz­
+er framework, the control signals stemming from knobs and faders are often shaped to 
+achieve a better "feel" when tweaking them. Use the Control Shaper Modules to control the 
+shape of these control curves. You can also try sending the output signal of the LFO Mod­
+ule (↑9.1, LFO) trough a Shaper Module to get more interesting LFO shapes for modula­
+tion.
+Event Processing
+Control Shaper 2
+ 
+REAKTOR 5.5 - Module Reference - 680
+
+
+--- Page 681 ---
+
+13.6.2
+Ports
+ 
+Input Ports
+▪
+(100) "100" is the Audio input port for the output value when the value In = 1 (100%). 
+When disconnected, the value "0" is used for this input port.
+▪
+(66) "66" is the Audio input port for the output value when In = 0.66 (66%). When 
+disconnected, the value "0" is used for this input port.
+▪
+(33) "33" is the Audio input port for the output value when In = 0.33 (33%). When 
+disconnected, the value "0" is used for this input port.
+▪
+(0) "0" is the Audio input port for the output value when In = 0 (0%). When discon­
+nected, the value "0" is used for this input port.
+▪
+(In) "In" is the Event input port for the signal to be shaped.
+Output Ports
+▪
+(Out) "Out" is the Event output port for the shaped signal.
+13.6.3
+Example: Shaped Resonance Parameter
+ 
+You might want to control the resonance parameter of a filter. For filter resonance values 
+close to "1", small changes in the resonance parameter can have a great effect on the fil­
+ter's output signal. When the resonance parameter is equal to "1", the filter goes into self-
+oscillation, and for lower filter resonance values the audible effect of such changes is 
+comparatively small. To shape the signal accordingly and to keep the resonance parameter 
+from reaching "1", send the "resonance" knob's output signal through the Control Shaper 2 
+BP Module (shown in the figure below). Send the constant value "0.99999" to the "100" 
+input port to keep the shaped resonance parameter from reaching "1". Leave the "0" input 
+port disconnected, since its default value is already "0". Since we want relatively precise 
+control for resonance values above 0.98 at the cost of precision for the lower resonance 
+values, connect a Constant with the value "0.98" to the "66" input port. We can further 
+slowly decrease the precision as the incoming values go towards "0" by connecting the 
+"33" input port with the value "0.5". This means that when you turn the "resonance" knob 
+from "0" to "0.33", the Shaper Module's output signal goes from "0" to "0.5". Turning the 
+knob from "0.33" to "0.66" corresponds to Shaper output values "0.5" to "0.98" and turn­
+ing the knob from "0.66" to "1" sends the values "0.98" to "0.99999" from the Shaper's 
+Event Processing
+Control Shaper 2
+ 
+REAKTOR 5.5 - Module Reference - 681
+
+
+--- Page 682 ---
+
+Module's output. This way you have a smoother transition for the precision of the reso­
+nance parameter from low values to high values and in most cases will keep the filter from 
+going into self-oscillation.
+Fig. 13.18 The Structure for an implementation of the Control Shaper 2 BP Module.
+13.7
+Control Shaper 3
+ 
+Fig. 13.19 Control Shaper 3 Module
+13.7.1
+Overview
+ 
+The Control Shaper 3 Module is a signal shaper consisting of a piecewise linear transfer 
+function with five breakpoints. The input signal should be in the range [0 … 1]. You can 
+specify the Shaper's output value for In = 0, In = 0.25, In = 0.50, In = 0.75, and In = 1 
+at the "0", "25","50", "75", and "100" input ports, respectively. The shaping function is 
+linearly interpolated for input values between these breakpoints.
+Application
+The Control Shaper Modules are used to shape control signals. When building a synthesiz­
+er framework, the control signals stemming from knobs and faders are often shaped to 
+achieve a better "feel" when tweaking them. Use the Control Shaper Modules to control the 
+shape of these control curves. You can also try sending the output signal of the LFO Mod­
+ule (↑9.1, LFO) trough a Shaper Module to get more interesting LFO shapes for modula­
+tion.
+Event Processing
+Control Shaper 3
+ 
+REAKTOR 5.5 - Module Reference - 682
+
+
+--- Page 683 ---
+
+13.7.2
+Ports
+ 
+Input Ports
+▪
+(100) "100" is the Audio input port for the output value when In = 1 (100%). When 
+disconnected, the value "0" is used for this input port.
+▪
+(75) "75" is the Audio input port for the output value when In = 0.75 (75%). When 
+disconnected, the value "0" is used for this input port.
+▪
+(50) "50" is the Audio input port for the output value when In = 0.5 (50%). When dis­
+connected, the value "0" is used for this input port.
+▪
+(25) "25" is the Audio input port for the output value when In = 0.25 (25%). When 
+disconnected, the value "0" is used for this input port.
+▪
+(0) "0" is the Audio input port for the output value when In = 0 (0%). When discon­
+nected, the value "0" is used for this input port.
+▪
+(In) "In" is the Event input port for the signal to be shaped.
+Output Ports
+▪
+(Out) "Out" is the Event output port for the shaped signal.
+13.7.3
+Example: S-Shaped Control Parameter
+ 
+Let’s say you wish to control a parameter with a control curve in the range [0 … 1] that 
+has an S-shape. This would entail high precision for values close to zero and values close 
+to one at the cost of precision in between. To shape the signal accordingly, send the 
+knob's output signal through the Control Shaper 3 BP Module (shown in the figure below). 
+Send the constant value "1" to the "100" input port to keep the shaped resonance parame­
+ter from reaching "1" and the value "0" to the "0" input port. Since we want relatively pre­
+cise control for values close to the value "1", then connect a Constant with the value 
+"0.98" to the "75" input port. To increase precision for inputs close to the value "0", con­
+nect a Constant with the value "0.02" to the "25" input port. To make the S-curved shap­
+ing symmetric around the value "0.5", connect the value "0.5" to the "50" input port. Now 
+you have the following shaping behavior for a knob with the range [0 … 1]. Turning the 
+knob from "0" to "0.25", the Shaper Module's output signal goes from "0" to "0.02". Turn­
+ing the knob from "0.25" to "0.5" corresponds to Shaper output values "0.02" to "0.5". 
+Similarly, turning the knob from "0.5" to "0.75" corresponds to output values from "0.5" to 
+Event Processing
+Control Shaper 3
+ 
+REAKTOR 5.5 - Module Reference - 683
+
+
+--- Page 684 ---
+
+"0.08" and turning the knob from "0.75" to "1" sends the values "0.98" to "1" from the 
+Shaper's Module's output. This shaping curve could be interesting for knobs that control 
+mixing parameters for effects or between different filters.
+Fig. 13.20 The Structure for an implementation of the Control Shaper 3 BP Module.
+13.8
+Logic AND
+ 
+Fig. 13.21 Logic AND Module
+13.8.1
+Overview
+ 
+The Logic AND Module is a logic gate for Event signals. The upper output value is the re­
+sult of the AND logic operation between the two input states The upper output value is "1" 
+(True) when both input values are positive, otherwise the output value is "0" (False).
+Application
+Logic operations are usually used when conditionally routing signals to and from different 
+parts of your Structure. The input signals can be results of value comparisons as per­
+formed by the Compare and Compare/Equal Modules. Another source for logic input ports 
+can be Gate signals.
+13.8.2
+Ports
+ 
+Input Ports
+▪
+(1) "1" is the Event input port for the first signal to be used in the AND logic operation. 
+Negative and zero input values are treated as the logic False state, positive values are 
+treated as the logic True state.
+Event Processing
+Logic AND
+ 
+REAKTOR 5.5 - Module Reference - 684
+
+
+--- Page 685 ---
+
+▪
+(2) "2" is the Event input port for the second signal to be used in the AND logic opera­
+tion. Negative and zero input values are treated as the logic False state, positive values 
+are treated as the logic True state.
+Output Ports
+▪
+(Out) "Out" is the Event output port for the result of the AND logic operation. If both 
+input values are positive, the output value is "1" (True). Otherwise it is "0" (False).
+▪
+(Not) "Not" is the Event output port for the result of the NOT AND logic operation. If 
+both input values are positive, the output value is "0" (False). Otherwise it is "1" (True).
+13.8.3
+Example: Logic AND Router
+ 
+The Router Module (↑13.19, Router) can effectively be combined with Logic and Compare 
+Modules (↑4.12, Compare) to selectively route Event signals. In the example shown in the 
+figure below, the Events from the "B" input port are only forwarded by the router, if the 
+results of both (wired) operations done by the Compare Modules are "true", as tested by 
+the Logic AND Module. In other words, the Event at the "B" input port is forwarded only 
+when C > B > A. The Order Module (↑13.12, Order) is used to ensure that the comparison 
+takes place before the Event is sent to the Router Module.
+Fig. 13.22 Compare and Logic Modules can be used to determine whether a signal is to be forwarded by a Router Module or 
+not.
+13.9
+Logic OR
+ 
+Fig. 13.23 Logic OR Module
+Event Processing
+Logic AND
+ 
+REAKTOR 5.5 - Module Reference - 685
+
+
+--- Page 686 ---
+
+13.9.1
+Overview
+ 
+The Logic OR Module is a logic gate for Event signals. The upper output value is the result 
+of the OR logic operation between the two input states. The upper output value is "1" 
+(True) when at least one of the two input values is positive. If both input values are either 
+zero or negative, the output value is "0" (False).
+Application
+Logic operations are usually used when conditionally routing signals to and from different 
+parts of your Structure. The input signals can be results of value comparisons as per­
+formed by the Compare and Compare/Equal Modules. Another source for logic input ports 
+can be Gate signals.
+13.9.2
+Ports
+ 
+Input Ports
+▪
+(1) "1" is the Event input port for the first signal to be used in the OR logic operation. 
+Negative and zero input values are treated as the logic False state, positive values are 
+treated as the logic True state.
+▪
+(2) "2" is the Event input port for the second signal to be used in the OR logic opera­
+tion. Negative and zero input values are treated as the logic False state, positive values 
+are treated as the logic True state.
+Output Ports
+▪
+(Out) "Out" is the Event output port for the result of the OR logic operation. If at least 
+one of the two input values is positive, the output value is "1" (True). Otherwise it is "0" 
+(False).
+▪
+(Not) "Not" is the Event output port for the result of the NOT OR logic operation. If both 
+input values are either zero or negative, the output value is "1" (True). Otherwise it is 
+"0" (False).
+Event Processing
+Logic OR
+ 
+REAKTOR 5.5 - Module Reference - 686
+
+
+--- Page 687 ---
+
+13.9.3
+Example: Stopwatch
+ 
+In this example (shown in the Structure below) you will build a stopwatch that runs at 
+Control Rate. The output of this Structure is a constant stream of Events at the Control 
+Rate, where each Event carries the total time that has passed since the last stopwatch re­
+set Event.
+First, you need a constant stream of Events at the Control Rate. The "CR" (Control Rate) 
+output port of the System Info Module (↑14.20, System Info) is the perfect solution, since 
+each Event additionally carries the Control Rate as its value. After converting the value 
+carried by each Event to the time interval between them in milliseconds, you will use the 
+Accumulator Module to sum up these time increments, resulting in real clock that runs at 
+Control Rate.
+First, you need to convert the Control Rate value (in Hz) carried by the Events stemming 
+from the "CR" output port to the corresponding time interval (in milliseconds). As can be 
+seen in the Structure below, you just need to divide 1000 by the Event signal from the 
+"CR" output port). However, this calculation needs to be done only once after the Control 
+Rate has been set. Therefore you can conserve CPU resources by making the 1/ CR calcu­
+lation only once for every new Control Rate by using the Step Filter Module (↑13.17, Step 
+Filter). Connect the Step Filter Module between the System Info (↑14.20, System Info) 
+and Divide Modules (↑4.8, Divide, /) (shown in the Structure below) and leave the "Tol" 
+(tolerance) input port disconnected (zero). This way you make sure that a new "CR" Event 
+is sent to the Divide Module only if the Control Rate has been changed. This is a handy 
+trick for conserving CPU resources.
+Fig. 13.24 The Structure for a simple Control Rate stopwatch.
+Event Processing
+Logic OR
+ 
+REAKTOR 5.5 - Module Reference - 687
+
+
+--- Page 688 ---
+
+Now that you have calculated the time increment in milliseconds between two Events at 
+Control Rate, you need to make sure that Events carrying this value are sent at the Control 
+Rate to the Accumulator Module (↑13.1, Accumulator). You could use a Value Module 
+(↑13.15, Value) to do this, or alternatively, just connect the "CR" output port to an input 
+port of a Logic OR Module. Since the "CR" value is always positive, the Logic OR Module 
+will sent an Event with the value "1" (true) from its output port. Multiply the output of the 
+Divide Module (↑4.8, Divide, /) with the "1" sent from the Logic OR Module and feed it 
+into the "In" input port of the Accumulator Module. The Divide Module multiplies 1 * T at 
+the Control Rate, where "T" is the time interval in milliseconds that you calculated above. 
+Now the Accumulator Module adds up the time interval values at a constant rate and the 
+resulting output is a stopwatch that counts time at the Control Rate, in unit milliseconds. 
+Additionally, add an input for the reset signal for the Accumulator. Again, you could use 
+the Value Module, or just connect the "reset" input port to a Multiply Module (↑4.5, Multi­
+ply, X) with one input port disconnected. Any incoming Event at the "reset" input will then 
+cause the Multiply Module to send the value "0" to the "Set" input port of the Accumulator 
+Module (↑13.1, Accumulator) and in turning resetting it to "0", as would be the case for a 
+simple stopwatch.
+13.10 Logic EXOR
+ 
+Fig. 13.25 Logic EXOR Module
+13.10.1 Overview
+ 
+The Logic EXOR Module is a logic gate for Event signals. The upper output value is the 
+result of the EXOR logic operation between the two input states. The upper output value is 
+"1" (True) when exactly one of the two inputs is positive. Otherwise the output value is "0" 
+(False).
+Event Processing
+Logic EXOR
+ 
+REAKTOR 5.5 - Module Reference - 688
+
+
+--- Page 689 ---
+
+Application
+Logic operations are usually used when conditionally routing signals to and from different 
+parts of your Structure. The input signals can be results of value comparisons as per­
+formed by the Compare and Compare/Equal Modules. Another source for logic input ports 
+can be Gate signals.
+13.10.2 Ports
+ 
+Input Ports
+▪
+(1) "1" is the Event input port for the first signal to be used in the EXOR logic opera­
+tion. Negative and zero input values are treated as the logic False state, positive values 
+are treated as the logic True state.
+▪
+(2) "2" is the Event input port for the second signal to be used in the NOT EXOR logic 
+operation. Negative and zero input values are treated as the logic False state, positive 
+values are treated as the logic True state.
+Output Ports
+▪
+(Out) "Out" is the Event output port for the result of the EXOR logic operation. If one 
+but not both input values are positive, the output value is "1" (True). Otherwise it is "0" 
+(False).
+▪
+(Not) "Not" is the Event output port for the result of the NOT EXOR logic operation. If 
+both input values are positive, or both input values are zero or negative, the output val­
+ue is "1" (True). Otherwise it is "0" (False).
+13.10.3 Example: Logic Event Counter
+ 
+The Counter Module (↑13.2, Counter) in combination with Compare (↑4.12, Compare) and 
+Logic Modules can be a powerful tool for algorithmic sequencing. The example shown in 
+the figure below utilizes the comparison of three incoming values: "A", "B", and "C". De­
+pending on the relation of these values to each other at any given point in time, the Coun­
+ter Module (↑13.2, Counter) will either increment or decrement its internal state. The Log­
+ic EXOR Module sends a "1" valued Event from its upper output port if only one (but not 
+both) of its input ports receive the value "1". Such an Event would increment the Counter 
+Module (↑13.2, Counter). If both input ports of the Logic EXOR Module receive the value 
+"1" or both "0", its "Not" output port will send a "1" valued Event. This will cause the Coun­
+ter Module to decrement its internal state.
+Event Processing
+Logic EXOR
+ 
+REAKTOR 5.5 - Module Reference - 689
+
+
+--- Page 690 ---
+
+Fig. 13.26 Compare, Logic, and Counter Modules make a useful combination for algorithmic sequencing.
+13.11 Logic NOT
+ 
+Fig. 13.27 Logic NOT Module
+13.11.1 Overview
+ 
+The Logic NOT Module is a logic gate for Event signals. The upper output value is the re­
+sult of the NOT logic operation on the input states. The upper output value is "1" (True) 
+when the input value is zero or negative, and "0" (False) when the input value is positive.
+Application
+Logic operations are usually used when conditionally routing signals to and from different 
+parts of your Structure. The input signals can be results of value comparisons as per­
+formed by the Compare and Compare/Equal Modules. Another source for logic input ports 
+can be Gate signals.
+13.11.2 Ports
+ 
+Input Ports
+▪
+(In) "In" is the Event input port for the signal to be used in the NOT logic operation. 
+Negative and zero input values are treated as the logic False state, positive values are 
+treated as the logic True state.
+Output Ports
+▪
+(Out) "Out" is the Event output port for the result of the NOT logic operation. If the in­
+put value is positive, the output value is "0" (False). Otherwise it is "0" (False).
+Event Processing
+Logic NOT
+ 
+REAKTOR 5.5 - Module Reference - 690
+
+
+--- Page 691 ---
+
+▪
+(Not) "Not" is the Event output port for the result of the NOT NOT logic operation. If 
+the input value is positive, the output value is "1" (True). Otherwise it is "0" (False).
+13.11.3 Example: Gate Off Hold
+ 
+Use the Logic NOT Module to turn Gate Off signals into "1" valued, Events, for example. 
+This is shown in the Structure below. Further, you can use it to trigger a Hold Module 
+(↑13.22, Hold) (at the "Trig" input port). The Hold Module then sends an Event with the 
+value "1" upon a Gate Off Event and another Event with the value "0" after the hold time 
+has passed.
+Fig. 13.28 Gate Off signals sent through the Logic NOT Module can be used to trigger Event processing, such as that of a 
+Hold Module .
+13.12 Order
+ 
+Fig. 13.29 Order Module
+13.12.1 Overview
+ 
+The Order Module takes an Event and sends it to its output ports in the following order: 
+“1”, “2”, and then “3”. There is one additional aspect to the timing of the output Events. 
+After the Event at the input port is sent from the “1” output port, the Module “waits” until 
+the signal stemming from the “1” output port has been fully processed by all the Modules 
+downstream before the next Event is sent from the “2” output port. Similarly, the Order 
+Module sends the final Event from the “3” output port only when the signal from the “2” 
+output port has reached all terminuses.
+Event Processing
+Logic NOT
+ 
+REAKTOR 5.5 - Module Reference - 691
+
+
+--- Page 692 ---
+
+Application
+The Order Module is an essential Module in the Primary Level. The functionality of many 
+Modules, such as the Multi Display (↑1.16, Multi Display), Snap Array (↑14.27, Snap Val­
+ue Array), and Iteration Module depends on the order in which Events arrive at their input 
+ports. For this reason it is important to learn how and when to apply the Order Module to 
+process Events in the correct order and to get the desired functionality from your Struc­
+tures.
+13.12.2 Ports
+ 
+Input Ports
+▪
+(In) "In" is the input port for Events to be re-transmitted in a defined order. An Event at 
+this input port triggers an Event at each output port in their order from top to bottom.
+Output Ports
+▪
+(1) "1" is the output port for the Event to be transmitted first to the Structure.
+▪
+(2) "2" is the output port for the Event to be transmitted second to the Structure.
+▪
+(3) "3" is the output port for the Event to be transmitted third to the Structure.
+13.12.3 Example: Logic AND Router
+ 
+The Router Module (↑13.19, Router) can effectively be combined with Logic and Compare 
+Modules (↑4.12, Compare) to selectively route Event signals. In the example shown in the 
+figure below, the Events from the "B" input port are only forwarded by the router, if the 
+results of both (wired) operations done by the Compare Modules are "true", as tested by 
+the Logic AND Module (↑13.8, Logic AND). In other words, the Event at the "B" input port 
+is forwarded only when C > B > A. The Order Module is used to ensure that the compari­
+son takes place before the Event is sent to the Router Module.
+Event Processing
+Order
+ 
+REAKTOR 5.5 - Module Reference - 692
+
+
+--- Page 693 ---
+
+Fig. 13.30 Compare and Logic Modules can be used to determine whether a signal is to be forwarded by a Router Module or 
+not.
+13.13 Iteration
+ 
+Fig. 13.31 Iteration Module
+13.13.1 Overview
+ 
+An Event arriving at the "In" input port is passed to the "Out" output port and triggers a 
+series of (up to) "N" additional output Events. Each subsequent Event has the same value 
+as its predecessor but incremented by the value at the "Inc" (increment) input port. The 
+iteration can be stopped before all of the "N" subsequent Events have been sent if a posi­
+tive value is read from the "Brk" (break) input port.
+Per default, all Events are sent before the next audio sample is processed. If the Limited 
+Speed checkbox in the Function page is engaged, the Event generation rate can be set lim­
+ited to the rate set with the Iteration Speed edit field in the Function page.
+Application
+The Iteration Module is used where iterative Event calculation is needed. IT helps to avoid 
+the construction of Event loops which can lead to unstable operation of REAKTOR. With 
+the Limited Speed checkbox disengaged, the Iteration Module can trigger Event processing 
+that completely takes place before the next audio sample is processed. This not only 
+means that the Iteration Module lets you do things faster than the Audio Rate, but also 
+that you can "instantaneously" populate Multi Display Modules, Event Table Modules, and 
+other entities with Event values that they require for correct functionality.
+Event Processing
+Iteration
+ 
+REAKTOR 5.5 - Module Reference - 693
+
+
+--- Page 694 ---
+
+When using the Iteration Module to populate another Module with data during Initialization, 
+make sure that the correct values have arrived at the "Inc", "N", and "Brk" input ports before 
+the trigger Event arrives at the "In" input port.
+13.13.2 Ports
+ 
+Input Ports
+▪
+(In) "In" is the Event input port for the trigger signal. An Event at this input triggers N
++1 Events at the output.
+▪
+(Inc) "Inc" (increment) is the Audio input port for the increment for the value of each 
+subsequent Event. The first Event has the value "In", the second "In + Inc", and so on.
+▪
+(N) "N" (number of Events) is the Audio input port for the number of additional output 
+Events after the Event from the "In" input port has been output. The value at the "N" 
+input port should be a positive integer. Fractional values are rounded down to the near­
+est integer.
+▪
+(Brk) "Brk" (break) is the Audio input port for the break signal. A positive value at the 
+"Brk" input port stops the iteration.
+Output Ports
+▪
+(Out) "Out" is the output port for the iterated Events, each incremented from the last by 
+the value "Inc".
+▪
+(Gate) "Gate" is the Event output port for the iteration Gate signal. Before the first 
+Event leaves the "Out" output port, a Gate On Event (with value "1") is sent from the 
+"Gate" output port. After the last iteration Event, the "Gate" output port sends a Gate 
+Off Event (with value "0").
+13.13.3 Properties: Function Page
+ 
+Limiting the Iteration Speed
+Some processes triggered by the Iteration Module might need more CPU resources than 
+are available between the calculations of two audio samples. In such a case, to avoid au­
+dio drop-outs, activate the Limited Speed feature.
+1.
+To do this, go to the Iteration Module's Function page and engage the Limited Speed 
+checkbox (shown in the figure below).
+Event Processing
+Iteration
+ 
+REAKTOR 5.5 - Module Reference - 694
+
+
+--- Page 695 ---
+
+2.
+Then enter the iteration rate (in iterations per second) into the Iteration Speed edit field, 
+shown in the screenshot below.
+Fig. 13.32 To limit the iteration speed, engage the Limited Speed checkbox and enter the desired number of iterations per 
+second into the Iteration Speed edit field.
+13.13.4 Example: Simple Multi Display
+ 
+Usually instantaneously updating a Multi Display Module's (↑1.16, Multi Display) internal 
+state is done with a Structure that makes use of the Iteration Module. This example illus­
+trates how to plot a graph consisting of three segments on the Multi Display with the help 
+of an Iteration Module. The corresponding Structure is shown in the figure below.
+First let's begin by choosing the type of graphical object for plotting our lines. This is 
+specified at the "Obj" input port of the Multi Display Module (↑1.16, Multi Display). For 
+Obj = -3 the Multi Display Module draws a line from the coordinates "X1" and "Y1" of an 
+object to the coordinates "X1" and "Y1" of the next object of the same type. Let's use that, 
+since this way you can draw three line segments by specifying the "X1" and "Y1" coordi­
+nates of four objects. Connect a Constant with the value "-3" to the "Obj" input port and 
+make sure that the Ignore Object checkbox in the Multi Display Module's Function page has 
+been engaged. This way all graphical objects have the same object type of "-3".
+Now let's turn to making use of the Iteration Module. For each object you need it to trigger 
+the sending of the object's "Idx", "X1", and "Y1" values to the corresponding input ports. 
+Note that the "Idx" value has to arrive first. All in all, since we decided to work with four 
+objects (to draw three segments), we need the Iteration Module to send four Events. To 
+make things easier, let's agree that the "X1" coordinates of the objects are the following, in 
+increasing order of "Idx" value: "0", "1", "2", and "3". These values come in handy, since 
+they can directly be generated by the Iteration Module. Connect a button (labeled "Iter­
+ate") in to the "In" input port of the Iteration Module. It should be in Trigger Mode and 
+have its "Max" value in the Function page set to "0". Pressing the button on the Instrument 
+Panel sends an Event with the value "0" to the Iteration Module, which then in turn should 
+output Events carrying the values "0", "0 + 1", "0 + 2", and "0 + 3". You see already that 
+the increment value, as specified at the "Inc" input port should be "1" and that "N" should 
+be "3" (for three additional output Events). This is shown in the Structure below.
+Event Processing
+Iteration
+ 
+REAKTOR 5.5 - Module Reference - 695
+
+
+--- Page 696 ---
+
+Fig. 13.33 The Structure for drawing three line segments using the Multi Display Module.
+Next, use an Order Module (↑13.12, Order) at the Iteration Module's output to cause the 
+"Idx" value to be sent first for each object and only then the "X1" and "Y1" values. Use the 
+"1" output port of the Order Module for the "Idx" value. Since the "Idx" value starts with "1" 
+for the first object and the values from your Iteration Module start with "0", you need to 
+add "1" to the signal from the Order Module's "1" output port before routing it to the "Idx" 
+input port of the Multi Display Module (↑1.16, Multi Display). Now you can connect the 
+"2" output port of the Order Module directly to the "X1" input port of the Multi Display 
+Module since that is how we chose the segment intervals for our plot to be.
+Last, you need to specify the "Y1" value for each object. This is most easily done by using 
+the "3" output port of the Order Module (↑13.12, Order) as the "Pos" value for a Selector 
+Module (↑5.1, Selector) where each of the four "channel" input ports has the value corre­
+sponding to the "Y2" value of the corresponding graphical object. Such an implementation 
+is shown in the figure above. In that example, the resulting plot would be segments be­
+tween the points (0, 1), (1, 2), (2, 5), and (3, 0). Connect the output of the Selector Mod­
+ule to the "Y1" input port of the Multi Display Module (↑1.16, Multi Display).
+To be able to see all of the plot, set the X Range parameter of the Multi Display Module 
+(↑1.16, Multi Display) at its "XR" input port to "3" and the Y Range parameter at the "YR" 
+input port to "5" (since the greatest "Y1" value used here is "5" and the Y Origin parameter 
+is "0"). To make the lines appear in red, connect the Constant (↑4.1, Constant) "1" to the 
+"R" input port and make sure that the Ignore RGB checkbox in the Multi Display Module's 
+Function page has been engaged. The resulting plot done by the Multi Display Module's 
+(↑1.16, Multi Display) Panel representation is shown in the figure below.
+Event Processing
+Iteration
+ 
+REAKTOR 5.5 - Module Reference - 696
+
+
+--- Page 697 ---
+
+Fig. 13.34 A plot consisting of three line segments done by the Multi Display Module .
+13.14 Separator
+ 
+Fig. 13.35 Separator Module
+13.14.1 Overview
+ 
+The Separator Module compares the values of all incoming Events at the "In" input port to 
+the threshold value (set at the "Thld" input port). These Events are forwarded unaltered to 
+either the "Hi" or "Lo" output port, depending if their value is greater or less than the 
+threshold value. If the value of the incoming Event is greater than "Thld" then it gets sent 
+from the "Hi" output port. If the value of the incoming Event is less than or equal to "Thld" 
+then it gets sent from the "Lo" output port.
+Application
+The Separator Module is a less general and often more handy way of sorting out Events 
+according to their values (as opposed to the Compare (↑4.12, Compare) and Compare/
+Equal Modules (↑4.13, Compare/Equal)). One application for the Separator Module would 
+be to convert a Gate signal to a trigger signal by filtering out the Gate Off Events which 
+usually have the value "0". Just set the threshold "Thld" to "0" and use the "Hi" (high) out­
+put port to trigger one-shot events such as sample playback or certain envelopes. Also, if 
+you were to build a portamento (pitch glide) Structure, you would probably use the Separa­
+tor Module to test if the pitch glide has reached the new note and then subsequently use 
+the corresponding output port to turn off any further pitch gliding .
+Event Processing
+Separator
+ 
+REAKTOR 5.5 - Module Reference - 697
+
+
+--- Page 698 ---
+
+13.14.2 Ports
+ 
+Input Ports
+▪
+(Thld) "Thld" (threshold) is the Audio input port to control the threshold value.
+▪
+(In) "In" is the input port for the Events to be separated and sent to the two outputs 
+according to their values in respect to the threshold value.
+Output Ports
+▪
+(Hi) "Hi" (high) is the Event output port for those incoming Events whose value is great­
+er than the threshold level.
+▪
+(Lo) "Lo" (low) is the Event output port for those Events whose value is less than or 
+equal to the threshold level.
+13.14.3 Example: Event Clipper
+ 
+A very common Structure in Event processing is the Event clipper. Events which are be­
+yond a certain "Min" or "Max" value are clipped, that is, replaced by the value they sur­
+passed. Events in the allowed range are forwarded unchanged. The Structure shown in the 
+figure below implements this feature. First, the Separator Module tests if the incoming sig­
+nal is greater than "Max" or not. If not, it is simply forwarded from its "Lo" output port to 
+the next Separator Module. If yes, it is forwarded from its "Hi" output port, triggering the 
+Value Module (↑13.15, Value) to send an Event with the value "Max" to the Merge Module 
+(↑13.16, Merge) at the output. In the case that the first Separator sends the Event on to 
+the next Separator, the analogous procedure happens, only now the incoming Event's value 
+is tested if it is less than "Min". All in all, there are three ways an Event arrives at the out­
+put: unchanged, clipped at "Max", or clipped at "Min". All three "sources" are merged using 
+the Merge Module (↑13.16, Merge) and sent to the "Out" output port.
+Event Processing
+Separator
+ 
+REAKTOR 5.5 - Module Reference - 698
+
+
+--- Page 699 ---
+
+Fig. 13.36 The Structure for an Event clipper.
+13.15 Value
+ 
+Fig. 13.37 Value Module
+13.15.1 Overview
+ 
+The Value Module lets you use an Event at the “Trig” (trigger) input port to trigger an 
+Event from the output port. The output Event carries the value that lies at the bottom in­
+put port. You could also look at it this way: Events arriving at the "Trig" input port have 
+their value replaced with the current value at the bottom input port, and are then sent with 
+the new value from the output.
+Application
+The Value Module is often used in combination with the Order Module (↑13.12, Order). 
+For example, use the Value Module to set the index of an object in the Multi Display Mod­
+ule (↑1.16, Multi Display) before sending it its coordinates and other parameters. The or­
+der of the index Event and the parameter Events is controlled by the Order Module 
+(↑13.12, Order).The Value Module can also be used as an Event-controlled sample & hold 
+unit.
+Please refer to subsection 9.2.4 in the Application Reference for more information on using 
+the Value Module with the Order Module (↑13.12, Order) to control the flow of Events.
+Event Processing
+Value
+ 
+REAKTOR 5.5 - Module Reference - 699
+
+
+--- Page 700 ---
+
+13.15.2 Ports
+ 
+Input Ports
+▪
+(In) "In" is the input port for Events that trigger new Events at the output port, but with 
+the value set at the bottom ("Val") input port.
+▪
+(Val) "Val" (value) is the Audio input port for specifying the value of the outgoing 
+Events.
+Output Ports
+▪
+(Out) "Out" is the Event output port for the Events carrying the value specified by the 
+bottom, "Val", input port.
+13.15.3 Example: Event Clipper
+ 
+A very common Structure in Event processing is the Event clipper. Events which are be­
+yond a certain "Min" or "Max" value are clipped, that is, replaced by the value they sur­
+passed. Events in the allowed range are forwarded unchanged. The Structure shown in the 
+figure below implements this feature. First, the Separator Module (↑13.14, Separator) 
+tests if the incoming signal is greater than "Max" or not. If not, it is simply forwarded from 
+its "Lo" output port to the next Separator Module. If yes, it is forwarded from its "Hi" out­
+put port, triggering the Value Module to send an Event with the value "Max" to the Merge 
+Module (↑13.16, Merge) at the output. In the case that the first Separator sends the Event 
+on to the next Separator, the analogous procedure happens, only now the incoming Event's 
+value is tested if it is less than "Min". All in all, there are three ways an Event arrives at 
+the output: unchanged, clipped at "Max", or clipped at "Min". All three "sources" are 
+merged using the Merge Module (↑13.16, Merge) and sent to the "Out" output port.
+Event Processing
+Value
+ 
+REAKTOR 5.5 - Module Reference - 700
+
+
+--- Page 701 ---
+
+Fig. 13.38 The Structure for an Event clipper.
+13.16 Merge
+ 
+Fig. 13.39 Merge Module
+13.16.1 Overview
+ 
+The Merge Module merges Event signals. When more than one input port is connected, the 
+output value is that of the last received input Event, irrespective of which wire it came 
+from. During Initialization, only the Event at the lowest input port is forwarded to the out­
+put.
+The module has a dynamic in-port management. Additional input ports can be created (if 
+all existing input ports are already connected) by holding down the Ctrl key in Windows 
+(Cmd key in Mac OS X) while dragging a wire from an output port of another Module to the 
+three dots on the Merge Module. The minimum number of input ports can be defined with 
+the Min Num Port Groups edit field in the Function page.
+An Event at any input port triggers an Event at the output port. Unlike in previous REAK­
+TOR versions, subsequent Events with the same value will not be filtered out anymore. For 
+that purpose use the Step Filter Module (↑13.17, Step Filter).
+Event Processing
+Merge
+ 
+REAKTOR 5.5 - Module Reference - 701
+
+
+--- Page 702 ---
+
+Application
+The Merge Module is used funnel several Event wires to one input port. You might want an 
+envelope or sample to be triggered by Events from a number of sources. In that case you 
+would connect all the wires that carry potential trigger Events to a Merge Module and con­
+nect the Merge Module to the Envelope or Sampler Module's gate or trigger input port.
+Please refer to subsection 9.2.5 in the Application Reference on the Initialization behavior 
+of the Merge Module.
+13.16.2 Example: Event Clipper
+ 
+A very common Structure in Event processing is the Event clipper. Events which are be­
+yond a certain "Min" or "Max" value are clipped, that is, replaced by the value they sur­
+passed. Events in the allowed range are forwarded unchanged. The Structure shown in the 
+figure below implements this feature. First, the Separator Module (↑13.14, Separator) 
+tests if the incoming signal is greater than "Max" or not. If not, it is simply forwarded from 
+its "Lo" output port to the next Separator Module. If yes, it is forwarded from its "Hi" out­
+put port, triggering the Value Module (↑13.15, Value) to send an Event with the value 
+"Max" to the Merge Module at the output. In the case that the first Separator sends the 
+Event on to the next Separator, the analogous procedure happens, only now the incoming 
+Event's value is tested if it is less than "Min". All in all, there are three ways an Event ar­
+rives at the output: unchanged, clipped at "Max", or clipped at "Min". All three "sources" 
+are merged using the Merge Module and sent to the "Out" output port.
+Fig. 13.40 The Structure for an Event clipper.
+Event Processing
+Merge
+ 
+REAKTOR 5.5 - Module Reference - 702
+
+
+--- Page 703 ---
+
+13.17 Step Filter
+ 
+Fig. 13.41 Step Filter Module
+13.17.1 Overview
+ 
+The Step Filter Module filters out (stops) Events that have values equal to the previous 
+Event's value or within an adjustable tolerance level thereof. If the previous Event's value 
+is "x", then an Event at the "In" input port is only passed to the output if its value is either 
+larger than x + Tol or smaller than x - Tol where "Tol" is the tolerance parameter set at the 
+corresponding input port.
+Application
+Use the Step Filter Module to filter out duplicate Events. Since each Event can trigger a 
+number operations down the signal stream which all require CPU operations, it is some­
+times optimal to filter out "duplicate" Events that carry the same value. This way you avoid 
+unnecessary Event processing in your Structure.
+13.17.2 Ports
+ 
+Input Ports
+▪
+(In) "In" is the input port for the Events to be filtered.
+▪
+(Tol) "Tol" (tolerance) is the Event input port for the tolerance level.
+Output Ports
+▪
+(Out) "Out" is the output port for the Events with values beyond the preceding Event's 
+value and the tolerance level.
+Event Processing
+Step Filter
+ 
+REAKTOR 5.5 - Module Reference - 703
+
+
+--- Page 704 ---
+
+13.17.3 Example: Stopwatch
+ 
+In this example (shown in the Structure below) you will build a stopwatch that runs at 
+Control Rate. The output of this Structure is a constant stream of Events at the Control 
+Rate, where each Event carries the total time that has passed since the last stopwatch re­
+set Event. If the Step Filter were not in the structure then the Accumulator would receive 
+double the number of events - and would accumulate a double the proper rate.
+If you change the CR while the stopwatch is running, then the Accumulator will receive one 
+extra Event and will not have the proper output.
+First, you need a constant stream of Events at the Control Rate. The "CR" (Control Rate) 
+output port of the System Info Module (↑14.20, System Info) is the perfect solution, since 
+each Event additionally carries the Control Rate as its value. After converting the value 
+carried by each Event to the time interval between them in milliseconds, you will use the 
+Accumulator Module to sum up these time increments, resulting in real clock that runs at 
+Control Rate.
+You need to convert the Control Rate value (in Hz) carried by the Events stemming from 
+the "CR" output port to the corresponding time interval (in milliseconds). As can be seen 
+in the Structure below, you just need to divide 1000 by the Event signal from the "CR" 
+output port). However, this calculation needs to be done only once after the Control Rate 
+has been set. Therefore you can conserve CPU resources by making the 1/CR calculation 
+only once for every new Control Rate by using the Step Filter Module. Connect the Step 
+Filter Module between the System Info (↑14.20, System Info) and Divide Modules (↑4.8, 
+Divide, /) (shown in the Structure below) and leave the "Tol" (tolerance) input port discon­
+nected (zero). This way you make sure that a new "CR" Event is sent to the Divide Module 
+only if the Control Rate has been changed. This is a handy trick for conserving CPU re­
+sources.
+Event Processing
+Step Filter
+ 
+REAKTOR 5.5 - Module Reference - 704
+
+
+--- Page 705 ---
+
+Fig. 13.42 The Structure for a simple Control Rate stopwatch.
+Now that you have calculated the time increment in milliseconds between two Events at 
+Control Rate, you need to make sure that Events carrying this value are sent at the Control 
+Rate to the Accumulator Module (↑13.1, Accumulator). You could use a Value Module 
+(↑13.15, Value) to do this, or alternatively, just connect the "CR" output port to an input 
+port of a Logic OR Module (↑13.9, Logic OR). Since the "CR" value is always positive, the 
+Logic OR Module will sent an Event with the value "1" (true) from its output port. Multiply 
+the output of the Divide Module (↑4.8, Divide, /) with the "1" sent from the Logic OR Mod­
+ule and feed it into the "In" input port of the Accumulator Module. The Divide Module 
+multiplies 1 * T at the Control Rate, where "T" is the time interval in milliseconds that you 
+calculated above. Now the Accumulator Module adds up the time interval values at a con­
+stant rate and the resulting output is a stopwatch that counts time at the Control Rate, in 
+unit milliseconds. Additionally, add an input for the reset signal for the Accumulator. 
+Again, you could use the Value Module, or just connect the "reset" input port to a Multiply 
+Module (↑4.5, Multiply, X) with one input port disconnected. Any incoming Event at the 
+"reset" input will then cause the Multiply Module to send the value "0" to the "Set" input 
+port of the Accumulator Module (↑13.1, Accumulator) and in turning resetting it to "0", as 
+would be the case for a simple stopwatch.
+13.18 Router M to 1
+ 
+Fig. 13.43 Router M to 1
+Event Processing
+Router M to 1
+ 
+REAKTOR 5.5 - Module Reference - 705
+
+
+--- Page 706 ---
+
+13.18.1 Overview
+ 
+The Router M to 1 Module only lets Events through which arrive at the "channel" input 
+port selected by the "Pos" (position) input port. Events at other "channel" input ports are 
+filtered out. The input signals are connected to the input ports below the "Pos" input port. 
+These dynamic input ports are called "channel" input ports. Additional "channel" input 
+ports can be created (if all existing "channel" input ports are already connected) by holding 
+down the Ctrl key in Windows (Cmd key in Mac OS X) while dragging a wire from an output 
+port of another Module to the three dots on the Router M to 1 Module. The minimum 
+number of "channel" input ports can be defined with the Min Num Port Groups edit field in the 
+Function page. An Event at the selected "channel" input port triggers an Event at the out­
+put port.
+Controlling the Routing
+One can distinguish between three cases for the functionality of the Module depending on 
+the value at the "Pos" input port:
+▪
+When the value at the "Pos" input port is an integer "n", the signal at the "n"-th "chan­
+nel" input port, counting from the top, is forwarded to the output port.
+▪
+When the "Pos" value lies between two integers, it is rounded down. This means that 
+for Pos = 0.6 the effective "Pos" value is "0".
+▪
+If the value at the "Pos" input port is greater than the number of "channel" input ports, 
+the Module's behavior depends on the setting of the Wrap checkbox in the Function 
+page of the Properties Tab. If the Wrap checkbox is disengaged, the signal at the lowest 
+lying "channel" input port is forwarded to the output port. Otherwise, the "Pos" value 
+wraps around the number of "channel" input ports, "Max", so that Max + 1 becomes 
+"0", Max + 2 becomes "1", and so on.
+Application
+An application of the Router M to 1 Module is using it in conjunction with a Compare 
+Module or a Compare/Equal Module to selectively route Event to a destination. If in your 
+synthesizer you have several modulation sources such as LFOs and envelopes, then you 
+might wish to be able to choose in the Instrument Panel which of these sources modulates 
+a certain parameter, like the cutoff frequency, for example. Connect all modulation sour­
+Event Processing
+Router M to 1
+ 
+REAKTOR 5.5 - Module Reference - 706
+
+
+--- Page 707 ---
+
+ces to the Router M to 1 Module and connect the output to the destination parameter. 
+Then you can control the "Pos" value from the Instrument Panel to select which source 
+(LFO, envelope, etc.) modulates said parameter.
+Please refer to the header "Switch vs. Router vs. Selector" in the subsection 8.2.3 in the Ap­
+plication Reference for more detailed information on the differences when applying the List 
+and Selector Module's versus just using a Switch Module.
+13.18.2 Ports
+ 
+Input Ports:
+▪
+(Pos) "Pos" (position) is the hybrid input port for selecting the "channel" input port 
+which is forwarded to the output port. Pos = 0 selects In0 (the first "channel"), Pos = 1 
+selects In1 (the second "channel"), and so on. The typical range for the "Pos" value is 
+[0 ... Max] where "Max" is the number of "channel" input ports.
+▪
+(In0) "In0" is the first Event "channel" input port for the signal that may be forwarded 
+to the output port depending on the value at the "Pos" input port.
+▪
+(In1) "In1" is the second Event "channel" input port for the signal that may be forward­
+ed to the output port depending on the value at the "Pos" input port.
+▪
+(…) "In2, In3, …" are the dynamic "channel" input ports. Additional "channel" input 
+ports can be created (if all existing "channel" input ports are already connected) by 
+holding down the Ctrl key in Windows (Cmd key in Mac OS X) while dragging a wire 
+from an output port of another Module to the three dots on the Router M to 1 Module. 
+The maximum number of "channel" input ports for the Router M to 1 Module is 16.
+Output Ports:
+▪
+(Out) "Out" is the output port for the Events from the "channel" input port selected by 
+the "Pos" (position) input port.
+Event Processing
+Router M to 1
+ 
+REAKTOR 5.5 - Module Reference - 707
+
+
+--- Page 708 ---
+
+13.18.3 Properties: Function Page
+ 
+Changing the Minimum Number of Input Ports
+► To change the minimum number of "channel" input ports, type the desired number into 
+the Min Num Port Groups edit field in the Function page (shown in the figure below). The max­
+imum number of "channel" input ports for the Router M to 1 Module is 16.
+Wrapping the "Pos" Value
+► If you want the value at the "Pos" input port to "wrap" around the number of "channel" 
+input ports, engage the Wrap checkbox (shown in the figure below).
+Activating the Wrap feature means that for "Pos" greater than the number of "channel" in­
+put ports, "Max", the new "Pos" value is equal to the old value minus a multiple of "Max" 
+so that the new "Pos" value is in the range [0 …Max]. For example, Max + 1, becomes 0, 
+Max + 2 becomes 2, and so on. For "Pos" less than zero the new "Pos" value is equal to 
+the negative value plus a multiple of "Max". If the Wrap checkbox is disengaged and Pos > 
+Max, the signal at the "channel" input port with the greatest index is forwarded to the out­
+put port and if Pos < 0, the signal at the smallest index is forwarded to the output port.
+13.18.4 Example: LFO Waveform Router
+ 
+The Router M to 1 Module lets you select which "channel" input port's Events should be 
+forwarded. A useful combination is shown in the figure below, where the Router M to 1 
+Module has been used with the List Module to select which LFO (↑9.1, LFO) waveform to 
+forward.
+Event Processing
+Router M to 1
+ 
+REAKTOR 5.5 - Module Reference - 708
+
+
+--- Page 709 ---
+
+Fig. 13.44 Use the Router M to 1 Module to choose which LFO waveform to use.
+13.19 Router
+ 
+Fig. 13.45 Router Module
+13.19.1 Overview
+ 
+The Router Module is basically the same as a Router M to 1 Module, however it only has a 
+maximum of two "channel" input ports (M = 2). The Router Module only lets Events 
+through which arrive at the "channel" input port selected by the "Ctl" (control) input port. 
+Events at "channel" input ports that have not been selected by the "Ctl" value are filtered 
+out. The Router Module holds the value of the last Event passed through until a new Event 
+arrives at the selected "channel" input port — even if the value at the "Ctl" input port is 
+changed in the meantime.
+Events at the upper input port are let through to the output if Ctl > 0. Otherwise the 
+Events at the lower input port are passed to the output. If the lower input port is not con­
+nected to anything (or not present), no Events are sent from the Module's output port.
+Up to one additional "channel" input port can be created (if the existing "channel" input 
+port is already connected) by holding down the Ctrl key in Windows (Cmd key in Mac OS 
+X) while dragging a wire from an output port of another Module to the three dots on the 
+Router Module. The number of "channel" input ports can be set to "1" or "2" with the Min 
+Num Port Groups edit field in the Function page. An Event at the selected "channel" input 
+port triggers an Event at the output port.
+Event Processing
+Router
+ 
+REAKTOR 5.5 - Module Reference - 709
+
+
+--- Page 710 ---
+
+Application
+The Router Module can be used as an on/off switch for one Event signal or a toggle switch 
+for two Event signals. It can be substituted by the Router M to 1 Module with one or two 
+inputs. The Router Module is available only for backward compatibility because the "Ctl" 
+signal is interpreted differently.
+Please refer to the header "Switch vs. Router vs. Selector" in the subsection 8.2.3 in the Ap­
+plication Reference for more detailed information on the differences when applying the List 
+and Selector Module's versus just using a Switch Module.
+13.19.2 Ports
+ 
+Input Ports
+▪
+(Ctl) "Ctl" (control) is the Hybrid input for to choose from which "channel" input port 
+Events are forwarded to the Module's output port. If Ctl > 0, Events at the upper input 
+port are let through. Otherwise Events only from the lower input port are passed on. . If 
+the lower input port is not connected to anything (or not present), no Events are sent 
+from the Module's output port.
+▪
+(1) "1" is the first Event "channel" input port for the signal that may be forwarded to 
+the output port depending on the value at the "Ctl" input port.
+▪
+(0) "0" is the second Event "channel" input port for the signal that may be forwarded to 
+the output port depending on the value at the "Ctl" input port.
+Output Ports
+▪
+(Out) "Out" is the output port for the Events from the "channel" input port selected by 
+the "Ctl" (control) input port.
+13.19.3 Properties: Function Page
+ 
+Changing the Minimum Number of Input Ports
+To choose if one or two "channel" input ports appear on the Module, type the desired num­
+ber into the Min Num Port Groups edit field in the Function page (shown in the figure below). 
+The maximum number of "channel" input ports for the Router Module is 2.
+Event Processing
+Router
+ 
+REAKTOR 5.5 - Module Reference - 710
+
+
+--- Page 711 ---
+
+Fig. 13.46 Enter the desired number of minimum input ports into the Min Num Port Groups edit field. These ports show up 
+even if they are unconnected.
+13.19.4 Example: Logic AND Router
+ 
+The Router Module can effectively be combined with Logic and Compare Modules (↑4.12, 
+Compare) to selectively route Event signals. In the example shown in the figure below, the 
+Events from the "B" input port are only forwarded by the router, if the results of both 
+(wired) operations done by the Compare Modules are "true", as tested by the Logic AND 
+Module (↑13.8, Logic AND). In other words, the Event at the "B" input port is forwarded 
+only when C > B > A. The Order Module (↑13.12, Order) is used to ensure that the com­
+parison takes place before the Event is sent to the Router Module.
+Fig. 13.47 Compare and Logic Modules can be used to determine whether a signal is to be forwarded by a Router Module or 
+not.
+13.20 Router 1 to M
+ 
+Fig. 13.48 Router 1 to M Module
+13.20.1 Overview
+ 
+The Router 1 to M Module forwards incoming Events only to the "channel" output port se­
+lected by the "Pos" (position) input port. Other "channel" output ports send no Events. The 
+output ports are dynamic output ports. Additional "channel" output ports can be created (if 
+all existing "channel" output ports are already connected) by holding down the Ctrl key in 
+Event Processing
+Router
+ 
+REAKTOR 5.5 - Module Reference - 711
+
+
+--- Page 712 ---
+
+Windows (Cmd key in Mac OS X) while dragging a wire from an input port of another Mod­
+ule to the three dots on the Router 1 to M Module. The minimum number of "channel" 
+output ports can be defined with the Min Num Port Groups edit field in the Function page. An 
+Event at the "In" input port triggers an Event at the selected output port.
+Controlling the Routing
+One can distinguish between three cases for the functionality of the Module depending on 
+the value at the "Pos" input port:
+▪
+When the value at the "Pos" input port is an integer "n", the signal at the "In" input port 
+is forwarded to the "n"-th "channel" output port, counting from the top.
+▪
+When the "Pos" value lies between two integers, it is rounded down. This means that 
+for Pos = 0.6 the effective "Pos" value is "0".
+▪
+If the value at the "Pos" input port is greater than the number of "channel" output 
+ports, the Module's behavior depends on the setting of the Wrap checkbox in the Func­
+tion page of the Properties Tab. If the Wrap checkbox is disengaged, the signal is for­
+warded to the lowest lying "channel" output port. Otherwise, the "Pos" value wraps 
+around the number of "channel" output ports, "Max", so that Max + 1 becomes "0", 
+Max + 2 becomes "1", and so on.
+Application
+An application of the Router 1 to M Module is using it in conjunction with a Compare 
+Module or a Compare/Equal Module to selectively route Event signals in a more complex 
+manner than the Separator Module (↑13.14, Separator) can offer. Also, if in your synthe­
+sizer you have one LFO Module and wish to be able to choose from the Instrument Panel 
+which modulation destination it reaches, using the Router 1 to M Module is an option.
+Please refer to the header "Switch vs. Router vs. Selector" in the subsection 8.2.3 in the Ap­
+plication Reference for more detailed information on the differences when applying the List 
+and Selector Module's versus just using a Switch Module.
+Event Processing
+Router 1 to M
+ 
+REAKTOR 5.5 - Module Reference - 712
+
+
+--- Page 713 ---
+
+13.20.2 Ports
+ 
+Input Ports:
+▪
+(Pos) "Pos" (position) is the hybrid input port for selecting the "channel" output port to 
+which the Events at the "In" input port forwarded. Pos = 0 selects In0 (the first "chan­
+nel"), Pos = 1 selects In1 (the second "channel"), and so on. The typical range for the 
+"Pos" value is [0 ... Max] where "Max" is the number of "channel" output ports.
+▪
+(In) "In" is the Event input port whose Events are forwarded to one of the "channel" out­
+put ports, depending on the value at the "Pos" (position) input port.
+Output Ports:
+▪
+(Out0) "Out0" is the first Event "channel" output port for the signal from the "In" input 
+port, depending on the value at the "Pos" input port.
+▪
+(Out1) "Out1" is the second Event "channel" output port for the signal from the "In" in­
+put port, depending on the value at the "Pos" input port.
+▪
+(…) "Out2, Out3, …" are the dynamic "channel" output ports. Additional "channel" out­
+put ports can be created (if all existing "channel" output ports are already connected) 
+by holding down the Ctrl key in Windows (Cmd key in Mac OS X) while dragging a wire 
+from an intput port of another Module to the three dots on the Router 1 to M Module. 
+The maximum number of "channel" output ports for the Router 1 to M Module is 16.
+13.20.3 Properties: Function Page
+ 
+Changing the Minimum Number of Output Ports
+► To change the minimum number of "channel" output ports, type the desired number in­
+to the Min Num Port Groups edit field in the Function page (shown in the figure below). The 
+maximum number of "channel" input ports for the Router 1 to M Module is 16.
+Event Processing
+Router 1 to M
+ 
+REAKTOR 5.5 - Module Reference - 713
+
+
+--- Page 714 ---
+
+Wrapping the "Pos" Value
+► If you want the value at the "Pos" input port to "wrap" around the number of "channel" 
+output ports, engage the Wrap checkbox (shown in the figure below).
+Activating the Wrap feature means that for "Pos" greater than the number of "channel" out­
+put ports, "Max", the new "Pos" value is equal to the old value minus a multiple of "Max" 
+so that the new "Pos" value is in the range [0 …Max]. For example, Max + 1, becomes 0, 
+Max + 2 becomes 2, and so on. For "Pos" less than zero the new "Pos" value is equal to 
+the negative value plus a multiple of "Max". If the Wrap checkbox is disengaged and Pos > 
+Max, the signal at the "In" input port is forwarded to the "channel" output port with the 
+greatest index and if Pos < 0, it is forwarded to the "channel" output port with the smallest 
+index.
+13.20.4 Example: Choosing Modulation Destination
+ 
+The Router 1 to M Module lets you select to which "channel" output port incoming Events 
+should be forwarded. A useful combination is shown in the figure below, where the Router 
+1 to M Module has been used with the List Module to selectively route a modulation sig­
+nal, in this case an LFO (↑9.1, LFO), to three different destinations: a filter cutoff, a filter 
+resonance, and an envelope sustain parameter.
+Fig. 13.49 Use the Router 1 to M Module to choose a destination for an Event modulation signal such as an LFO.
+13.21 Timer
+ 
+Fig. 13.50 Timer Module
+Event Processing
+Router 1 to M
+ 
+REAKTOR 5.5 - Module Reference - 714
+
+
+--- Page 715 ---
+
+13.21.1 Overview
+ 
+The Timer Module measures the elapsed time between the two last received Events at the 
+"Trig" (trigger) input port and outputs the time period and corresponding frequency at the 
+"T" (time) and "F" (frequency) output ports, respectively.
+Application
+You could build a device allows you to "tap" a heard tempo on a button on the Instrument 
+Panel and have the Timer Module pick up the frequency of the taps and calculate the cor­
+responding BPM. For this you need to make sure that the connected Button Module (↑1.2, 
+Button) been set to Trigger Mode.
+13.21.2 Ports
+ 
+Input Ports
+▪
+(Trig) "Trig" (trigger) is the Polyphonic input port for the Events between which the 
+time duration is to be measured.
+Output Ports
+▪
+(F) "F" (frequency) is the Polyphonic Event output port for the frequency of the incom­
+ing Events, in Hz (Events per second).
+▪
+(T) "T" (time) is the Polyphonic Event output port for the time between the Events, in 
+milliseconds.
+13.21.3 Example: BPM Tap
+ 
+A simplified example for the Timer Module is shown in the figure below. The Structure lets 
+you tap a button on the Instrument Panel and has the Timer Module calculate the BPM 
+corresponding to the tap frequency of the last few Events. For this functionality, connect a 
+Button Module (in Trigger Mode) to the "Trig" input port and multiply the value from the 
+"F" (frequency) output port by "60". This last operation converts the frequency units Events 
+per second (Hz) to Events per minute (since there are 60 seconds in a minute). Display 
+the result using a Numeric Display Module (↑1.8, Meter).
+Event Processing
+Timer
+ 
+REAKTOR 5.5 - Module Reference - 715
+
+
+--- Page 716 ---
+
+Fig. 13.51 The Structure for a simple BPM timer.
+13.22 Hold
+ 
+Fig. 13.52 Hold Module
+13.22.1 Overview
+ 
+The Hold Module is a hold function triggered by a positive Event at the "Trg" (trigger) input 
+port, upon which an Event with the value "1" (Gate On) is sent from the output port. After 
+the hold period (set at the "H" (hold) input port), an Event with the value "0" (Gate Off) is 
+sent from the output. The Module can be triggered at any time, including retriggering dur­
+ing the hold time.
+Application
+You can use the Hold Module together with the Separator Module (↑13.14, Separator) to 
+separate the Gate On and Gate Off Events. For example, you can cause an incoming posi­
+tive Event to trigger a process which is then stopped or modified by the Gate Off Event 
+after the hold time has passed.
+In order to save CPU load, the Hold Module's hold time is based on the Control Rate clock 
+and can be very coarse. For precisely timed pulses please use the H Envelope Module 
+(↑9.3, H - Env).
+13.22.2 Ports
+ 
+Input Ports
+▪
+(Trig) "Trig" (trigger) is the input port for Events to trigger the hold function. Only 
+events with positive values (not zero) have an effect here.
+Event Processing
+Hold
+ 
+REAKTOR 5.5 - Module Reference - 716
+
+
+--- Page 717 ---
+
+▪
+(H) "H" (hold) is the Audio input port for controlling the hold time in milliseconds. Typ­
+ical values at this input port are in the range [10 … 1000]. When this input port is 
+disconnected, the default value of "0" is used (no hold time).
+Output Ports
+▪
+(Out) "Out" is the Event output port for the Gate On and Gate Off Events.
+13.22.3 Example: Gate Off Hold
+ 
+Use the Logic NOT Module (↑13.11, Logic NOT) to turn Gate Off signals into "1" valued, 
+Events, for example. This is shown in the Structure below. Further, you can use it to trig­
+ger a Hold Module (at the "Trig" input port). The Hold Module then sends an Event with 
+the value "1" upon a Gate Off Event and another Event with the value "0" after the hold 
+time has passed.
+Fig. 13.53 Gate Off signals sent through the Logic NOT Module can be used to trigger Event processing, such as that of a 
+Hold Module.
+13.23 Event Table
+ 
+Fig. 13.54 Event Table Module
+Event Processing
+Hold
+ 
+REAKTOR 5.5 - Module Reference - 717
+
+
+--- Page 718 ---
+
+13.23.1 Overview
+ 
+Holds a table of data values. Event values can be read from the table, event values can be 
+stored in the table and the table’s content can be displayed and edited graphically . The 
+table can be 1-dimensional (a row of values) adressed by X, or 2-dimensional (a matrix of 
+rows and columns, or a set of independent rows) adressed by X and Y.
+The value at the output is taken from the table by reading at the position given by the in­
+puts RX and RY. Values arriving at the module’s W input are stored in individual cells of 
+the table according to the write position given by the inputs WX and WY.
+X is the horizontal position from left to right and Y is the vertical position from top to bot­
+tom. The count always starts at 0 for the first element.
+The module’s panel display can show all the data or a limited region of it. Many options in 
+the properties allow customizing the behaviour.
+For full details on properties, menus and keyboard shortcuts, please see the section Table 
+Modules on page 165.
+13.23.2 Overview
+ 
+The Event Table Module holds a table of data values and offers read and write access to 
+these values. The values can be read out as an Event signal and a Monophonic signal can 
+be loaded from a file or written into the table via Events at the "In" input port. Supported 
+file types are the native table file (*.ntf), text file (*.txt), and the *.aif and *.wav audio 
+files. Stored values can be displayed and edited graphically with draw and data manipula­
+tion functions on the Module's Panel representation.
+The internal table can be 1-dimensional (a row of values) where each cell is addressed by 
+the "RX" (read X) and "WX" (write X) input port for read and write operations, respectively. 
+It can also be 2-dimensional (a matrix of rows and columns, or a set of independent rows). 
+In the 2-dimensional case each cell is addressed by the "RX" (read X) and "RY" (read Y) 
+input ports for read operations and by the "WX" (write X) and "WY" (write Y) input ports for 
+write operations.
+The value at the "Out" output port is taken from the table by a read operation at the posi­
+tion given by the "RX" and "RY" input ports. With a moving "read pointer" to the table cells 
+you can record arbitrary Event signals.
+Incoming values at the "In" input port are written to individual cells according to the posi­
+tion determined by the "WX" and "WY" input ports at the time of the Event's arrival.
+Event Processing
+Event Table
+ 
+REAKTOR 5.5 - Module Reference - 718
+
+
+--- Page 719 ---
+
+In the Panel representation's graphic display, "X" is the horizontal table cell position, 
+counted from left to right and "Y" is the vertical table cell position, counted from top to 
+bottom. The table cells are always counted starting with "0" for the first table cell. The 
+Event Table Module’s Panel representation can show all the data or a limited region of it. 
+You can control the range of displayed table cells in the horizontal dimension by specify­
+ing the "X" coordinate of the first displayed table cell at the "XO" (X origin) input port and 
+the number of displayed table cells in the "X" dimension at the "XR" (X range) input port. If 
+you have chosen a graph style that shows 2-dimensional tables, you can analogously speci­
+fy the coordinate of the first table cell in the "Y" dimension at the "YO" (Y origin) input port 
+and the number of displayed table cells in the "Y" dimension at the "YR" input port. Many 
+options in the Properties pages allow customizing the behavior.
+For full details on the Properties pages of the Event Table Module and a general tutorial on 
+the Table Modules by example of recording and playing back an Audio signal with the Audio 
+Table Module, please refer to chapter 11 in the Application Reference.
+Application
+The most common application for the Event Table Module is building all types of custom 
+sequencers. Connect the read pointer to a MIDI Clock signal (created with the help of a 
+Song Position Module (↑3.10, Song Position Out) and a Clock Module (↑2.14, Clock), for 
+example). Another, more advanced application is using several Event Table Modules to ac­
+cess a shared buffer from different points in the Structure. To do this, configure the table 
+by setting the table size, units, etc. Then save the table file. Now when you copy and paste 
+another instance of the Event Table Module elsewhere into the Structure, both Modules 
+will use the same internal table. This is reflected by the Clients display in the Function 
+page (shown in the figure below). Making changes to one table will be reflected by the 
+state of the other Module. Note that even if you delete the table file from your disk, the 
+Modules will still share the same internal state.
+Fig. 13.55 The Clients display in the Function page shows how many other Table Modules (of the same kind) are using the 
+internal table.
+Event Processing
+Event Table
+ 
+REAKTOR 5.5 - Module Reference - 719
+
+
+--- Page 720 ---
+
+13.23.3 Ports
+ 
+Input Ports
+▪
+(RX) "RX" (read X) is the Audio input port for the "X" position of the table cell from 
+which the data is read. A read operation takes place when an Event arrives at the "R" 
+(read) input port.
+▪
+(RY) "RY" (read Y) is the Audio input port for the "Y" position of the table cell from 
+which the data is read. This is used in 2-dimensional tables for addressing the row 
+number if more than one row exists. A read operation takes place when an Event ar­
+rives at the "R" (read) input port.
+▪
+(R) "R" (read) is the Event input port for triggering a read operation from the table cell 
+specified by the "RX" and "RY" input ports. Every Event at this input port triggers an 
+Event at the "Out" output port, carrying the value in the addressed table cell.
+▪
+(WX) "WX" (write X) is the Audio input port for the "X" position of the table cell to which 
+the value of the Event at the "In" input port is written. Write operations are executed at 
+the moment when the Event arrives at the "In" input port.
+▪
+(WY) "WY" (write Y) is the Audio input port for the "Y" position of the table cell to which 
+the value at the "In" input port is written. Write operations are executed when a posi­
+tive value lies at the "W" (write) input port.
+▪
+(In) "In" is the input port for the Events whose values are to be written into the table 
+cells specified addressed by the "WX" and "WY" input ports.
+▪
+(XO) "XO" (X origin) is the Event input port for the horizontal offset of the displayed da­
+ta region. "XO" controls which table cell appears in the left edge of the Panel represen­
+tation's graphic display. The values at this input port should be specified in the units 
+set with the X Units drop-down menu in the Function page.
+▪
+(XR) "XR" ( X range) is the Event input port for the horizontal range of the displayed 
+data region. "XR" controls how many units of data fit in the display, i.e. it lets you 
+graphically zoom into the data. The values at this input port should be specified in the 
+units set with the X Units drop-down menu in the Function page.
+▪
+(YO) "YO" (Y origin) is the Event input port for the vertical offset of the displayed data 
+region. "YO" controls which table cell appears in the bottom edge of the Panel repre­
+sentation's graphic display. The values at this input port should be specified in the 
+units set with the Y Units drop-down menu in the Function page.
+Event Processing
+Event Table
+ 
+REAKTOR 5.5 - Module Reference - 720
+
+
+--- Page 721 ---
+
+▪
+(YR) "YR" (Y range) is the Event input port for the vertical range of the displayed data 
+region in a 2-dimensional graphic display. "YR" controls how many units of data fit in 
+the display, i.e. it lets you graphically zoom into the data. The values at this input port 
+should be specified in the units set with the Y Units drop-down menu in the Function 
+page.
+Output Ports
+▪
+(Out) "Out" is the output port for the Event carrying the value in the table cell at the 
+position controlled by the "RX" and "RY" input ports. Events at the "Out" output port 
+can only be triggered by Events at the "R" (read) input port.
+▪
+(DX) "DX" (dimension X) is the Event output port for the horizontal size of the table in 
+units set with the X Units drop-down menu in the Function page. Use this output port to 
+forward the information about the table dimension to the Structures for the read and 
+write pointers such that they agree with the number of table cells.
+▪
+(DY) "DY" (dimension Y) is the Event output port for the vertical size of the vertical ta­
+ble in the units set with the Y Units drop-down menu in the Function page. Use this out­
+put port to forward the information about the table dimension to the Structures for the 
+read and write pointers such that they agree with the number of table cells.
+Event Processing
+Event Table
+ 
+REAKTOR 5.5 - Module Reference - 721
+

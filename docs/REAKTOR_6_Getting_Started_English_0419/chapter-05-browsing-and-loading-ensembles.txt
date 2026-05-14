@@ -1,0 +1,63 @@
+--- Page 46 ---
+
+5
+Browsing and Loading Ensembles
+ 
+Ensembles are the main file type used for final REAKTOR instruments and effects. There are a
+number of ways to browse for and load Ensemble (*.ens) files.
+Drag and Drop
+The most basic way of loading Ensemble files is via drag and drop:
+1.
+Using your operating system's file browser, locate the Ensemble file you wish to load.
+Browsing and Loading Ensembles
+ 
+REAKTOR 6 - Getting Started - 46
+
+
+--- Page 47 ---
+
+2.
+Click on the Ensemble file and drag it into the empty main area in REAKTOR's interface.
+If you have already loaded an Ensemble, you have to drag the Ensemble file into the Pan-
+el of the existing Ensemble.
+3.
+Release the mouse button.
+⇨REAKTOR will load the Ensemble file.
+If you drag an Ensemble file into the Structure of an existing Ensemble, it will be added
+to the existing Ensemble as an Instrument.
+File Menu
+You can also open Ensembles via the main menu:
+Browsing and Loading Ensembles
+ 
+REAKTOR 6 - Getting Started - 47
+
+
+--- Page 48 ---
+
+1.
+Click on the arrow next to the REAKTOR to open the main menu.
+2.
+Go to the File menu and select Open Ensemble…
+Browsing and Loading Ensembles
+ 
+REAKTOR 6 - Getting Started - 48
+
+
+--- Page 49 ---
+
+3.
+In the file dialog, navigate to your Ensemble file and select it.
+Browsing and Loading Ensembles
+ 
+REAKTOR 6 - Getting Started - 49
+
+
+--- Page 50 ---
+
+4.
+Click open to confirm your selection.
+⇨REAKTOR will load the selected Ensemble.
+Browsing and Loading Ensembles
+ 
+REAKTOR 6 - Getting Started - 50
+

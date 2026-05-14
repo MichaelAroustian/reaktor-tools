@@ -1,0 +1,369 @@
+--- Page 117 ---
+
+12
+Keyboard Shortcuts
+ 
+Views
+Function
+Shortcut (Mac OSX)
+Shortcut (Windows)
+Browser
+[F1]
+[F1]
+Snapshots
+[F2]
+[F2]
+Connection Manager
+[F3]
+[F3]
+Panelsets
+[F4]
+[F4]
+Properties
+[F5]
+[F5]
+Sample Map Editor
+[F6]
+[F6]
+Player and Recorder
+[F7]
+[F7]
+Preferences
+[Cmd] + [,]
+[Ctrl] + [,]
+Audio & MIDI Settings
+[Cmd] + [.]
+[Ctrl] + [.]
+OSC Settings
+[Cmd] + [Alt] + [.]
+[Ctrl] + [Alt] + [.]
+Hide/show Horizontal Split
+[F10]
+[F10]
+Hide/show Vertical Split
+[F11]
+[F11]
+Full Screen
+[F12]
+[F12]
+General
+Function
+Shortcut (Mac OSX)
+Shortcut (Windows)
+Run/Stop Audio Engine
+[Cmd] + [R]
+[Ctrl] + [R]
+MIDI/OSC Learn
+[Cmd] + [M]
+[Ctrl] + [M]
+Start/Stop Clock
+[Space]
+[Space]
+Reset Clock
+[Alt] + [Space]
+[Ctrl] + [Space]
+New Ensemble
+[Cmd] + [N]
+[Ctrl] + [N]
+Open Ensemble
+[Cmd] + [O]
+[Ctrl] + [O]
+Keyboard Shortcuts
+ 
+REAKTOR 6 - Diving Deeper - 117
+
+
+--- Page 118 ---
+
+Function
+Shortcut (Mac OSX)
+Shortcut (Windows)
+Save Ensemble
+[Cmd] + [S]
+[Ctrl] + [S]
+Save Ensemble As
+[Cmd] + [Shift] + [S]
+[Ctrl] + [Shift] + [S]
+Quit
+[Cmd] + [Q]
+[Alt] + [F4]
+Snapshots
+Function
+Shortcut (Mac OSX)
+Shortcut (Windows)
+Next
+[Down Arrow]
+[Down Arrow]
+Previous
+[Up Arrow]
+[Up Arrow]
+Jump Forward 10 Snapshots
+[Page Down]
+[Page Down]
+Jump Back 10 Snapshots
+[Page Up]
+[Page Up]
+Bookmarks
+Function
+Shortcut (Mac OSX)
+Shortcut (Windows)
+Create New
+[Alt] + [`]
+[Alt] + [`]
+Recall 1…8
+[Alt] + [1]…[8]
+[Alt] + [1]…[8]
+Overwrite 1…8
+[Alt] + [1]…[8]
+[Alt] + [1]…[8]
+The [`] key is system specific for English keyboards. The Create New Bookmark shortcut
+uses [Alt] + the key to the left of 1.
+Help/Debug
+Function
+Shortcut (Mac OSX)
+Shortcut (Windows)
+Info Hints
+[Alt] + [I]
+[Alt] + [I]
+Measure CPU Usage
+[Alt] + [C]
+[Alt] + [C]
+Show Module Sorting
+[Alt] + [S]
+[Alt] + [S]
+Show Event Init Order
+[Alt] + [R]
+[Alt] + [R]
+Wire Debugging
+[Alt] + [D]
+[Alt] + [D]
+Keyboard Shortcuts
+ 
+REAKTOR 6 - Diving Deeper - 118
+
+
+--- Page 119 ---
+
+Structure/Panel
+Function
+Shortcut (Mac OSX)
+Shortcut (Windows)
+Enter Structure from Panel
+[Cmd] + [Shift] + Double Click
+[Ctrl] + [Shift] + Double Click
+Open Searchbox
+[Enter]
+[Enter]
+Cut
+[Cmd] + [X]
+[Ctrl] + [X]
+Copy
+[Cmd] + [C]
+[Ctrl] + [C]
+Paste
+[Cmd] + [V]
+[Ctrl] + [V]
+Duplicate
+[Cmd] + [D]
+[Ctrl] + [D]
+Delete
+[Backspace]
+[Backspace]
+Select All
+[Cmd] + [A]
+[Ctrl] + [A]
+Undo
+[Cmd] + [Z]
+[Ctrl] + [Z]
+Redo
+[Cmd] + [Y]
+[Ctrl] + [Y]
+Lock/Unlock Panel
+[Cmd] + [E]
+[Ctrl] + [E]
+Move Panel Module by 1 Pixel
+[Cmd] + [Shift] + [Arrow Key]
+[Ctrl] + [Shift] + [Arrow Key]
+Move Panel Module by 40 Pixels
+[Shift] + [Arrow Key]
+[Shift] + [Arrow Key]
+Control Finetuning
+[Shift] + Drag with Mouse
+[Shift] + Drag with Mouse
+You can also duplicate Modules and Macros by holding [Alt] as you drag with the
+mouse.
+Advanced View Functions
+Function
+Shortcut (Mac OSX)
+Shortcut (Windows)
+Move Focus to Next Pane
+[Tab]
+[Tab]
+Move Focus to Previous Pane
+[Shift] + [Tab]
+[Shift] + [Tab]
+Pan in Structure View
+[Alt] + Drag Background with
+Mouse
+[Alt] + Drag Background with
+Mouse
+Open Macro Structure in Other
+Pane
+[Alt] + Double-click
+[Alt] + Double-click
+Keyboard Shortcuts
+ 
+REAKTOR 6 - Diving Deeper - 119
+
+
+--- Page 120 ---
+
+Function
+Shortcut (Mac OSX)
+Shortcut (Windows)
+Navigate Through Breadcrumbs
+[Alt] + [Left Arrow] and [Alt] +
+[Right Arrow]
+[Alt] + [Left Arrow] and [Alt] +
+[Right Arrow]
+Toggle Between Horizontal and
+Vertical Screen Split
+[Ctrl] + [H]
+[Ctrl] + [H]
+Keyboard Shortcuts
+ 
+REAKTOR 6 - Diving Deeper - 120
+
+
+--- Page 121 ---
+
+Index
+A
+Akkord [90]
+audio
+playback [52]
+record [53]
+automation [35]
+B
+banks [48]
+creating and editing [49]
+bookmark [109]
+breadcrumb [109]
+browser [62]
+library [64]
+player [63]
+building [101]
+documentation [115]
+navigation [102]
+C
+Carbon 2 [111]
+Connection Manager [23]
+connections [113]
+core [116]
+CCCCC (Compiled Core Cell Code Cache)
+[66]
+CPU (Central Processing Unit) [61]
+D
+default value [51]
+E
+edit mode [13]
+I
+instruments
+connecting [113]
+loading [111]
+J
+Junatik [102]
+K
+Keyboard Shortcuts [117]
+KOMPLETE KONTROL [66]
+Index
+ 
+REAKTOR 6 - Diving Deeper - 121
+
+
+--- Page 122 ---
+
+M
+macro [103]
+MASCHINE [66]
+Memory Drum 2 [69]
+MIDI & OSC Learn [22]
+MIDI (Musical Instrument Digital Interface) [15]
+MIDI in [33]
+MIDI out [33]
+Properties [28]
+module [103]
+Monark [35]
+O
+OSC (Open Sound Control) [15]
+learn [22]
+Properties [28]
+setting up [16]
+OSC Settings [16]
+Receive [18]
+Send [20]
+Sync [21]
+P
+panel
+automatic layout [92]
+layout [90]
+panelsets [94]
+creating and editing [98]
+recall [94]
+play mode [13]
+player and recorder [52]
+file player [52]
+file recorder [53]
+recorder settings [55]
+Preferences [57]
+CPU Usage [60]
+Directories [61] [66]
+General [57]
+Properties
+Connect [26] [32]
+R
+Recorder Settings [55]
+Index
+ 
+REAKTOR 6 - Diving Deeper - 122
+
+
+--- Page 123 ---
+
+S
+sample
+external sample editor [65] [89]
+importing [73] [81]
+location [77]
+loop points [85]
+mapping [74] [79]
+sample map [69]
+sample map [70]
+embedding [76]
+importing and exporting [71]
+sample map editor [69]
+sample map editor
+note actions [86]
+sample list [72]
+settings [88]
+waveform [84]
+Shortcuts [117]
+snapshot [39]
+bank [48]
+default values [51]
+deleting [44]
+master [40]
+Morph + Random [45]
+renaming [44]
+sorting [44]
+storing [43]
+split screen [105]
+structure view [102]
+T
+The Finger [35]
+V
+Vectory [94]
+Index
+ 
+REAKTOR 6 - Diving Deeper - 123
+

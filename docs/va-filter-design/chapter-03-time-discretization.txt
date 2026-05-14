@@ -1,0 +1,3290 @@
+--- Page 57 ---
+
+Chapter 3
+Time-discretization
+Now that we have introduced the basic ideas of analog ﬁlter analysis, we will
+develop an approach to convert analog ﬁlter models to the discrete time.
+3.1
+Discrete-time signals
+The discussion of the basic concepts of discrete-time signal representation and
+processing is outside the scope of this book. We are assuming that the reader
+is familiar with the basic concepts of discrete-time signal processing, such as
+sampling, sampling rate, sampling period, Nyquist frequency, analog-to-digital
+and digital-to-analog signal conversion. However we are going to make some
+remarks in this respect.
+As many other texts do, we will use the square bracket notation to denote
+discrete-time signals and round parentheses notation to denote continuous-time
+signals: e.g. x[n] and x(t).
+We will often assume a unit sampling rate fs = 1 (and, respectively, a unit
+sampling period T = 1), which puts the Nyquist frequency at 1/2, or, in the
+circular frequency terms, at π. Apparently, this can be achieved simply by a
+corresponding choice of time units.
+Theoretical DSP texts typically state that discrete-time signals have periodic
+frequency spectra. This might be convenient for certain aspects of theoretical
+analysis such as analog-to-digital and digital-to-analog signal conversion, but it’s
+highly unintuitive otherwise. It would be more intuitive, whenever talking of a
+discrete-time signal, to imagine an ideal DAC connected to this signal, and think
+that the discrete-time signal represents the respective continuous-time signal
+produced by such DAC. Especially, since by sampling this continuous-time sig-
+nal we obtain the original discrete-time signal again. So the DAC and ADC con-
+versions are exact inverses of each other (in this case). Now, the continuous-time
+signal produced by such DAC doesn’t contain any partials above the Nyquist
+frequency. Thus, its Fourier integral representation (assuming T = 1) is
+x[n] =
+Z π
+−π
+X(ω)ejωn dω
+2π
+45
+
+
+--- Page 58 ---
+
+46
+CHAPTER 3. TIME-DISCRETIZATION
+and its Laplace integral representation is
+x[n] =
+Z σ+jπ
+σ−jπ
+X(s)esn ds
+2πj
+Introducing notation z = es and noticing that
+ds = d(log z) = dz
+z
+we can rewrite the Laplace integral as
+x[n] =
+I
+X(z)zn
+dz
+2πjz
+(where X(z) is apparently a diﬀerent function than X(s)) where the integration
+is done counterclockwise along a circle of radius eσ centered at the complex
+plane’s origin:1
+z = es = eσ+jω = eσ · ejω
+(−π ≤ω ≤π)
+(3.1)
+We will refer the representation (3.1) as the z-integral.2 The function X(z) is
+referred to as the z-transform of x[n].
+In case of non-unit sampling period T ̸= 1 the formulas are the same, except
+that the frequency-related parameters get multiplied by T (or divided by fs), or
+equivalently, the n index gets multiplied by T in continuous-time expressions:3
+x[n] =
+Z πfs
+−πfs
+X(ω)ejωT n dω
+2π
+x[n] =
+Z σ+jπfs
+σ−jπfs
+X(s)esT n ds
+2πj
+z = esT
+x[n] =
+I
+X(z)zn
+dz
+2πjz
+(z = eσ+jωT , −πfs ≤ω ≤πfs)
+The notation zn is commonly used for discrete-time complex exponential
+signals. A continuous-time signal x(t) = est is written as x[n] = zn in discrete-
+time, where z = esT . The Laplace-integral amplitude coeﬃcient X(s) in X(s)est
+then may be replaced by a z-integral amplitude coeﬃcient X(z) such as in
+X(z)zn.
+1As with Laplace transform, sometimes there are no restrictions on the radius eσ of the
+circle, sometimes there are.
+2A more common term for (3.1) is the inverse z-transform, but we will prefer the z-integral
+term for the same reason as with Fourier and Laplace integrals.
+3Formally the σ parameter of the Laplace integral (and z-integral) should have been mul-
+tiplied by T as well, but it doesn’t matter, since this parameter is chosen rather arbitrarily.
+
+
+--- Page 59 ---
+
+3.2. NAIVE INTEGRATION
+47
+3.2
+Naive integration
+The most “interesting” element of analog ﬁlter block diagrams is obviously the
+integrator. The time-discretization for other elements is trivial, so we should
+concentrate on building the discrete-time models of the analog integrator.
+The continuous-time integrator equation is
+y(t) = y(t0) +
+Z t
+t0
+x(τ) dτ
+In discrete time we could approximate the integration by a summation of the
+input samples. Assuming for simplicity T = 1, we could have implemented a
+discrete-time integrator as
+y[n] = y[n0 −1] +
+n
+X
+ν=n0
+x[ν]
+We will refer to the above as the naive digital integrator.
+A pseudocode routine for this integrator could simply consist of an accumu-
+lating assignment:
+// perform one sample tick of the integrator
+integrator_output := integrator_output + integrator_input;
+It takes the current state of the integrator stored in the integrator output vari-
+able and adds the current sample’s value of the integrator input on top of that.
+In case of a non-unit sampling period T ̸= 1 we have to multiply the accu-
+mulated input values by T:4
+// perform one sample tick of the integrator
+integrator_output := integrator_output + integrator_input*T;
+3.3
+Naive lowpass filter
+We could further apply this “naive” approach to construct a discrete-time model
+of the lowpass ﬁlter in Fig. 2.2. We will use the naive integrator as a basis for
+this model.5
+Let the x variable contain the current input sample of the ﬁlter. Consid-
+ering that the output of the ﬁlter in Fig. 2.2 coincides with the output of the
+integrator, let the y variable contain the integrator state and simultaneously
+serve as the output sample. As we begin to process the next input sample, the
+4Alternatively, we could, of course, scale the integrator’s output by T, but this is less
+useful in practice, because the T factor will be usually combined with the cutoff gain factor
+ωc preceding the integrator.
+5Based on the fact that the naive integration introduced above is identical to Euler
+backward-difference integration, there is an opinion that the naive approach (loosely defined
+as “take whatever values we have now at the integrator inputs and apply a single naive inte-
+gration step to those”) is identical to the Euler method. This is not 100% so. The readers are
+encouraged to formally apply backward- and forward-difference Euler methods to ˙y = ωc(y−x)
+to convince themselves that there are some differences. Particularly, the backward-difference
+method is implicit (requires solving an equation), while the forward-difference method pro-
+duces the “future” value of the output. For more complicated systems the differences could
+be more drastic, although the author didn’t explicitly verify that.
+
+
+--- Page 60 ---
+
+48
+CHAPTER 3. TIME-DISCRETIZATION
+y variable will contain the previous output value. At the end of the processing
+of the sample (by the ﬁlter model) the y variable will contain the new output
+sample. In this setup, the input value for the integrator is apparently (x−y)ωc,
+thus we simply have
+// perform one sample tick of the lowpass filter
+y := y + (x-y)*omega_c;
+(mind that ωc must have been scaled to the time units corresponding to the
+unit sample period!)
+A naive discrete-time model of the multimode ﬁlter in Fig. 2.13 could have
+been implemented as:
+// perform one sample tick of the multimode filter
+hp := x-lp;
+lp := lp + hp*omega_c;
+where the integrator state is stored in the lp variable.
+The above naive implementations (and any other similar naive implemen-
+tations, for that matter) work reasonably well as long as ωc ≪1, that is the
+cutoﬀmust be much lower than the sampling rate. At larger ωc the behavior
+of the ﬁlter becomes rather strange, ultimately the ﬁlter gets unstable. We will
+now develop some theoretical means to analyse the behavior of the discrete-time
+ﬁlter models, ﬁgure out what are the problems with the naive implementations,
+and then introduce another discretization approach.
+3.4
+Block diagrams
+Let’s express the naive discrete-time integrator in the form of a discrete-time
+block diagram. The discrete-time block diagrams are constructed from the same
+elements as continuous-time block diagrams, except that instead of integrators
+they have unit delays. A unit delay simply delays the signal by one sample.
+That is the output of a unit delay comes “one sample late” compared to the
+input. Apparently, the implementation of a unit delay requires a variable, which
+will be used to store the new incoming value and keep it there until the next
+sample. Thus, a unit delay element has a state, while the other block diagram
+elements are obviously stateless. This makes the unit delays in a way similar to
+the integrators in the analog block diagrams, where the integrators are the only
+elements with a state.
+A unit delay element in a block diagram is denoted as:
+z−1
+/
+/
+The reason for the notation z−1 will be explained a little bit later. Using a unit
+delay, we can create a block diagram for our naive integrator (Fig. 3.1). For an
+arbitrary sampling period we obtain the structure in Fig. 3.2. For an integrator
+with embedded cutoﬀgain we can combine the ωc gain element with the T gain
+element (Fig. 3.3). Notice that the integrator thereby becomes invariant to the
+choice of the time units, since ωcT is invariant to this choice.
+Now let’s construct the block diagram of the naive 1-pole lowpass ﬁlter.
+Recalling the implementation routine:
+
+
+--- Page 61 ---
+
+3.4. BLOCK DIAGRAMS
+49
++
+ '!&"%#$
+/
+•/
+z−1 o
+O
+/
+x[n]
+y[n]
+Figure 3.1: Naive integrator for T = 1.
+MMMq
+q
+q/
++
+ '!&"%#$
+/
+•/
+z−1 o
+O
+/
+x[n]
+y[n]
+T
+Figure 3.2: Naive integrator for arbitrary T.
+MMMq
+q
+q/
++
+ '!&"%#$
+/
+•/
+z−1 o
+O
+/
+x[n]
+y[n]
+ωcT
+Figure 3.3: Naive integrator with embedded cutoﬀ.
+// perform one sample tick of the lowpass filter
+y := y + (x-y)*omega_c;
+we obtain the diagram in Fig. 3.4. The z−1 element in the feedback from the
+ﬁlter’s output to the leftmost summator is occurring due to the fact that we are
+picking up the previous value of y in the routine when computing the diﬀerence
+x −y.
++
+ '!&"%#$
+/
+MMMq
+q
+q/
++
+ '!&"%#$
+/
+•/
+z−1 o
+O
+•/
+z−1 o
+−
+O
+/
+_
+_
+_
+_
+_
+_
+_
+_
+_
+_
+_
+_
+_
+_
+_
+
+
+
+
+
+
+
+
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+
+
+
+
+
+
+
+x[n]
+y[n]
+ωcT
+Figure 3.4: Naive 1-pole lowpass ﬁlter (the dashed line denotes the
+integrator).
+
+
+--- Page 62 ---
+
+50
+CHAPTER 3. TIME-DISCRETIZATION
+This unit delay occurring in the discrete-time feedback is a common problem
+in discrete-time implementations. This problem is solvable, however it doesn’t
+make too much sense to solve it for the naive integrator-based models, as the
+increased complexity doesn’t justify the improvement in sound. We will address
+the problem of the zero-delay discrete-time feedback later, for now we’ll con-
+centrate on the naive model in Fig. 3.4. This model can be simpliﬁed a bit, by
+combining the two z−1 elements into one (Fig. 3.5), so that the block diagram
+explicitly contains a single state variable (as does its pseudocode counterpart).
++
+ '!&"%#$
+/
+MMMq
+q
+q/
++
+ '!&"%#$
+/
+•/
+z−1
+•
+O
+−
+O
+/
+_
+_
+_
+_
+_
+_
+_
+_
+_
+_
+_
+
+
+
+
+
+
+
+
+
+
+
+_ _ _ _ _ _ _ _ _ _ _
+
+
+
+
+
+
+
+
+
+
+
+x[n]
+y[n]
+ωcT
+Figure 3.5: Naive 1-pole lowpass ﬁlter with just one z−1 element
+(the dashed line denotes the integrator).
+3.5
+Transfer function
+Let x[n] and y[n] be respectively the input and the output signals of a unit
+delay:
+z−1
+/
+/
+x[n]
+y[n]
+For a complex exponential input x[n] = esn = zn we obtain
+y[n] = es(n−1) = esne−s = znz−1 = z−1x[n]
+That is
+y[n] = z−1x[n]
+That is, z−1 is the transfer function of the unit delay! It is common to express
+discrete-time transfer functions as functions of z rather than functions of s. The
+reason is that in this case the transfer functions are nonstrictly proper6 rational
+functions, similarly to the continuous-time case, which is pretty convenient. So,
+for a unit delay we could write H(z) = z−1.
+Now we can obtain the transfer function of the naive integrator in Fig. 3.1.
+Suppose7 x[n] = X(z)zn and y[n] = Y (z)zn, or shortly, x = X(z)zn and
+6Under the assumption of causality, which holds if the system is built of unit delays.
+7As in continuous-time case, we take for granted the fact that complex exponentials zn are
+eigenfunctions of discrete-time linear time-invariant systems.
+
+
+--- Page 63 ---
+
+3.5. TRANSFER FUNCTION
+51
+y = Y (z)zn. Then the output of the z−1 element is yz−1. The output of the
+summator is then x + yz−1, thus
+y = x + yz−1
+from where
+y(1 −z−1) = x
+and
+H(z) = y
+x =
+1
+1 −z−1
+This is the transfer function of the naive integrator (for T = 1).
+It is relatively common to express discrete-time transfer functions as ratio-
+nal functions of z−1 (like the one above) rather than rational functions of z.
+However, for the purposes of the analysis it is also often convenient to have
+them expressed as rational functions of z (particularly, for ﬁnding their poles
+and zeros). We can therefore multiply the numerator and the denominator of
+the above H(z) by z, obtaining:
+H(z) =
+z
+z −1
+Since z = es, the frequency response is obtained as H(ejω). The amplitude
+and phase responses are
+H(ejω)
+ and arg H(ejω) respectively.8
+For T ̸= 1 we obtain
+H(z) = T
+z
+z −1
+and, since z = esT , the frequency response is H(ejωT ).
+Now let’s obtain the transfer function of the naive 1-pole lowpass ﬁlter in
+Fig. 3.5, where, for the simplicity of notation, we assume T = 1. Assuming
+complex exponentials x = X(z)zn and y = Y (z)zn we have x and yz−1 as
+the inputs of the ﬁrst summator. Respectively the integrator’s input is ωc(x −
+yz−1). And the integrator output is the sum of yz−1 and the integrator’s input.
+Therefore
+y = yz−1 + ωc(x −yz−1)
+From where
+ 1 −(1 −ωc)z−1
+y = ωcx
+and
+H(z) = y
+x =
+ωc
+1 −(1 −ωc)z−1 =
+ωcz
+z −(1 −ωc)
+The transfer function for T ̸= 1 can be obtained by simply replacing ωc by ωcT.
+The respective amplitude response is plotted in Fig. 3.6. Comparing it to
+the amplitude response of the analog prototype we can observe serious deviation
+closer to the Nyquist frequency.
+The phase response (Fig. 3.7) has similar
+deviation problems.
+In principle, the amplitude response deviation can be drastically reduced
+by correcting the ﬁlter’s cutoﬀsetting. E.g. one could notice that the second
+8Another way to look at this is to notice that in order for zn to be a complex sinusoid ejωn
+we need to let z = ejω.
+
+
+--- Page 64 ---
+
+52
+CHAPTER 3. TIME-DISCRETIZATION
+ω
+|H(ejω)|, dB
+π
+0.1π
+0.01π
+0.001π
+0.02π
+1 1.2
+0
+-6
+-12
+-18
+Figure 3.6: Amplitude response of a naive 1-pole lowpass ﬁlter for a
+number of diﬀerent cutoﬀs. Dashed curves represent the respective
+analog ﬁlter responses for the same cutoﬀs.
+ω
+arg H(ejω)
+π
+0.1π
+0.01π
+0.001π
+0.02π
+1 1.2
+0
+−π/4
+−π/2
+Figure 3.7: Phase response of a naive 1-pole lowpass ﬁlter for a
+number of diﬀerent cutoﬀs. Dashed curves represent the respective
+analog ﬁlter responses for the same cutoﬀs.
+of the amplitude responses in Fig. 3.6 is occurring a bit too far to the right,
+compared to the analog response (which is what we’re aiming at). Therefore
+we could achieve a better matching between the two responses by reducing the
+cutoﬀsetting of the digital ﬁlter by a small amount. Depending on the formal
+deﬁnition of the response matching, one could derive an analytical expression
+for such cutoﬀcorrection. There are two main problems with that, though.
+One problem is that many other ﬁlters, e.g. a 2-pole resonating lowpass, have
+more parameters, e.g. not only cutoﬀbut also the resonance, and we potentially
+may need to correct all of them, which results in much more involved math.
+This problem is not as critical though, and there are some methods utilizing
+this approach.
+The other problem, though, is the phase response. Looking at Fig. 3.7 it
+
+
+--- Page 65 ---
+
+3.6. TRAPEZOIDAL INTEGRATION
+53
+seems that no matter how we try to correct the ﬁlter’s cutoﬀ, the phase response
+will be always zero at Nyquist, whereas we would desire something close to
+−π/2.
+The eﬀects of the deviation of the ﬁlter’s phase response are mostly
+quite subtle. Therefore it’s somewhat diﬃcult to judge how critical the phase
+devations might be.9 However there’s one absolutely objective and major issue
+associated with the phase deviations. Attempting to mix outputs of two ﬁlters
+with some deviations in either or both of the amplitude and phase responses
+may easily lead to unexpected and undesired results. For that reason in this
+book we will concentrate on a diﬀerent method which is much more robust in
+this respect.
+Poles and zeros
+Discrete-time block diagrams are diﬀering from continuous-time block diagrams
+only by having z−1 elements instead of integrators. Recalling that the transfer
+function of an integrator is s−1, we conclude that from the formal point of view
+the diﬀerence is purely notational.
+Now, the transfer functions of continuous-time block diagrams are non-
+strictly proper rational functions of s. Respectively, the transfer functions of
+discrete-time block diagrams are nonstrictly proper rational functions of z.
+Thus, discrete-time transfer functions will have poles and zeros in a way sim-
+ilar to continuous-time transfer functions. Similarly to continuous-time transfer
+functions, the poles will deﬁne the stability of a linear time-invariant ﬁlter. Con-
+sider that z = esT and recall the stability criterion Re s < 0 (where s = pn,
+where pn are the poles). Apparently, Re s < 0 ⇐⇒|z| < 1. We might there-
+fore intuitively expect the discrete-time stability criterion to be |pn| < 1 where
+pn are the discrete-time poles. This is indeed the case, a linear time-invariant
+diﬀerence system10 is stable if and only if all its poles are located inside the
+unit circle. We will give more detail about the mechanisms behind this in the
+discussion of the discrete-time transient response in Sections 3.12 and 7.13.
+3.6
+Trapezoidal integration
+Instead of naive integration, we could attempt using the trapezoidal integration
+method (T = 1):
+// perform one sample tick of the integrator
+integrator_output := integrator_output +
+(integrator_input + previous_integrator_input)/2;
+previous_integrator_input := integrator_input;
+Notice that now we need two state variables per integrator: integrator output
+and previous integrator input. The block diagram of a trapezoidal integrator is
+shown in Fig. 3.8. We’ll refer to this integrator as a direct form I trapezoidal
+integrator. The reason for this term will be explained later.
+9Many engineers seem to believe that the deviations in phase response are quite tolerable
+acoustically. The author’s personal preference is to be on the safe side and not take the risks
+which are difficult to estimate. At least some caution in this regard would be recommended.
+10Difference systems can be defined as those, whose block diagrams consist of gains, sum-
+mators and unit delays. More precisely those are causal difference systems. There are also
+difference systems with a lookahead into the future, but we don’t consider them in this book.
+
+
+--- Page 66 ---
+
+54
+CHAPTER 3. TIME-DISCRETIZATION
+•/
++
+ '!&"%#$
+/
+z−1
+/
+O
+MMMq
+q
+q/
++
+ '!&"%#$
+/
+•/
+z−1 o
+O
+/
+x[n]
+y[n]
+1/2
+Figure 3.8: Direct form I trapezoidal integrator (T = 1).
+We could also construct a trapezoidal integrator implementation with only
+a single state variable. Consider the expression for the trapezoidal integrator’s
+output:
+y[n] = y[n0 −1] +
+n
+X
+ν=n0
+x[ν −1] + x[ν]
+2
+(3.2)
+Suppose y[n0−1] = 0 and x[n0−1]=0, corresponding to a zero initial state (recall
+that both y[n0 −1] and x[n0 −1] are technically stored in the z−1 elements).
+Then
+y[n] =
+n
+X
+ν=n0
+x[ν −1] + x[ν]
+2
+= 1
+2
+ 
+n
+X
+ν=n0
+x[ν −1] +
+n
+X
+ν=n0
+x[ν]
+!
+=
+= 1
+2
+ 
+n
+X
+ν=n0+1
+x[ν −1] +
+n
+X
+ν=n0
+x[ν]
+!
+= 1
+2
+ n−1
+X
+ν=n0
+x[ν] +
+n
+X
+ν=n0
+x[ν]
+!
+=
+= u[n −1] + u[n]
+2
+where
+u[n] =
+n
+X
+ν=n0
+x[ν]
+Now notice that u[n] is the output of a naive integrator, whose input signal
+is x[n]. At the same time y[n] is the average of the previous and the current
+output values of the naive integrator. This can be implemented by the structure
+in Fig. 3.9. Similar considerations apply for nonzero initial state. We’ll refer to
+the integrator in Fig. 3.9 as a direct form II or canonical trapezoidal integrator.
+The reason for this term will be explained later.
+We can develop yet another form of the bilinear integrator with a single state
+variable. Let’s rewrite (3.2) as
+y[n] = y[n0 −1] + x[n0 −1]
+2
++
+n−1
+X
+ν=n0
+x[ν] + x[n]
+2
+and let
+u[n −1] = y[n] −x[n]
+2
+= y[n0 −1] + x[n0 −1]
+2
++
+n−1
+X
+ν=n0
+x[ν]
+
+
+--- Page 67 ---
+
+3.6. TRAPEZOIDAL INTEGRATION
+55
++
+ '!&"%#$
+/
+•/
++
+ '!&"%#$
+/
+z−1
+
+•
+O
+O
+MMMq
+q
+q/
+/
+x[n]
+y[n]
+1/2
+Figure 3.9: Direct form II (canonical) trapezoidal integrator (T =
+1).
+Notice that
+y[n] = u[n −1] + x[n]
+2
+(3.3a)
+and
+u[n] = u[n −1] + x[n] = y[n] + x[n]
+2
+(3.3b)
+Expressing (3.3a) and (3.3b) in a graphical form, we obtain the structure in
+Fig. 3.10. We’ll refer to the integrator in Fig. 3.10 as a transposed direct form
+II or transposed canonical trapezoidal integrator. The reason for this term will
+be explained later.
+MMMq
+q
+q/
+•/
++
+ '!&"%#$
+/
+•/
+/
++
+ '!&"%#$
+/
+z−1
+O
+O
+o
+x[n]
+y[n]
+1/2
+u[n−1]
+u[n]
+Figure 3.10:
+Transposed direct form II (transposed canonical)
+trapezoidal integrator (T = 1).
+The positioning of the 1/2 gain prior to the integrator in Fig. 3.10 is quite
+convenient, because we can combine the 1/2 gain with the cutoﬀgain into a
+single gain element.
+In case of an arbitrary sampling period we could also
+include the T factor into the same gain element, thus obtaining the structure in
+Fig. 3.11. A similar trick can be performed for the other two integrators, if we
+move the 1/2 gain element to the input of the respective integrator. Since the
+integrator is a linear time-invariant system, this doesn’t aﬀect the integrator’s
+behavior in a slightest way.
+Typically one would prefer the direct form II integrators to the direct form I
+integrator, because the former have only one state variable. In this book we will
+mostly use the transposed direct form II integrator, because this is resulting in
+slightly simpler zero-delay feedback equations and also oﬀers a nice possibility
+for the internal saturation in the integrator.
+
+
+--- Page 68 ---
+
+56
+CHAPTER 3. TIME-DISCRETIZATION
+MMMq
+q
+q/
+•/
++
+ '!&"%#$
+/
+•/
+/
++
+ '!&"%#$
+/
+z−1
+O
+O
+o
+x[n]
+y[n]
+ωcT/2
+u[n−1]
+u[n]
+Figure 3.11:
+Transposed direct form II (transposed canonical)
+trapezoidal integrator with “embedded” cutoﬀgain.
+The transfer functions of all three integrators are identical.
+Let’s obtain
+e.g. the transfer function of the transposed canonical integrator (in Fig. 3.10).
+Assuming signals of the exponential form zn, we can drop the index [n], under-
+standing it implicity, while the index [n−1] will be replaced by the multiplication
+by z−1. Then (3.3) turn into
+y = uz−1 + x
+2
+u = y + x
+2
+Substituting the second equation into the ﬁrst one we have
+y =
+
+y + x
+2
+
+z−1 + x
+2
+yz = y + x
+2 + x
+2 z
+y(z −1) = x
+2 (z + 1)
+and the transfer function of the trapezoidal integrator is thus
+H(z) = y
+x = 1
+2 · z + 1
+z −1
+For an arbitrary T one has to multiply the result by T, to take the respective
+gain element into account:
+H(z) = T
+2 · z + 1
+z −1
+If also the cutoﬀgain is included, we obtain
+H(z) = ωcT
+2
+· z + 1
+z −1
+One can obtain the same results for the other two integrators.
+What is so special about this transfer function, that makes the trapezoidal
+integrator so superior to the naive one, is to be discussed next.
+
+
+--- Page 69 ---
+
+3.7. BILINEAR TRANSFORM
+57
+3.7
+Bilinear transform
+Suppose we take an arbitrary continuous-time block diagram, like the familiar
+lowpass ﬁlter in Fig. 2.2 and replace all continuous-time integrators by discrete-
+time trapezoidal integrators. On the transfer function level, this will correspond
+to replacing all s−1 with T
+2 · z+1
+z−1. That is, technically we perform a substitution
+s−1 = T
+2 · z + 1
+z −1
+in the transfer function expression.
+It would be more convenient to write this substitution explicitly as
+s = 2
+T · z −1
+z + 1
+(3.4)
+The substitution (3.4) is referred to as the bilinear transform, or shortly BLT.
+For that reason we can also refer to trapezoidal integrators as BLT integrators.
+Let’s ﬁgure out, how does the bilinear transform aﬀect the frequency response
+of the ﬁlter, that is, what is the relationship between the original continuous-
+time frequency response prior to the substitution and the resulting discrete-time
+frequency response after the substitution.
+Let Ha(s) be the original continuous-time transfer function. Then the re-
+spective discrete-time transfer function is
+Hd(z) = Ha
+ 2
+T · z −1
+z + 1
+
+(3.5)
+Respectively, the discrete-time frequency response is
+Hd(ejωT ) = Ha
+ 2
+T · ejωT −1
+ejωT + 1
+
+= Ha
+ 2
+T · ejωT/2 −e−jωT/2
+ejωT/2 + e−jωT/2
+
+=
+= Ha
+ 2
+T j tan ωT
+2
+
+Notice that Ha(s) in the last expression is evaluated on the imaginary axis!!!
+That is, the bilinear transform maps the imaginary axis in the s-plane to the
+unit circle in the z-plane! Now, Ha
+  2
+T j tan ωT
+2
+
+is the analog frequency response
+evaluated at 2
+T tan ωT
+2 . That is, the digital frequency response at ω is equal to
+the analog frequency response at
+2
+T tan ωT
+2 . This means that the analog fre-
+quency response in the range 0 ≤ω < +∞is mapped into the digital frequency
+range 0 ≤ωT < π (0 ≤ω < πfs), that is from zero to Nyquist!11 Denoting
+the analog frequency as ωa and the digital frequency as ωd we can express the
+argument mapping of the frequency response function as
+ωa = 2
+T tan ωdT
+2
+(3.6)
+or, in a more symmetrical way
+ωaT
+2
+= tan ωdT
+2
+(3.7)
+11A similar mapping obviously occurs for the negative frequencies.
+
+
+--- Page 70 ---
+
+58
+CHAPTER 3. TIME-DISCRETIZATION
+Notice that for frequencies much smaller that Nyquist frequency we have ωT ≪
+1 and respectively ωa ≈ωd.
+This is what is so unique about the bilinear transform. It simply warps the
+frequency range [0, +∞) into the zero-to-Nyquist range, but otherwise doesn’t
+change the frequency response at all! Considering in comparison a naive inte-
+grator, we would have obtained:
+s−1 =
+z
+z −1
+s = z −1
+z
+(3.8)
+Hd(z) = Ha
+z −1
+z
+
+Hd(ejω) = Ha
+ejω −1
+ejω
+
+= Ha
+ 1 −e−jω
+which means that the digital frequency response is equal to the analog transfer
+function evaluated on a circle of radius 1 centered at s = 1. This hardly deﬁnes
+a clear relationship between the two frequency responses.
+So, by simply replacing the analog integrators with digital trapezoidal in-
+tegrators, we obtain a digital ﬁlter whose frequency response is essentially the
+same as the one of the analog prototype, except for the frequency warping.
+Particularly, the relationship between the amplitude and phase responses of the
+ﬁlter is fully preserved, which is particularly highly important if the ﬁlter is to
+be used as a building block in a larger ﬁlter. Very close to perfect!
+Furthermore, the bilinear transform maps the left complex semiplane in the
+s-domain into the inner region of the unit circle in the z-domain. Indeed, let’s
+obtain the inverse bilinear transform formula. From (3.4) we have
+(z + 1)sT
+2 = z −1
+from where
+1 + sT
+2 = z
+
+1 −sT
+2
+
+and
+z = 1 + sT
+2
+1 −sT
+2
+(3.9)
+The equation (3.9) deﬁnes the inverse bilinear transform. Now, if Re s < 0,
+then, obviously
+1 + sT
+2
+ <
+1 −sT
+2
+
+and |z| < 1. Thus, the left complex semiplane in the s-plane is mapped to the
+inner region of the unit circle in the z-plane. In the same way one can show
+that the right complex semiplane is mapped to the outer region of the unit
+circle. And the imaginary axis is mapped to the unit circle itself. Comparing
+the stability criterion of analog ﬁlters (the poles must be in the left complex
+semiplane) to the one of digital ﬁlters (the poles must be inside the unit circle),
+
+
+--- Page 71 ---
+
+3.8. CUTOFF PREWARPING
+59
+we conclude that the bilinear transform exactly preserves the stability of the
+ﬁlters!
+In comparison, for a naive integrator replacement we would have the follow-
+ing. Inverting the (3.8) substitution we obtain
+sz = z −1
+z(1 −s) = 1
+and
+z =
+1
+1 −s
+Assuming Re s < 0 and considering that in this case
+z −1
+2
+ =
+
+1
+1 −s −1
+2
+ =
+
+1 −1
+2 + s
+2
+1 −s
+ =
+
+1
+2 · 1 + s
+1 −s
+ < 1
+2
+we conclude that the left semiplane is mapped into a circle of radius 0.5 cen-
+tered at z = 0.5. So the naive integrator overpreserves the stability, which is
+not nice, since we would rather have digital ﬁlters behaving as closely to their
+analog prototypes as possible. Considering that this comes in a package with a
+poor frequency response transformation, we should rather stick with trapezoidal
+integrators.
+So, let’s replace e.g. the integrator in the familiar lowpass ﬁlter structure in
+Fig. 2.2 with a trapezoidal integrator. Performing the integrator replacement,
+we obtain the structure in Fig. 3.12.12 We will refer to the trapezoidal integrator
+replacement method as the topology-preserving transform (TPT) method. This
+term will be explained and properly introduced later. For now, before we simply
+attempt to implement the structure in Fig. 3.12 in code, we should become aware
+of a few further issues.
+3.8
+Cutoff prewarping
+Suppose we are using the lowpass ﬁlter structure in Fig. 3.12 and we wish to have
+its cutoﬀat ωc. If we however simply put this ωc parameter into the respective
+integrator gain element ωcT/2, the frequency response itself and, speciﬁcally, its
+value at the cutoﬀwill be diﬀerent from the expected one. Fig. 3.13 illustrates.
+The −3dB level is speciﬁcally highlighted in Fig. 3.13, since this is the amplitude
+response value of the 1-pole lowpass ﬁlter at the cutoﬀ, thereby aiding the visual
+identiﬁcation of the cutoﬀpoint on the response curves.13
+Apparently, the diﬀerence between analog and digital response is occuring
+due to the warping of the frequency axis (3.6). We would like to estimate the
+12Note that thereby, should we become interested in the amplitude and phase responses of
+Fig. 3.12, we don’t have to derive the discrete-time transfer function of Fig. 3.12. Instead we
+can simply take the amplitude and phase responses of the analog 1-pole (which are simpler
+to compute) and apply the mapping (3.7). This is the reason that we almost exclusively deal
+with analog transfer functions in this book, we simply don’t need digital ones most of the
+time.
+13Apparently, the picture in Fig. 3.13 will be the same at any other sampling rate, except
+that the frequency axis values will need to be relabelled proportionally to the sampling rate
+change. E.g. at 88.2kHz the labels would be 4, 8, 16, 22.05, 32 and 44.1kHz respectively. We
+could have labelled the axis in terms of normalized ω instead, but giving the absolute values
+is more illustrative. Particularly, the audible frequency range is easier to see.
+
+
+--- Page 72 ---
+
+60
+CHAPTER 3. TIME-DISCRETIZATION
++
+ '!&"%#$
+/
+MMMq
+q
+q/
+•/
++
+ '!&"%#$
+/
+•/
++
+ '!&"%#$
+/
+z−1
+O
+O
+o
+•/
+−
+O
+/
+_
+_
+_
+_
+_
+_
+_
+_
+_
+_
+_
+_
+_
+_
+_
+
+
+
+
+
+
+
+
+
+
+
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+
+
+
+
+
+
+
+
+
+
+x[n]
+y[n]
+ωcT/2
+Figure 3.12: 1-pole TPT lowpass ﬁlter (the dashed line denotes the
+trapezoidal integrator).
+f, kHz
+|H(ejω)|, dB
+22.05
+16
+11.025
+8
+4
+2
+0
+-3
+-6
+-9
+Figure 3.13:
+Amplitude response of an unprewarped bilinear-
+transformed 1-pole lowpass ﬁlter for a number of diﬀerent cutoﬀs.
+Dashed curves represent the respective analog ﬁlter responses for
+the same cutoﬀs. Sampling rate 44.1kHz.
+frequency error introduced by the warping. To simplify the further discussion
+let’s rewrite (3.6) as a mapping function µ(ω):
+ωa = µ(ωd) = 2
+T tan ωdT
+2
+(3.10)
+Now, given some desired analog response, we could take some point ωa on
+this response and ask ourselves, where is the same point located on the digital
+response. According to (3.10), it is located at µ−1(ωa) (where µ−1 is the function
+inverse of µ). Thus the ratio of the actual and desired frequencies is µ−1(ωa)/ωa,
+or, in the octave scale:
+∆P = log2
+µ−1(ωa)
+ωa
+The solid curve in Fig. 3.14 illustrates (note that Fig. 3.14 labels the ∆P axis
+
+
+--- Page 73 ---
+
+3.8. CUTOFF PREWARPING
+61
+in semitones).
+fa, kHz
+∆P, st
+22.05
+16
+11.025
+8
+4
+2
+0
+−4
+−8
+−12
+Figure 3.14: Bilinear transform’s detuning of analog frequencies
+plotted against analog frequency (solid curve) or digital frequency
+(dashed curve). Sampling rate 44.1kHz.
+We could also express the detuning of analog frequencies in terms of the
+corresponding digital frequency. Given the digital frequency response, we take
+some point ωd and ask ourselves, where is the same point located on the analog
+response. According to (3.10), it is located at µ(ωd) and thus the frequency
+ratio is ωd/µ(ωd), respectively
+∆P = log2
+ωd
+µ(ωd)
+The dashed curve in Fig. 3.14 illustrates. Note that we are not talking about how
+much the speciﬁed digital frequency will be detuned (because digital frequencies
+are not getting detuned, they are already where they are), it’s still about how
+much the corresponding analog frequency will be detuned.
+Thus, given an analog ﬁlter with a frequency response Ha(jω), its digital
+counterpart will have its frequencies detuned as shown in Fig. 3.14. Particularly,
+the cutoﬀpoint, instead of being at the speciﬁed frequency ω = ωc, will be at
+ωd = µ−1(ωc)
+(3.11)
+In principle, one could argue that the frequency response change in Fig. 3.13
+is not that drastic and could be tolerated, especially since the deviation occurs
+mostly in the high frequency range, which is not the most audible part of the
+frequency spectrum. This might have been the case with the 1-pole lowpass
+ﬁlter, however for other ﬁlters with more complicated amplitude responses it
+won’t be as acceptable. Fig. 3.15 illustrates the frequency error for a 2-pole
+resonating lowpass ﬁlter. The resonance peaks (which occur close to the ﬁlter’s
+cutoﬀ) are very audible and so would be their detuning, which according to
+Fig. 3.14 is in the range of semitones. Particularly, at 16kHz the dashed curve
+in Fig. 3.14 shows a detuning of ca. 1 octave, meaning that we would have a
+resonance at this point when it should have been occurring at ca. 32kHz.
+
+
+--- Page 74 ---
+
+62
+CHAPTER 3. TIME-DISCRETIZATION
+f, kHz
+|H(ejω)|, dB
+22.05
+16
+11.025
+8
+4
+2
+0
++6
+-6
++12
+Figure 3.15:
+Amplitude response of an unprewarped bilinear-
+transformed resonating 2-pole lowpass ﬁlter for a number of dif-
+ferent cutoﬀs. Dashed curves represent the respective analog ﬁlter
+responses for the same cutoﬀs. Sampling rate 44.1kHz.
+Prewarping at cutoff
+As a general rule (to which there are exceptions), we would like the cutoﬀpoint
+of the ﬁlter to be positioned exactly at the speciﬁed cutoﬀfrequency ωc. In this
+regard we could notice that if we used a diﬀerent cutoﬀvalue
+˜ωc = µ(ωc)
+(3.12)
+then (3.11) would give
+ωd = µ−1(˜ωc) = µ−1(µ(ωc)) = ωc
+and the cutoﬀpoint would be exactly where we wanted it to be. Fig. 3.16 illus-
+trates. The cutoﬀcorrection (3.12) is a standard technique used in combination
+with the bilinear transform. It is referred to as cutoff prewarping.
+Technically, cutoﬀprewarping means that we use ˜ωc instead of ωc in the
+gains of the ﬁlter’s integrators. However, the integrator gains are not exactly
+ωc but rather ωcT/2. From (3.12) and (3.10) we have
+˜ωcT
+2
+= 2
+T tan ωcT
+2
+· T
+2 = tan ωcT
+2
+(3.13)
+Thus, we can directly apply (3.13) to compute the prewarped gains ˜ωcT/2. Note
+that (3.13) is essentially identical to (3.7).
+The cutoﬀprewarping redistributes the frequency error shown in Fig. 3.14.
+In the absence of prewarping the error was zero at ω = 0 and monotonically
+growing as ω increases. With the cutoﬀprewarping the error is zero at ω = ωc
+instead and grows further away from this point.
+Indeed, let H(jω) be unit-cutoﬀanalog response of the ﬁlter in question.
+And let’s pick up an analog frequency ωa and ﬁnd the respective detuning. The
+correct frequency response at ωa is
+Ha(ωa) = H(jωa/ωc)
+(3.14a)
+
+
+--- Page 75 ---
+
+3.8. CUTOFF PREWARPING
+63
+f kHz
+|H(ejω)|, dB
+22.05
+16
+11.025
+8
+4
+2
+0
+-3
+-6
+-9
+Figure 3.16:
+Amplitude response of a prewarped bilinear-
+transformed 1-pole lowpass ﬁlter for a number of diﬀerent cutoﬀs.
+Dashed curves represent the respective analog ﬁlter responses for
+the same cutoﬀs. Sampling rate 44.1kHz.
+On the other hand, given the prewarped cutoﬀ˜ωc = µ(ωc), the digital frequency
+response at some frequency ωd is
+Hd(ejωd) = H(jµ(ωd)/˜ωc) = H(jµ(ωd)/µ(ωc))
+(3.14b)
+We want to ﬁnd such ωd that the arguments of H(jω) in (3.14a) and (3.14b)
+are identical:
+µ(ωd)
+µ(ωc) = ωa
+ωc
+(3.15)
+From where
+ωd = µ−1
+
+ωa
+µ(ωc)
+ωc
+
+The solid curves in Fig. 3.17 illustrate the respective detuning ωa/ωd (in semi-
+tones) of analog frequencies.
+Alternatively from (3.15) we could express ωa as a function of ωd:
+ωa =
+ωc
+µ(ωc)µ(ωd)
+thus expressing the analog frequency detuning ωa/ωd as a function of ωd. The
+dashed curves in Fig. 3.17 illustrate.
+Apparently, the maximum error to the left of ω = ωc is attained at ω = 0.
+Letting ωa →0 and, equivalently, ωd →0 we have µ(ωd) ∼ωd and (3.15) turns
+into
+ωd
+µ(ωc) ∼ωa
+ωc
+or
+ωd
+ωa
+∼µ(ωc)
+ωc
+and thus the detuning at ω = 0 is
+∆P
+
+ω=0
+= log2
+µ(ωc)
+ωc
+(3.16)
+
+
+--- Page 76 ---
+
+64
+CHAPTER 3. TIME-DISCRETIZATION
+fa, kHz
+∆P, st
+22.05
+16
+11.025
+8
+4
+2
++12
++8
++4
+0
+−4
+−8
+−12
+Figure 3.17: Prewarped bilinear transform’s detuning of analog fre-
+quencies plotted against analog frequency (solid curves) or digital
+frequency (dashed curves).
+Diﬀerent curves correspond to pre-
+warping at diﬀerent cutoﬀfrequencies. Sampling rate 44.1kHz.
+Other prewarping points
+We have just developed the prewarping technique from the condition that the
+cutoﬀpoint must be preserved by the mapping (3.6). However instead we could
+have required any other point ωp to be preserved.
+Given the cutoﬀωc, the analog response at ωp is
+Ha(ωp) = H(jωp/ωc)
+(3.17a)
+On the other hand, given the prewarped cutoﬀ˜ωc (we want to prewarp at
+a diﬀerent point now, therefore we don’t know yet, what is the relationship
+between ωc and ˜ωc) the digital frequency response at ωp is
+Hd(ejωp) = H(jµ(ωp)/˜ωc)
+(3.17b)
+We want to ﬁnd such ˜ωc that the arguments of H(jω) in (3.17a) and (3.17b)
+are identical:
+ωp
+ωc
+= µ(ωp)
+˜ωc
+and
+˜ωc = µ(ωp)
+ωp
+ωc
+(3.18)
+
+
+--- Page 77 ---
+
+3.8. CUTOFF PREWARPING
+65
+Equation (3.18) is the generalized prewarping formula, where ωp is the frequency
+response point of zero detuning. We will refer to ωp as the prewarping point.
+According to (3.18) prewarping at ωp simply means that the cutoﬀshould
+be multiplied by µ(ωp)/ωp. At ωp = ωc this multiplication reduces to (3.12).
+In order to ﬁnd the detuning at other frequencies, notice that equations
+(3.14) turn into
+Ha(ωa) = H(jωa/ωc)
+Hd(ejωd) = H(jµ(ωd)/˜ωc) = H
+
+j ωpµ(ωd)
+ωcµ(ωp)
+
+from where, equating the arguments of H(jω):
+ωpµ(ωd)
+ωcµ(ωp) = ωa
+ωc
+we have
+µ(ωd)
+µ(ωp) = ωa
+ωp
+(3.19)
+Equation (3.19) is identical to (3.15) except that it has ωp in place of ωc. Thus we
+could reuse the results of the previous analysis of the analog frequency detuning.
+In particular Fig. 3.17 fully applies, diﬀerent curves corresponding to diﬀerent
+prewarping points. At the same time, (3.16) simply turns to
+∆P
+
+ω=0
+= log2
+µ(ωp)
+ωp
+(3.20)
+Bounded cutoff prewarping
+Even though cutoﬀprewarping is an absolutely standard technique and is often
+used without any second thought, the need for a diﬀerent choice of the prewarp-
+ing point is actually not as exotic as it might seem. Consider e.g. the amplitude
+response of a 1-pole highpass ﬁlter prewarped by (3.12), shown in Fig. 3.18.
+One can notice a huge discrepancy between analog and digital amplitude re-
+sponses occurring well into the audible frequency range [0, 16kHz]. The error is
+getting particularly bad at cutoﬀs above 16kHz. In comparison, the responses
+of unprewarped ﬁlters in Fig. 3.19 even look kind of better, especially if only the
+audible frequency range is considered. This would be even more so, if higher
+sampling rates are involved, where the audible range error in Fig. 3.19 would
+become smaller, while the same error in Fig. 3.18 can still get as large, given a
+suﬃciently high cutoﬀvalue.
+Apparently, the large error within the audible range in Fig. 3.18 is due to
+the detuning error illustrated in Fig. 3.17. This error wasn’t as obvious in the
+case of the 1-pole lowpass ﬁlter, since this ﬁlter’s amplitude response is almost
+constant to the left of the cutoﬀpoint. On the other hand, highpass ﬁlter’s
+amplitude response is changing noticeably in the same area, which makes the
+detuning error is made much more promiment.
+Does this suggest that we shouldn’t use cutoﬀprewarping with highpass ﬁl-
+ters? In principle this is engineer’s decision. However consider the unprewarped
+resonating 2-pole highpass ﬁlter’s amplitude response in Fig. 3.20. As with the
+
+
+--- Page 78 ---
+
+66
+CHAPTER 3. TIME-DISCRETIZATION
+f kHz
+|H(ejω)|, dB
+22.05
+16
+11.025
+8
+4
+2
+0
+-3
+-6
+-9
+Figure 3.18:
+Amplitude response of a prewarped bilinear-
+transformed 1-pole highpass ﬁlter for a number of diﬀerent cutoﬀs.
+Dashed curves represent the respective analog ﬁlter responses for
+the same cutoﬀs. Sampling rate 44.1kHz.
+f, kHz
+|H(ejω)|, dB
+22.05
+16
+11.025
+8
+4
+2
+0
+-3
+-6
+-9
+Figure 3.19:
+Amplitude response of an unprewarped bilinear-
+transformed 1-pole highpass ﬁlter for a number of diﬀerent cutoﬀs.
+Dashed curves represent the respective analog ﬁlter responses for
+the same cutoﬀs. Sampling rate 44.1kHz.
+responating lowpass, the resonance peak detuning is quite prominent here. Also
+the diﬀerence in the response value is magniﬁed around the resonance point. All
+in all, we’d rather prewarp the cutoﬀ(Fig. 3.21) and tolerate the detuning to
+the left of ωc.
+However notice, that as the cutoﬀpeak is getting out of the audible range,
+we stop caring, where exactly it is positioned, since it can’t be heard anyway.
+So, why should we then tolerage the error in the audible range which continues
+to increase even faster? Instead, at this moment we could ﬁx the prewarping
+
+
+--- Page 79 ---
+
+3.8. CUTOFF PREWARPING
+67
+f, kHz
+|H(ejω)|, dB
+22.05
+16
+11.025
+8
+4
+2
+0
++6
+-6
++12
+Figure 3.20:
+Amplitude response of an unprewarped bilinear-
+transformed resonating 2-pole highpass ﬁlter for a number of dif-
+ferent cutoﬀs. Dashed curves represent the respective analog ﬁlter
+responses for the same cutoﬀs. Sampling rate 44.1kHz.
+f, kHz
+|H(ejω)|, dB
+22.05
+16
+11.025
+8
+4
+2
+0
++6
+-6
++12
+Figure 3.21:
+Amplitude response of a prewarped bilinear-
+transformed resonating 2-pole highpass ﬁlter for a number of dif-
+ferent cutoﬀs. Dashed curves represent the respective analog ﬁlter
+responses for the same cutoﬀs. Sampling rate 44.1kHz.
+point to the upper boundary of the audible range:
+ωp =
+(
+ωc
+if ωc ≤ωmax
+ωmax
+if ωc ≥ωmax
+or simply
+ωp = min {ωc, ωmax}
+(3.21)
+where ωmax is some point around 16kHz. At least then the detuning in the
+audible range won’t grow any further than it is at ωc = ωmax (Fig. 3.22). The
+picture gets even better at higher sampling rates (Fig. 3.23).
+
+
+--- Page 80 ---
+
+68
+CHAPTER 3. TIME-DISCRETIZATION
+f, kHz
+|H(ejω)|, dB
+22.05
+16
+11.025
+8
+4
+2
+0
++6
+-6
++12
+Figure 3.22: Eﬀect of cutoﬀprewarping bounded at 16kHz. Sam-
+pling rate 44.1kHz.
+f, kHz
+|H(ejω)|, dB
+44.1
+32
+22.05
+16
+2
+1
+0
++6
+-6
++12
+-12
+-18
+Figure 3.23: Eﬀect of cutoﬀprewarping bounded at 16kHz. Sam-
+pling rate 88.1kHz.
+Substituting (3.21) into (3.18) we obtain
+˜ωc = µ(min {ωc, ωmax})
+min {ωc, ωmax}
+ωc =
+
+
+
+µ(ωc)
+if ωc ≤ωmax
+µ(ωmax)
+ωmax
+ωc
+if ωc ≥ωmax
+(3.22)
+The mapping deﬁned by (3.22) is shown in Fig. 3.24. Note that thereby we
+become able to specify the cutoﬀs beyond Nyquist, and actually to specify arbi-
+trarily large cutoﬀs, since the new mapping curve is crossing the former vertical
+asymptote at ωc = π/2.
+
+
+--- Page 81 ---
+
+3.8. CUTOFF PREWARPING
+69
+ωmax
+µ(ωmax)
+π/2
+0
+ωc
+˜ωc
+Figure 3.24: Bounded cutoﬀprewarping. The thick dashed line
+shows the unbounded prewarping continuation. The thin oblique
+dashed line is the continuation of the straight part of the prewarp-
+ing curve. The black dot marks the breakpoint of the prewarping
+curve.
+The breakpoint at ωc = ωmax in Fig. 3.24 can be somewhat unexpected. In
+order to understand the mechanism behind its appearance suppose ωc is varying
+with time. Using (3.18) we compute the time derivative of ˜ωc:
+˙˜ωc = ωc
+d
+dt
+µ(ωp)
+ωp
++ µ(ωp)
+ωp
+˙ωc
+As ωc becomes larger than ωmax the ﬁrst term suddenly disappears and there is a
+jump in ˙˜ωc. In other words, the variation of the prewarping point makes its own
+contribution to ˙˜ωc. As soon as the variation stops, the respective contribution
+abruptly disappears.
+The frequency detunings occurring in case of (3.22) can be found directly
+from Fig. 3.17, keeping in mind that (3.22) is simply another expression of
+(3.21).
+Continuous-speed prewarping
+The breakpoint occurring in Fig. 3.24 might be undesirable if the cutoﬀis being
+modulated, since there can be a sudden change of the perceived modulation
+speed as the cutoﬀtraverses through the prewarping breakpoint. For that reason
+it might be desirable to smooth the breakpoint in one way or the other. The
+simplest approach would be to continue the curve as a tangent line after the
+
+
+--- Page 82 ---
+
+70
+CHAPTER 3. TIME-DISCRETIZATION
+breakpoint:
+˜ωc =
+(
+µ(ωc)
+if ωc ≤ωmax
+µ(ωmax) + (ωc −ωmax)µ′(ωmax)
+if ωc ≥ωmax
+(3.23)
+where
+µ′(ω) = d
+dω
+ 2
+T tan ωT
+2
+
+=
+1
+cos2 ωT
+2
+= 1 + tan2 ωT
+2
+= 1 +
+T
+2 µ(ω)
+2
+is the derivative of µ(ω). Note, however, that this will no longer keep ωmax as
+the prewarping point and the situation would be something in between (3.12)
+and (3.22).
+At ωc →∞from (3.23) we have
+˜ωc = µ(ωmax) + (ωc −ωmax)µ′(ωmax) ∼µ′(ωmax)ωc
+(3.24)
+Comparing the right-hand side of (3.24) to (3.18) we obtain the equation for
+the eﬀective prewarping point at inﬁnity:
+µ(ωp)
+ωp
+= µ′(ωmax)
+(3.25)
+In principle ωp can be found from (3.25), however we are not so much interested
+in how far oﬀwill be the prewarping point, as in the estimation of the associated
+increase in detuning. By (3.20)
+∆P
+
+ω=0
+= log2
+µ(ωp)
+ωp
+= log2 µ′(ωmax)
+(at ωc = ∞)
+which for ωmax = 16kHz at 44.1kHz sampling rate gives ca. 2.5 octaves, while
+at 88.2kHz sampling rate it gives only about 0.5 octave.
+In comparison, at
+ωc = ωmax (and respectively ωp = ωmax) we would have a smaller value
+∆P
+
+ω=0
+= log2
+µ(ωp)
+ωp
+= log2
+µ(ωmax)
+ωmax
+which for ωmax = 16kHz at 44.1kHz sampling rate gives ca. 1 octave, while at
+88.2kHz sampling rate it gives only about 2 semitones.
+We have therefore found the eﬀect of (3.23) on the detuning occurring at
+ω = 0 for ωc →∞. It would also be nice to estimate the same eﬀect at ω = ωmax.
+By (3.19)
+µ(ωd)
+ωa
+= µ(ωp)
+ωp
+which by (3.25) becomes
+µ(ωd)
+ωa
+= µ′(ωmax)
+Letting ωd = ωmax we have
+ωa = µ(ωmax)
+µ′(ωmax) =
+2
+T tan ωmaxT
+2
+cos−2
+ωmaxT
+2
+ = 1
+T sin (ωmaxT)
+
+
+--- Page 83 ---
+
+3.8. CUTOFF PREWARPING
+71
+and the detuning itself is the logarithm of the ratio
+ωa
+ωd
+=
+ωa
+ωmax
+= sin (ωmaxT)
+ωmaxT
+= sinc (ωmaxT)
+For ωmax = 16kHz at 44.1kHz sampling rate this gives ca. −1.5 octaves, while
+at 88.1kHz it gives ca. −4 semitones.
+Since (as illustrated by Fig. 3.17) the detuning is a monotonic function of
+ω, at ωc = ∞we are having the audible range detuning error in the range of
+ca. [−1.5, 2.5] octaves at 44.1kHz sampling rate and in the range of ca. [−4, 6]
+semitones at 88.2kHz sampling rate. Therefore it is more or less balanced out,
+although being a bit larger at higher frequencies.
+Apparently, more elaborate ways of smoothing the breakpoint in Fig. 3.24
+may be designed, but we won’t cover them here as the options are almost inﬁnite.
+Prewarping of systems of filters
+According to (3.18), prewarping is nothing more than a multiplication of the
+cutoﬀgains of the integrators by µ(ωp)/ωp, where ωp is the prewarping point.
+Suppose we are having a system consisting of several ﬁlters connected to-
+gether. When prewarping ﬁlters in such system, it would be a good idea to
+choose a common prewarping point for all ﬁlters. In this case we multiply their
+cutoﬀs by one and the same coeﬃcient. Thereby their amplitude and phase
+responses are shifted by one and the same amount (in the logarithmic frequency
+axis), and they all retain the frequency response relationships which existed
+between them prior to prewarping. Eﬀectively this is the same as changing the
+“common cutoﬀ” of the ﬁlter system, and the frequency response of the entire
+system is simply shifted horizontally by the same amount, fully retaining its
+shape.
+On the other hand by prewarping them independently we shift the frequency
+response of each ﬁlter diﬀerently from the others and the amplitude and phase
+relationships between those are thereby destroyed. Therefore the amplitude and
+phase response shapes of the entire system of ﬁlters are not preserved.
+As an illustration consider a parallel connection of a 1-pole lowpass and a
+1-pole highpass ﬁlter, the lowpass cutoﬀbeing ωc/2, the highpass cutoﬀbeing
+2ωc where ωc is the formal cutoﬀof the system:
+•/
+LP
+/
++
+ '!&"%#$
+HP
+/
+O
+/
+The transfer function of such system (written in the unit-cutoﬀform) is
+H(s) =
+1
+1 + 2s +
+s/2
+1 + s/2
+The result of prewarping the lowpass and the highpass separately at their respec-
+tive cutoﬀs ωc/2 and 2ω is shown in Fig. 3.25. Actually for the ωc = 11.025kHz
+and ωc = 16kHz the highpass cutoﬀ2ωc needed to be clipped prior to prewaring,
+
+
+--- Page 84 ---
+
+72
+CHAPTER 3. TIME-DISCRETIZATION
+since it is equal or exceeds Nyquist and cannot be directly prewarped by (3.12).
+Compare to Fig. 3.26 where the prewarping of both ﬁlters has been done at the
+common point ωc.
+f, kHz
+|H(ejω)|, dB
+22.05
+16
+11.025
+8
+4
+2
+0
+-6
+-12
+-18
+Figure 3.25: Separate prewarping of system components (for a
+number of diﬀerent cutoﬀs). Dashed curves represent the respec-
+tive analog ﬁlter responses for the same cutoﬀs.
+Sampling rate
+44.1kHz.
+f, kHz
+|H(ejω)|, dB
+22.05
+16
+11.025
+8
+4
+2
+0
+-6
+-12
+-18
+Figure 3.26: Common-point prewarping of system components (for
+a number of diﬀerent cutoﬀs). Dashed curves represent the respec-
+tive analog ﬁlter responses for the same cutoﬀs.
+Sampling rate
+44.1kHz.
+Other prewarping techniques
+With 1-pole lowpass and highpass ﬁlters the only available control parameter is
+the ﬁlter cutoﬀ. Thus the only option which we had for compensating the bilin-
+ear transform’s frequency detuning was correcting the cutoﬀvalue. Other ﬁlters
+
+
+--- Page 85 ---
+
+3.9. ZERO-DELAY FEEDBACK
+73
+may have more parameters available. Usually their parameters (e.g. resonance)
+will have a strong “vertical” eﬀect on the amplitude response and thus are not
+very suitable for compensating the frequency detuning. However in some cases
+there will be further options of horizonally altering the ﬁlter’s amplitude (and
+phase) responses without causing noticeable changes in the vertical direction.
+In such cases we will have further options for more detailed compensation of the
+frequency detuning.
+Note, however, that these compensations, being not expressible as cutoﬀ
+multiplication, may destroy the frequency response of a system of ﬁlters, unless
+there is some other way to make them have identical eﬀect on all of the ﬁlters
+in the system. We will discuss some examples of this later in the book.
+3.9
+Zero-delay feedback
+There is a further problem with the trapezoidal integrator replacement in the
+TPT method. Replacing the integrators with trapezoidal ones introduces delay-
+less feedback loops (that is, feedback loops not containing any delay elements)
+into the structure. E.g. consider the structure in Fig. 3.12. Carefully examining
+this structure, we ﬁnd that it has a feedback loop which doesn’t contain any
+unit delay elements. This loop goes from the leftmost summator through the
+gain, through the upper path of the integrator to the ﬁlter’s output and back
+through the large feedback path to the leftmost summator.
+Why is this delayless loop a problem? Let’s consider for example the naive
+lowpass ﬁlter structure in Fig. 3.5. Suppose we don’t have the respective pro-
+gram code representation and wish to obtain it from the block diagram. We
+could do it in the following way. Consider Fig. 3.27, which is the same as Fig. 3.5,
+except that it labels all signal points. At the beginning of the computation of
+a new sample the signals A and B are already known. A = x[n] is the current
+input sample and B is taken from the internal state memory of the z−1 element.
+Therefore we can compute C = A −B. Then we can compute D = (ωcT)C
+and ﬁnally E = D + B. The value of E is then stored into the internal memory
+of the z−1 element (for the next sample computation) and is also sent to the
+output as the new y[n] value. Easy, right?
++
+ '!&"%#$
+/
+MMMq
+q
+q/
++
+ '!&"%#$
+/
+•/
+z−1
+•
+O
+−
+O
+/
+A
+B
+C
+D
+E
+x[n]
+y[n]
+ωcT
+Figure 3.27: Naive 1-pole lowpass ﬁlter and the respective signal
+computation order.
+Now the same approach doesn’t work for the structure in Fig. 3.12. Because
+
+
+--- Page 86 ---
+
+74
+CHAPTER 3. TIME-DISCRETIZATION
+there is a delayless loop, we can’t ﬁnd a starting point for the computation
+within that loop.
+The classical way of solving this problem is exactly the same as what we had
+in the naive approach: introduce a z−1 into the delayless feedback, turning it
+into a feedback containing a unit delay (Fig. 3.28). Now there are no delayless
+feedback paths and we can arrange the computation order in a way similar to
+Fig. 3.27. This however destroys the resulting frequency response, because the
+transfer function is now diﬀerent. In fact the obtained result is not signiﬁcantly
+better (if better at all) than the one from the naive approach. There are some
+serious artifacts in the frequency response closer to the Nyquist frequency, if the
+ﬁlter cutoﬀis suﬃciently high.
++
+ '!&"%#$
+/
+MMMq
+q
+q/
+•/
++
+ '!&"%#$
+/
+•/
++
+ '!&"%#$
+/
+z−1
+O
+O
+o
+•/
+z−1 o
+−
+O
+/
+x[n]
+y[n]
+ωcT/2
+Figure 3.28: Digital 1-pole lowpass ﬁlter with a trapezoidal inte-
+grator and an extra delay in the feedback.
+Therefore we shouldn’t introduce any modiﬁcations into the structure and
+solve the zero-delay feedback problem instead. The term “zero-delay feedback”
+originates from the fact that we avoid introducing a one-sample delay into the
+feedback (like in Fig. 3.28) and instead keep the feedback delay equal to zero.
+So, let’s solve the zero-delay feedback problem for the structure in Fig. 3.12.
+Notice that this structure simply consists of a negative feedback loop around
+a trapezoidal integrator, where the trapezoidal integrator structure is exactly
+the one from Fig. 3.11. We will now introduce the concept of the instantaneous
+response of this integrator structure.
+So, consider the integrator structure in Fig. 3.11. Since there are no delayless
+loops in the integrator, it’s not diﬃcult to obtain the following expression for
+y[n]:
+y[n] = ωcT
+2 x[n] + u[n −1]
+(3.26)
+Notice that, at the time x[n] arrives at the integrator’s input, all values in
+the right-hand side of (3.26) are known (no unknown variables). Introducing
+notation
+g = ωcT
+2
+s[n] = u[n −1]
+we have
+y[n] = gx[n] + s[n]
+
+
+--- Page 87 ---
+
+3.9. ZERO-DELAY FEEDBACK
+75
+or, dropping the discrete time argument notation for simplicity,
+y = gx + s
+That is, at any given time moment n, the output of the integrator y is a linear
+function of its input x, where the values of the parameters of this linear function
+are known. The g parameter doesn’t depend on the internal state of the integra-
+tor, while the s parameter does depend on the internal state of the integrator.
+We will refer to the linear function f(x) = gx + s as the instantaneous response
+of the integrator at the respective implied time moment n. The coeﬃcient g can
+be referred to as the instantaneous response gain or simply instantaneous gain.
+The term s can be referred to as the instantaneous response offset or simply
+instantaneous offset.
+Let’s now redraw the ﬁlter structure in Fig. 3.12 as in Fig. 3.29. We have
+changed the notation from x to ξ in the gx+s expression to avoid the confusion
+with the input signal x[n] of the entire ﬁlter.
++
+ '!&"%#$
+/
+gξ + s
+/
+•/
+−
+O
+/
+x[n]
+y[n]
+Figure 3.29: 1-pole TPT lowpass ﬁlter with the integrator in the
+instantaneous response form.
+Now we can easily write and solve the zero-delay feedback equation. Indeed,
+suppose we already know the ﬁlter output y[n]. Then the output signal of the
+feedback summator is x[n]−y[n] and the output of the integrator is respectively
+g(x[n] −y[n]) + s. Thus
+y[n] = g(x[n] −y[n]) + s
+or, dropping the time argument notation for simplicity,
+y = g(x −y) + s
+(3.27)
+The equation (3.27) is the zero-delay feedback equation for the ﬁlter in Fig. 3.29
+(or, for that matter, in Fig. 3.12). Solving this equation, we obtain
+y(1 + g) = gx + s
+and respectively
+y = gx + s
+1 + g
+(3.28)
+Having found y (that is, having predicted the output y[n]), we can then proceed
+with computing the other signals in the structure in Fig. 3.12, beginning with
+the output of the leftmost summator.14
+14Notice that the choice of the signal point for the prediction is rather arbitrary. We could
+have chosen any other point within the delayless feedback loop.
+
+
+--- Page 88 ---
+
+76
+CHAPTER 3. TIME-DISCRETIZATION
+It’s worth mentioning that (3.28) can be used to obtain the instantaneous
+response of the entire ﬁlter from Fig. 3.12. Indeed, rewriting (3.28) as
+y =
+g
+1 + g x +
+s
+1 + g
+and introducing notations
+G =
+g
+1 + g
+S =
+s
+1 + g
+we have
+y = Gx + S
+(3.29)
+So, the instantaneous response of the entire lowpass ﬁlter in Fig. 3.12 is again a
+linear function of the input. We could use the expression (3.29) e.g. to solve the
+zero-delay feedback problem for some larger feedback loop containing a 1-pole
+lowpass ﬁlter.
+3.10
+Implementations
+1-pole lowpass
+We are now going to convert the structure in Fig. 3.12 into a piece of code. Let’s
+introduce helper variables into Fig. 3.12 as shown in Fig. 3.30, where we have
+used the already known to us fact that, given the integrator’s instantaneous
+response gx + s, the value of s equals the output of the z−1 element.
++
+ '!&"%#$
+/
+MMMq
+q
+q/
+•/
++
+ '!&"%#$
+/
+•/
++
+ '!&"%#$
+/
+z−1
+O
+O
+o
+•/
+−
+O
+/
+x[n]
+y[n]
+ωcT/2
+s
+u
+v
+Figure 3.30: 1-pole TPT lowpass ﬁlter with helper variables.
+We already know y from (3.29). Since g = ωcT/2, we have
+v = g(x −y) = g (x −Gx −S) = g
+
+x −
+g
+1 + g x −
+s
+1 + g
+
+=
+= g
+
+1
+1 + g x −
+s
+1 + g
+
+= g x −s
+1 + g
+(3.30)
+Now (3.30) gives a direct expression for v in terms of known signals, not using
+y. In order to avoid unnecessary computations, we can simply reobtain y using
+
+
+--- Page 89 ---
+
+3.10. IMPLEMENTATIONS
+77
+the obvious from Fig. 3.30 fact that y is just a sum of v and s:
+y = v + s
+(3.31)
+We also need the z−1 input (which we need to store in the z−1’s memory) which
+is also obtained from Fig. 3.30 in an obvious way:
+u = y + v
+(3.32)
+The equations (3.30), (3.31) and (3.32) can be directly expressed in program
+code:
+// perform one sample tick of the lowpass filter
+// G = g/(1+g)
+// the variable ’s’ contains the state of z^-1 block
+v := (x-s)*G;
+y := v + s;
+s := y + v;
+or instead expressed in a block diagram form (Fig. 3.31). Notice that the block
+diagram doesn’t contain any delayless loops anymore.
++
+ '!&"%#$
+/
+MMMq
+q
+q/
+•/
++
+ '!&"%#$
+/
+•/
+/
++
+ '!&"%#$
+/
+z−1
+O
+•O
+O
+o
+−
+O
+x[n]
+y[n]
+g/(1 + g)
+Figure 3.31: 1-pole TPT lowpass ﬁlter with resolved zero-delay
+feedback.
+1-pole multimode
+The highpass signal can be obtained from the structure in Fig. 3.31 in a trivial
+manner, since yHP = x−yLP, thereby turning Fig. 3.31 into a multimode 1-pole.
+1-pole highpass
+If we need only the highpass signal, we could do it in a smaller number of
+operations than in the multimode 1-pole. By noticing that
+yHP = x−yLP = x−(v+s) = (x−s)−v = (x−s)−
+g
+1 + g (x−s) =
+1
+1 + g (x−s)
+and that
+u = yLP + v = s + 2v = s +
+2g
+1 + g
+
+
+--- Page 90 ---
+
+78
+CHAPTER 3. TIME-DISCRETIZATION
+we can implement the highpass ﬁlter as follows:
+// perform one sample tick of the highpass filter
+// Ghp = 1/(1+g)
+// the variable ’s’ contains the state of z^-1 block
+xs := x - s;
+y := xs*Ghp;
+s := s + y*2g;
+however this way we have traded an addition/subtraction pair for one multipli-
+cation, plus instead of one cutoﬀ-dependent parameter G we need to store and
+access Ghp and 2g. Therefore this is not necessarily a performance improve-
+ment.
+1-pole allpass
+The allpass signal can be obtained from the multimode 1-pole in a trivial man-
+ner, recalling that yAP = yLP−yHP. However, if we need only the allpass signal,
+we could save a couple of operations. Noticing that
+yAP = yLP −yHP = v + s −(x −(v + s)) = (s + 2v) −(x −s)
+and that s + 2v = u is the new state of the z−1 block, we obtain
+// perform one sample tick of the allpass filter
+// 2Glp=2g/(1+g)
+// the variable ’s’ contains the state of z^-1 block
+xs := x - s;
+s := s + xs*2Glp;
+y := s - xs;
+3.11
+Direct forms
+Consider again the equation (3.5), which describes the application of the bilin-
+ear transform to convert an analog transfer function to a digital one. There is a
+classical method of digital ﬁlter design which is based directly on this transfor-
+mation, without using any integrator replacement techniques. In the author’s
+experience, for music DSP needs this method typically has a largely inferior
+quality, compared to the TPT. Nevertheless we will describe it here for com-
+pleteness and for a couple of other reasons. Firstly, it would be nice to try to
+analyse and understand the reasons for the problems of this method. Secondly,
+this method could be useful once in a while. Particularly, its deﬁciencies mostly
+disappear in the time-invariant (unmodulated or suﬃciently slowly modulated)
+case.
+Having obtained a digital transfer function from (3.5), we could observe,
+that, since the original analog transfer function was a rational function of s, the
+resulting digital transfer function will necessarily be a rational function of z.
+E.g. using the familiar 1-pole lowpass transfer function
+Ha(s) =
+ωc
+s + ωc
+
+
+--- Page 91 ---
+
+3.11. DIRECT FORMS
+79
+we obtain
+Hd(z) = Ha
+ 2
+T · z −1
+z + 1
+
+=
+ωc
+2
+T · z−1
+z+1 + ωc
+=
+=
+ωcT
+2 (z + 1)
+(z −1) + ωcT
+2 (z + 1) =
+ωcT
+2 (z + 1)
+ 1 + ωcT
+2
+
+z −
+ 1 −ωcT
+2
+
+Now, there are standard discrete-time structures allowing an implementation
+of any given nonstrictly proper rational transfer function. It is easier to use
+these structures, if the transfer function is expressed as a rational function of
+z−1 rather than the one of z. In our particular example, we can multiply the
+numerator and the denominator by z−1, obtaining
+Hd(z) =
+ωcT
+2 (1 + z−1)
+ 1 + ωcT
+2
+
+−
+ 1 −ωcT
+2
+
+z−1
+The further requirement is to have the constant term in the denominator equal
+to 1, which can be achieved by dividing everything by 1 + ωcT/2:
+Hd(z) =
+ωcT
+2
+1+ ωcT
+2 (1 + z−1)
+1 −1−ωcT
+2
+1+ ωcT
+2 z−1
+(3.33)
+Now suppose we have an arbitrary rational nonstrictly proper transfer function
+of z, expressed via z−1 and having the constant term in the denominator equal
+to 1:
+H(z) =
+N
+X
+n=0
+bnz−n
+1 −
+N
+X
+n=1
+anz−n
+(3.34)
+This transfer function can be implemented by the structure in Fig. 3.32 or by
+the structure in Fig. 3.33. One can verify (by computing the transfer functions
+of the respective structures) that they indeed implement the transfer function
+(3.34). There are also transposed versions of these structures, which the readers
+should be able to construct on their own.
+Let’s use the direct form II to implement (3.33). Apparently, we have
+N = 1
+b0 = b1 =
+ωcT
+2
+1 + ωcT
+2
+a1 = 1 −ωcT
+2
+1 + ωcT
+2
+and the direct form implementation itself is the one in Fig. 3.34 (we have merged
+the b0 and b1 coeﬃcients into a single gain element).
+In the time-invariant (unmodulated) case the performance of the direct form
+ﬁlter in Fig. 3.34 should be identical to the TPT ﬁlter in Fig. 3.12, since both
+
+
+--- Page 92 ---
+
+80
+CHAPTER 3. TIME-DISCRETIZATION
+•/
+z−1
+/
+•/
+z−1
+/
+•/
+z−1
+. . .
+/
+111
+
+
++
+ '!&"%#$
+111
+
+
++
+ '!&"%#$
+111
+
+
++
+ '!&"%#$
+111
+
+
++
+ '!&"%#$
+. . .
+o
+o
+o
+•
+o
+z−1
+/
+•/
+z−1
+/
+•/
+z−1
+. . .
+/
+111
+
+O
+O
+111
+
+O
+O
+111
+
+O
+O
+b0
+b1
+b2
+bN
+a1
+a2
+aN
+x(t)
+y(t)
+Figure 3.32: Direct form I (DF1).
++
+ '!&"%#$
+/
+•
+z−1
+/
+•/
+z−1
+/
+•/
+z−1
+. . .
+/
+•/
+111
+
+O
++
+ '!&"%#$O
+111
+
+O
++
+ '!&"%#$O
+111
+
+O
+. . .
+o
+o
+o
+111
+
+
++
+ '!&"%#$
+111
+
+
++
+ '!&"%#$
+111
+
+
++
+ '!&"%#$
+111
+
+
+. . .
+o
+o
+o
+o
+b0
+b1
+b2
+bN
+a1
+a2
+aN
+x(t)
+y(t)
+Figure 3.33: Direct form II (DF2), a.k.a. canonical form.
++
+ '!&"%#$
+/
+•/
++
+ '!&"%#$
+/
+z−1
+
+•
+111O
+O
+O
+MMMq
+q
+q/
+/
+x[n]
+y[n]
+b0
+a1
+Figure 3.34: Direct form II 1-pole lowpass ﬁlter.
+implement the same bilinear-transformed analog transfer function (2.5). When
+
+
+--- Page 93 ---
+
+3.11. DIRECT FORMS
+81
+the cutoﬀis modulated, however, the performance will be diﬀerent.
+We have already discussed in Sections 2.7 and 2.16 that diﬀerent topologies
+may have diﬀerent time-varying behavior even if they share the same transfer
+function. Apparently, the diﬀerence in behavior between Fig. 3.34 and Fig. 3.12
+is another example of that. Comparing the implementations in Figs. 3.34 and
+3.12, we notice that the structure in Fig. 3.34 contains a gain element at the
+output, the value of this gain being approximately proportional to the cutoﬀ(at
+low cutoﬀs). This will particularly produce unsmoothed jumps in the output in
+response to jumps in the cutoﬀvalue. In the structure in Fig. 3.12, on the other
+hand, the cutoﬀjumps will be smoothed by the integrator. Thus, the diﬀerence
+between the two structures is similar to the just discussed eﬀect of the cutoﬀ
+gain placement with the integrator.
+We should conclude that, other things being equal, the structure in Fig. 3.34
+is inferior to the one in Fig. 3.12 (or Fig. 3.31). In this respect consider that
+Fig. 3.12 is trying to explicitly emulate the analog integration behavior, preserv-
+ing the topology of the original analog structure, while Fig. 3.34 is concerned
+solely with implementing a correct transfer function. Since Fig. 3.34 implements
+a classical approach to the bilinear transform application for digital ﬁlter design
+(which ignores the ﬁlter topology) we’ll refer to the trapezoidal integration re-
+placement technique as the topology-preserving bilinear transform (or, shortly,
+TPBLT). Or, even shorter, we can refer to this technique as simply the topology-
+preserving transform (TPT), implicitly assuming that the bilinear transform is
+being used.15
+In principle, sometimes there are possibilities to “manually ﬁx” the struc-
+tures such as in Fig. 3.34. E.g. the time-varying performance of the latter is
+drastically improved by moving the b0 gain to the input. The problem however
+is that this kind of ﬁxing quickly gets more complicated (if being possible at
+all) with larger ﬁlter structures. On the other hand, the TPT method explicitly
+aims at emulating the time-varying behavior of the analog prototype structure,
+which aspect is completely ignored by the classical transform approach. Be-
+sides, if the structure contains nonlinearities, preserving the topology becomes
+absolutely critical, because otherwise these nonlinearites can not be placed in
+the digital model.16 Also, the direct forms suﬀer from precision loss issues, the
+problem growing bigger with the order of the system. For that reason in practice
+the direct forms of orders higher than 2 are rarely used,17 but even 2nd-order
+direct forms could already noticeably suﬀer from precision losses.
+15Apparently, naive filter design techniques also preserve the topology, but they do a rather
+poor job on the transfer functions. Classical bilinear transform approach does a good job on
+the transfer function, but doesn’t preserved the topology. The topology-preserving transform
+achieves both goals simultaneously.
+16This is related to the fact that transfer functions can be defined only for linear time-
+invariant systems. Nonlinear cases are obviously not linear, thus some critical information
+can be lost, if the conversion is done solely based on the transfer functions.
+17A higher-order transfer function is typically decomposed into a product of transfer func-
+tions of 1st- and 2nd-order rational functions (with real coefficients!). Then it can be imple-
+mented by a serial connection of the respective 1st- and 2nd-order direct form filters.
+
+
+--- Page 94 ---
+
+82
+CHAPTER 3. TIME-DISCRETIZATION
+3.12
+Transient response
+Looking at the 1-pole lowpass ﬁlter’s discrete-time transfer function (3.33) and
+noticing that ωc = −p where p is the analog pole, we could rewrite (3.33) as
+H(z) =
+−pT
+2
+1−pT
+2 (1 + z−1)
+1 −1+ pT
+2
+1−pT
+2 z−1
+Comparing this to (3.9) we notice that
+1 + pT
+2
+1 −pT
+2
+= ˜p
+where ˜p is the result of the application of the inverse bilinear transform formula
+(3.9) to p. Further noticing that
+−pT
+2
+1 −pT
+2
+= 1
+2 ·
+ 
+1 −pT
+2
+1 −pT
+2
+−1 + pT
+2
+1 −pT
+2
+!
+= 1 −˜p
+2
+(3.35)
+we rewrite H(z) as
+H(z) = 1 −˜p
+2
+· 1 + z−1
+1 −˜pz−1 = 1 −˜p
+2
+· z + 1
+z −˜p
+Thus ˜p is the pole of H(z), as we should have expected.
+On the other hand, applying trapezoidal integration to the 1-pole lowpass
+diﬀerential equation in the pole form (2.14), we have
+y[n] −y[n −1] = pT ·
+y[n] + y[n −1]
+2
+−x[n] + x[n −1]
+2
+
+from where
+
+1 −pT
+2
+
+y[n] =
+
+1 + pT
+2
+
+y[n −1] −pT
+2 · (x[n] + x[n −1])
+y[n] = 1 + pT
+2
+1 −pT
+2
+y[n −1] +
+−pT
+2
+1 −pT
+2
+· (x[n] + x[n −1]) =
+= ˜py[n −1] + (1 −˜p)x[n] + x[n −1]
+2
+where we have used (3.35).
+Now consider a complex exponential x[n] = X(z)zn. For such x[n] we have
+y[n] = ˜py[n −1] + (1 −˜p)1 + z−1
+2
+X(z)zn = ˜py[n −1] + ˜qzn
+(3.36)
+where we introduced notation
+˜q = (1 −˜p)1 + z−1
+2
+X(z)
+
+
+--- Page 95 ---
+
+3.13. INSTANTANEOUSLY UNSTABLE FEEDBACK
+83
+for conciseness. Recursively substituting (3.36) into itself at progessively de-
+creasing values of n we obtain
+y[n] = ˜py[n −1] + ˜qzn =
+= ˜p
+ ˜py[n −2] + ˜qzn−1
++ ˜qzn =
+= ˜p2y[n −2] +
+ ˜pz−1 + 1
+
+˜qzn =
+= ˜p2  ˜py[n −3] + ˜qzn−2
++
+ ˜pz−1 + 1
+
+˜qzn =
+= ˜p3y[n −3] +
+ ˜pz−12 + ˜pz−1 + 1
+
+˜qzn =
+. . .
+= ˜pny[0] +
+ ˜pz−1n−1 +
+ ˜pz−1n−2 + . . . + ˜pz−1 + 1
+
+˜qzn =
+= ˜pny[0] +
+ ˜pz−1n −1
+˜pz−1 −1
+˜qzn = ˜pny[0] + ˜pn −zn
+˜p −z ˜qz =
+= ˜pny[0] + zn −˜pn
+z −˜p (1 −˜p)z + 1
+2
+X(z) =
+= ˜pny[0] + (zn −˜pn)H(z)X(z) =
+= H(z)X(z)zn + (y[0] −H(z)X(z)) · ˜pn =
+= ys[n] + (y[0] −ys[0]) · ˜pn = ys[n] + yt[n]
+where
+ys[n] = H(z)X(z)zn
+yt[n] = (y[0] −ys[0]) · pn
+are the steady-state and transient responses respectively.
+Thus, the discrete-time 1-pole transient response is a decaying exponent ˜pn,
+provided the discrete-time system is stable and |˜p| < 1. If |˜p| > 1 the transient
+response grows inﬁnitely.
+3.13
+Instantaneously unstable feedback
+Writing the solution (3.28) for the zero-delay feedback equation (3.27) we in fact
+have slightly jumped the gun. Why? Let’s consider once again the structure in
+Fig. 3.29 and suppose g gets negative and starts growing in magnitude further
+in the negative direction.18 When g becomes equal to −1, the denominator of
+(3.28) turns into zero. Something bad must be happening at this moment.
+Instantaneous smoother
+In order to understand the meaning of this situation, let’s consider the delayless
+feedback path as if it was an analog feedback. An analog signal value can’t
+change instantaneously. It can change very quickly, but not instantaneously,
+it’s always a continuous function of time. We could imagine there is a smoother
+18Of course, such lowpass filter formally has a negative cutoff value. It is also unstable.
+However unstable circuits are very important as the linear basis for the analysis and imple-
+mentation of e.g. nonlinear self-oscillating filters.
+Therefore we wish to be able to handle
+unstable circuits as well.
+
+
+--- Page 96 ---
+
+84
+CHAPTER 3. TIME-DISCRETIZATION
+unit somewhere in the feedback path (Fig. 3.35). This smoother unit has a
+very very fast response time. We introduce the notation ¯y for the output of the
+smoother.
++
+ '!&"%#$
+/
+gξ + s
+/
+•/
+ˆσ o
+−
+O
+/
+x[n]
+y[n]
+¯y
+Figure 3.35: Digital 1-pole lowpass ﬁlter with a trapezoidal inte-
+grator in the instantaneous response form and a smoother unit ˆσ
+in the delayless feedback path.
+So, suppose we wish to compute a new output sample y[n] for the new input
+sample x[n]. At the time x[n] “arrives” at the ﬁlter’s input, the smoother still
+holds the old output value y[n −1]. Let’s freeze the discrete time at this point
+(which formally means we simply are not going to update the internal state
+of the z−1 element). At the same time we will let the continuous time t run,
+formally starting at t = 0 at the discrete time moment n.
+In this time-frozen setup we can choose arbitrary units for the continuous
+time t. The smoother equation can be written as
+sgn ˙¯y(t) = sgn
+ y(t) −¯y(t)
+
+That is, we don’t specify the details of the smoothing behavior, however the
+smoother output always changes in the direction from ¯y towards y at some (not
+necessarily constant) speed.19
+Particularly, we can simply deﬁne a constant
+speed smoother:
+˙¯y = sgn(y −¯y)
+or we could use a 1-pole lowpass ﬁlter as a smoother:
+˙¯y = y −¯y
+The initial value of the smoother is apparently ¯y(0) = y[n −1].
+Now consider that
+sgn ˙¯y(t) = sgn
+ y(t) −¯y(t)
+
+= sgn
+ g(x[n] −¯y(t)) + s −¯y(t)
+
+=
+= sgn
+ (gx[n] + s) −(1 + g)¯y(t)
+
+= sgn
+ a −(1 + g)¯y(t)
+
+where a = gx[n]+s is constant in respect to t. First, assume 1+g > 0. Further,
+suppose a−(1+g)¯y(0) > 0. Then ˙¯y(0) > 0 and then the value of the expression
+a−(1+g)¯y(t) will start decreasing until it turns to zero at some t, at which point
+the smoothing process converges. On the other hand, if a−(1+g)¯y(0) < 0, then
+˙¯y(0) < 0 and the value of the expression a−(1+g)¯y(t) will start increasing until
+it turns to zero at some t, at which point the smoothing process converges. If
+a −(1 + g)¯y(0) = 0 then the smoothing is already in a stable equilibrium state.
+19We also assume that the smoothing speed is sufficiently large to ensure that the smoothing
+process will converge at all cases where it potentially can converge (this statement should
+become clearer as we discuss more details).
+
+
+--- Page 97 ---
+
+3.13. INSTANTANEOUSLY UNSTABLE FEEDBACK
+85
+So, in case 1 + g > 0 the instantaneous feedback smoothing process always
+converges. Now assume 1 + g ≤0. Further, suppose a −(1 + g)¯y(0) > 0. Then
+˙¯y(0) > 0 and then the value of the expression a −(1 + g)¯y(t) will start further
+increasing (or stay constant if 1 + g = 0). Thus, ¯y(t) will grow indeﬁnitely.
+Respectively, if a −(1 + g)¯y(0) < 0, then ¯y(t) will decrease indeﬁnitely. This
+indeﬁnite growth/decrease will occur within the frozen discrete time. Therefore
+we can say that ¯y grows inﬁnitely in an instant. We can refer to this as to an
+instantaneously unstable zero-delay feedback loop.
+The idea of the smoother introduced in Fig. 3.35 can be used as a general
+means for analysing zero-delay feedback structures for instantaneous instability.
+We will refer to this technique as instantaneous smoother.
+1-pole lowpass as an instantaneous smoother
+The analysis of the instantaneous stability can also be done using the analog
+ﬁlter stability analysis means. Let the smoother be an analog 1-pole lowpass
+ﬁlter with a unit cutoﬀ(whose transfer function is
+1
+s+1)20 and notice that in
+that case the structure in Fig. 3.35 can be redrawn as in Fig. 3.36. This ﬁlter
+has two formal inputs x[n] and s and one output y[n].
++
+ '!&"%#$
+/
+MMMq
+q
+q/
++
+ '!&"%#$
+/
+•
+1
+s+1 o
+−
+O
+/
+
+x[n]
+y[n]
+s
+g
+Figure 3.36: An instantaneous representation of a digital 1-pole
+lowpass ﬁlter with a trapezoidal integrator and an analog lowpass
+smoother.
+We can now e.g. obtain a transfer function from the x[n] input to the y[n]
+output. Ignoring the s input signal (assuming it to be zero), for a continuous-
+time complex exponential input signal arriving at the x[n] input, which we
+denote as x[n](t), we have a respective continuous-time complex exponential
+signal at the y[n] output, which we denote as y[n](t):
+y[n](t) = g
+
+x[n](t) −
+1
+s + 1y[n](t)
+
+from where
+y[n](t) =
+g
+1 + g
+1
+s+1
+x[n](t)
+that is
+H(s) =
+g
+1 + g
+1
+s+1
+= g
+s + 1
+s + (1 + g)
+20Apparently, the variable s used in the transfer function
+1
+s+1 is a different s than the one
+used in the instantaneous response expression for the integrator. The author apologizes for
+the slight confusion.
+
+
+--- Page 98 ---
+
+86
+CHAPTER 3. TIME-DISCRETIZATION
+This transfer function has a pole at s = −(1 + g). Therefore, the structure is
+stable if 1 + g > 0 and not stable otherwise.
+The same transfer function analysis could have been done between the s
+input and the y[n] output, in which case we would have obtained
+H(s) =
+s + 1
+s + (1 + g)
+The poles of this transfer function however, are exactly the same, so it doesn’t
+matter.21
+Generalized zero-delay feedback loop
+The zero-delay feedback instantaneous response structure in Fig. 3.29 can be
+considered as a particular case of a general one, drawn in Fig. 3.37, where the
+input signal x[n] has been incorporated into the s term of the instantaneous
+response gξ +s and the negative feedback has been incorporated into the factor
+g. Indeed, Fig. 3.37 can be obtained from Fig. 3.29 via
+G = −g
+S = s + gx
+Gξ + S
+/
+•/
+/ y[n]
+Figure 3.37: General zero-delay feedback structure in the instan-
+taneous response form.
+The zero-delay feedback equation solution written for Fig. 3.37 is obviously
+y =
+S
+1 −G
+(3.37)
+From the previous discussion it should be clear that the structure becomes
+instantaneously unstable for G ≥1, that is when the total instantaneous gain
+of the feedback loop is 1 or more.
+The solution form (3.37) therefore provides a generic means to check an
+arbitrary zero-delay feedback loop for instantaneous instability. E.g. rewriting
+(3.28) (which we had written for Fig. 3.29) in the form (3.37) we obtain
+y =
+gx + s
+1 −(−g)
+where −g is the total instantaneous gain of the feedback loop (including the
+feedback inversion), and thus the structure is instantaneously unstable at −g ≥1
+(or, equivalently, g ≤−1).
+21This is a common rule: the poles of a system with multiple inputs and/or multiple outputs
+are always the same regardless of the particular input-output pair for which the transfer
+function is being considered (exceptions in singular cases, arising out of pole/zero cancellation
+are possible, though).
+
+
+--- Page 99 ---
+
+3.13. INSTANTANEOUSLY UNSTABLE FEEDBACK
+87
+It might be tempting to simply say that the instantaneously unstable zero-
+delay feedback occurs whenever the denominator of the zero-delay feedback
+equation’s solution becomes zero or negative. However, this actually depends
+on how did we arrive at the solution expression. E.g. if we multiply both the
+numerator and the denominator of (3.28) by −1, the instantaneously unstable
+case will occur for zero or positive denominator values. Therefore, we need to
+make sure that our solution is written in the form (3.37) (where we need to verify
+that G is the total instantaneous gain of the feedback loop) and only then can
+we say that zero or negative denominator values correspond to instantaneously
+unstable feedback.
+Limits of bilinear transform
+We have seen that for 1-poles the continuous- and discrete-time transient re-
+sponses are
+yt(t) = (y(0) −ys(0)) · ept
+yt[n] = (y[0] −ys[0]) · ˜pn
+where the the discrete-time pole ˜p is obtained from continuous-time pole p via
+inverse bilinear transform (3.9).
+In order to compare the transient responses we could compare the growth
+of y over one sampling period T:
+yt(t) = yt(t −T) · epT
+yt[n] = yt[n −1] · ˜pn
+The comparison of epT vs. ˜p is done in Fig. 3.38.
+One can notice that as
+p →2/T −0 the value of ˜p grows too quickly (compared to epT ), approaching
+inﬁnity. This means that discrete-time transient response is growing inﬁnitely
+fast at p = 2/T, or, respectively as pT/2 = 1.
+At p > 2/T the value of ˜p
+is getting completely diﬀerent from epT , particulary the sign of y[n] begins to
+alternate between successive samples.
+Now recall that in the 1-pole zero-delay feedback equation (3.28) we had
+g = ωcT/2 = −pT/2. Thus, as g = −pT/2 →−1+0 the discrete-time transient
+response is becoming inﬁnitely fast.
+Close to this point and further beyond
+it, trapezoidal integration doesn’t deliver a reasonable approximation to the
+continuous-time case anymore.
+If we attempt to interpret the same in terms of bilinear transform, then we
+already know (Fig. 3.38) that the inverse bilinear transform (3.9) is becoming
+inﬁnitely large at s = 2/T, that is the inverse bilinear transform formula has a
+pole at s = 2/T. This means that, if we are having a continuous-time system
+with a pole at s ≈−2/T (which in case of the 1-pole lowpass corresponds to
+g = ωcT/2 ≈−1), then after the bilinear transform the system will have a pole
+at z ≈∞, and the transformation result doesn’t work really well.
+Avoiding instantaneously unstable feedback
+Alright, so we have found out that zero-delay feedback structures are instan-
+taneously unstable when the total instantaneous gain of the feedback loop is
+greater than or equal to 1, but what can we do about it? Firstly, the problem
+
+
+--- Page 100 ---
+
+88
+CHAPTER 3. TIME-DISCRETIZATION
+p
+2/T
+1
+-1
+0
+Figure 3.38: e−pT (solid) vs. ˜p = (1 + pT/2)/(1 −pT/2) (thick
+dashed) as functions of p. The two thin dashed lines are asymptotes
+of (1 + pT/2)/(1 −pT/2).
+typically doesn’t occur. Mostly, in (3.37) we have G < 0, e.g. in the 1-pole
+lowpass case we have G = −g < 0 for positive cutoﬀvalues. Even if G is or
+can become positive, the situation G ≥1 occurs at really excessive parameter
+settings. Therefore one can consider, whether these extreme parameter settings
+are so necessary to support, and possibly simply clip the ﬁlter parameters in
+such a way that the instantaneous instability doesn’t occur.
+Secondly, let’s notice that g = ωcT/2. Therefore another solution could be to
+increase the sampling rate, which reduces the sampling period T and respectively
+the value of g (from an alternative point of view, it shifts the inverse bilinear
+transform’s pole 2/T further away from the origin).
+Unstable bilinear transform
+There is yet another idea, which is not widely used, but we are going to discuss
+it anyway.22 So, the instantaneous instability is occurring at the moment when
+one of the analog ﬁlter’s poles hits the pole of the inverse bilinear transform (3.9),
+which is located at s = 2/T. On the other hand, recall that the bilinear trans-
+form is mapping the imaginary axis to the unit circle, thus kind-of preserving
+the frequency response. If the system is not stable, then the frequency response
+doesn’t make sense. Formally, the reason for this is that the inverse Laplace
+22This idea has occurred to the author during the writing of the first revision of this book.
+The author didn’t try it in practice yet, neither is he aware of other attempts.
+Sufficient theoretical analysis is not possible here due to the fact that practical applications
+of instantaneously unstable (or any unstable, for that matter) filters occur typically for non-
+linear filters, and there are not many theoretical analysis means for the latter. Hopefully there
+are no mistakes in the theoretical transformations, but even if there are mistakes, at least the
+idea itself could maybe work.
+
+
+--- Page 101 ---
+
+3.13. INSTANTANEOUSLY UNSTABLE FEEDBACK
+89
+transform of transfer functions only converges for σ > max {Re pn} where pn
+are the poles of the transfer function, and respectively, if max {Re pn} ≥0, it
+doesn’t converge on the imaginary axis (σ = 0). However, instead of the imag-
+inary axis Re s = σ = 0, let’s choose some other axis Re s = σ > max {Re pn}
+and use it instead of the imaginary axis to compute the “frequency response”.
+We also need to ﬁnd a discrete-time counterpart for Re s = σ. Considering
+that Re s deﬁnes the magnitude growth speed of the exponentials est we could
+choose a z-plane circle, on which the magnitude growth speed of zn is the same
+as for eσt. Apparently, this circle is |z| = eσT . So, we need to map Re s = σ
+to |z| = eσT . Considering the bilinear transform equation (3.4), we divide z by
+eσT to make sure ze−σT has a unit magnitude and shift the s-plane result by σ:
+s = σ + 2
+T · ze−σT −1
+ze−σT + 1
+(3.38)
+We can refer to (3.38) as the unstable bilinear transform, where the word “un-
+stable” refers not to the instability of the transform itself, but rather to the
+fact that it is designed to be applied to unstable ﬁlters.23 Notice that at σ = 0
+the unstable bilinear transform turns into an ordinary bilinear transform. The
+inverse transform is obtained by
+(s −σ)T
+2
+(ze−σT + 1) = ze−σT −1
+from where
+ze−σT
+
+1 −(s −σ)T
+2
+
+= 1 + (s −σ)T
+2
+and
+z = eσT 1 + (s−σ)T
+2
+1 −(s−σ)T
+2
+(3.39)
+Apparently the inverse unstable bilinear transform (3.39) has a pole at s = σ+ 2
+T .
+In order to avoid hitting that pole by the poles of the ﬁlter’s transfer function
+(or maybe even generally avoid the real parts of the poles to go past that value)
+we could e.g. simply let
+σ = max {0, Re pn}
+or we could position σ midways:
+σ = max
+
+0, Re pn −1
+T
+
+In order to construct an integrator deﬁned by (3.38) we ﬁrst need to obtain
+the expression for 1/s from (3.38):
+1
+s =
+1
+σ + 2
+T · ze−σT −1
+ze−σT +1
+= T
+ze−σT + 1
+σT(ze−σT + 1) + 2(ze−σT −1) =
+= T
+ze−σT + 1
+(σT + 2)e−σT z + (σT −2) = T
+1 + eσT z−1
+(σT + 2) −(2 −σT)eσT z−1 =
+23Apparently, the unstable bilinear transform defines the same relationship between Im s
+and arg z as the ordinary bilinear transform. Therefore prewarping can be done in the same
+way as for the ordinary bilinear transform.
+
+
+--- Page 102 ---
+
+90
+CHAPTER 3. TIME-DISCRETIZATION
+=
+T
+2 + σT ·
+1 + eσT z−1
+1 −2−σT
+2+σT eσT z−1
+That is
+1
+s =
+T
+2 + σT ·
+1 + eσT z−1
+1 −2−σT
+2+σT eσT z−1
+(3.40)
+A discrete-time structure implementing (3.40) could be e.g. the one in Fig. 3.39.
+Yet another approach could be to convert the right-hand side of (3.40) to the
+analog domain by the inverse bilinear transform, construct an analog implemen-
+tation of the resulting transfer function and apply the trapezoidal integrator
+replacement to convert back to the digital domain. It is questionable, whether
+this produces better (or even diﬀerent) results than Fig. 3.39.
+MMMq
+q
+q/
+•/
++
+ '!&"%#$
+/
+•/
+/
+111
+
+
++
+ '!&"%#$o
+111O
+z−1
+O
+O
+/
+x[n]
+y[n]
+T
+2+σT
+2−σT
+2+σT
+eσT
+Figure 3.39: Transposed direct form II-style “unstable” trapezoidal
+integrator.
+3.14
+Other replacement techniques
+The trapezoidal integrator replacement technique can be seen as a particular
+case of a more general set of replacement techniques. Suppose we have two
+ﬁlters, whose frequency response functions are F1(ω) and F2(ω) respectively.
+The ﬁlters do not need to have the same nature, particularly one can be an
+analog ﬁlter while the other can be a digital one. Suppose further, there is a
+frequency axis mapping function ω′ = µ(ω) such that
+F2(ω) = F1(µ(ω))
+Typically µ(ω) should map the entire domain of F2(ω) onto the entire domain
+of F1(ω) (however the exceptions are possible).
+To make the subsequent discussion more intuitive, we will assume that µ(ω)
+is monotone, although this is absolutely not a must.24 In this case we could say
+24Strictly speaking, we don’t even care whether µ(ω) is single-valued. We could have instead
+required that
+F2(µ2(ω)) = F1(µ1(ω))
+for some µ1(ω) and µ2(ω).
+
+
+--- Page 103 ---
+
+3.14. OTHER REPLACEMENT TECHNIQUES
+91
+that F2(ω) is obtained from F1(ω) by a frequency axis warping. Particularly,
+this is exactly what happens in the bilinear transform case (the mapping µ(ω)
+is then deﬁned by the equation (3.6)). One cool thing about the frequency axis
+warping is that it preserves the relationship between the amplitude and phase.
+Suppose that we have a structure built around ﬁlters of frequency response
+F1(ω), and the rest of the structure doesn’t contain any memory elements (such
+as integrators or unit delays). Then the frequency response F(ω) of this struc-
+ture will be a function of F1(ω):
+F(ω) = Φ(F1(ω))
+where the speciﬁcs of the function Φ(w) will be deﬁned by the details of the
+container structure. E.g. if the building-block ﬁlters are analog integrators, then
+F1(ω) = 1/jω. For the ﬁlter in Fig. 2.2 we then have
+Φ(w) =
+w
+w + 1
+Indeed, substituting F1(ω) into Φ(w) we obtain
+F(ω) = Φ(F1(ω)) = Φ(1/jω) =
+1/jω
+1 + 1/jω =
+1
+1 + jω
+which is the already familiar to us frequency response of the analog lowpass
+ﬁlter.
+Now, we can view the trapezoidal integrator replacement as a substitution
+of F2 instead of F1, where µ(ω) is obtained from (3.6):
+ωa = µ(ωd) = 2
+T tan ωdT
+2
+The frequency response of the resulting ﬁlter is obviously equal to Φ(F2(ω)),
+where F2(ω) is the frequency response of the trapezoidal integrators (used in
+place of analog ones). But since F2(ω) = F1(µ(ω)).
+Φ(F2(ω)) = Φ(F1(µ(ω)))
+which means that the frequency response Φ(F2(·)) of the structure with trape-
+zoidal integrators is obtained from the frequency response Φ(F1(·)) of the struc-
+ture with analog integrators simply by warping the frequency axis. If the warp-
+ing is not too strong, the frequency responses will be very close to each other.
+This is exactly what is happening in the trapezoidal integrator replacement and
+generally in the bilinear transform.
+Differentiator-based filters
+We could have used some other two ﬁlters, with their respective frequency re-
+sponses F1 and F2. E.g. we could consider continuous-time systems built around
+diﬀerentiators rather than integrators.25 The transfer function of a diﬀerentia-
+tor is apparently simply H(s) = s, so we could use (3.4) to build a discrete-time
+25The real-world analog electronic circuits are “built around” integrators rather than dif-
+ferentiators. However, formally one still can “invert” the causality direction in the equations
+and pretend that ˙x(t) is defined by x(t), and not vice versa.
+
+
+--- Page 104 ---
+
+92
+CHAPTER 3. TIME-DISCRETIZATION
+“trapezoidal diﬀerentiator”. Particularly, if we use the direct form II approach,
+it could look similarly to the integrator in Fig. 3.9. When embedding the cutoﬀ
+control into a diﬀerentiator (in the form of a 1/ωc gain), it’s probably better
+to position it after the diﬀerentiator, to avoid the unnecessary “de-smoothing”
+of the control modulation by the diﬀerentiator. Replacing the analog diﬀeren-
+tiators in a structure by such digital trapezoidal diﬀerentiators we eﬀectively
+perform a diﬀerentiator-based TPT.
+E.g. if we replace the integrator in the highpass ﬁlter in Fig. 2.9 by a dif-
+ferentiator, we essentially perform a 1/s ←s substitution, thus we should have
+obtained a (diﬀerentiator-based) lowpass ﬁlter. Remarkably, if we perform a
+diﬀerentiator-based TPT on such ﬁlter, the obtained digital structure is fully
+equivalent to the previously obtained integrator-based TPT 1-pole lowpass ﬁl-
+ter.
+Allpass substitution
+One particularly interesting case occurs when F1 and F2 deﬁne two diﬀerent
+allpass frequency responses. That is |F1(ω)| ≡1 and |F2(ω)| ≡1. In this case
+the mapping µ(ω) is always possible. Especially since the allpass responses (de-
+ﬁned by rational transfer functions of analog and digital systems) always cover
+the entire phase range from −π to π.26 In intuitive terms it means: for a ﬁlter
+built of identical allpass elements, we can always replace those allpass elements
+with an arbitrary other type of allpass elements (provided all other elements are
+memoryless, that is there are only gains and summators). We will refer to this
+process as allpass substitution. Whereas in the trapezoidal integrator replace-
+ment we have replaced analog integrators by digital trapezoidal integrators, in
+the allpass substitution we replace allpass ﬁlters of one type by allpass ﬁlters of
+another type.
+We can even replace digital allpass ﬁlters with analog ones and vice versa.
+E.g., noticing that z−1 elements are allpass ﬁlters, we could replace them with
+analog allpass ﬁlters. One particularly interesting case arises out of the inverse
+bilinear transform (3.9). From (3.9) we obtain
+z−1 = 1 −sT
+2
+1 + sT
+2
+(3.41)
+The right-hand side of (3.41) obviously deﬁnes a stable 1-pole allpass ﬁlter,
+whose cutoﬀis 2/T. We could take a digital ﬁlter and replace all z−1 elements
+with an analog allpass ﬁlter structure implementing (3.41). By doing this we
+would have performed a topology-preserving inverse bilinear transform.
+We could then apply the cutoﬀparametrization to these underlying analog
+allpass elements:
+sT
+2 ←s
+ωc
+so that we obtain
+z−1 = 1 −s/ωc
+1 + s/ωc
+26Actually, for −∞< ω < +∞, they cover this range exactly N times, where N is the order
+of the filter.
+
+
+--- Page 105 ---
+
+SUMMARY
+93
+The expression s/ωc can be also rewritten as sT/2α, where α is the cutoﬀscaling
+factor:
+z−1 = 1 −sT/2α
+1 + sT/2α
+(3.42)
+Finally, we can apply the trapezoidal integrator replacement to the cutoﬀ-scaled
+analog ﬁlter, converting it back to the digital domain. By doing so, we have
+applied the cutoﬀscaling in the digital domain! On the transfer function level
+this is equivalent to applying the bilinear transform to (3.42), resulting in
+z−1 = 1 −sT/2α
+1 + sT/2α ←
+1 −
+z−1
+α(z+1)
+1 +
+z−1
+α(z+1)
+=
+= α(z + 1) −(z −1)
+α(z + 1) + (z −1) = (α −1)z + (α + 1)
+(α + 1)z + (α −1)
+That is, we have obtained a discrete-time allpass substitution
+z−1 ←(α −1)z + (α + 1)
+(α + 1)z + (α −1)
+which applies cutoﬀscaling in the digital domain.27 The allpass ﬁlter
+H(z) = (α −1)z + (α + 1)
+(α + 1)z + (α −1)
+should have been obtained, as described, by the trapezoidal integrator replace-
+ment in an analog implementation of (3.42), alternatively we could use a direct
+form implementation. Notice that this ﬁlter has a pole at z = (α −1)/(α + 1).
+Since |α −1| < |α + 1| ∀α > 0, the pole is always located inside the unit circle,
+and the ﬁlter is always stable.
+SUMMARY
+We have considered three essentially diﬀerent approaches to applying time-
+discretization to analog ﬁlter models: naive, TPT (by trapezoidal integrator
+replacement), and the classical bilinear transform (using direct forms).
+The
+TPT approach combines the best features of the naive implementation and the
+classical bilinear transform.
+27Differently from the analog domain, the digital cutoff scaling doesn’t exactly shift the
+response along the frequency axis in a logarithmic scale, as some frequency axis warping is
+involved. The resulting frequency response change however is pretty well approximated as
+shiting in the lower frequency range.
+
+
+--- Page 106 ---
+
+94
+CHAPTER 3. TIME-DISCRETIZATION
+

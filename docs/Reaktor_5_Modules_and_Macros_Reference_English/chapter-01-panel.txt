@@ -1,0 +1,3566 @@
+--- Page 46 ---
+
+1
+Panel
+ 
+Panel Modules provide onscreen controls for various REAKTOR processes. They can be in­
+dependently set to appear on the A and B Panel Views and they can be arranged different­
+ly on those panels. Some Panel Modules are for display purposes only. Those include 
+Lamp Modules, Meter Modules, and Scope Modules for displaying REAKTOR processes as 
+well as graphics and text Modules for ornamentation. The remaining Modules generate or 
+route data for REAKTOR processing. Those include Fader, Knob, Button, Switch, and 
+Menu Modules, and an XY controller (XY Module) which can be used for both display and 
+control.
+1.1
+Fader/Knob
+ 
+Fig. 1.1 Knob and Fader Modules
+1.1.1
+Overview
+ 
+The Fader and Knob Modules are Panel Elements which let you control the values that are 
+sent from the Module output port in the Structure. The two are essentially the same Mod­
+ule, with the type of control (knob or fader) being chosen in the Module's View page under 
+the Style radio button selector. Custom control styles can be created via skins. Please refer 
+to section 8.5 in the Application Reference for more information on how to do this.
+With the fader or knob control in the panel you adjust the value which is output (as Event 
+and Audio) by the corresponding Module in the structure. The signal is Mono unless the 
+output is connected to a Polyphonic input, in which case all Voices receive the same val­
+ue. The Fader and Knob Modules are discussed in more detail in the Application Refer­
+ence in subsection 8.2.1. Please refer to chapter 8 as a whole for more information on the 
+Instrument Panel and Modules that have Panel representations.
+Although the fader and the knob are essentially the same Module, there are separate menu 
+entries for them in the Built-In Module > Panel menu.
+Panel
+Fader/Knob
+ 
+REAKTOR 5.5 - Module Reference - 46
+
+
+--- Page 47 ---
+
+Application
+The Knob and Fader Modules have the obvious application of providing you controls with 
+which you can tweak your effect or instrument from the Instrument Panel.
+1.1.2
+Ports
+ 
+▪
+(Out) "Out" is the Event output port for the value that is set from the Module's Panel 
+representation.
+1.1.3
+Example: Sampler with Trigger Button
+ 
+The simplest sampler Instrument can be built using the Sampler Module (↑7.1, Sampler) 
+which receives its pitch input from the Note Pitch Module (↑2.1, Note Pitch) and its trig­
+ger signal from a Button Module (↑1.2, Button). Its amplitude can be controlled from the 
+Instrument Panel using a Knob Module (↑1.1, Fader/Knob) labeled "Ampl", as shown in 
+the Structure below. Note that you can create a Knob Module (or sometimes a Button or 
+Fader Module) for an input port with the right range and resolution simply by right-clicking 
+the input port and choosing the Create Control menu entry. Make sure that the Button at 
+the "Trig" (trigger) input port has been set to Trigger Mode in its Function page.
+Please refer to subsection 6.2.1 in the Application Reference for more information on load­
+ing samples into the Sampler Module's Sample Map.
+Fig. 1.2 The Structure for a simple sampler Instrument.
+1.2
+Button
+ 
+Fig. 1.3 A Button Module
+Panel
+Fader/Knob
+ 
+REAKTOR 5.5 - Module Reference - 47
+
+
+--- Page 48 ---
+
+1.2.1
+Overview
+ 
+The Button Module is a Panel element which lets you easily send single Events to your 
+Structure or toggle between two Structure states (also via Events). The Button Module has 
+three different operation modes which can be set in the Function page with the Mode radio 
+button selector: Toggle, Trigger, and Gate.
+▪
+Toggle: the button has two states, “On” and “Off”. When you turn the button on, an 
+Event with the value specified by the On Value edit field is sent. When you turn the 
+button off, an Event with the value specified by the Off Value edit field is sent. The 
+Toggle Mode is useful for controlling signal flow. A “bypass” button that turns an ef­
+fect on and off is most likely in Toggle Mode.
+▪
+Trigger: when you click the button, a trigger signal in the form of an Event is sent. The 
+Event carries the value specified by the On Value edit field. This Mode is useful for 
+triggering samples.
+▪
+Gate: similar to the Toggle Mode, the button has two states, “On” and “Off”. When you 
+press (and hold) the button, an Event with the value specified by the On Value edit 
+field is sent. The moment that you release the button, an Event with the value speci­
+fied by the Off Value edit field is sent. With a button in this Mode you could send Gate 
+signals to envelopes.
+The signal is Mono unless the output is connected to a Polyphonic input, in which case all 
+Voices receive the same value. The Button Module is discussed in more detail in the Ap­
+plication Reference in subsection 8.2.2. Please refer to chapter 8 as a whole for more in­
+formation on the Instrument Panel and Modules that have Panel representations. Custom 
+control styles can be created via skins. Please refer to section 8.5 in the Application Ref­
+erence for more information on how to do this.
+Application
+The Button Module supplies you with a button on your Instrument Panel. Buttons are use­
+ful for triggering Events (such as sample playback), toggling between Structure states 
+(such as turning an effect on and off), and for Gate signals (such as triggering notes).
+1.2.2
+Ports
+ 
+▪
+(Out) "Out" is the Event output port for the trigger, toggle, or gate Event as determined 
+by your actions on the Module's Panel representation.
+Panel
+Button
+ 
+REAKTOR 5.5 - Module Reference - 48
+
+
+--- Page 49 ---
+
+1.2.3
+Example: Sampler with Trigger Button
+ 
+The simplest sampler Instrument can be built using the Sampler Module (↑7.1, Sam­
+pler)which receives its pitch input from the Note Pitch Module (↑2.1, Note Pitch) and its 
+trigger signal from a Button Module (↑1.2, Button). Its amplitude can be controlled from 
+the Instrument Panel using a Knob Module (↑1.1, Fader/Knob) labeled "Ampl", as shown 
+in the Structure below. Note that you can create a Knob Module (or sometimes a Button or 
+Fader Module) for an input port with the right range and resolution simply by right-clicking 
+the input port and choosing the Create Control menu entry. Make sure that the Button at 
+the "Trig" (trigger) input port has been set to Trigger Mode in its Function page.
+Please refer to subsection 6.2.1 in the Application Reference for more information on load­
+ing samples into the Sampler Module's Sample Map.
+Fig. 1.4 The Structure for a simple sampler Instrument.
+1.3
+List
+ 
+Fig. 1.5 List Module
+1.3.1
+Overview
+ 
+The List Module lets you construct lists on your Instrument Panel. Selecting an entry from 
+the List Module's Panel representation causes an Event with the corresponding value to be 
+sent from its output port. Which values correspond to which list entries, can be configured 
+in the Module's Function page. The List Module has four different Panel representation 
+styles: Buttons, Menu, Spin, and Text Panel. These styles are shown in that order in the 
+figure above. Please refer to subsection 8.2.4 in the Application Reference for more de­
+Panel
+Button
+ 
+REAKTOR 5.5 - Module Reference - 49
+
+
+--- Page 50 ---
+
+tailed information on editing the List Module's entries in the Function page, among other 
+Properties. Custom control styles can be created via skins. Please refer to section 8.5 in 
+the Application Reference for more information on how to do this.
+Please refer to chapter 8 as a whole for more information on the Instrument Panel and Mod­
+ules that have Panel representations.
+Application
+The List Module enables you to switch between a number of Structure states via a suitable 
+Panel representation. This can be useful, for example, when you want to have access from 
+the Panel when choosing if a signal is routed through two filter sections in a parallel or in 
+a serial manner. You can combine the List Module with a Selector Module to choose from 
+a number of signals that are to be routed to another part of the Structure. Such an exam­
+ple is shown below. Please refer to the header "Switch vs. Router vs. Selector" in the sub­
+section 8.2.3 in the Application Reference for more detailed information on the differen­
+ces when applying the List and Selector Module's versus just using a Switch Module.
+1.3.2
+Ports
+ 
+▪
+(Out) "Out" is the Event output port for the value that corresponds to the list entry that 
+has been selected on the Module's Panel representation.
+1.3.3
+Properties: View Page
+ 
+Choosing the List Module's Panel Representation
+You can choose between four styles for the List Module's Panel representation. This is 
+done by choosing the desired menu entry from the Style drop-down menu in the Module's 
+View page, as shown in the figure below. The following styles are available:
+▪
+Button: Each list entry in the Module's Function page creates a button. All buttons will 
+be arrayed vertically in the Instrument Panel. The currently activated button will be 
+displayed in the Indicator color of the Instrument (please refer to section 8.3 in the 
+Application Reference for more information on changing the different colors of the In­
+strument). The size of the buttons can be adjusted in the Module's View page.
+▪
+Menu: Each list entry in the Module's Function page creates a new menu entry in this 
+Panel representation which is a drop-down menu.
+Panel
+List
+ 
+REAKTOR 5.5 - Module Reference - 50
+
+
+--- Page 51 ---
+
+▪
+Text Panel: Each list entry in the Module's Function page creates a new entry in a list 
+which displays multiple entries at the same time. If you have created more entries than 
+are able to fit into the text panel display specified by the Width and Height edit field in 
+the View page, you will get scrollbars in the panel.
+▪
+Spin: Each list entry in the Module's Function pages creates a new entry in a list. You 
+can switch through the list using a + and a - button to the right of the list entry in the 
+Panel representation.
+Fig. 1.6 Use the Style drop-down menu to choose the Panel representation of the List Module.
+Changing the Size of the List's Panel Representation
+Depending on the size of your list, you might need a small or large area for the List Mod­
+ule's Panel representation.
+► To change the width and height of the List Module's Panel representation, go to the 
+Module's View page and enter the desired values into the Width and Height edit fields, as 
+shown in the figure below.
+Please refer to subsection 8.2.4 in the Application Reference for more detailed information 
+on editing the List Module's entries in the View page, among other Properties.
+1.3.4
+Example: Routing Signals Using a List and Selector Module
+ 
+The List Module can be used in conjunction with a Selector Module to provide functionali­
+ty similar to the Switch Module (see screenshot below). The Selector Module “selects” 
+which signal to forward to its output port depending on the value at the “Pos” (position) 
+Panel
+List
+ 
+REAKTOR 5.5 - Module Reference - 51
+
+
+--- Page 52 ---
+
+input port. For example, a “Pos” value of “0” will cause the Selector Module to forward 
+only the signal at the “0” input port to its output port. Similarly, a “Pos” value of “1” will 
+cause the Selector Module to forward only the signal at the “1” input port to its output 
+port. By connecting a List Module to the “Pos” input port you can use the Panel represen­
+tation of the List Module to control the routing of the signal from the Instrument Panel.
+Fig. 1.7 Here you see a common Structure for routing signals. Here, a List Module is used to supply the “position” value the 
+“Pos” input port of a Selector Module.
+See below for a Panel representation of the List Module.
+1.4
+Switch
+ 
+Fig. 1.8 Switch Modules
+1.4.1
+Overview
+ 
+The Switch Module is a special type of Panel Element. It does not contain any signal proc­
+essing of its own but establishes a switchable connection between other Modules. Multiple 
+signals can be connected to the Switch Module's input ports, but which of these signals it 
+forwards, is chosen on the Instrument Panel by its Panel representation. All the other un­
+selected inputs are disconnected. Modules whose outputs are disconnected, through the 
+action of a switch or otherwise, are automatically deactivated to reduce unnecessary load 
+to the CPU. A Module’s status lamp remains dark while the Module is deactivated.
+Please refer to subsection 7.4 in the Application Reference for more information on active 
+and inactive Modules.
+Panel
+Switch
+ 
+REAKTOR 5.5 - Module Reference - 52
+
+
+--- Page 53 ---
+
+The Switch Module is a hybrid Module (as can be identified by its green input and output 
+ports). Therefore it can process Event signals as well as Audio signals, depending on the 
+type of wires that are connected to it. The three dots below the input ports indicate that 
+the Switch module supports dynamic input port management. When a wire is dragged to 
+an empty part of the in-port region (the left edge of the Module icon) of a dynamic-input 
+Module while holding down the Ctrl key in Windows (Cmd key in Mac OS X), a new input 
+port is created automatically.
+The Switch Module has four different Panel representation styles: Buttons, Menu, Spin, 
+and Text Panel. These styles are shown in that order in the figure above. Please refer to 
+subsection 8.2.3 in the Application Reference for more detailed information on editing the 
+Switch Module's entries in the Function page, among other Properties. Custom control 
+styles can be created via skins. Please refer to section 8.5 in the Application Reference for 
+more information on how to do this.
+Please refer to chapter 8 as a whole for more information on the Instrument Panel and Mod­
+ules that have Panel representations.
+Application
+The Switch Module enables you to switch between a number of Structure states via a suit­
+able Panel representation. What is special about the Switch Module is that it can actually 
+deactivate unused input signal branches. This can be useful when you want to save CPU 
+on unused parts of the Structure. Use the Switch Module when choosing one of several 
+effects that should be used to treat a signal or when choosing which oscillator signal to 
+use as a starting point for synthesis.
+Please refer to the header "Switch vs. Router vs. Selector" in the subsection 8.2.3 in the Ap­
+plication Reference for more detailed information on the differences between the different 
+Modules that can be used for routing signals.
+1.4.2
+Ports
+ 
+Input Ports
+▪
+(In1) "In1" is the hybrid input port for the first signal that can be selected on the Panel 
+representation to be forwarded to the output.
+Panel
+Switch
+ 
+REAKTOR 5.5 - Module Reference - 53
+
+
+--- Page 54 ---
+
+▪
+(…) "In2, In3, …" are the dynamic "channel" input ports. Additional "channel" input 
+ports can be created (if all existing "channel" input ports are already connected) by 
+holding down the Ctrl key in Windows (Cmd key in Mac OS X) while dragging a wire 
+from an output port of another Module to the three dots on the Switch Module. The 
+maximum number of "channel" input ports for the Switch Module is 40.
+Output Ports
+▪
+(Out) "Out" is the hybrid output port for the signal at the input port that corresponds to 
+the chosen list entry in the Module's Panel representation.
+1.4.3
+Properties: View Page
+ 
+Choosing the Switch Module's Panel Representation
+You can choose between four styles for the Switch Module's Panel representation. This is 
+done by choosing the desired menu entry from the Style drop-down menu in the Module's 
+View page, as shown in the figure below. The following styles are available:
+▪
+Button: Each a in the Module's Function page creates a button. All buttons will be ar­
+rayed vertically in the Instrument Panel. The currently activated button will be dis­
+played in the Indicator color of the Instrument (please refer to section 8.3 in the Appli­
+cation Reference for more information on changing the different colors of the Instru­
+ment). The size of the buttons can be adjusted in the Module's View page.
+▪
+Menu: Each input port of the Switch Module creates a new menu entry in this Panel 
+representation which is a drop-down menu.
+▪
+Text Panel: Each input port of the Switch Module creates a new entry in a list which dis‐
+plays multiple entries at the same time. If you have created more entries than are able 
+to fit into the text panel display specified by the Width and Height edit field in the View 
+page, you will get scrollbars in the panel.
+▪
+Spin: Each input port of the Switch Module creates a new entry in a list. You can 
+switch through the list using a + and a - button to the right of the list entry in the Pan­
+el representation.
+Panel
+Switch
+ 
+REAKTOR 5.5 - Module Reference - 54
+
+
+--- Page 55 ---
+
+Fig. 1.9 Use the Style drop-down menu to choose the Panel representation of the Switch Module.
+Changing the Size of the Switch's Panel Representation
+Depending on the number of input ports, you might need a small or large area for the 
+Switch Module's Panel representation.
+► To change the width and height of the Switch Module's Panel representation, go to the 
+Module's View page and enter the desired values into the Width and Height edit fields, as 
+shown in the figure below.
+Please refer to subsection 8.2.3 in the Application Reference for more detailed information 
+on editing the Switch Module's entries in the View page, among other Properties.
+1.4.4
+Example: Routing Signals Using a Switch
+ 
+In the following example you are shown how to use the Switch Module to choose which 
+signals are forwarded to an Output Terminal. Let's say we have a Macro that is applied to a 
+signal as an effect. We call the processed signal the “wet” signal and the unprocessed sig­
+nal the “dry” signal. See the screenshot below for an exemplary structure.
+Panel
+Switch
+ 
+REAKTOR 5.5 - Module Reference - 55
+
+
+--- Page 56 ---
+
+Fig. 1.10 Here a Switch Module is used to forward either the “wet” signal or the “dry” signal to the Output Terminal.
+If we go to the Instrument Panel, the Switch can be set to have a Panel representation as 
+shown in the figure below. The Switch Module lets you choose between the different sig­
+nals arriving at its input ports. Here the input ports have been labeled “Wet” and “Dry” 
+and these names also appear on the Instrument Panel. If you click on the “Wet” button, 
+then the signal arriving at the “Wet” input port of the Switch Module is routed to its out­
+put port. If you press the “Dry” button, then the signal arriving at the “Dry” input port of 
+the Switch Module is routed to its output port.
+Fig. 1.11 A possible Panel representation of the Switch Module.
+An important case is when you have Event signals connected to the input ports of the 
+Switch Module. “Switching” to one of these signals causes the value that was sent last to 
+that particular input port to be sent from the output port of the Switch Module in the form 
+of an Event.
+1.5
+Lamp
+ 
+Fig. 1.12 Lamp Modules
+1.5.1
+Overview
+ 
+The Lamp Module is an indicator lamp for a Monophonic signal. It has two modes of oper­
+ation which can be set in the Module's Function page:
+Panel
+Lamp
+ 
+REAKTOR 5.5 - Module Reference - 56
+
+
+--- Page 57 ---
+
+▪
+Discrete: In Discrete mode the lamp in the Instrument Panel lights up as long as the 
+input signal (sampled at 25 Hz) is within the range set with the Min and Max edit fields 
+in the Function page. That is, the lamp is lit up when the signal’s value is larger than 
+"Min" and less than or equal to "Max".
+▪
+Continuous: In Continuous mode, the lamp color will gradually fade in and out for val­
+ues between "Min" and "Max". For values above "Max" the lamp is lit up and for values 
+below "Min" the lamp is unlit.
+Application
+Lamp Modules are good for monitoring signals from the Instrument Panel. Lamps are es­
+pecially useful when you only need a rough idea of the signal level and therefore only re­
+quire a simple display. Another common use for the Lamp Module is to activate Modules 
+within a Structure (such as the Audio Table Module in the example in section 11.2 in the 
+Application Reference). This is done by engaging the Always Active checkbox in the Lamp 
+Module's Function page and connecting the Lamp Module to an output port of the Module 
+you wish to activate.
+Although the Lamp Module only accepts Monophonic signals, connecting a Polyphonic sig­
+nal to its input port will still keep the Module, from which the Polyphonic signal stems, ac­
+tive.
+1.5.2
+Ports
+ 
+▪
+(In) "In" is the input port for the Monophonic signal to be displayed by the lamp display 
+in the Instrument Panel.
+1.5.3
+Properties: Function Page
+ 
+Keeping the Lamp Module Always Active
+A common use for the Lamp module is to activate other Modules within a Structure. In 
+such a case you would connect the output port of another Module to the Lamp Module 
+which then would need to have the Always Active feature active.
+► To keep the Lamp Module always active, go to its Function page and engage the Always 
+Active checkbox, shown in the figure below.
+Panel
+Lamp
+ 
+REAKTOR 5.5 - Module Reference - 57
+
+
+--- Page 58 ---
+
+Changing between Discrete and Continuous Mode
+The Lamp Module has two operation modes: Discrete mode and Continuous mode. They 
+are described in the Module Overview subsection above.
+► To activate Continuous mode, go to the Lamp Module's Function page and engage the 
+Continuous Mode checkbox. Otherwise, with the Continuous Mode checkbox disengaged, the 
+Lamp Module operates in Discrete mode.
+Fig. 1.13 The Lamp Module's Function page holds the edit fields to set the "Max" and "Min" values (in dB) as well as the 
+checkbox to switch between Discrete and Continuous operation mode.
+Setting the "Min" and "Max" Values
+The general functionality of the Lamp Module is described in the Module Overview subsec­
+tion above. Both operation modes (Discrete and Continuous) behave according to the "Min" 
+and "Max" values.
+► To set the "Min" and "Max" values (in dB), go to the Lamp Module's Function page and 
+enter the desired values into the Min. Value and Max. Value edit fields, respectively.
+1.5.4
+Properties: View page
+ 
+Choosing the Lamp Color
+The color of the lamp can be chosen in the View page of the Module Properties. You can 
+either choose from preset colors with the (red, green, blue, yellow or Indicator color), or 
+you can define custom colors for the On and Off positions of the lamp using the color 
+picker of your OS.
+► To choose a preset color combination for the lamp, click on the desired color in the 
+Default Color ratio button selector, shown in the figure below.
+Panel
+Lamp
+ 
+REAKTOR 5.5 - Module Reference - 58
+
+
+--- Page 59 ---
+
+Please refer to section 8.3 in the Application Reference for more information on changing 
+the Indicator color of your Instrument.
+► To set the On and Off states of your lamp to custom colors, press the Set On Color and Set 
+Off Color buttons, respectively. The color picker dialog window of your OS will let you pick a 
+desired color. The Set On Color and Set Off Color buttons are shown in the figure below.
+Turning Off the Lamp Frame
+You might want to place several Lamps next to each other to create a pixilated display of 
+some sort. In that case the nice frame, with which the Lamp Module comes, becomes su­
+perfluous. With the frame removed, you are able to place the lamps pixel accurate side by 
+side in the Instrument Panel without any gaps between them.
+► To turn off the Lamp Module's frame on the Instrument Panel, disengage the Has Frame 
+checkbox in the View page (shown in the screenshot below).
+Setting Label and Lamp Size
+Depending on your Instrument Panel layout, you might want a larger or smaller lamp with 
+a larger or smaller Label and Value display.
+For other visibility settings for the Panel representation (Label, Picture, and Value, please re­
+fer to subsection 8.2.1 in the Application Reference).
+Panel
+Lamp
+ 
+REAKTOR 5.5 - Module Reference - 59
+
+
+--- Page 60 ---
+
+► To change the size of your Lamp Module's Label and Value display, choose the desired 
+size from the Label/Value radio button selector in the View page (shown in the screenshot 
+above).
+► To choose between preset sizes for the Lamp Module's Panel representation, choose the 
+desired size from the Set Default Size radio button selector, shown in the screenshot below.
+► To exactly set the width and height of the Lamp Module's Panel representation, go to 
+the Module's View page and enter the desired values into the Width and Height edit fields, as 
+shown in the figure below.
+Custom lamp styles can be created via skins. Please refer to section 8.5 in the Application 
+Reference for more information on how to do this.
+1.5.5
+Example: LFO Monitor
+ 
+This example shows how to use the Lamp Module to monitor an LFO Module's (↑9.1, LFO) 
+signal level from the Instrument Panel. The simple Structure for this is shown in the figure 
+below.
+Fig. 1.14 You can use the Lamp Module to monitor the signal level of an LFO from the Instrument Panel.
+Panel
+Lamp
+ 
+REAKTOR 5.5 - Module Reference - 60
+
+
+--- Page 61 ---
+
+The Lamp Module's Panel representation has color corresponding to the "off" state and a 
+color corresponding to the "on" state. The values that yield these states are set in the Mod­
+ule's Function page with the Max. Value and Min. Value edit fields. Since the LFO in the exam­
+ple outputs a waveform in the range [-1 … 1], the range of the Lamp Module has been set 
+accordingly. Also, the Continuous Mode checkbox has been enables for the Lamp Module to 
+represent values between "-1" and "1" in a gradient that goes from the "off" color to the 
+"on" color.
+Fig. 1.15 To be able to display a smooth transition from the "off" color to the "on" color of the Lamp Module, engage the 
+Continuous Mode checkbox.
+1.6
+Level Lamp
+ 
+Fig. 1.16 Level Lamp Modules
+1.6.1
+Overview
+ 
+The Level Lamp Module is an indicator lamp for a Monophonic signal with logarithmic set­
+tings. It has two modes of operation which can be set in the Module's Function page:
+▪
+Discrete: In Discrete mode the lamp in the Instrument Panel lights up as long as the 
+input signal (sampled at 25 Hz) is within the range set (in dB) with the Min and Max 
+edit fields in the Function page. That is, the lamp is lit up when the signal’s value is 
+larger than "Min" and less than or equal to "Max".
+▪
+Continuous: In Continuous mode, the lamp color will gradually fade in and out for val­
+ues between "Min" and "Max". For values above "Max" the lamp is lit up and for values 
+below "Min" the lamp is unlit.
+Panel
+Level Lamp
+ 
+REAKTOR 5.5 - Module Reference - 61
+
+
+--- Page 62 ---
+
+Application
+Level Lamp Modules are good for monitoring signals from the Instrument Panel. Level 
+Lamps are especially useful when you only need a rough idea of the signal level and there­
+fore only require a simple display. Another common use for the Level Lamp Module is to 
+activate Modules within a Structure (such as the Audio Table Module in the example in 
+section 11.2 in the Application Reference). This is done by engaging the Always Active 
+checkbox in the Level Lamp Module's Function page and connecting the Level Lamp Mod­
+ule to an output port of the Module you wish to activate.
+Although the Level Lamp Module only accepts Monophonic signals, connecting a Polyphonic 
+signal to its input port will still keep the Module, from which the Polyphonic signal stems, 
+active.
+1.6.2
+Ports
+ 
+▪
+(In) "In" is the input port for the Monophonic signal to be displayed by the lamp display 
+in the Instrument Panel.
+1.6.3
+Properties: Function Page
+ 
+Keeping the Level Lamp Module Always Active
+A common use for the Level Lamp module is to activate other Modules within a Structure. 
+In such a case you would connect the output port of another Module to the Level Lamp 
+Module which then would need to have the Always Active feature active.
+► To keep the Level Lamp Module always active, go to its Function page and engage the 
+Always Active checkbox, shown in the figure below.
+Changing between Discrete and Continuous Mode
+The Level Lamp Module has two operation modes: Discrete mode and Continuous mode. 
+They are described in the Module Overview subsection above.
+Panel
+Level Lamp
+ 
+REAKTOR 5.5 - Module Reference - 62
+
+
+--- Page 63 ---
+
+► To activate Continuous mode, go to the Level Lamp Module's Function page and engage 
+the Continuous Mode checkbox. Otherwise, with the Continuous Mode checkbox disengaged, the 
+Level Lamp Module operates in Discrete mode.
+Setting the "Min" and "Max" Values
+The general functionality of the Level Lamp Module is described in the Module Overview 
+subsection above. Both operation modes (Discrete and Continuous) behave according to 
+the "Min" and "Max" values.
+► To set the "Min" and "Max" values (in dB), go to the Level Lamp Module's Function 
+page and enter the desired values into the Min. Value and Max. Value edit fields, respectively.
+1.6.4
+Properties: View page
+ 
+Choosing the Level Lamp Color
+The color of the lamp can be chosen in the View page of the Module Properties. You can 
+either choose from preset colors with the (red, green, blue, yellow or Indicator color), or 
+you can define custom colors for the On and Off positions of the lamp using the color 
+picker of your OS.
+► To choose a preset color combination for the lamp, click on the desired color in the 
+Default Color ratio button selector, shown in the figure below.
+Please refer to section 8.3 in the Application Reference for more information on changing 
+the Indicator color of your Instrument.
+Panel
+Level Lamp
+ 
+REAKTOR 5.5 - Module Reference - 63
+
+
+--- Page 64 ---
+
+► To set the On and Off states of your lamp to custom colors, press the Set On Color and Set 
+Off Color buttons, respectively. The color picker dialog window of your OS will let you pick a 
+desired color. The Set On Color and Set Off Color buttons are shown in the figure below.
+Turning Off the Level Lamp Frame
+You might want to place several Level Lamps next to each other to create a pixilated dis­
+play of some sort. In that case the nice frame, with which the Level Lamp Module comes, 
+becomes superfluous. With the frame removed, you are able to place the lamps pixel ac‐
+curate side by side in the Instrument Panel without any gaps between them.
+► To turn off the Level Lamp Module's frame on the Instrument Panel, disengage the Has 
+Frame checkbox in the View page (shown in the screenshot below). 
+Setting Label and Level Lamp Size
+Depending on your Instrument Panel layout, you might want a larger or smaller lamp with 
+a larger or smaller Label and Value display.
+For other visibility settings for the Panel representation (Label, Picture, and Value, please re­
+fer to subsection 8.2.1 in the Application Reference).
+► To change the size of your Level Lamp Module's Label and Value display, choose the 
+desired size from the Label/Value radio button selector in the View page (shown in the 
+screenshot above).
+Panel
+Level Lamp
+ 
+REAKTOR 5.5 - Module Reference - 64
+
+
+--- Page 65 ---
+
+► To choose between preset sizes for the Level Lamp Module's Panel representation, 
+choose the desired size from the Set Default Size radio button selector, shown in the screen­
+shot below.
+► To exactly set the width and height of the Level Lamp Module's Panel representation, 
+go to the Module's View page and enter the desired values into the Width and Height edit 
+fields, as shown in the figure below.
+Custom lamp styles can be created via skins. Please refer to section 8.5 in the Application 
+Reference for more information on how to do this.
+1.6.5
+Example: Activating a Table Module
+ 
+The Level Lamp Module can also be applied for its "Always Active" feature. In this exam­
+ple, it is connected to the output of an Event Table Module to activate it for whatever pur­
+pose you wish to use it for. For this application the Always Active checkbox in the Level 
+Lamp Module's Function page has to be activated. However, it does not matter if the in­
+coming signal is Polyphonic and therefore the Level Lamp Module's input port gets muted 
+— the Modules lying upstream will be activated nevertheless.
+Panel
+Level Lamp
+ 
+REAKTOR 5.5 - Module Reference - 65
+
+
+--- Page 66 ---
+
+Fig. 1.17 Use the Level Lamp Module to activate Modules upstream.
+1.7
+RGB Lamp
+ 
+Fig. 1.18 An RGB Lamp Module
+1.7.1
+Overview
+ 
+The RGB Lamp Module is a resizable, colored display. Its color is controlled by the values 
+appearing at its three color input ports: "R" (red), "G" (green), and "B" (blue). The Module's 
+horizontal and vertical size can be set in pixels in the View page.
+Application
+With the RGB Lamp Module you can create custom displays and controls that change their 
+color depending on what is going on in the Instrument's Structure.
+1.7.2
+Ports
+ 
+Input Ports
+▪
+(R) "R" (red) is the Audio input port for the intensity of the red component. The range 
+of values at this input port is [0 … 1]. When disconnected, the default value, "0", is 
+used.
+Panel
+RGB Lamp
+ 
+REAKTOR 5.5 - Module Reference - 66
+
+
+--- Page 67 ---
+
+▪
+(G) "G" (green) is the Audio input port for the intensity of the green component. The 
+range of values at this input port is [0 … 1]. When disconnected, the default value, 
+"0", is used.
+▪
+(B) "B" (blue) is the Audio input port for the intensity of the blue component. The range 
+of values at this input port is [0 … 1]. When disconnected, the default value, "0", is 
+used.
+1.7.3
+Properties: Function Page
+ 
+Keeping the RGB Lamp Module Always Active
+Before the RGB Lamp Module shows the colors that have been specified by its input port, 
+you need to activate it.
+► To activate the RGB Lamp Module, go to its Function page and engage the Always Active 
+checkbox, shown in the figure below.
+1.7.4
+Properties: View page
+ 
+Turning Off the RGB Lamp Frame
+You might want to place several RGB Lamps next to each other to create a pixilated dis­
+play of some sort. In that case the nice frame, with which the RGB Lamp Module comes, 
+becomes superfluous. With the frame removed, you are able to place the lamps pixel ac‐
+curate side by side in the Instrument Panel without any gaps between them.
+► To turn off the RGB Lamp Module's frame on the Instrument Panel, disengage the Has 
+Frame checkbox in the View page (shown in the screenshot below).
+Setting the RGB Lamp Size
+Depending on your Instrument Panel layout, you might want a larger or smaller lamp.
+Panel
+RGB Lamp
+ 
+REAKTOR 5.5 - Module Reference - 67
+
+
+--- Page 68 ---
+
+For other visibility settings for the Panel representation including the Labe and Label size, 
+please refer to subsection 8.2.1 in the Application Reference).
+► To choose between preset sizes for the RGB Lamp Module's Panel representation, 
+choose the desired size from the Set Default Size radio button selector, shown in the screen­
+shot above.
+► To exactly set the width and height of the RGB Lamp Module's Panel representation, go 
+to the Module's View page and enter the desired values into the Width and Height edit fields, 
+as shown in the figure above.
+1.7.5
+Example: Setting RGB Color from the Panel
+ 
+This example shows how you can control the color of the RGB Lamp Module's Panel repre­
+sentation with three knobs. To create the Structure shown below, just right-click on each 
+input port and choose the Create Control menu entry.
+Fig. 1.19 Use the Create Control menu entry to quickly create the controls for the red, green, and blue values.
+Note that you can use the RGB Lamp Module as a background for another Panel element, 
+for example. In the figure shown below, the RGB Lamp Module's size has been changed.
+Fig. 1.20 The Panel representation of the RGB Lamp Module.
+1.8
+Meter
+ 
+Fig. 1.21 A Meter Module
+Panel
+RGB Lamp
+ 
+REAKTOR 5.5 - Module Reference - 68
+
+
+--- Page 69 ---
+
+1.8.1
+Overview
+ 
+The Meter Module is a value indicator for a Monophonic signal. The value of the incoming 
+signal is sampled (at 25 Hz) and displayed on a linear scale in the Instrument Panel. The 
+displayed range is set in the Function page of the Module's Properties. The color and size 
+of the display can be set in the Module's View page.
+The Meter Module is the same as the Numeric Readout Module. The only difference is that 
+the Numeric Readout Module's default setting is to only show the value field in its Panel 
+representation without the animated picture of the meter.
+Application
+The Meter Module is good for monitoring signals from the Instrument Panel. A common 
+application is to monitor envelope levels or the output signal of an LFO. Of course, if you 
+decide to modulate a parameter with both an LFO and an envelope then it's even more 
+useful to monitor the resulting signal, since that might be (a little bit) more unpredictable 
+than the regular oscillations of an LFO,
+for example.
+1.8.2
+Ports
+ 
+▪
+(In) "In" is the input port for the signal whose value is to be displayed on the meter,
+1.8.3
+Properties: Function Page
+ 
+Keeping the Meter Module Always Active
+Before the Meter Module shows the value that has been specified by its input port, you 
+need to activate it.
+► To activate the Meter Module, go to its Function page and engage the Always Active 
+checkbox, shown in the figure below.
+Panel
+Meter
+ 
+REAKTOR 5.5 - Module Reference - 69
+
+
+--- Page 70 ---
+
+Setting the Range for Displayed Values
+► To set the range for the values that correspond to a minimum and maximum display 
+state of the Meter Module, go to the Module's Function page and enter the corresponding 
+values into the Min. Value and Max. Value edit fields (shown in the screenshot above).
+1.8.4
+Properties: View page
+ 
+Choosing the Meter Color
+The color of the meter can be chosen in the View page of the Module Properties. You can 
+either choose from preset colors with the (red, green, blue, yellow or Indicator color), or 
+you can define custom colors for the On and Off positions of the meter using the color 
+picker of your OS.
+► To choose a preset color combination for the meter, click on the desired color in the 
+Default Color ratio button selector, shown in the figure below.
+Please refer to section 8.3 in the Application Reference for more information on changing 
+the Indicator color of your Instrument.
+► To set the On and Off states of your meter to custom colors, press the Set On Color and Set 
+Off Color buttons, respectively. The color picker dialog window of your OS will let you pick a 
+desired color. The Set On Color and Set Off Color buttons are shown in the figure below.
+Setting Meter and Label Size
+Depending on your liking you might want a meter with a different number of segments, of 
+different size, or with a larger or smaller Label and Value display.
+Panel
+Meter
+ 
+REAKTOR 5.5 - Module Reference - 70
+
+
+--- Page 71 ---
+
+For other visibility settings for the Panel representation (Label, Picture, and Value, please re­
+fer to subsection 8.2.1 in the Application Reference).
+► The size of the Meter Module's Panel representation depends on the number and size of 
+the segments it comprises. To change the width and height of the segments, enter the de­
+sired size into the Segment Width and Segment Height edit fields in the Meter Module's View 
+page (shown in the screenshot below).
+► To change the number of segments in the meter, enter the desired number into the 
+Number of Segments edit field (shown in the screenshot below).
+► To quickly change the size of the Meter Module's Panel representation, you can use one 
+of the three default sizes.
+► To choose a default size for the Meter Module, choose the desired size from the Set De­
+fault Size radio button selector, shown in the screenshot below.
+Use the Set Default Size radio button selector in the Meter Module's View page to quickly 
+change the size of your Meter Module's Panel representation. Use the Label/Value radio but­
+ton selector to change the size of the Label and Value in the Module's Panel representation.
+► To change the size of your Meter Module's Label and Value display, choose the desired 
+size from the Label/Value radio button selector in the View page (shown in the screenshot 
+above).
+Changing the Meter Orientation
+The Meter Module's Panel representation can sit either vertically or horizontally in the In­
+strument Panel.
+Panel
+Meter
+ 
+REAKTOR 5.5 - Module Reference - 71
+
+
+--- Page 72 ---
+
+► To change the Meter Module's orientation, click on the appropriate radio button in the 
+Orientation radio button selector.
+Custom meter styles can be created via skins. Please refer to section 8.5 in the Application 
+Reference for more information on how to do this.
+1.8.5
+Example: LFO Monitor
+ 
+This example shows how to use the Meter Module to monitor an LFO Module's (↑9.1, LFO) 
+signal level from the Instrument Panel. The simple Structure for this is shown in the figure 
+below.
+Fig. 1.22 You can use the Meter Module to monitor the signal level of an LFO from the Instrument Panel.
+The Meter Module's Panel representation consists of a row of segments of which an in­
+creasing number is lit up, depending where the incoming value lies in the range [Min … 
+Max]. This range is set in the Module's Function page with the Max. Value and Min. Value edit 
+fields. Since the LFO in the example outputs a waveform in the range [-1 … 1], the range 
+of the Meter Module for this example has been set accordingly, as shown in the figure be­
+low. The resulting Panel representation is shown in the second figure below. Note that 
+since the LFO signal is dynamic (for frequency values other than 0 Hz), the meter in the 
+screenshot is actually moving up and down.
+Panel
+Meter
+ 
+REAKTOR 5.5 - Module Reference - 72
+
+
+--- Page 73 ---
+
+Fig. 1.23 The incoming range of values lies in the range [-1 … 1] so the range for the Meter Module has been set according­
+ly.
+Fig. 1.24 The Panel representation of the Meter Module.
+1.9
+Level Meter
+ 
+Fig. 1.25 Level Meter Module
+1.9.1
+Overview
+ 
+The Level Meter Module is a value indicator for a Monophonic signal with logarithmic set­
+tings. The value of the incoming signal is sampled (at 25 Hz) and displayed on a linear 
+scale in the Instrument Panel. The displayed range is set in the Function page of the Mod­
+ule's Properties. The color and size of the display can be set in the Module's View page.
+Application
+The Level Meter Module is good for monitoring signals from the Instrument Panel. A com­
+mon application is to monitor envelope levels or the output signal of an LFO. Of course, if 
+you decide to modulate a parameter with both an LFO and an envelope then it's even more 
+useful to monitor the resulting signal, since that might be (a little bit) more unpredictable 
+than the regular oscillations of an LFO,
+for example.
+Panel
+Level Meter
+ 
+REAKTOR 5.5 - Module Reference - 73
+
+
+--- Page 74 ---
+
+1.9.2
+Ports
+ 
+▪
+(In) "In" is the input port for the signal whose value is to be displayed on the meter,
+1.9.3
+Properties: Function Page
+ 
+Keeping the Level Meter Module Always Active
+Before the Level Meter Module shows the value that has been specified by its input port, 
+you need to activate it.
+► To activate the Level Meter Module, go to its Function page and engage the Always Active 
+checkbox, shown in the figure below.
+Setting the Range for Displayed Values
+► To set the range for the values (in dB) that correspond to a minimum and maximum 
+display state of the Level Meter Module, go to the Module's Function page and enter the 
+corresponding values (in dB) into the Min. Value and Max. Value edit fields (shown in the 
+screenshot above).
+1.9.4
+Properties: View page
+ 
+Choosing the Level Meter Color
+The color of the meter can be chosen in the View page of the Module Properties. You can 
+either choose from preset colors with the (red, green, blue, yellow or Indicator color), or 
+you can define custom colors for the On and Off positions of the Meter using the color 
+picker of your OS.
+Panel
+Level Meter
+ 
+REAKTOR 5.5 - Module Reference - 74
+
+
+--- Page 75 ---
+
+► To choose a preset color combination for the meter, click on the desired color in the 
+Default Color ratio button selector, shown in the figure below.
+Please refer to section 8.3 in the Application Reference for more information on changing 
+the Indicator color of your Instrument.
+► To set the On and Off states of your meter to custom colors, press the Set On Color and Set 
+Off Color buttons, respectively. The color picker dialog window of your OS will let you pick a 
+desired color. The Set On Color and Set Off Color buttons are shown in the figure below.
+Setting Level Meter and Label Size
+Depending on your liking you might want a meter with a different number of segments, of 
+different size, or with a larger or smaller Label and Value display.
+For other visibility settings for the Panel representation (Label, Picture, and Value, please re­
+fer to subsection 8.2.1 in the Application Reference).
+► The size of the Level Meter Module's Panel representation depends on the number and 
+size of the segments it comprises. To change the width and height of the segments, enter 
+the desired size into the Segment Width and Segment Height edit fields in the Level Meter Mod­
+ule's View page (shown in the screenshot below).
+Panel
+Level Meter
+ 
+REAKTOR 5.5 - Module Reference - 75
+
+
+--- Page 76 ---
+
+► To change the number of segments in the meter, enter the desired number into the 
+Number of Segments edit field (shown in the screenshot below).
+► To quickly change the size of the Level Meter Module's Panel representation, you can 
+use one of the three default sizes.
+► To choose a default size for the Level Meter Module, choose the desired size from the 
+Set Default Size radio button selector, shown in the screenshot below.
+Use the Set Default Size radio button selector in the Level Meter Module's View page to quick­
+ly change the size of your Level Meter Module's Panel representation. Use the Label/Value 
+radio button selector to change the size of the Label and Value in the Module's Panel repre­
+sentation.
+► To change the size of your Level Meter Module's Label and Value display, choose the 
+desired size from the Label/Value radio button selector in the View page (shown in the 
+screenshot above).
+Changing the Level Meter Orientation
+The Level Meter Module's Panel representation can sit either vertically or horizontally in 
+the Instrument Panel.
+► To change the Level Meter Module's orientation, click on the appropriate radio button 
+in the Orientation radio button selector.
+Custom meter styles can be created via skins. Please refer to section 8.5 in the Application 
+Reference for more information on how to do this.
+Panel
+Level Meter
+ 
+REAKTOR 5.5 - Module Reference - 76
+
+
+--- Page 77 ---
+
+1.9.5
+Example: Signal Level Display
+ 
+The Level Meter Module is good for using the meter Panel representation to display incom­
+ing signal levels in the logarithmic scale. This means that although values incoming to the 
+Level Meter Module are in the range [0 … 1], for example, the display shows the level 
+equivalent in the logarithmic scale. For example, an envelope follower Structure (see ex­
+ample for the Peak Detector Module, see also ↑12.14, Peak Detector) outputs an envelope 
+level in the range [0 … 1]. The Level Meter Module then enables you to see from the In­
+strument Panel what control signal the envelope follower has generated from the initial in­
+coming signal.
+Fig. 1.26 The Level Meter Module displays the signal level from the "Event Follower" Macro, which is in the range [0 … 1], 
+in the logarithmic scale.
+1.10
+Picture
+ 
+Fig. 1.27 A Picture Module
+1.10.1
+Overview
+ 
+The Picture Module enables you to display a picture on the Instrument Panel. Pictures can 
+be loaded from 24-bit Bitmap (*.bmp) and 32-bit uncompressed Targa (*.tga) images. 
+The advantage of the Targa file format is that it supports an alpha channel, which can be 
+used as a mask for the visible portion of the graphic — the unmasked portion will then be 
+transparent. You can load pictures using the Select Picture drop-down menu in the View page 
+of any object that can display pictures. Opening a picture automatically brings up the Pic­
+ture Properties window where you specify all relevant picture settings. By default, the dis­
+Panel
+Level Meter
+ 
+REAKTOR 5.5 - Module Reference - 77
+
+
+--- Page 78 ---
+
+play size will be set to the size of the image. It is possible to modify the display size in 
+pixels in the Module's View page and the visibility of a frame can be turned on or off. The 
+image itself cannot be resized inside REAKTOR; for this you need to use external picture 
+editing software. All loaded pictures are automatically shared and available to all Modules 
+that use pictures. The Picture Module has no input or output ports.
+Application
+The Picture Module is usually applied for decoration for your Instrument Panel. As with 
+the Multi Picture Module (↑1.11, Multi Picture), you can place a Mouse Area Module 
+(↑1.18, Mouse Area) over the Picture Module to add graphics to the Mouse Area interac­
+tion field.
+1.10.2
+Properties: Function Page
+ 
+Loading a Picture
+Before the Picture Module displays a picture in the Instrument Panel, you need to load the 
+picture file that the Module should use.
+1.
+To load a picture file for the Picture Module, go to its Function page and open the 
+Select Picture drop-down menu (shown in the figure below).
+2.
+Now either choose the -> Open from file… menu entry to load a new picture file or 
+choose a menu entry corresponding to a picture file that has already been loaded into 
+the Ensemble by another Module.
+3.
+This opens up the Picture Properties dialog window. This window shows the picture 
+preview. In the case of the Picture Module it usually suffices to just press the OK but­
+ton to load the picture and continue with your work. Please refer to section 8.5 in the 
+Application Reference for more information on working with the Picture Properties dia­
+log window.
+Panel
+Picture
+ 
+REAKTOR 5.5 - Module Reference - 78
+
+
+--- Page 79 ---
+
+These instructions should be considered as the example for the Picture Module.
+Choosing the Picture Index
+If the picture you have loaded consists of a number of animation frames which you have 
+also configured with the Picture Properties dialog window (please refer to subsection 8.5.3 
+in the Application Reference for more information on this), you may choose which anima­
+tion frame is displayed in the Instrument Panel.
+► To choose which animation frame is displayed in the Instrument Panel, go to the Mod­
+ule's Function page and select the index of the animation frame with the Index edit field. 
+This edit field is shown in the figure below.
+1.10.3
+Properties: View Page
+ 
+Turning on the Picture Frame
+► To turn on the frame for the Picture Module's Panel representation, engage the Has 
+Frame checkbox in the View page (shown in the screenshot below). 
+Setting the Display Size
+Depending on your Instrument Panel layout, you might want a larger or smaller display 
+area for your picture. This can be useful when you want to tile certain parts of your picture 
+when the display size exceeds the size of the actual picture used.
+Please refer to subsection 8.5.4 in the Application Reference for more information on resiza­
+bility.
+► To set the width and height of the Picture Module's Panel representation, go to the 
+Module's View page and enter the desired values into the Width and Height edit fields, as 
+shown in the figure above.
+Panel
+Picture
+ 
+REAKTOR 5.5 - Module Reference - 79
+
+
+--- Page 80 ---
+
+Choosing Label Size and Visibility Settings
+► To reduce the size of your Picture Module's Label, engage the Small Label checkbox 
+(shown in the figure below).
+► To make the Label disappear, disengage the Show Label checkbox (shown in the figure 
+below).
+► To make the Picture Module's Panel representation disappear, disengage the On check­
+box (shown in the figure below).
+► Engage the Show Label checkbox to show the Label. Engage the Small Label checkbox to 
+reduce the size of the Label of the Module's Panel representation. Disengage the On check­
+box to make the Picture Module's display disappear.
+1.11
+Multi Picture
+ 
+Fig. 1.28 Multi Picture Module
+1.11.1
+Overview
+ 
+The Multi Picture Module is a user definable display and a 2-dimensional controller (like 
+the XY module, see also ↑1.14, XY) that reports the mouse position and mouse button sta­
+tus at its output ports. It supports multi-frame animation so that the animation frame se­
+lected by the "Sel" (select) input port can be displayed by the Multi Picture Module's Pan­
+el representation. For this the loaded picture has to be set up in the Picture Properties 
+window by indicating the number of animation frames and their orientation (horizontal or 
+vertical) within the loaded picture file.
+Panel
+Multi Picture
+ 
+REAKTOR 5.5 - Module Reference - 80
+
+
+--- Page 81 ---
+
+You can load pictures using the Select Picture drop-down menu in the View page of any ob­
+ject that can display pictures. Opening a picture automatically brings up the Picture Prop­
+erties window where you specify all relevant picture settings. By default, the display size 
+will be set to the size of the image. It is possible to modify the display size in pixels in the 
+Module's View page and the visibility of a frame can be turned on or off. The image itself 
+cannot be resized inside REAKTOR; for this you need to use external picture editing soft­
+ware. All loaded pictures are automatically shared and available to all other Modules that 
+use pictures as well.
+Pictures can be loaded from 24-bit Bitmap (*.bmp) and 32-bit uncompressed Targa 
+(*.tga) images. The advantage of the Targa file format is that it supports an alpha channel, 
+which can be used as a mask for the visible portion of the graphic — the unmasked por­
+tion will then be transparent. This is useful for round knobs on a square background, for 
+example.
+The Multi Picture Module has two operation modes:
+▪
+If the Incremental Mouse Mode is turned off, the absolute mouse position on the Mod­
+ule's Panel representation is translated to values between the "Min" and "Max" values 
+set in the Function page. The display width and height define the range and resolution 
+for mouse movements and the Mouse Reso edit field in the Function page has no effect.
+▪
+With the Incremental Mouse Mode turned on, the "MX" (mouse X) and "MY" (mouse Y) 
+values are controlled by the relative movement of the mouse compared to the point 
+where the left the mouse button was pressed. The X and Y mouse resolution is given by 
+the Mouse Reso edit field in the Function page.
+Application
+The Multi Picture Module can be used to add animations to your Instrument Panel. These 
+animations can be coupled to Modules such as the Mouse Area Module (↑1.18, Mouse 
+Area) to create custom controls.
+1.11.2
+Ports
+ 
+Input Ports
+▪
+(Sel) "Sel" (select) is the Audio input port for selecting the animation index (animation 
+frame) by number. The range of values at this input port is [0 … "N-1"] where "N" is 
+the number of animation frames. The default value that is used in the case that this 
+input port is disconnected is "0". The "Sel" input port is sampled at the display rate.
+Panel
+Multi Picture
+ 
+REAKTOR 5.5 - Module Reference - 81
+
+
+--- Page 82 ---
+
+▪
+(BX) "BX" (base X) is the Event input port to set a new base value from which the incre­
+mental increase in the "MX" (mouse X) value is calculated. The "BX" (base X) value is 
+only used if Incremental Mode has been activated.
+▪
+(BY) "BY" (base Y) is the Event input port to set a new base value from which the incre­
+mental increase in the "MY" (mouse Y) value is calculated. The "BY" (base Y) value is 
+only used if Incremental Mode has been activated.
+Output Ports
+▪
+(MX) "MX" (mouse X) is the Event output port for the horizontal (X) mouse position 
+when the mouse is within the Multi Picture Module's display area in the Instrument 
+Panel. Events with the current mouse position are only sent when the mouse button is 
+depressed.
+▪
+(MY) "MY" (mouse Y) is the Event output port for the vertical (Y) mouse position when 
+the mouse is within the Multi Picture Module's display area in the Instrument Panel. 
+Events with the current mouse position are only sent when the mouse button is de­
+pressed.
+▪
+(MB) "MB" (mouse button) is the Event output port for the left mouse button status. It 
+is "1" when the mouse button is depressed; otherwise it is "0". Events are sent from 
+this output port only when the mouse is within the Multi Picture Module's display area 
+in the Instrument Panel.
+▪
+(N - 1) "N-1" is the Event output port for the value "N - 1" where "N" denotes the num­
+ber of animation frames you have entered in the Picture Properties dialog window.
+1.11.3
+Properties: Function Page
+ 
+Loading a Picture
+Before the Multi Picture Module displays a picture in the Instrument Panel, you need to 
+load the picture file that the Module should use.
+Panel
+Multi Picture
+ 
+REAKTOR 5.5 - Module Reference - 82
+
+
+--- Page 83 ---
+
+1.
+To load a picture file for the Multi Picture Module, go to its Function page and open 
+the Select Picture drop-down menu (shown in the figure below). The Max Index display 
+shows the value "N-1" where "N" denotes the number of animation frames in your load­
+ed picture.
+2.
+Now either choose the -> Open from file… menu entry to load a new picture file or 
+choose a menu entry corresponding to a picture file that has already been loaded into 
+the Ensemble by another Module.
+3.
+This opens up the Picture Properties dialog window. This window shows the picture 
+preview and lets you specify how REAKTOR should extract the animation frames from 
+the loaded picture. Please refer to section 8.5 in the Application Reference for more 
+information on working with the Picture Properties dialog window. Press the OK button 
+when you are finished setting the picture properties.
+Keeping the Multi Picture Module Always Active
+If the Multi Picture Module is not connected to an active signal flow, then you are unable 
+to switch the displayed pictures via the "Sel" (select) input port. In such a case you can 
+activate the Module with the Always Active checkbox.
+► To activate the Multi Picture Module, go to its Function page and engage the Always Ac­
+tive checkbox, shown in the figure below.
+Activating Incremental Mouse Mode
+The output values for the Multi Picture Module are calculated in two different ways, de­
+pending on the operation mode. These two modes are discussed in the Module's Overview, 
+above.
+Panel
+Multi Picture
+ 
+REAKTOR 5.5 - Module Reference - 83
+
+
+--- Page 84 ---
+
+► To toggle between the two Multi Picture operation modes, engage or disengage the Incre­
+mental Mouse Mode checkbox accordingly. This checkbox is shown in the screenshot of the 
+Function page below.
+Setting the Range and Resolution for the Output Values
+The range and resolution of the Multi Picture Module's values at the "MX" (mouse X) and 
+"MY" (mouse Y) output ports are set in the Output Range area of the Module's Function 
+page, shown in the screenshot below. The edit fields contained in this area function analo­
+gously to the ones contained in a conventional Knob or Fader Module. To learn how these 
+edit fields affect the output values, please refer to subsection 8.2.1 in the Application 
+Reference.
+Fig. 1.29 The range and resolution of the Multi Picture Module's output values are set in the Output Range area of its Func­
+tion page.
+1.11.4
+Properties: View Page
+ 
+Turning on the Picture Frame
+► To turn on the frame for the Multi Picture Module's Panel representation, engage the 
+Has Frame checkbox in the View page (shown in the screenshot below).
+Panel
+Multi Picture
+ 
+REAKTOR 5.5 - Module Reference - 84
+
+
+--- Page 85 ---
+
+Setting the Display Size
+Depending on your Instrument Panel layout, you might want a larger or smaller display 
+area for your picture. This can be useful when you want to tile certain parts of your picture 
+when the display size exceeds the size of the actual picture used.
+Please refer to subsection 8.5.4 in the Application Reference for more information on resiza­
+bility.
+► To set the width and height of the Picture Module's Panel representation, go to the 
+Module's View page and enter the desired values into the Width and Height edit fields, as 
+shown in the figure above.
+Choosing Label Size and Visibility Settings
+► To reduce the size of your Multi Picture Module's Label, engage the Small Label checkbox 
+(shown in the figure below).
+► To make the Label disappear, disengage the Show Label checkbox (shown in the figure 
+below).
+► To make the Picture Module's Panel representation disappear, disengage the On check­
+box (shown in the figure below).
+► Engage the Show Label checkbox to show the Label. Engage the Small Label checkbox to 
+reduce the size of the Label of the Module's Panel representation. Disengage the On check­
+box to make the Multi Picture Module's display disappear.
+1.11.5
+Example: Value Edit Field
+ 
+This example shows how to build a custom value edit field that displays numbers with one 
+decimal point precision. The edit field also enables you to change the values by clicking 
+and dragging the mouse over the edit field and to reset the value to "0" by double clicking 
+on the field. Start by creating a Macro with an output port labeled "Out". Make sure the 
+Macro is set to Monophonic Mode before you start building this example Structure. First 
+we will start with building the value display. We want to display decimal numbers from 
+Panel
+Multi Picture
+ 
+REAKTOR 5.5 - Module Reference - 85
+
+
+--- Page 86 ---
+
+-9.9 to 9.9, in 0.1 step increments. For this purpose you will need three Multi Picture 
+Modules (↑1.11, Multi Picture): one for the sign ( + and - ), one for the integers ( 0 to 9 ), 
+and one for the first decimal place after zero (.0 to .9).
+After inserting the three Multi Picture Modules into the Structure, designate one for the 
+sign and go to its Function page. There, in the Select Picture menu you will find the -> Open 
+from file… menu entry, click on it. This opens the Load Image File dialog box. Go to the 
+Tutorial Ensembles folder and from there enter the folder labeled Module Reference where 
+you will find the file "plus_minus.tga". Select the file and click the Open button. In the 
+following Picture Properties dialog window, make sure that the Alpha Channel checkbox is ac­
+tivated. Next, make sure that the Animation Width and Animation Height edit fields both carry 
+the value "32". You should now see a "+" and a "-" with transparent backgrounds next to 
+each other in the Picture Preview display. If so, click the OK button to continue.
+Fig. 1.30 The Picture Properties dialog window.
+Panel
+Multi Picture
+ 
+REAKTOR 5.5 - Module Reference - 86
+
+
+--- Page 87 ---
+
+Now follow this same procedure for loading the digit animations to the other the Multi Pic­
+ture Modules. Designate one of the Modules for integer digits and load the "numbers.tga" 
+file from the same location as "plus_minus.tga" into the Multi Picture Module whilst mak­
+ing sure that the same settings for the Alpha Channel checkbox and Animation Height and Ani­
+mation Width edit fields apply. For the third Multi Picture Module, repeat the aforementioned 
+procedure, but this time loading the file "decimals.tga" into the Module. This last Module 
+will be dedicated to display the first position after the decimal point. Go to the Instrument 
+Panel and arrange the signs and digits in a way that makes sense when reading from left 
+to right: first the sign, then the integer, and then the decimal fraction.
+Fig. 1.31 The display part of the value edit field.
+Now we need a way to split up the information that the value display should display into 
+three parts: the sign (if the value is positive or negative), the integer part, and the decimal 
+fraction. The first split will happen between the sign and the numbers. For that, insert a 
+Rectify/Sign Module into the structure. The incoming value to the value display goes into 
+the "In" input port of the Rectify/Sign Module. The "Sign" output port of that Module out­
+puts a "1" if the incoming value is positive and "-1" if the incoming value is negative. We 
+need to convert these values to specify the picture index of the animation loaded into the 
+Multi Picuture Module. For that purpose, add an Add Module (↑4.2, Add, +) into the 
+structure and use it to add "1" to the signal from the "Sign" output port of the Rectify/Sign 
+Modue. The output of the Add Module will then be "0" if the value at the input of the Rec­
+tify/Sign Module is negative and "2" if the value is positive. After connecting the output 
+port of the Add Module to the "Sel" input port of the Multi Picture Module, the "0" will 
+address the first picture in the animation, the minus sign, and the value "2" will address 
+the last picture of the animation, the plus sign. To test out the functionality of the value 
+display, create a Knob Module at the "In" input of the Rectify/Sign Module by right-click­
+ing on the "In" input port and clicking on the Create Control menu item. Set the range of 
+the knob to [-9.9 … 9.9] by going to the Module's Function page and setting the Max Value 
+edit field to "9.9" and the Min Value edit field to "-9.9".
+On to the numbers: insert two Modulo Modules (↑4.9, Modulo) into the structure. Connect 
+the "|x|" output port of the Rectify/Sign Module the "A" input port of one Modulo Module. 
+Since we want to split the number into integers and fractions, it is only natural to create a 
+Panel
+Multi Picture
+ 
+REAKTOR 5.5 - Module Reference - 87
+
+
+--- Page 88 ---
+
+Constant with the value "1" at the "B" input port of the first Modulo Module. Now the "Div" 
+output port of the Modulo Module carries the value that is the largest multiple of "1" and 
+is at the same time smaller than the value received from the "|x|" output port of the Recti­
+fy/Sign Module. For example, if |x| = 5.2, then Div = 5 or if |x| = 3.8, then Div = 3. Con­
+nect the "Div" output port to the "Sel" input port of the Multi Picture Module that is meant 
+to display the integer part of the incoming signal value. Since we want to display signals 
+within the range -9.9 to 9.9, then the "Div" value has a range [0 … 9] which exactly 
+matches the indices of the pictures of the animation file "numbers.tga" loaded into that 
+Multi Picture Module. Go to the Instrument Panel and move the knob that you previously 
+created and watch the sign and the integer numbers change in the Panel display of the 
+Multi Picture Modules. Next, hook up the decimal fraction part of the incoming signal, 
+namely the value sent to the "Mod" output of the Modulo Module, to the "A" input port of 
+the second Modulo Module. Next, create a Constant with the value "0.1" at the "B" input 
+port of that Modulo Module. Wire the "Div" output port that same Modulo Module to the 
+"Sel" input of the last remaining Multi Picture Module. With the "B" input port of the first 
+Modulo Module receiving a constant value of "0.1", the "Mod" output port of the Modulo 
+Module outputs the remainder of the incoming value, divided by "0.1". To demonstrate 
+this with the numbers used in the previous example, if |x| = 5.2, then for the first Modulo 
+Module, Mod = 0.2 and sending that value to the "A" input of the second Modulo Module, 
+we get 0.2 / 0.1 = 2 at the "Div" output of the second Modulo Module. In the same way, if 
+|x| = 3.8, then for the first Modulo Module, Mod = 0.8 and when that value is sent to the 
+"A" input port of the second Modulo Module, the "Div" output of that Module is 0.8 / 0.1 = 
+8. Note that since the range of the "Mod" output of the first Modulo Module is [0 … 0.9] 
+and in the second Modulo Module we divide by "0.1", the range of the "Div" output of the 
+second Modulo Module is [0 … 9]. In this case "Mod" has a range [0 … 9] which exactly 
+matches the indices of the pictures of the animation file "decimals.tga" loaded into that 
+Multi Picture Module. Go to the Instrument Panel and move the previously created knob to 
+test out the functionality of the value display.
+Panel
+Multi Picture
+ 
+REAKTOR 5.5 - Module Reference - 88
+
+
+--- Page 89 ---
+
+Fig. 1.32 The Structure for sorting out the sign and decimal parts of the value.
+Now that you have a functioning value display, you probably want a way to manipulate the 
+values directly through the value display itself, not with an extra knob cluttering your Pan­
+el layout. This can conveniently be achieved with the Mouse Area Module. Place it into the 
+structure in front of the Rectify/Sign Module, leaving a bit of space for a Merge Module 
+that you will insert later. By default, the Mouse Area Module is transparent in the Instru­
+ment Panel. To make testing the functionality easier you should make the mouse area visi­
+ble. First, the Mouse Area Module needs to have a graphic element in the Instrument Pan­
+el. In the Appearance page of the Module, click on the Bar Outline Style selector to create a 
+filled rectangle as the graphical element of the mouse area in the Instrument Panel. Now 
+you have a 100 % transparent rectangle marking the mouse area in the Instrument Panel; 
+for ease of manipulation you should to make the appearance more opaque. To do this, en­
+ter the value "80" into the Inactive Transparency edit field and the value "70" into the Active 
+Transparency edit field of the Module's Appearance page. To add one more touch, click on 
+the Left Button selector to make the active state of the mouse area appear during a left-click 
+on the mouse area in the Instrument Panel. Now you should be able to see the mouse area 
+in the Instrument Panel and see it become darker when you click on it. Unlock the Panel 
+and move the mouse area over your value display. Set the dimensions of the mouse area to 
+cover all digits of the value display using the Size X and Size Y edit fields in the Appearance 
+page of the Mouse Area Module. After finding good settings for the dimensions, ("30" for 
+Size X and "60" for Size Y should be good) lock the Panel again.
+Panel
+Multi Picture
+ 
+REAKTOR 5.5 - Module Reference - 89
+
+
+--- Page 90 ---
+
+Fig. 1.33 The value edit field with the mouse area.
+The Mouse Area Module can supply us with the values that we want to display with the 
+structure that you built above. When you click and drag the mouse over the mouse area in 
+the Instrument Panel, the "X" and "Y" output ports output events carrying the "x" and "y" 
+coordinates, respectively, as specified in the Function page of the Module. For our pur­
+pose, we are only interested in clicking and dragging the mouse vertically to change the 
+values in the value display since that seems the most intuitive setup for most Instrument 
+layouts. For this reason we will leave the "X" output (and hence the settings in the Range X 
+area of the Function page) alone and focus on the "y" coordinate. Connect the "Y" output 
+port of the Mouse Area Module to the "In" input port of the Rectify/Sign Module. In order 
+to be able to control the output values of the "X" and "Y" output ports of the Mouse Area 
+Module over the mouse area in the Instrument Panel much like a fader, that is, that click­
+ing and dragging changes the output value, engage the Incremental Mouse checkbox in the 
+Function page of the Mouse Area Module.
+The range of values that we want to get out of the Mouse Area Module is [-9.9 … 9.9]. To 
+specify these parameters, go to the Function page of the Mouse Area Module and enter 
+"-9.9" into the Min Y Value edit field and "9.9" into the Max Y Value edit field in the Range Y 
+area. Next, we want to determine the precision with which one can manipulate the output 
+values. The relevant parameters to this are edited with the Num Steps X and Mouse Reso X edit 
+fields. If Num Steps X and Mouse Reso X are too large, you would have to drag the mouse all the 
+way to the top of the screen to see any change in the output value. On the other hand, if 
+these parameters are too small, dragging the mouse over the mouse area just a small dis­
+tance already effects a great change in the output value. In order to have the right value 
+increments at the output, the Num Steps X value should be an integer multiple of the Mouse 
+Reso X value. Try playing around with the values and seeing the effect it has on the value 
+display, but in the end settling with a value of "1000" in the Num Steps X edit field and 
+"500" in the Mouse Reso X edit field should be fine.
+You now have a structure that displays values and lets you directly manipulate the values 
+by clicking and dragging the mouse over the display. We would like to add one additional 
+feature to this setup, namely, the possibility to double-click the mouse area to reset the 
+value to a certain number. The Mouse Area Module has an output port labeled "Db" that 
+Panel
+Multi Picture
+ 
+REAKTOR 5.5 - Module Reference - 90
+
+
+--- Page 91 ---
+
+sends out an event with the value "1" every time the mouse area on the Panel is double-
+clicked. You now have two sources of events to determine the number that your value edit 
+field is supposed to display. To combine them, place a Merge Module into the structure 
+between the Mouse Area Module and the Rectify/Sign Module. Replace the wire to the "In" 
+input port of the Rectify/Sign Module with a wire from the "Out" output port of the Merge 
+Module. Next, connect the "Y" output port of the Mouse Area Module to the input port of 
+the Merge Module and finally, while holding Ctrl, drag a wire from the "Db" output of the 
+Mouse Area Module to the three dots on the left side of the Merge Module. The latter ac­
+tion creates a second port for the Merge Module. When you click and drag the mouse over 
+the mouse area in the Instrument Panel, a value is sent to the Merge Module from the "Y" 
+output port of the Mouse Area Module. This value is then forwarded in the form of an 
+event (carrying the same value as was received from the "Y" output port) to the value dis­
+play part of your structure which starts with the Rectify/Sign Module. If you now double 
+click the mouse area in the Instrument Panel, the value "1" is sent to the Merge Module. 
+Now the output port of the Merge Module sends an event with the value "1". This should 
+be reflected in the Instrument Panel where the value display should display "+1.0". Each 
+new event at any of the input ports of the Merge Module triggers an event at the output 
+port with the same value as the last incoming event. During initialization, the value from 
+the lowest input port of the Merge Module is sent last to its output port so in the current 
+structure, if you press the Run/Stop Audio button twice (turning the audio off and then on 
+again) to reinitialize the structure, your value display will show the initialization value com­
+ing from the "Db" output port of the Mouse Area Module, namely "1". Depending on the 
+circumstances, this might not be what you want, so changing the port order of the wires 
+connected to the Merge Module can be a way to get the desired reinitiation behavior. In 
+this case switching the port orders around will yield the initialization value "0" from the "Y" 
+port of the Mouse Area Module to be sent to the Merge Module's output last.
+Regardless of the port order of the wires at the Merge Module's input, you might not want 
+the value edit field to be reset to "+1.0" when you double click the display. Having a reset-
+behavior of "0" might be much more natural. This can be changed very easily with the help 
+of only one additional Module. Insert a Value Module into the structure and connect the 
+"Db" output port of the Mouse Area Module to the "Trig" input port. Any event at the "Trig" 
+input port will cause an event with the value lying at the "In" input port of the Value Mod­
+ule to be sent from its output port. In this case we leave the "In" input port disconnected 
+which means that an event from the "Db" output port of the Mouse Area Module causes an 
+event with the value "0" to be sent from the output of the Value Module. This is exactly 
+Panel
+Multi Picture
+ 
+REAKTOR 5.5 - Module Reference - 91
+
+
+--- Page 92 ---
+
+what you want: you replaced an event carrying the value "1" with an even carrying the val­
+ue "0"! Now replace the wire at the input port of the Merge Module that is connected to 
+the "Db" output port of the Mouse Area Module with a wire to the output port of the Value 
+Module. Now go to the Instrument Panel, make sure the value display is nonzero and dou­
+ble click it. Voila! The value display should now reset to the value "0".
+Your value edit field is almost complete. You are probably asking, “Why almost and not 
+fully complete??” The reason lies yet again in the initialization behavior. If you reinitialize 
+the structure or load the Instrument anew, regardless of the value that the display was set 
+to, it will always show "0". If you want to use this structure in an Instrument, it is desirable 
+to have the Instrument's state upon saving fully recalled. Knob, fader, and value display 
+settings count among the things you usually do not want to change when you reload an 
+Instrument. This is where the Snap Value Module comes into play. Insert one into the 
+structure and connect its input port to the output port of the Merge Module. The output 
+port of the Snap Value Module should now be connected to the input port of the Rectify/
+Sign Module and the "Out" Out Port that you added to your Macro's structure in the very 
+beginning. The Snap Value Module takes the last value that was received at its input port 
+and stores it in memory. When the structure is reinitialized or the Instrument is reloaded, 
+this value will be sent to the output port of the Snap Value Module (and on to the struc­
+ture downstream) instead of the initialization values from the Mouse Area Module. To en­
+sure that the Snap Value Module properly deals with the values that it is supposed to 
+store, go to its Function page and set the Max Value edit field to "9.9" and the Min Value edit 
+field to "-9.9". This range is the one we have been using in this example. Also, to retain 
+the functionality that we have achieved until now, that is, that the values from the Mouse 
+Area Module are sent to the rest of the structure (and now, to the Out Port), make sure 
+that the Event Thru checkbox in the Function page of the Snap Value Module is engaged. If 
+the Event Thru checkbox would be disengaged, the values arriving at the Snap Value Mod­
+ule's input port would not be forwarded to the output port except during initialization. Your 
+complete structure should now look like the following picture.
+Panel
+Multi Picture
+ 
+REAKTOR 5.5 - Module Reference - 92
+
+
+--- Page 93 ---
+
+Fig. 1.34 The final Structure of the value edit field.
+1.12
+Text
+ 
+Fig. 1.35 A Text Module
+1.12.1
+Overview
+ 
+The Text Module lets you display a written text with simple alignment options in the In­
+strument Panel. The displayed text should be entered in the Module's Info page. The Text 
+Module does not process any signals.
+Application
+The main application for the Text Module is to add text to the Instrument Panel. However, 
+you can also use it to add text to the Structure. For example it can be used for noting the 
+author and creation date of an instrument and to explain how it works. Longer explana­
+tions can be entered into the Info page. With the Hints feature turned on you can display 
+such a text as a fly-out info when hovering over the Module with your mouse cursor.
+Panel
+Text
+ 
+REAKTOR 5.5 - Module Reference - 93
+
+
+--- Page 94 ---
+
+The keyboard shortcut for toggling the Hints feature on and off is Ctrl+I if you are in Win­
+dows (Cmd+I if you are in Mac OS X).
+1.12.2
+Properties: Info Page
+ 
+Entering the Display Text
+The Info page for the Text Module serves to let you enter the text that the Module should 
+display.
+▪
+To display a text on the Instrument Panel and in the Module's fly-out info in the Struc­
+ture, go to the Text Module's Info page and enter your text in the edit field below. This 
+is shown in the screenshot below.
+Fig. 1.36 Use the Info page to enter the text that should be displayed in the Instrument Panel and fly-out info.
+This one instruction step here comprises the example for the Text Module (besides placing it 
+into the Structure, of course).
+1.12.3
+Properties: View Page
+ 
+Setting the Display Size
+Depending on your Instrument Panel layout, you might want a larger or smaller display 
+area for your text. If the display width is insufficient to have the text displayed in one line, 
+the text will be wrapped. If the text requires more vertical space than the chosen display 
+height, a vertical scrollbar appears on the right side of the display.
+► To set the width and height of the Text Module's Panel representation, go to the Mod­
+ule's View page and enter the desired values into the Width and Height edit fields, as shown 
+in the figure below.
+Panel
+Text
+ 
+REAKTOR 5.5 - Module Reference - 94
+
+
+--- Page 95 ---
+
+Fig. 1.37 Use the Width and Height edit fields to change the display size of the Text Module.
+Choosing Label Size and Visibility Settings
+► To reduce the size of your Text Module's Label, engage the Small Label checkbox (shown 
+in the figure below).
+► To make the Label disappear, disengage the Show Label checkbox (shown in the figure 
+below).
+► To make the Text Module's Panel representation disappear, disengage the On checkbox 
+(shown in the figure below).
+► Engage the Show Label checkbox to show the Label. Engage the Small Label checkbox to 
+reduce the size of the Label of the Module's Panel representation. Disengage the On check­
+box to make the Text Module's display disappear.
+Choosing the Text Style
+You can choose between three styles of Panel representations of the Text Module: Flat, 
+Transparent, and Frame.
+► To choose the Panel representation style for the Text Module, go to the Module's View 
+page and select the appropriate menu entry from the Style drop-down menu, as shown in 
+the figure below.
+For the Panel representation you can choose between three text alignment options: left, 
+center, and right.
+► To choose the text alignment, go to the Module's View page and choose the correspond­
+ing menu entry from the Alignment drop-down menu, as shown in the figure below.
+Panel
+Text
+ 
+REAKTOR 5.5 - Module Reference - 95
+
+
+--- Page 96 ---
+
+1.13
+Multi Text
+ 
+Fig. 1.38 Multi Text Module
+1.13.1
+Overview
+ 
+The Multi Text Module provides a changeable text display for your Instrument Panel. Any 
+number of texts can be added in the Module's Function page, where they can also be edit­
+ed or deleted. Only one text is displayed at a time on the Instrument Panel. The displayed 
+text is chosen by the input port.
+Application
+Use the Multi Text Module to create custom controls whose texts or labels change depend­
+ing on the control state. The Multi Text Module is also useful when creating interactive tu­
+torials in REAKTOR.
+1.13.2
+Ports
+ 
+▪
+(In) "In" is the Audio input port for the number of the text item to be displayed. The 
+value "0" addresses the first text, the value "1" the second text, and so on.
+1.13.3
+Properties: Function Page
+ 
+Entering the Display Texts
+You can enter several texts to be displayed by the Multi Text Module in the Module's Func­
+tion page.
+► To create a list of texts, go to the Multi Text Module's Function page.
+► To enter the first text in the list, just enter the appropriate text in the large edit field, 
+shown in the figure below.
+► To add another text at the end of the list, press the Append button.
+► To switch between the different texts, click and drag the Text ID edit field or directly en­
+ter the new text ID value into that edit field.
+Panel
+Multi Text
+ 
+REAKTOR 5.5 - Module Reference - 96
+
+
+--- Page 97 ---
+
+► To insert a new text item at the position after the current text ID, press the Insert button.
+► To delete the current text from the list, press the Delete button.
+Fig. 1.39 Use the Multi Text Module's Function page to add and edit texts that should be displayed.
+Keeping the Multi Text Module Always Active
+If the Multi Text Module is not connected to an active signal flow, then you are unable to 
+switch the displayed texts via the input port. In such a case you can activate the Module 
+with the Always Active checkbox.
+► To activate the Multi Text Module, go to its Function page and engage the Always Active 
+checkbox, shown in the figure below.
+Fig. 1.40 To activate the Multi Picture Module, engage the Always Active checkbox in its Function page.
+1.13.4
+Properties: View Page
+ 
+Setting the Display Size
+Depending on your Instrument Panel layout, you might want a larger or smaller display 
+area for your text. If the display width is insufficient to have the text displayed in one line, 
+the text will be wrapped. If the text requires more vertical space than the chosen display 
+height, a vertical scrollbar appears on the right side of the display.
+► To set the width and height of the Multi Text Module's Panel representation, go to the 
+Module's View page and enter the desired values into the Width and Height edit fields, as 
+shown in the figure below.
+Panel
+Multi Text
+ 
+REAKTOR 5.5 - Module Reference - 97
+
+
+--- Page 98 ---
+
+Choosing Label Size and Visibility Settings
+► To reduce the size of your Multi Text Module's Label, engage the Small Label checkbox 
+(shown in the figure below).
+► To make the Label disappear, disengage the Show Label checkbox (shown in the figure 
+below).
+► To make the Multi Text Module's Panel representation disappear, disengage the On 
+checkbox (shown in the figure below).
+► Engage the Show Label checkbox to show the Label. Engage the Small Label checkbox to 
+reduce the size of the Label of the Module's Panel representation. Disengage the On check­
+box to make the Multi Text Module's display disappear.
+Choosing the Text Style
+You can choose between three styles of Panel representations of the Multi Text Module: 
+Flat, Transparent, and Frame.
+► To choose the Panel representation style for the Text Module, go to the Module's View 
+page and select the appropriate menu entry from the Style drop-down menu, as shown in 
+the figure below.
+► For the Panel representation you can choose between three text alignment options: left, 
+center, and right.
+► To choose the text alignment, go to the Module's View page and choose the correspond­
+ing menu entry from the Alignment drop-down menu, as shown in the figure below.
+► The Style drop-down menu lets you choose the Panel representation of the Multi Text 
+Module. Use the Alignment drop-down menu to select the text alignment.
+1.13.5
+Example: Instructions for Tutorial
+ 
+You can use the Multi Text Module to document tutorial Instruments, for example. As 
+shown in the Structure below, use the List Module to control which text is shown in the 
+area of the Instrument Panel designated for the Multi Text Module.
+Panel
+Multi Text
+ 
+REAKTOR 5.5 - Module Reference - 98
+
+
+--- Page 99 ---
+
+Fig. 1.41 Use the List Module which text is to be displayed by the Multi Text Module.
+Next, you need to enter the desired texts into the Multi Text Module. Each text has an ID 
+number (starting with "1"), by which the List Module (↑1.3, List) addresses it. Click the 
+Append button (shown in the figure below) to add the first text. Type in the text and press 
+the Append button again to add another text. Use the Text ID edit field to go back to edit or 
+view a text. The resulting Panel representation is shown in the second figure below.
+Fig. 1.42 Use the Multi Text Module's Function page to add and edit texts.
+Fig. 1.43 The Panel representation of the Text Module along with the List Module .
+1.14
+XY
+ 
+Fig. 1.44 An XY Module
+Panel
+XY
+ 
+REAKTOR 5.5 - Module Reference - 99
+
+
+--- Page 100 ---
+
+1.14.1
+Overview
+ 
+The XY Module has two functions. It displays Audio input signals and acts as a 2-dimen­
+sional controller to be used with the mouse. Incoming data at the "X1", "Y1", "X2", and 
+"Y2" input ports can be visualized on the XY Module's Panel representation in 9 different 
+forms including pixels, rectangles, crosshairs, lines, and as an oscilloscope display.
+Similarly, when the mouse cursor lies on the XY Module's Panel representation and the 
+(left) mouse button is depressed, you can send Events with values relating to the cursor 
+position on the display from the Module's output ports. The last position can be visually 
+represented by a crosshair with a size of your choice.
+The XY Module has two operation modes:
+▪
+If the Incremental Mouse Mode is turned off, the absolute mouse position on the Mod­
+ule's Panel representation is translated to values between the "Min" and "Max" values 
+set in the Function page. . The values are output to the "MX" (mouse X) and "MY" 
+(mouse Y) output ports for the horizontal and vertical position, respectively. The dis­
+play width and height define the range and resolution for mouse movements and the 
+Mouse Reso edit field in the Function page has no effect.
+▪
+With the Incremental Mouse Mode turned on, the "MX" (mouse X) and "MY" (mouse Y) 
+values are controlled by the relative movement of the mouse compared to the point 
+where the left the mouse button was pressed. The X and Y mouse resolution is given by 
+the Mouse Reso edit field in the Function page.
+Application
+A common application for the XY Module is to create scroll bars for custom displays on 
+your Instrument Panel. You can also use the XY Module as an oscilloscope and use the 
+crosshairs to make measurements of the incoming signal which are then directly forwarded 
+to the Structure for further processing. Of course, you can also use the XY Module also as 
+a conventional XY controller.
+1.14.2
+Ports
+ 
+Input Ports
+▪
+(X1) "X1" is the Audio input port for the X1 coordinate of the visual object.
+▪
+(Y1) "Y1" is the Audio input port for the Y1 coordinate of the visual object.
+▪
+(X2) "X2" is the Audio input port for the X2 coordinate of the visual object.
+Panel
+XY
+ 
+REAKTOR 5.5 - Module Reference - 100
+
+
+--- Page 101 ---
+
+▪
+(Y2) "Y2" is the Audio input port for the Y2 coordinate of the visual object.
+Output Ports
+▪
+(MX) "MX" (mouse X) is the Event output port for the horizontal (X) mouse position 
+when the mouse is within the XY Module's display area in the Instrument Panel. Events 
+with the current mouse position are only sent when the mouse button is depressed.
+▪
+(MY) "MY" (mouse Y) is the Event output port for the vertical (Y) mouse position when 
+the mouse is within the XY Module's display area in the Instrument Panel. Events with 
+the current mouse position are only sent when the mouse button is depressed.
+▪
+(MB) "MB" (mouse button) is the Event output port for the left mouse button status. It 
+is "1" when the mouse button is depressed; otherwise it is "0". Events are sent from 
+this output port only when the mouse is within the XY Module's display area in the In­
+strument Panel.
+1.14.3
+Properties: Function Page
+ 
+Keeping the XY Module Always Active
+If the XY Module is not connected to an active signal flow, then the incoming values at the 
+input ports are not displayed by the Panel representation. In such a case you can activate 
+the Module with the Always Active checkbox.
+► To activate the XY Module, go to its Function page and engage the Always Active check­
+box, shown in the figure below.
+Activating Incremental Mouse Mode
+The output values for the XY Module are calculated in two different ways, depending on 
+the operation mode. These two modes are discussed in the Module's Overview, above.
+► To toggle between the two XY Module operation modes, engage or disengage the Incre­
+mental Mouse Mode checkbox accordingly. This checkbox is shown in the screenshot of the 
+Function page below.
+Panel
+XY
+ 
+REAKTOR 5.5 - Module Reference - 101
+
+
+--- Page 102 ---
+
+Setting the Range and Resolution for the Output Values
+The range and resolution of the XY Module's values at the "MX" (mouse X) and "MY" 
+(mouse Y) output ports are set in the Output Range area of the Module's Function page, 
+shown in the screenshot below. The edit fields contained in this area function analogously 
+to the ones contained in a conventional Knob or Fader Module. To learn how these edit 
+fields affect the output values, please refer to subsection 8.2.1 in the Application Refer­
+ence.
+Fig. 1.45 The range and resolution of the XY Module's output values are set in the Output Range area of its Function page.
+1.14.4
+Properties: View Page
+ 
+In the View page you can set the type of object that visualizes the incoming Audio signals. 
+There are nine options:
+▪
+Pixel: The input ports "X1" and "Y1" control the horizontal and vertical coordinates of 
+the pixel.
+▪
+2 Pixels: The input ports "X1" and "Y1" control the horizontal and vertical coordinates 
+of the first pixel; "X2" and "Y2" determine the coordinates of the second pixel.
+▪
+Bar: The input ports "X1" and "Y1" control the horizontal and vertical coordinates of one 
+corner of the bar; "X2" and "Y2" determine the coordinates of the second corner.
+▪
+Shadowed Bar: The input ports "X1" and "Y1" control the horizontal and vertical coordi­
+nates of one corner of the shadowed bar; "X2" and "Y2" determine the coordinates of 
+the second corner.
+▪
+Rectangle: The input ports "X1" and "Y1" control the horizontal and vertical coordinates 
+of one corner of the rectangle; "X2" and "Y2" determine the coordinates of the second 
+corner.
+▪
+Cross: The input ports "X1" and "Y1" control the horizontal and vertical coordinates of 
+the crosshair.
+Panel
+XY
+ 
+REAKTOR 5.5 - Module Reference - 102
+
+
+--- Page 103 ---
+
+▪
+2 Crosses: The input ports "X1" and "Y1" control the horizontal and vertical coordinates 
+of the first crosshair; "X2" and "Y2" determine the coordinates of the second crosshair.
+▪
+Line: The input ports "X1" and "Y1" control the horizontal and vertical coordinates of 
+the line starting point and the coordinates of the line's ending point are set with the 
+"X2" and "Y2" input ports.
+▪
+Scope: The scope object displays fast moving Audio data that is determined by the "X1" 
+and "Y1" coordinates. Note that all other display modes evaluate the input ports only at 
+the lower graphics update rate.
+► To choose the object type, go to the XY Module's View page and select the correspond­
+ing menu entry from the Object Type drop-down menu, as shown in the figure below.
+► Use the Object Type drop-down menu to choose the data display type.
+The XY Module's display fades from one display (data) state to the next. You can set the 
+fade time, in milliseconds in the range [0 … 100].
+► To set the display fade time, go to the XY Module's View page and enter the desired 
+fade time in milliseconds into the Fade Time edit field, as shown in the figure below.
+► Use the Fade Time edit field to set the crosshair size and the Cursor Type drop-down menu 
+to choose the cursor size.
+Panel
+XY
+ 
+REAKTOR 5.5 - Module Reference - 103
+
+
+--- Page 104 ---
+
+► You can also set the size of the crosshair appearing at the mouse position.
+► To set the size of the crosshair, choose the appropriate menu entry from the Cursor Type 
+drop-down menu in the View page (shown in the screenshot above).
+1.14.5
+Example: Multiplex Sequencer
+ 
+This example shows how to build a sequencer with variable length, but with a maximum of 
+16 steps. The first part of the Structure is shown in the figure below. There you see that 
+the core of the sequencer is a Multiplex 16 Module (↑8.5, Multiplex 16 Sequencer) and 
+the values of the steps are received from Knob Modules (↑1.1, Fader/Knob) at the input 
+ports "0" to "15". The sequence length of the step at which the sequencer "folds back" to 
+the first step, is set with the knob labeled "Length" at the "Len" input port. The actual po­
+sition of the sequencer is received at the "Pos" (position) input port in the form of a regular 
+Events with incremental values. The value of the Event determines the sequencer position 
+where values greater than "Len" are "folded back" to the set sequencer range.
+Fig. 1.46 Multiplex Sequencer
+In this example, the "Pos" values are ultimately received from the Sync Clock Module 
+(↑2.15, Sync Pulse) which sends clock Events at regular time intervals, synchronized to 
+the MIDI Clock. The rate of outgoing Events can be set at the Sync Clock Module's (↑2.15, 
+Sync Pulse) Function page, with the Rate drop-down menu. In order to get regular Events 
+carrying incremental values, the Counter Module (↑13.2, Counter) has been used. Each 
+Event from the Sync Clock Module (↑2.15, Sync Pulse) increments the output of the 
+Panel
+XY
+ 
+REAKTOR 5.5 - Module Reference - 104
+
+
+--- Page 105 ---
+
+Counter Module by one, which then ends up being used as the "Pos" value for the Multi­
+plex 16 Module (↑8.5, Multiplex 16 Sequencer). At the Counter Module's "Set" input port 
+you should have a Button Module (↑1.2, Button). In its Function page, set the Button 
+Module to Trigger Mode and its "Max" value to zero. This enables you to reset the sequenc­
+er to its first position from the Instrument Panel.
+As an additional feature, the XY Module has been used to graphically track the current se­
+quencer position. The final Structure with this implemented is shown in the first figure at 
+the end of the example and the final Panel representation of the sequencer is shown at the 
+last figure at the end of the example. Please look at that figure to see where we are headed 
+with the XY Module. The XY Module should be configured to draw a rectangle from the co­
+ordinates (Step, 0) to (Step + 1, 1). This corresponds to going to its View page and choos­
+ing the Rectangle menu entry from the Object Type drop-down menu (shown in the figure be­
+low). Also, you don't need a cursor and therefore choose the None menu entry from the 
+Cursor Type drop-down menu (also shown in the figure below). While you are already in the 
+XY Module's View page, disengage the Show Label and Show Value checkboxes and set the 
+Height and Width edit fields so that the XY Module's Panel representation looks similar to 
+what is depicted in the last figure of this example.
+Fig. 1.47 To draw a rectangle from (X1, Y1) to (X2, Y2), choose the Rectangle menu entry from the Object Type drop-down 
+menu.
+The rectangle object type causes the XY Module's Panel representation to draw a rectangle 
+from the coordinates (X1, Y1) to the coordinates (X2, Y2). We want to turn the XY Module 
+into a row of 16 "imaginary" rectangles, each corresponding to one of the 16 steps in the 
+sequencer. This is done the easiest when each box has the dimensions 1 by 1. For this 
+reason, it is necessary to set the range of displayed values correctly in the XY Module's 
+Function page. Set the "Min" and "Max" values for the X coordinate to "0" and "16", re­
+spectively. "Min" and "Max" for the Y coordinate should be "0" and "1", respectively. This is 
+shown in the figure below.
+Panel
+XY
+ 
+REAKTOR 5.5 - Module Reference - 105
+
+
+--- Page 106 ---
+
+Fig. 1.48 Use the Min and Max edit fields to set the range for the X and Y coordinates to [0 … 16] and [0 … 1], respective­
+ly.
+Now that you have configured the XY Module, you just need to feed the correct values 
+from the Multiplex 16 Module (↑8.5, Multiplex 16 Sequencer) to the input ports for the 
+corresponding coordinates. Remember you wish to draw a rectangle from the coordinates 
+(Step, 0) to (Step + 1, 1). As shown in the Structure depicted below, connect the "Stp" 
+(step) output port off the Multiplex 16 Module to the "X1" input port of the XY Module, 
+and the value Step + 1 (using an Add Module, see ↑4.2, Add, +) to the "X2" input port. 
+Furthermore, connect the constant value "1" to the "Y2" input port. Your resulting Struc­
+ture should look like the first figure below and its Instrument Panel counterpart should 
+look similar to what is shown in the second figure. Numeric Display Modules (↑1.8, Meter) 
+have been added at the "Stp" and "Bar" output ports to give you quantitative visual access 
+to the step and bar positions of the sequencer.
+Fig. 1.49 The Structure for a simple sequencer with variable length and a simple step position display.
+Panel
+XY
+ 
+REAKTOR 5.5 - Module Reference - 106
+
+
+--- Page 107 ---
+
+An additional feature to add would be that resetting the MIDI Clock also causes the se­
+quencer position to be reset as well. Let's use the Start/Stop Module (↑2.13, Start/Stop) as 
+that source of "reset" Events. For this, a reset operation should send the value "0" to the 
+Counter Module's (↑13.2, Counter) "Set" input port. Since the "Rst" output port sends an 
+Event with value "1", use a Value Module (↑13.15, Value) to change the Event's value to 
+"0" and the a Merge Module to merge this reset signal with that received from the "Reset" 
+button.
+Fig. 1.50 The Instrument Panel of the simple sequencer.
+1.15
+Scope
+ 
+Fig. 1.51 A Scope Module
+1.15.1
+Overview
+ 
+The Scope Module is an oscilloscope for displaying a time-varying Audio signal. Every time 
+an Event is received at the "Trg" (trigger) input port, the Module starts recording the Audio 
+signal at the "In" input port into its buffer and displays the content of this buffer on it's on 
+the Panel representation. When no trigger Events are received the display continues show­
+ing the buffered signal. The displayed buffer can be shown at varying scales and positions 
+by adjusting the values at the relevant input ports. The size of the graph in the Instrument 
+Panel can be set in the Module’s View page and the size of the signal buffer can be set in 
+the Function page.
+Panel
+Scope
+ 
+REAKTOR 5.5 - Module Reference - 107
+
+
+--- Page 108 ---
+
+Application
+The Scope Module is used to create a flexible oscilloscope for displaying time-varying sig­
+nals. Typically you would connect an A to E Trig Module (↑14.8, A to E (Trig)) to the "Trg" 
+(trigger) input port for triggering the Scope Module from a periodic Audio signal with zero-
+crossings.
+The oscilloscope is the bread and butter analysis tool for analog circuit engineers and it is 
+no different when designing DSP circuits. If you want to learn to creatively program your 
+own DSP Structures, knowing how to monitor the signal at different points with an oscillo­
+scope is a key skill on the way there.
+1.15.2
+Ports
+ 
+Input Ports
+▪
+(Trg) "Trg" (trigger) Monophonic Event input port for the trigger signal that starts the 
+signal trace on the display. A trigger signal is considered as a positive valued Event.
+▪
+(TP) "TP" (time position) Monophonic Event input port for controlling the offset in time 
+(Time Position) of the trace in milliseconds. The trace starts at the left edge of the dis­
+play "TP" milliseconds after the trigger signal (at the "Trg" (trigger) input port). The 
+range of values at this input port should be [0 … <buffer time set in the Properties>]. 
+When this input port is disconnected, the default value that is used is "0".
+▪
+(TS) "TS" (time scale) Monophonic Event input port for controlling the time scale of the 
+displayed trace. From the left to the right edge the display shows "TS" milliseconds of 
+the signal. The range of values at this input port should be [0 … <buffer time set in 
+the Properties>]. When this input port is disconnected, the default value that is used is 
+"0".
+▪
+(YP) "YP" (Y position) Monophonic Event input port for controlling the amplitude offset 
+of the trace. With this input port disconnected, the default value, "0", is used. This 
+means that the signal trace is drawn with the zero-point reference taken as the dotted 
+line through the middle of the display. When YP = -1, the bottom edge of the display is 
+taken as this reference point and for YP = +1 the top edge is taken as the zero-point in 
+the amplitude scale.
+Panel
+Scope
+ 
+REAKTOR 5.5 - Module Reference - 108
+
+
+--- Page 109 ---
+
+▪
+(YS) "YS" (Y scale) is the Monophonic Event input port for controlling the amplitude 
+scaling of the signal trace. The difference between the signal values at the top and at 
+the bottom of the display is 2*YS. When YP = 0, the display shows values between 
++YS and –YS. The range of values at this input port should be [-1 … 1]. When this 
+input port is disconnected, the default value that is used is "0".
+▪
+(In) "In" Monophonic Audio input port for the signal to be displayed.
+Note that the "Trg" (trigger), "TS" (time scale), "YS" (Y scale), and "In" input ports should all 
+be connected in order for you to see a well-defined signal on the scope display.
+1.15.3
+Properties: Function Page
+ 
+Keeping the Scope Module Always Active
+If the Scope Module is not connected to an active signal flow, then the incoming values at 
+the input ports are not displayed by the Panel representation. In such a case you can acti­
+vate the Module with the Always Active checkbox.
+► To activate the Scope Module, go to its Function page and engage the Always Active 
+checkbox, shown in the figure below.
+Fig. 1.52 To activate the Scope Module, engage the Always Active checkbox in its Function page.
+Changing the Buffer Size
+► To change the time interval of the incoming signal that is buffered in the Scope Mod­
+ule's internal buffer, go to the Module's Function page and enter the new time in millisec­
+onds into the Buffer edit field, shown in the figure below.
+Fig. 1.53 Enter the desired buffer value in milliseconds into the Buffer edit field.
+Panel
+Scope
+ 
+REAKTOR 5.5 - Module Reference - 109
+
+
+--- Page 110 ---
+
+1.15.4
+Properties: View Page
+ 
+Setting the Oscilloscope Display Size
+Depending on your Instrument Panel layout, you might want a larger or smaller display 
+area for your oscilloscope.
+► To set the width and height of the Scope Module's Panel representation, go to the Mod­
+ule's View page and enter the desired values into the Width and Height edit fields, as shown 
+in the figure below.
+Choosing Label Size and Visibility Settings
+► To reduce the size of your Scope Module's Label, engage the Small Label checkbox 
+(shown in the figure below).
+► To make the Label disappear, disengage the Show Label checkbox (shown in the figure 
+below).
+► To make the Scope's Panel representation disappear, disengage the On checkbox 
+(shown in the figure below).
+► Engage the Show Label checkbox to show the Label. Engage the Small Label checkbox to 
+reduce the size of the Label of the Module's Panel representation. Disengage the On check­
+box to make the Scope Module's display disappear.
+1.15.5
+Example: Simple Scope
+ 
+This example shows how to display a periodic Monophonic Audio signal on a scope. The 
+incoming signal should have periodic (regular) zero crossings in order for the A to E Trig 
+Module (↑14.8, A to E (Trig)) to create a trigger signal from it. Of course, you could use 
+other mechanisms for triggering the scope trace. The Structure below shows the essential 
+components for the scope. The A to E Trig Module creates a trigger signal from a positive 
+zero crossing of the incoming signal. Upon sending a trigger signal to the Scope Module, 
+Panel
+Scope
+ 
+REAKTOR 5.5 - Module Reference - 110
+
+
+--- Page 111 ---
+
+an interval of the signal incoming at the Scope Module's "In" input port is buffered that 
+corresponds to the time interval set in the Module's Function page with the Buffer edit 
+field. A knob with the range [0 … 1] and label "X" sends the scaling of the time axis of the 
+scope to the "TS" input port. The scaling for the "Y" (signal level) axis is set in the logarith­
+mic scale with the knob labeled "Y" (range [-32 … 32]), converted to linear scale with the 
+Exp Lvl-to-A Module (↑4.15, Exp (Lvl-to-A) Module), and then sent to the "YS" input port.
+Fig. 1.54 The Structure for a simple scope that displays a Monophonic periodic Audio signal with regular zero crossings.
+1.16
+Multi Display
+ 
+Fig. 1.55 A Multi Display Module
+1.16.1
+Overview
+ 
+The Multi Display Module enables you to display and manipulate multiple graphical ob­
+jects. Graphical objects can be chosen to be crosses, bars, rectangles, lines, and (animat­
+ed) pictures. A range of parameters including an object's type, its coordinates, transparen­
+cy, and color can be defined individually for each graphical object. The Properties of the 
+Panel
+Multi Display
+ 
+REAKTOR 5.5 - Module Reference - 111
+
+
+--- Page 112 ---
+
+Multi Display Module include a variety of options for customization of the display, includ­
+ing background color and picture, as well as how the objects are addressed by the "Idx" 
+(index) input port. All Multi Display input ports only accept Monophonic signals.
+The major difference between the Multi Display and Poly Display Module is how the num­
+ber of graphical objects is specified. For the Multi Display Module the number of objects 
+is defined by the Number of Objects edit field in its Function page whereas for the Poly Dis­
+play Module, that number is specified by the number Polyphonic Voices of the parent In­
+strument. The advantage of the Multi Display Module is that it can display any number of 
+graphical objects, regardless of the number of Polyphonic Voices of the parent Instrument. 
+Each object can then be addressed independently using the "Idx" (index) input port. In 
+contrast, the Poly Display Module could be considered easier to program as it doesn’t re­
+quire any index-processing "code", and all objects can be addressed simultaneously by vir­
+tue of parallel Polyphonic Voice processing. However, the number of objects is limited to 
+the number of Polyphonic Voices of the parent Instrument.
+Application
+When used in conjunction with the Mouse Area (↑1.18, Mouse Area) and Snap Value Array 
+(↑14.27, Snap Value Array) Modules, the Multi Display Module allows sophisticated cus­
+tom interface elements such as sequencers to be constructed. You could also create a 
+scope using the value "-3" at the "Obj" (object) input port. With the number of objects 
+equal to the width of the Multi Display's Panel representation in pixels, you can draw 
+smooth lines that are updated at the display rate.
+The order of Events at the various input ports is significant when "programming" the Multi 
+Display Module. For each object, the Event addressing the object with its index value has 
+to arrive at the "Idx" input port before the objects parameters are set with Events at the 
+other input ports. Please refer to subsection 9.2.2 in the Application Reference for more 
+information on manipulating the order of Events.
+For more complex applications such as the ones mentioned above, it is necessary to popu­
+late the internal state of the Multi Display Module using the Iteration Module (↑13.13, 
+Iteration). This allows for nearly instantaneous updating of the display in the Instrument 
+Panel.
+Panel
+Multi Display
+ 
+REAKTOR 5.5 - Module Reference - 112
+
+
+--- Page 113 ---
+
+1.16.2
+Ports
+ 
+Input Ports
+▪
+(Idx) "Idx" (index) is the Audio input port for the index of the graphical element that 
+you wish to address. The index is 1-based; i.e. the index of the first object is "1" (not 
+"0"). Fractional values are rounded to the nearest integer. Where "Idx" (index) values 
+are outside the range [1… N], the behavior depends on the setting of the Index Behaviour 
+radio button selector in the Function page. The stacking order of graphical objects is 
+determined by their "Idx" values. Objects with lower "Idx" values appear on top of ob­
+jects with higher "Idx" values. It is essential to set the "Idx' value before transmitting 
+Events to the other input ports.
+▪
+(Obj) "Obj" (object) is the Event input port to specify the graphical appearance of the 
+object currently addressed at the "Idx" input port (or all objects if the Ignore Object 
+checkbox has been engaged in the Function page). Fractional values are rounded to 
+the nearest integer. Obj = -4 corresponds to a cross. The cross consists of a vertical 
+and horizontal line. When the Center to X1, Y1 checkbox in the Function page is disengag­
+ed, the starting and end points for the horizontal line are given by "X1" and "X2", re­
+spectively and the starting and end points for the vertical line are given by the "Y1" and 
+"Y2", respectively. Obj = -3 corresponds to a line from the coordinates "X1" and "Y1" to 
+the coordinates "X1" and "Y1" of the object of the same type. Obj = -2 corresponds to a 
+line drawn from the coordinates "X1" and "Y1" to the coordinates "X2" and "Y2" (when 
+the Center to X1, Y1 checkbox in the Function page is disengaged). Obj = -1 corresponds 
+to a bar whose opposite corners are given by the coordinates pairs (X1, Y1) and (X2, 
+Y2) when the Center to X1, Y1 checkbox in the Function page is disengaged. Obj = 0 cor­
+responds to a rectangle whose opposite corners are given by the coordinates pairs (X1, 
+Y1) and (X2, Y2) when the Center to X1, Y1 checkbox in the Function page is disengaged. 
+If you have loaded an animated picture with the Picture drop-down menu in the Func­
+tion page you can send values in the range [1 … NP] to the "Obj" input port where 
+"NP" is the number of animation frames in the picture. In this case the "Obj" value 
+specifies which animation frame should be displayed at the location specified by the 
+coordinate pair (X1, Y1) (when the Center to X1, Y1 checkbox in the Function page is dis­
+engaged). When the Center to X1, Y1 checkbox has been engaged in the Function page, 
+the "X1" and "Y1" coordinates define the the center of the object.
+▪
+(X1) "X1" is the Event input port for specifying the X1 coordinate.
+Panel
+Multi Display
+ 
+REAKTOR 5.5 - Module Reference - 113
+
+
+--- Page 114 ---
+
+▪
+(Y1) "Y1" is the Event input port for specifying the Y1 coordinate.
+▪
+(X2) "X2" is the Event input port for specifying the X2 coordinate.
+▪
+(Y2) "Y2" is the Event input port for specifying the Y2 coordinate.
+▪
+(R) "R" (red) is the Event input port for specifying the amount of red component in the 
+RGB color of the object addressed by the "Idx" (index) input port. The range of values 
+at this input port is [0 … 1]. If this input port is disconnected, the default value, "1", 
+is used. If the Ignore RGB checkbox has been engaged in the Function page, this "R" 
+(red) value is applied to all objects.
+▪
+(G) "G" (green) is the Event input port for specifying the amount of green component in 
+the RGB color of the object addressed by the "Idx" (index) input port. The range of val­
+ues at this input port is [0 … 1]. If this input port is disconnected, the default value, 
+"1", is used. If the Ignore RGB checkbox has been engaged in the Function page, this "G" 
+(green) value is applied to all objects.
+▪
+(B) "B" (blue) is the Event input port for specifying the amount of blue component in 
+the RGB color of the object addressed by the "Idx" (index) input port. The range of val­
+ues at this input port is [0 … 1]. If this input port is disconnected, the default value, 
+"1" is used. If the Ignore RGB checkbox has been engaged in the Function page, this "B" 
+(blue) value is applied to all objects.
+▪
+(A) "A" (alpha) is the Event input port for the object transparency of the object ad­
+dressed by the "Idx" (index) input port. The range of values at this input port is [0 … 
+1]. A = 0 corresponds to a fully transparent object and A = 1 corresponds to a fully 
+opaque object. If this input port is disconnected, the default value, "1" (fully opaque), 
+is used. If the Ignore A checkbox has been engaged in the Function page, the "A" (alpha) 
+value is applied to all objects.
+▪
+(XO) "XO" (X origin) is the Event input port for the lowest visible "X" values. Connecting 
+this input port to a control can be used for scrolling. Values incoming at this input port 
+override the X Origin edit field in the Function page. When disconnected, the value from 
+the X Origin edit field in the Function page is used.
+▪
+(YO) "YO" (Y origin) is the Event input port for the lowest visible "Y" values. Connecting 
+this input port to a control can be used for scrolling. Values incoming at this input port 
+override the Y Origin edit field in the Function page. When disconnected, the value from 
+the Y Origin edit field in the Function page is used.
+Panel
+Multi Display
+ 
+REAKTOR 5.5 - Module Reference - 114
+
+
+--- Page 115 ---
+
+▪
+(XR) "XR" (X range) is the Event input port for the horizontal viewing range (or zoom). 
+Values incoming at this input port override the X Range edit field in the Function page. 
+When disconnected, the value from the X Range edit field in the Function page is used.
+▪
+(YR) "YR" (Y range) is the Event input port for the vertical viewing range (or zoom). Val­
+ues incoming at this input port override the Y Range edit field in the Function page. 
+When disconnected, the value from the Y Range edit field in the Function page is used.
+Output Ports
+▪
+(NP) "NP"(number of pictures) is the Event output port for reporting the number of ani­
+mation frames in the loaded picture.
+▪
+(NO) "NO" (number of objects) is the Event output port for reporting the number of 
+graphical objects set in the Number of Objects edit field in the Function page.
+1.16.3
+Properties: Function Page
+ 
+Keeping the Multi Display Module Always Active
+If the Multi Display Module is not connected to an active signal flow it will not display its 
+internal state in the Panel representation. In such a case you can activate the Module with 
+the Always Active checkbox.
+► To activate the Multi Display Module, go to its Function page and engage the Always Ac­
+tive checkbox, shown in the figure below.
+► To set the number of objects displayed by the Multi Display Module, go to its Function 
+page and enter the desired number into the Number of Objects edit field, shown in the screen­
+shot below. Note that reducing the number of objects will also delete any coordinate, 
+transparency, and color data that was saved with the superfluous objects.
+► To define the object location only by its center coordinates (for which the pair of values 
+(X1, Y1) is used), go to the Module's Function page and engage the Center to X1, Y1 check­
+box (shown in the screenshot below).
+Panel
+Multi Display
+ 
+REAKTOR 5.5 - Module Reference - 115
+
+
+--- Page 116 ---
+
+► In the Objects area of the Multi Display Module's Function page you can set the num­
+ber of objects, the way the coordinates are specified, and load an (animated) picture to 
+represent the graphical objects.
+To load the (animated) picture to represent the object for "Obj" (object) values greater or 
+equal to "1":
+1.
+Go to the Module's Function page and open the Picture drop-down menu (shown in the 
+figure above).
+2.
+Now either choose the -> Open from file… menu entry to load a new picture file or 
+choose a menu entry corresponding to a picture file that has already been loaded into 
+the Ensemble by another Module.
+3.
+This opens up the Picture Properties dialog window. This window shows the picture 
+preview and lets you specify how REAKTOR should extract the animation frames from 
+the loaded picture. Please refer to section 8.5 in the Application Reference for more 
+information on working with the Picture Properties dialog window. Press the OK button 
+when you are finished setting the picture properties.
+Choosing the Origin and Range of Displayed Values
+The origin and range of the X and Y coordinates in your Multi Display Module determine 
+where (if a at all) your graphical objects, whose coordinates are set with the "X1", "Y1", 
+"X2", and "Y2" input ports, will appear in the Multi Display. The displayed interval in the X 
+dimension in the Multi Display Module's Panel representation is then [XO … XO + XR] 
+where "XO" is set with the X Origin edit field and "XR" is set with the X Range edit field 
+(shown in the screenshot below). Similarly, the displayed interval in the Y dimension in 
+the Multi Display Module's Panel representation is then [YO … YO + YR] where "YO" is set 
+with the Y Origin edit field and "YR" is set with the Y Range edit field (shown in the screen­
+shot below).
+You can also set these values directly from the corresponding input ports. In the case that 
+these input ports are connected, the values in the corresponding edit fields are overridden.
+Panel
+Multi Display
+ 
+REAKTOR 5.5 - Module Reference - 116
+
+
+--- Page 117 ---
+
+Fig. 1.56 Use the Range area of the Multi Display Module's Function page to set the range of coordinates that are displayed 
+on the Module's Panel representation.
+Setting All Graphical Objects to the Same Type, Color, and or Transparency
+► To set all graphical objects to have the same object type, engage the Ignore Object check­
+box in the Module's Function page.
+► To set all graphical objects to have the same color (that is, the same "R", "G", and "B" 
+values), engage the Ignore RGB checkbox in the Module's Function page.
+► To set all graphical objects to have the same alpha (transparency) value, engage the 
+Ignore A checkbox in the Module's Function page.
+Fig. 1.57 Use the Ignore checkboxes to set the values at the corresponding input ports ("Obj", "R", G", "B", or "A") to all 
+graphical objects, independent of their index value.
+Setting the Index Behaviour
+To choose the way to treat "Idx" (index) values at the "Idx" input port that exceed the num­
+ber of objects ("NO" value), press the corresponding radio button from the Behaviour selector 
+(shown in the figure below). The three choices are as follows:
+▪
+Clip: "Idx" (index) values that exceed the allowed range address the object with the 
+highest or lowest index, depending on if the higher or lower bound has been exceeded.
+▪
+Wrap (modulo): "Idx" values that exceed the number of objects are "wrapped" around 
+the "NO" (number of objects) value. This means that the value "NO" is subtracted from 
+the "excessive" index value: Idx' = Idx - NO.
+▪
+Ignore Invalid: "Idx" (index) values that exceed the number of objects are ignored.
+Panel
+Multi Display
+ 
+REAKTOR 5.5 - Module Reference - 117
+
+
+--- Page 118 ---
+
+► Use the Behaviour radio button selector in the Multi Display Module's Function page to 
+determine how the Module deals with "Idx" (index) values that exceed the allowed range.
+1.16.4
+Properties: View Page
+ 
+Setting the Multi Display Size
+Depending on your Instrument Panel layout, you might want a larger or smaller display 
+area for the graphical objects of your Multi Display Module.
+► To set the width and height of the Multi Display Module's Panel representation, go to 
+the Module's View page and enter the desired values into the Width and Height edit fields, as 
+shown in the figure below.
+Choosing Label Size and Visibility Settings
+► To reduce the size of your Multi Display Module's Label, engage the Small Label checkbox 
+(shown in the figure below).
+► To make the Label disappear, disengage the Show Label checkbox (shown in the figure 
+below).
+► To make the Multi Display Module's Panel representation disappear, disengage the On 
+checkbox (shown in the figure below).
+► Engage the Show Label checkbox to show the Label. Engage the Small Label checkbox to 
+reduce the size of the Label of the Module's Panel representation. Disengage the On check­
+box to make the Multi Display Module's display disappear.
+Panel
+Multi Display
+ 
+REAKTOR 5.5 - Module Reference - 118
+
+
+--- Page 119 ---
+
+Turning on the Multi Display's Frame
+▪
+To turn on the frame for the Multi Display Module's Panel representation, engage the 
+Has Frame checkbox in the View page (shown in the screenshot below). 
+The Style area of the View page lets you toggle the visibility of the frame with the Has Frame 
+checkbox and choose a background picture with the Background Bitmap drop-down menu and 
+the Index edit field.
+Loading a Background Picture for the Multi Display
+To load a background picture for the Multi Display Module:
+1.
+Go to the Module's View page and open the Background Bitmap drop-down menu (shown 
+in the figure above).
+2.
+Now either choose the -> Open from file… menu entry to load a new picture file or 
+choose a menu entry corresponding to a picture file that has already been loaded into 
+the Ensemble by another Module.
+3.
+This opens up the Picture Properties dialog window. This window shows the picture 
+preview and lets. If you have loaded a picture consisting of animation frames, the Pic­
+ture Properties dialog window also lets you specify how REAKTOR should extract the 
+animation frames from the loaded picture. Please refer to section 8.5 in the Applica­
+tion Reference for more information on working with the Picture Properties dialog win­
+dow. Press the OK button when you are finished setting the picture properties.
+4.
+If you have loaded and configured an animated picture, you can choose the picture in­
+dex of the animation frame to be used as a background picture with the Index edit field 
+(shown in the screenshot above).
+Choosing a Background Color
+► To choose a background color for the Multi Display Module's Panel representation using 
+the color picker dialog window of your OS, go to the Multi Display Module's View page. 
+Then press the Choose Color button and use the OS-specific dialog window to choose your 
+color of choice.
+Panel
+Multi Display
+ 
+REAKTOR 5.5 - Module Reference - 119
+
+
+--- Page 120 ---
+
+Setting Borders for the Multi Display's Panel Representation
+Often you have some border for your background picture where you don't necessarily want 
+the graphical objects to appear. With the Picture Borders edit fields (see screenshot below) 
+you can specify the border area where the graphical objects should not appear. By increas­
+ing the border either on the left or right, or top or bottom, you increase the effective area 
+of the Multi Display Module's Panel representation such that the area on which the graphi­
+cal objects are shown corresponds to the dimensions specified with the Width and Height ed­
+it fields, as shown above.
+► To specify the background picture's top, bottom, left, and right border (in pixels), use 
+the corresponding edit fields in the View page, shown in the screenshot below.
+1.16.5
+Example: Simple Multi Display
+ 
+Usually instantaneously updating a Multi Display Module's internal state is done with a 
+Structure that makes use of the Iteration Module (↑13.13, Iteration). This example illus­
+trates how to plot a graph consisting of three segments on the Multi Display with the help 
+of an Iteration Module. The corresponding Structure is shown in the figure below.
+First let's begin by choosing the type of graphical object for plotting our lines. This is 
+specified at the "Obj" input port of the Multi Display Module. For Obj = -3 the Multi Dis­
+play Module draws a line from the coordinates "X1" and "Y1" of an object to the coordi­
+nates "X1" and "Y1" of the next object of the same type. Let's use that, since this way you 
+can draw three line segments by specifying the "X1" and "Y1" coordinates of four objects. 
+Connect a Constant with the value "-3" to the "Obj" input port and make sure that the Ignore 
+Object checkbox in the Multi Display Module's Function page has been engaged. This way 
+all graphical objects have the same object type of "-3".
+Now let's turn to making use of the Iteration Module. For each object you need it to trigger 
+the sending of the object's "Idx", "X1", and "Y1" values to the corresponding input ports. 
+Note that the "Idx" value has to arrive first. All in all, since we decided to work with four 
+objects (to draw three segments), we need the Iteration Module to send four Events. To 
+make things easier, let's agree that the "X1" coordinates of the objects are the following, in 
+increasing order of "Idx" value: "0", "1", "2", and "3". These values come in handy, since 
+they can directly be generated by the Iteration Module. Connect a button (labeled "Iter­
+Panel
+Multi Display
+ 
+REAKTOR 5.5 - Module Reference - 120
+
+
+--- Page 121 ---
+
+ate") in to the "In" input port of the Iteration Module. It should be in Trigger Mode and 
+have its "Max" value in the Function page set to "0". Pressing the button on the Instrument 
+Panel sends an Event with the value "0" to the Iteration Module, which then in turn should 
+output Events carrying the values "0", "0 + 1", "0 + 2", and "0 + 3". You see already that 
+the increment value, as specified at the "Inc" input port should be "1" and that "N" should 
+be "3" (for three additional output Events). This is shown in the Structure below.
+Fig. 1.58 The Structure for drawing three line segments using the Multi Display Module.
+Next, use an Order Module (↑13.12, Order) at the Iteration Module's (↑13.13, Iteration) 
+output to cause the "Idx" value to be sent first for each object and only then the "X1" and 
+"Y1" values. Use the "1" output port of the Order Module for the "Idx" value. Since the 
+"Idx" value starts with "1" for the first object and the values from your Iteration Module 
+start with "0", you need to add "1" to the signal from the Order Module's "1" output port 
+before routing it to the "Idx" input port of the Multi Display Module. Now you can connect 
+the "2" output port of the Order Module directly to the "X1" input port of the Multi Display 
+Module since that is how we chose the segment intervals for our plot to be.
+Last, you need to specify the "Y1" value for each object. This is most easily done by using 
+the "3" output port of the Order Module (↑13.12, Order) as the "Pos" value for a Selector 
+Module (↑5.1, Selector) where each of the four "channel" input ports has the value corre­
+sponding to the "Y2" value of the corresponding graphical object. Such an implementation 
+is shown in the figure above. In that example, the resulting plot would be segments be­
+tween the points (0, 1), (1, 2), (2, 5), and (3, 0). Connect the output of the Selector Mod­
+ule to the "Y1" input port of the Multi Display Module.
+Panel
+Multi Display
+ 
+REAKTOR 5.5 - Module Reference - 121
+
+
+--- Page 122 ---
+
+To be able to see all of the plot, set the X Range parameter of the Multi Display Module at 
+its "XR" input port to "3" and the Y Range parameter at the "YR" input port to "5" (since 
+the greatest "Y1" value used here is "5" and the Y Origin parameter is "0"). To make the 
+lines appear in red, connect the Constant (↑4.1, Constant) "1" to the "R" input port and 
+make sure that the Ignore RGB checkbox in the Multi Display Module's Function page has 
+been engaged. The resulting plot done by the Multi Display Module's Panel representation 
+is shown in the figure below.
+Fig. 1.59 A plot consisting of three line segments done by the Multi Display Module.
+1.17
+Poly Display
+ 
+Fig. 1.60 A Poly Display Module
+Since this goes for all of the "R", "G", and "B" input ports, all objects have the same color.
+1.17.1
+Overview
+ 
+The Poly Display Module enables you to display and manipulate multiple graphical ob­
+jects. Graphical objects can be chosen to be crosses, bars, rectangles, lines, and (animat­
+ed) pictures. A range of parameters including an object's type, its coordinates, transparen­
+Panel
+Poly Display
+ 
+REAKTOR 5.5 - Module Reference - 122
+
+
+--- Page 123 ---
+
+cy, and color can be defined individually for each graphical object. The Properties of the 
+Poly Display Module include a variety of options for customization of the display, including 
+background color and picture. All Poly Display input ports accept Polyphonic Event sig­
+nals, except for the "X0", "XR", "Y0" and "YR" input ports, which accept Monophonic Event 
+signals.
+The major difference between the Multi Display and Poly Display Module is how the num­
+ber of graphical objects is specified. For the Multi Display Module the number of objects 
+is defined by the Number of Objects edit field in its Function page whereas for the Poly Dis­
+play Module, that number is specified by the number Polyphonic Voices of the parent In­
+strument. The advantage of the Multi Display Module is that it can display any number of 
+graphical objects, regardless of the number of Polyphonic Voices of the parent Instrument. 
+Each object can then be addressed independently using the "Idx" (index) input port. In 
+contrast, the Poly Display Module could be considered easier to program as it doesn’t re­
+quire any index-processing "code", and all objects can be addressed simultaneously by vir­
+tue of parallel Polyphonic Voice processing. However, the number of objects is limited to 
+the number of Polyphonic Voices of the parent Instrument.
+Application
+When used in conjunction with the Mouse Area (↑1.18, Mouse Area) and Snap Value Array 
+(↑14.27, Snap Value Array) Modules, the Poly Display Module allows sophisticated custom 
+interface elements such as sequencers to be constructed. Use the To Voice (↑14.11, To 
+Voice) and Voice Info (↑14.18, Voice Info) Modules, among others of the same kind, to ad­
+dress and extract information from individual Polyphonic Voices. To increase the number 
+of graphical objects in your Poly Display, you need to increase the number of Polyphonic 
+Voices of the parent Instrument. Please refer to subsection 9.3.2 in the Application Refer­
+ence to learn how to change the number of Polyphonic Voices of an Instrument.
+Please refer to subsection 9.3.4 in the Application Reference for more information on using 
+Polyphonic Voices for parallel processing.
+Panel
+Poly Display
+ 
+REAKTOR 5.5 - Module Reference - 123
+
+
+--- Page 124 ---
+
+1.17.2
+Ports
+ 
+Input Ports
+▪
+(Obj) "Obj" (object) is the Polyphonic Event input port to specify the graphical appear­
+ance of the Poly Display Module's objects. The number of objects is equal to the num­
+ber of Polyphonic Voices of the parent Instrument. Each Polyphonic Voice addresses 
+one such object. Fractional "Obj" values are rounded to the nearest integer. Obj = -4 
+corresponds to a cross. The cross consists of a vertical and horizontal line. When the 
+Center to X1, Y1 checkbox in the Function page is disengaged, the starting and end points 
+for the horizontal line are given by "X1" and "X2", respectively and the starting and end 
+points for the vertical line are given by the "Y1" and "Y2", respectively. Obj = -3 corre­
+sponds to a line from the coordinates "X1" and "Y1" to the coordinates "X1" and "Y1" of 
+the object of the same type. Obj = -2 corresponds to a line drawn from the coordinates 
+"X1" and "Y1" to the coordinates "X2" and "Y2" (when the Center to X1, Y1 checkbox in the 
+Function page is disengaged). Obj = -1 corresponds to a bar whose opposite corners 
+are given by the coordinates pairs (X1, Y1) and (X2, Y2) when the Center to X1, Y1 check­
+box in the Function page is disengaged. Obj = 0 corresponds to a rectangle whose op­
+posite corners are given by the coordinates pairs (X1, Y1) and (X2, Y2) when the Center 
+to X1, Y1 checkbox in the Function page is disengaged. If you have loaded an animated 
+picture with the Picture drop-down menu in the Function page you can send values in 
+the range [1 … NP] to the "Obj" input port where "NP" is the number of animation 
+frames in the picture. In this case the "Obj" value specifies which animation frame 
+should be displayed at the location specified by the coordinate pair (X1, Y1) (when the 
+Center to X1, Y1 checkbox in the Function page is disengaged). When the Center to X1, Y1 
+checkbox has been engaged in the Function page, the "X1" and "Y1" coordinates define 
+the the center of the object.
+▪
+(X1) "X1" is the Event input port for specifying the X1 coordinate.
+▪
+(Y1) "Y1" is the Event input port for specifying the Y1 coordinate.
+▪
+(X2) "X2" is the Event input port for specifying the X2 coordinate.
+▪
+(Y2) "Y2" is the Event input port for specifying the Y2 coordinate.
+▪
+(R) "R" (red) is the Event input port for specifying the amount of red component in the 
+RGB color of the object addressed by the Polyphonic Voice. The range of values at this 
+input port is [0 … 1]. If this input port is disconnected, the default value, "1", is used 
+for all objects.
+Panel
+Poly Display
+ 
+REAKTOR 5.5 - Module Reference - 124
+
+
+--- Page 125 ---
+
+▪
+(G) "G" (green) is the Event input port for specifying the amount of green component in 
+the RGB color of the object addressed by the Polyphonic Voice. The range of values at 
+this input port is [0 … 1]. If this input port is disconnected, the default value, "1", is 
+used for all objects.
+▪
+(B) "B" (blue) is the Event input port for specifying the amount of blue component in 
+the RGB color of the object addressed by the Polyphonic Voice. The range of values at 
+this input port is [0 … 1]. If this input port is disconnected, the default value, "1" is 
+used for all objects.
+▪
+(A) "A" (alpha) is the Event input port for the object transparency. The range of values 
+at this input port is [0 … 1]. A = 0 corresponds to a fully transparent object and A = 1 
+corresponds to a fully opaque object. If this input port is disconnected, the default val­
+ue, "1" (fully opaque), is used for all objecs.
+▪
+(XO) "XO" (X origin) is the Event input port for the lowest visible "X" values. Connecting 
+this input port to a control can be used for scrolling. Values incoming at this input port 
+override the X Origin edit field in the Function page. When disconnected, the value from 
+the X Origin edit field in the Function page is used.
+▪
+(YO) "YO" (Y origin) is the Event input port for the lowest visible "Y" values. Connecting 
+this input port to a control can be used for scrolling. Values incoming at this input port 
+override the Y Origin edit field in the Function page. When disconnected, the value from 
+the Y Origin edit field in the Function page is used.
+▪
+(XR) "XR" (X range) is the Event input port for the horizontal viewing range (or zoom). 
+Values incoming at this input port override the X Range edit field in the Function page. 
+When disconnected, the value from the X Range edit field in the Function page is used.
+▪
+(YR) "YR" (Y range) is the Event input port for the vertical viewing range (or zoom). Val­
+ues incoming at this input port override the Y Range edit field in the Function page. 
+When disconnected, the value from the Y Range edit field in the Function page is used.
+Output Ports
+▪
+(NP) "NP"(number of pictures) is the Event output port for reporting the number of ani­
+mation frames in the loaded picture.
+Panel
+Poly Display
+ 
+REAKTOR 5.5 - Module Reference - 125
+
+
+--- Page 126 ---
+
+1.17.3
+Properties: Function Page
+ 
+Keeping the Poly Display Module Always Active
+If the Poly Display Module is not connected to an active signal flow it will not display its 
+internal state in the Panel representation. In such a case you can activate the Module with 
+the Always Active checkbox.
+► To activate the Poly Display Module, go to its Function page and engage the Always Active 
+checkbox, shown in the figure below.
+► To set the number of objects displayed by the Poly Display Module to "1", that is, to set 
+the Module to Monophonic operation mode, go to its Function page and engage the Mono 
+checkbox (shown in the figure above). In this case the Module will only accept Monophon­
+ic signals.
+► To define the object location only by its center coordinates (for which the pair of values 
+(X1, Y1) is used), go to the Module's Function page and engage the Center to X1, Y1 check­
+box (shown in the screenshot below).
+To load the (animated) picture to represent the object for "Obj" (object) values greater or 
+equal to "1":
+1.
+Go to the Module's Function page and open the Picture drop-down menu (shown in the 
+figure above).
+2.
+Now either choose the -> Open from file… menu entry to load a new picture file or 
+choose a menu entry corresponding to a picture file that has already been loaded into 
+the Ensemble by another Module.
+3.
+This opens up the Picture Properties dialog window. This window shows the picture 
+preview and lets you specify how REAKTOR should extract the animation frames from 
+the loaded picture. Please refer to section 8.5 in the Application Reference for more 
+information on working with the Picture Properties dialog window. Press the OK button 
+when you are finished setting the picture properties.
+Panel
+Poly Display
+ 
+REAKTOR 5.5 - Module Reference - 126
+
+
+--- Page 127 ---
+
+Choosing the Origin and Range of Displayed Values
+The origin and range of the X and Y coordinates in your Poly Display Module determine 
+where (if a at all) your graphical objects, whose coordinates are set with the "X1", "Y1", 
+"X2", and "Y2" input ports, will appear in the Poly Display. The displayed interval in the X 
+dimension in the Poly Display Module's Panel representation is then [XO … XO + XR] 
+where "XO" is set with the X Origin edit field and "XR" is set with the X Range edit field 
+(shown in the screenshot below). Similarly, the displayed interval in the Y dimension in 
+the Poly Display Module's Panel representation is then [YO … YO + YR] where "YO" is set 
+with the Y Origin edit field and "YR" is set with the Y Range edit field (shown in the screen­
+shot below).
+You can also set these values directly from the corresponding input ports. In the case that 
+these input ports are connected, the values in the corresponding edit fields are overridden.
+Fig. 1.61 Use the Range area of the Poly Display Module's Function page to set the range of coordinates that are displayed 
+on the Module's Panel representation.
+1.17.4
+Properties: View Page
+ 
+Setting the Poly Display Size
+Depending on your Instrument Panel layout, you might want a larger or smaller display 
+area for the graphical objects of your Poly Display Module.
+► To set the width and height of the Poly Display Module's Panel representation, go to the 
+Module's View page and enter the desired values into the Width and Height edit fields, as 
+shown in the figure below.
+Panel
+Poly Display
+ 
+REAKTOR 5.5 - Module Reference - 127
+
+
+--- Page 128 ---
+
+Choosing Label Size and Visibility Settings
+► To reduce the size of your Multi Display Module's Label, engage the Small Label checkbox 
+(shown in the figure below).
+► To make the Label disappear, disengage the Show Label checkbox (shown in the figure 
+below).
+► To make the Multi Display Module's Panel representation disappear, disengage the On 
+checkbox (shown in the figure below).
+► Engage the Show Label checkbox to show the Label. Engage the Small Label checkbox to 
+reduce the size of the Label of the Module's Panel representation. Disengage the On check­
+box to make the Poly Display Module's display disappear.
+Turning on the Poly Display's Frame
+► To turn on the frame for the Poly Display Module's Panel representation, engage the Has 
+Frame checkbox in the View page (shown in the screenshot below). 
+► The Style area of the View page lets you toggle the visibility of the frame with the Has 
+Frame checkbox and choose a background picture with the Background Bitmap drop-down 
+menu and the Index edit field.
+Loading a Background Picture for the Multi Display
+To load a background picture for the Poly Display Module:
+1.
+Go to the Module's View page and open the Background Bitmap drop-down menu (shown 
+in the figure above).
+2.
+Now either choose the -> Open from file… menu entry to load a new picture file or 
+choose a menu entry corresponding to a picture file that has already been loaded into 
+the Ensemble by another Module.
+3.
+This opens up the Picture Properties dialog window. This window shows the picture 
+preview and lets. If you have loaded a picture consisting of animation frames, the Pic­
+ture Properties dialog window also lets you specify how REAKTOR should extract the 
+Panel
+Poly Display
+ 
+REAKTOR 5.5 - Module Reference - 128
+
+
+--- Page 129 ---
+
+animation frames from the loaded picture. Please refer to section 8.5 in the Applica­
+tion Reference for more information on working with the Picture Properties dialog win­
+dow. Press the OK button when you are finished setting the picture properties.
+4.
+If you have loaded and configured an animated picture, you can choose the picture in­
+dex of the animation frame to be used as a background picture with the Index edit field 
+(shown in the screenshot above).
+Choosing a Background Color
+► To choose a background color for the Poly Display Module's Panel representation using 
+the color picker dialog window of your OS, go to the Poly Display Module's View page. 
+Then press the Choose Color button and use the OS-specific dialog window to choose your 
+color of choice.
+Setting Borders for the Poly Display's Panel Representation
+Often you have some border for your background picture where you don't necessarily want 
+the graphical objects to appear. With the Picture Borders edit fields (see screenshot below) 
+you can specify the border area where the graphical objects should not appear. By increas­
+ing the border either on the left or right, or top or bottom, you increase the effective area 
+of the Poly Display Module's Panel representation such that the area on which the graphi­
+cal objects are shown corresponds to the dimensions specified with the Width and Height ed­
+it fields, as shown above.
+► To specify the background picture's top, bottom, left, and right border (in pixels), use 
+the corresponding edit fields in the View page, shown in the screenshot below.
+1.17.5
+Example: Displaying Pitch Values
+ 
+Since the Poly Display Module gives you direct access to the values carried by Polyphonic 
+Voices, it is ideal for tasks like displaying the pitch values carried by the Voices, for exam­
+ple. This example shows how to make a simple display that shows the pitch values carried 
+by four Voices.
+Panel
+Poly Display
+ 
+REAKTOR 5.5 - Module Reference - 129
+
+
+--- Page 130 ---
+
+First, let's decide that we want to have a bar graph of the voice values, as can be seen in 
+the last figure at the end of this example. For this, connect the constant value "-1" to the 
+Poly Display Module's "Obj" input port. We want each bar to have unit width, start at Y1 = 
+0 and reach up to the value of the corresponding MIDI Note. Since Y1 = 0 for all Voices, 
+just connect the Constant (↑4.1, Constant) "0" to the "Y1" input port. Also, the Note Pitch 
+Module forwards the right MIDI Note values already carried by each Voice, so directly con­
+nect the Note Pitch Module (↑2.1, Note Pitch) to the "Y2" input port.
+Next, let's send the "X1" and "X2" values. For the four Voices in the Instrument below, the 
+pairs (X1, X2) should be the following (remember we wanted a bar width of "1"): (0, 0 + 
+1), (1, 1 + 1), (2, 2 + 1), and (3, 3 + 1). In essence, we just need one signal which has 
+the values {0, 1, 2, 3} for its four Voices. This would be the signal for the "X1" input port. 
+Then you just add the Constant "1" and forward the result to the "X2" input port. The 
+Structure that achieves this is shown in the figure below.
+Fig. 1.62 The Structure for a simple Poly Display Structure that displays played MIDI Notes.
+To set the values for each Voice separately, use To Voice Modules (↑14.11, To Voice) (al­
+though in this case you could achieve the same "X1" values using the Voice Info Module, 
+see also ↑14.18, Voice Info). Place four To Voice Modules into the Structure, one for each 
+Voice. Feed the values "1" to "4" to the "V" (Voice) input ports to designate the Voice which 
+the To Voice Module addresses. The lower input port of each To Voice Module is meant for 
+the value to which the Voice is set. Set the values as shown in the Structure above for 
+each Voice: "0", "1", "2", and "3". Each To Voice Module outputs a Polyphonic signal where 
+each Voice is zero except the Voice which it addresses. Use the Add Module (↑4.2, Add, 
+Panel
+Poly Display
+ 
+REAKTOR 5.5 - Module Reference - 130
+
+
+--- Page 131 ---
+
++) to sum up the Polyphonic signals from the To Voice Modules, Voice by Voice. This 
+yields the desired signal for the "X1" input port. To get the signal for the "X2" input port, 
+just add "1" and forward that to said port.
+Next, to set all bars to have bright green coloring, forward the constant "1" to the "G" input 
+port and make sure that the Ignore RGB checkbox in the Poly Display Module's Function page 
+is engaged. If the Modules in the Structure have not yet been activated, then also engage 
+the Always Active checkbox in the Function page.
+One more thing: you need to make sure that the range of displayed values matches the 
+incoming values. The X Origin and X Range values (set in the Poly Display Module's Func­
+tion page) are "0" and "4", respectively (since we are using four Voices). For the Y Origin 
+and Y Range values, it depends on which keys you are pressing and wish to be displayed. 
+Let's choose the range of displayed MIDI Note values to be two octaves. This corresponds 
+to a MIDI Note interval of "24", so connect a Constant (↑4.1, Constant) carrying this value 
+to the "YR" input port. You might want some flexibility for the starting point of the dis­
+played range of notes, so just create a Knob Module with the range [0 … 127] and Steps­
+ize "1" at the "YO" input port. The resulting Instrument panel of this example is depicted 
+in the figure below.
+Fig. 1.63 The Poly Display displays played MIDI Notes starting with MIDI Note "48" and ending with MIDI Note "72."
+Panel
+Poly Display
+ 
+REAKTOR 5.5 - Module Reference - 131
+
+
+--- Page 132 ---
+
+1.18
+Mouse Area
+ 
+Fig. 1.64 A Mouse Area Module
+1.18.1
+Overview
+ 
+The Mouse Area Module detects and outputs mouse actions that take place on its Panel 
+representation. These mouse actions include button clicks, mouse drags, and changes in 
+position. The Mouse Area "X" and "Y" output ports can either operate in Absolute or Incre­
+mental Mode (as selected in the Function page):
+▪
+If the Incremental Mouse Mode is turned off (Absolute Mode), the absolute mouse po­
+sition on the Module's Panel representation is translated to values between the "Min" 
+and "Max" values set in the Function page. The values are output to the "X" and "Y" 
+output ports for the horizontal and vertical position, respectively. The display width and 
+height define the range and resolution for mouse movements and the Mouse Reso edit 
+field in the Function page has no effect.
+▪
+With the Incremental Mouse Mode turned on, the X and Y positions are also translated 
+to values between the "Min" and "Max" values set in the Function page. However, these 
+values are adjusted incrementally by multiple drags actions, in the same way in which 
+the built-in REAKTOR knobs and faders work. Specifically, when the user begins a new 
+drag, the "X" and "Y" output ports transmit values relative to where the previous drag 
+ended, as opposed to the absolute position of the mouse cursor. The "BX" and "BY" in­
+put ports are only effective in Incremental Mode, and are used to set the incremental 
+"base value" for subsequent drags (overriding the last mouse drag). The X and Y mouse 
+resolution is given by the Mouse Reso edit field in the Function page.
+Panel
+Mouse Area
+ 
+REAKTOR 5.5 - Module Reference - 132
+
+
+--- Page 133 ---
+
+In the View page you can change the appearance of the Mouse Area Module's Panel repre­
+sentation. Also, you can control which action causes the Panel representation to change 
+from the "inactive" state to the "active" state.
+Application
+The Mouse Area Module can have its own outline and fill color, and can therefore be used 
+as a panel interface element by itself. In this case you would use the Incremental Mouse 
+Mode and connect the "BY" (and "BY") input ports to Snap Value Modules (↑14.26, Snap 
+Value) to ensure that the incremental "base value" is set according to the last mouse move‐
+ment saved in a Snapshot.
+Most typically however, the Mouse Area Module used as an invisible (transparent) overlay 
+on top of other Modules. Placing the Mouse Area Module over the Multi Display and Poly 
+Display Modules allows for highly customized interface elements. Learning to creatively 
+use the Mouse Area Module is highly recommended if you want to become good at pro­
+gramming your own REAKTOR GUIs!
+1.18.2
+Ports
+ 
+Input Ports
+▪
+(BX) "BX" (base X) is the Event input port to set a new base value from which the incre­
+mental increase in the "X" value is calculated. Values at this input port should be with­
+in the range as defined by the edit fields in the Range area of the Function page. The 
+"BX" (base X) value is only used if Incremental Mode has been activated.
+▪
+(BY) "BY" (base Y) is the Event input port to set a new base value from which the incre­
+mental increase in the "Y" value is calculated. Values at this input port should be with­
+in the range as defined by the edit fields in the Range area of the Function page. The 
+"BY" (base Y) value is only used if Incremental Mode has been activated.
+Output Ports
+▪
+(X) "X" (mouse X) is the Event output port for the horizontal (X) mouse position when 
+the mouse is within the Mouse Area Module's display area in the Instrument Panel. 
+Events with the current mouse position are only sent when the mouse button is de­
+pressed.
+Panel
+Mouse Area
+ 
+REAKTOR 5.5 - Module Reference - 133
+
+
+--- Page 134 ---
+
+▪
+(Y) "Y" (mouse Y) is the Event output port for the vertical (Y) mouse position when the 
+mouse is within the Mouse Area Module's display area in the Instrument Panel. Events 
+with the current mouse position are only sent when the mouse button is depressed.
+▪
+(PX) "PX" (position X) is the Event output port for the horizontal mouse position in pix­
+els relative to the X Origin line which is at the left edge of the Mouse Area box. Moving 
+the mouse to the left of the X Origin line outputs negative pixel values, moving it to the 
+right outputs positive values. In contrast to the "X" output port, which is limited to 
+movements within the Mouse Area box, the "PX" (position X) output port reports mouse 
+positions all the way to the left and right edges of the screen. Note however, that the 
+click-and-drag action must be started within the bounds of the Mouse Area Module's 
+Panel representation.
+▪
+(PY) "PY" (position Y) is the Event output port for the vertical mouse position in pixels 
+relative to the Y Origin line which is at the bottom edge of the Mouse Area box. Moving 
+the mouse below of the Y Origin line outputs negative pixel values, moving it above 
+that line outputs positive values. In contrast to the "Y" output port, which is limited to 
+movements within the Mouse Area box, the "PX" (position X) output port reports mouse 
+positions all the way to the bottom and top edges of the screen. Note however, that the 
+click-and-drag action must be started within the bounds of the Mouse Area Module's 
+Panel representation.
+▪
+(BL) "BL" (left button) is the Event output port for the left mouse button status. It is "1" 
+when the left mouse button is depressed; otherwise it is "0". Events are sent from this 
+output port only when the mouse is within the Mouse Area Module's display area in the 
+Instrument Panel.
+▪
+(BR) "BR" (right button) is the Event output port for the right mouse button status. It is 
+"1" when the right mouse button is depressed; otherwise it is "0". Events are sent from 
+this output port only when the mouse is within the Mouse Area Module's display area 
+in the Instrument Panel.
+▪
+(BC) "BC" (center button) is the Event output port for the center mouse button status. 
+It is "1" when the center mouse button is depressed; otherwise it is "0". Events are sent 
+from this output port only when the mouse is within the Mouse Area Module's display 
+area in the Instrument Panel.
+▪
+(Db) "Db" (double click) is the Event output port for the double-click mouse action. An 
+Event with the value "1" is sent when the Mouse Area Module's Panel representation 
+area is double-clicked. After the double-click, no zero-valued Event is sent. Therefore 
+you must probe this output for Events and not static values.
+Panel
+Mouse Area
+ 
+REAKTOR 5.5 - Module Reference - 134
+
+
+--- Page 135 ---
+
+The right mouse button in Windows corresponds to a Ctrl+Click in Mac OS X. The center 
+mouse button is generally not available in Mac OS X.
+1.18.3
+Properties: Function Page
+ 
+Activating Incremental Mouse Mode
+The output values for the Mouse Area Module are calculated in two different ways, de­
+pending on the operation mode. These two modes are discussed in the Module's Overview, 
+above.
+► To toggle between the two Mouse Area Module operation modes, engage or disengage 
+the Incremental Mouse Mode checkbox accordingly. This checkbox is shown in the screenshot 
+of the Function page below.
+Setting the Range and Resolution for the Output Values
+The range and resolution of the Mouse Area Module's values at the "X" and "Y" output ports 
+are set in the Range area of the Module's Function page, shown in the screenshot below. 
+The edit fields contained in this area function analogously to the ones contained in a con­
+ventional Knob or Fader Module. To learn how these edit fields affect the output values, 
+please refer to subsection 8.2.1 in the Application Reference.
+Fig. 1.65 The range and resolution of the Mouse Area Module's output values are set in the Range area of its Function page.
+Panel
+Mouse Area
+ 
+REAKTOR 5.5 - Module Reference - 135
+
+
+--- Page 136 ---
+
+Engaging the Right Mouse Through Mode
+► To keep the actions of the right mouse button from triggering Events at the Mouse Area 
+Module's output and instead bring up the context menu, go to the Function page and en­
+gage the Right Mouse Through checkbox, as shown in the figure below.
+The right mouse button in Windows corresponds to a Ctrl+Click in Mac OS X.
+1.18.4
+Properties: View Page
+ 
+Setting the Mouse Area Size
+Depending on your Instrument Panel layout, you might want a larger or smaller Panel rep­
+resentation for your Mouse Area Module.
+► To set the width and height of the Mouse Area Module's Panel representation, go to the 
+Module's View page and enter the desired values into the Width and Height edit fields, as 
+shown in the figure below.
+Fine Tuning the Mouse Area Placement in the Panel
+The position of the Mouse Area on the Instrument Panel can be offset from the REAKTOR 
+4 x 4 grid.
+► To shift the Mouse Area Module's Panel representation to the right or upwards by 1 to 3 
+pixels, enter the desired value into the X Offset or Y Offset edit field, respectively.
+Panel
+Mouse Area
+ 
+REAKTOR 5.5 - Module Reference - 136
+
+
+--- Page 137 ---
+
+Choosing Label Size and Visibility Settings
+► To reduce the size of your Mouse Area Module's Label, engage the Small Label checkbox 
+(shown in the figure below).
+► To make the Label disappear, disengage the Show Label checkbox (shown in the figure 
+below).
+► To make the Mouse Area Module's Panel representation disappear, disengage the On 
+checkbox (shown in the figure below).
+► Engage the Show Label checkbox to show the Label. Engage the Small Label checkbox to 
+reduce the size of the Label of the Module's Panel representation. Disengage the On check­
+box to make the Mouse Area Module's display disappear.
+Changing the Outline Style
+You can choose the Mouse Area's Panel representation to have three styles: None (invisi­
+ble), Rectangle (1 pixel border surrounding the Mouse Area), or Bar (the Mouse Area is fil­
+led with the outline color).
+► To choose the style for the Mouse Area's Panel representation, go to the Module's View 
+page and click on the corresponding radio button from the Outline Style Selector (shown in 
+the screenshot below).
+Choosing the Outline Color
+The Mouse Area Module's Panel representation has two states: Active and Inactive. For 
+each state you can define a color and the amount of transparency.
+Panel
+Mouse Area
+ 
+REAKTOR 5.5 - Module Reference - 137
+
+
+--- Page 138 ---
+
+► To choose a color for the Inactive or Active state of the Mouse Area with the color pick­
+er of your OS, press the corresponding Choose Color button, as shown in the screenshot be­
+low.
+► To set the amount of transparency for the Active and Inactive states, enter the desired 
+value (in percent) into the Active Transparency and Inactive Transparency edit fields, respectively. 
+These edit fields are shown in the screenshot above.
+Defining the Active State
+The Mouse Area Module lets you choose which mouse action turns on the Active state and 
+how this state behaves. You have four options:
+▪
+Selection: Clicking on the Mouse Area with the left mouse button turns on the Active 
+state. This state is kept (even if the mouse button is released) until something else on 
+the Instrument Panel is selected.
+▪
+Left Button: Clicking on the Mouse Area with the left mouse button turns on the Active 
+state as long as you keep the mouse button depressed.
+▪
+Right Button: Clicking on the Mouse Area with the right mouse button turns on the Ac­
+tive state as long as you keep the mouse button depressed.
+▪
+Center Button: Clicking on the Mouse Area with the center mouse button turns on the 
+Active state as long as you keep the mouse button depressed.
+The right mouse button in Windows corresponds to a Ctrl+Click in Mac OS X. The center 
+mouse button is generally not available in Mac OS X.
+► To define the behavior of your Mouse Area Module's Active state, go to its View page 
+and click on the corresponding radio button from the Active State selector (shown in the 
+figure below).
+Panel
+Mouse Area
+ 
+REAKTOR 5.5 - Module Reference - 138
+
+
+--- Page 139 ---
+
+1.18.5
+Example: Value Edit Field
+ 
+This example shows how to build a custom value edit field that displays numbers with one 
+decimal point precision. The edit field also enables you to change the values by clicking 
+and dragging the mouse over the edit field and to reset the value to "0" by double clicking 
+on the field. Start by creating a Macro with an output port labeled "Out". Make sure the 
+Macro is set to Mononophonic Mode before you start building this example Structure. First 
+we will start with building the value display. We want to display decimal numbers from 
+-9.9 to 9.9, in 0.1 step increments. For this purpose you will need three Multi Picture 
+Modules (↑1.11, Multi Picture): one for the sign ( + and - ), one for the integers ( 0 to 9 ), 
+and one for the first decimal place after zero (.0 to .9).
+After inserting the three Multi Picture Modules into the Structure, designate one for the 
+sign and go to its Function page. There, in the Select Picture menu you will find the -> Open 
+from file… menu entry, click on it. This opens the Load Image File dialog box. Go to the 
+Tutorial Ensembles folder and from there enter the folder labeled Module Reference where 
+you will find the file "plus_minus.tga". Select the file and click the Open button. In the 
+following Picture Properties dialog window, make sure that the Alpha Channel checkbox is ac­
+tivated. Next, make sure that the Animation Width and Animation Height edit fields both carry 
+the value "32". You should now see a "+" and a "-" with transparent backgrounds next to 
+each other in the Picture Preview display. If so, click the OK button to continue.
+Panel
+Mouse Area
+ 
+REAKTOR 5.5 - Module Reference - 139
+
+
+--- Page 140 ---
+
+Fig. 1.66 The Picture Properties dialog window.
+Now follow this same procedure for loading the digit animations to the other the Multi Pic­
+ture Modules. Designate one of the Modules for integer digits and load the "numbers.tga" 
+file from the same location as "plus_minus.tga" into the Multi Picture Module whilst mak­
+ing sure that the same settings for the Alpha Channel checkbox and Animation Height and Ani­
+mation Width edit fields apply. For the third Multi Picture Module, repeat the aforementioned 
+procedure, but this time loading the file "decimals.tga" into the Module. This last Module 
+will be dedicated to display the first position after the decimal point. Go to the Instrument 
+Panel and arrange the signs and digits in a way that makes sense when reading from left 
+to right: first the sign, then the integer, and then the decimal fraction.
+Panel
+Mouse Area
+ 
+REAKTOR 5.5 - Module Reference - 140
+
+
+--- Page 141 ---
+
+Fig. 1.67 The display part of the value edit field.
+Now we need a way to split up the information that the value display should display into 
+three parts: the sign (if the value is positive or negative), the integer part, and the decimal 
+fraction. The first split will happen between the sign and the numbers. For that, insert a 
+Rectify/Sign Module into the structure. The incoming value to the value display goes into 
+the "In" input port of the Rectify/Sign Module. The "Sign" output port of that Module out­
+puts a "1" if the incoming value is positive and "-1" if the incoming value is negative. We 
+need to convert these values to specify the picture index of the animation loaded into the 
+Multi Picuture Module. For that purpose, add an Add Module into the structure and use it 
+to add "1" to the signal from the "Sign" output port of the Rectify/Sign Modue. The output 
+of the Add Module will then be "0" if the value at the input of the Rectify/Sign Module is 
+negative and "2" if the value is positive. After connecting the output port of the Add Mod­
+ule to the "Sel" input port of the Multi Picture Module, the "0" will address the first picture 
+in the animation, the minus sign, and the value "2" will address the last picture of the ani­
+mation, the plus sign. To test out the functionality of the value display, create a Knob 
+Module at the "In" input of the Rectify/Sign Module by right-clicking on the "In" input port 
+and clicking on the Create Control menu item. Set the range of the knob to [-9.9 … 9.9] by 
+going to the Module's Function page and setting the Max Value edit field to "9.9" and the Min 
+Value edit field to "-9.9".
+On to the numbers: insert two Modulo Modules (↑4.9, Modulo) into the structure. Connect 
+the "|x|" output port of the Rectify/Sign Module the "A" input port of one Modulo Module. 
+Since we want to split the number into integers and fractions, it is only natural to create a 
+Constant with the value "1" at the "B" input port of the first Modulo Module. Now the "Div" 
+output port of the Modulo Module carries the value that is the largest multiple of "1" and 
+is at the same time smaller than the value received from the "|x|" output port of the Recti­
+fy/Sign Module. For example, if |x| = 5.2, then Div = 5 or if |x| = 3.8, then Div = 3. Con­
+nect the "Div" output port to the "Sel" input port of the Multi Picture Module that is meant 
+to display the integer part of the incoming signal value. Since we want to display signals 
+within the range -9.9 to 9.9, then the "Div" value has a range [0 … 9] which exactly 
+matches the indices of the pictures of the animation file "numbers.tga" loaded into that 
+Multi Picture Module. Go to the Instrument Panel and move the knob that you previously 
+Panel
+Mouse Area
+ 
+REAKTOR 5.5 - Module Reference - 141
+
+
+--- Page 142 ---
+
+created and watch the sign and the integer numbers change in the Panel display of the 
+Multi Picture Modules. Next, hook up the decimal fraction part of the incoming signal, 
+namely the value sent to the "Mod" output of the Modulo Module, to the "A" input port of 
+the second Modulo Module. Next, create a Constant with the value "0.1" at the "B" input 
+port of that Modulo Module. Wire the "Div" output port that same Modulo Module to the 
+"Sel" input of the last remaining Multi Picture Module. With the "B" input port of the first 
+Modulo Module receiving a constant value of "0.1", the "Mod" output port of the Modulo 
+Module outputs the remainder of the incoming value, divided by "0.1". To demonstrate 
+this with the numbers used in the previous example, if |x| = 5.2, then for the first Modulo 
+Module, Mod = 0.2 and sending that value to the "A" input of the second Modulo Module, 
+we get 0.2 / 0.1 = 2 at the "Div" output of the second Modulo Module. In the same way, if 
+|x| = 3.8, then for the first Modulo Module, Mod = 0.8 and when that value is sent to the 
+"A" input port of the second Modulo Module, the "Div" output of that Module is 0.8 / 0.1 = 
+8. Note that since the range of the "Mod" output of the first Modulo Module is [0 … 0.9] 
+and in the second Modulo Module we divide by "0.1", the range of the "Div" output of the 
+second Modulo Module is [0 … 9]. In this case "Mod" has a range [0 … 9] which exactly 
+matches the indices of the pictures of the animation file "decimals.tga" loaded into that 
+Multi Picture Module. Go to the Instrument Panel and move the previously created knob to 
+test out the functionality of the value display.
+Fig. 1.68 The Structure for sorting out the sign and decimal parts of the value.
+Panel
+Mouse Area
+ 
+REAKTOR 5.5 - Module Reference - 142
+
+
+--- Page 143 ---
+
+Now that you have a functioning value display, you probably want a way to manipulate the 
+values directly through the value display itself, not with an extra knob cluttering your Pan­
+el layout. This can conveniently be achieved with the Mouse Area Module. Place it into the 
+structure in front of the Rectify/Sign Module, leaving a bit of space for a Merge Module 
+that you will insert later. By default, the Mouse Area Module is transparent in the Instru­
+ment Panel. To make testing the functionality easier you should make the mouse area visi­
+ble. First, the Mouse Area Module needs to have a graphic element in the Instrument Pan­
+el. In the Appearance page of the Module, click on the Bar Outline Style selector to create a 
+filled rectangle as the graphical element of the mouse area in the Instrument Panel. Now 
+you have a 100 % transparent rectangle marking the mouse area in the Instrument Panel; 
+for ease of manipulation you should to make the appearance more opaque. To do this, en­
+ter the value "80" into the Inactive Transparency edit field and the value "70" into the Active 
+Transparency edit field of the Module's Appearance page. To add one more touch, click on 
+the Left Button selector to make the active state of the mouse area appear during a left-click 
+on the mouse area in the Instrument Panel. Now you should be able to see the mouse area 
+in the Instrument Panel and see it become darker when you click on it. Unlock the Panel 
+and move the mouse area over your value display. Set the dimensions of the mouse area to 
+cover all digits of the value display using the Size X and Size Y edit fields in the Appearance 
+page of the Mouse Area Module. After finding good settings for the dimensions, ("30" for 
+Size X and "60" for Size Y should be good) lock the Panel again.
+Fig. 1.69 The value edit field with the mouse area.
+The Mouse Area Module can supply us with the values that we want to display with the 
+structure that you built above. When you click and drag the mouse over the mouse area in 
+the Instrument Panel, the "X" and "Y" output ports output events carrying the "x" and "y" 
+coordinates, respectively, as specified in the Function page of the Module. For our pur­
+pose, we are only interested in clicking and dragging the mouse vertically to change the 
+values in the value display since that seems the most intuitive setup for most Instrument 
+layouts. For this reason we will leave the "X" output (and hence the settings in the Range X 
+area of the Function page) alone and focus on the "y" coordinate. Connect the "Y" output 
+port of the Mouse Area Module to the "In" input port of the Rectify/Sign Module. In order 
+to be able to control the output values of the "X" and "Y" output ports of the Mouse Area 
+Panel
+Mouse Area
+ 
+REAKTOR 5.5 - Module Reference - 143
+
+
+--- Page 144 ---
+
+Module over the mouse area in the Instrument Panel much like a fader, that is, that click­
+ing and dragging changes the output value, engage the Incremental Mouse checkbox in the 
+Function page of the Mouse Area Module.
+The range of values that we want to get out of the Mouse Area Module is [-9.9 … 9.9]. To 
+specify these parameters, go to the Function page of the Mouse Area Module and enter 
+"-9.9" into the Min Y Value edit field and "9.9" into the Max Y Value edit field in the Range Y 
+area. Next, we want to determine the precision with which one can manipulate the output 
+values. The relevant parameters to this are edited with the Num Steps X and Mouse Reso X edit 
+fields. If Num Steps X and Mouse Reso X are too large, you would have to drag the mouse all the 
+way to the top of the screen to see any change in the output value. On the other hand, if 
+these parameters are too small, dragging the mouse over the mouse area just a small dis­
+tance already effects a great change in the output value. In order to have the right value 
+increments at the output, the Num Steps X value should be an integer multiple of the Mouse 
+Reso X value. Try playing around with the values and seeing the effect it has on the value 
+display, but in the end settling with a value of "1000" in the Num Steps X edit field and 
+"500" in the Mouse Reso X edit field should be fine.
+You now have a structure that displays values and lets you directly manipulate the values 
+by clicking and dragging the mouse over the display. We would like to add one additional 
+feature to this setup, namely, the possibility to double-click the mouse area to reset the 
+value to a certain number. The Mouse Area Module has an output port labeled "Db" that 
+sends out an event with the value "1" every time the mouse area on the Panel is double-
+clicked. You now have two sources of events to determine the number that your value edit 
+field is supposed to display. To combine them, place a Merge Module into the structure 
+between the Mouse Area Module and the Rectify/Sign Module. Replace the wire to the "In" 
+input port of the Rectify/Sign Module with a wire from the "Out" output port of the Merge 
+Module. Next, connect the "Y" output port of the Mouse Area Module to the input port of 
+the Merge Module and finally, while holding Ctrl, drag a wire from the "Db" output of the 
+Mouse Area Module to the three dots on the left side of the Merge Module. The latter ac­
+tion creates a second port for the Merge Module. When you click and drag the mouse over 
+the mouse area in the Instrument Panel, a value is sent to the Merge Module from the "Y" 
+output port of the Mouse Area Module. This value is then forwarded in the form of an 
+event (carrying the same value as was received from the "Y" output port) to the value dis­
+play part of your structure which starts with the Rectify/Sign Module. If you now double 
+click the mouse area in the Instrument Panel, the value "1" is sent to the Merge Module. 
+Panel
+Mouse Area
+ 
+REAKTOR 5.5 - Module Reference - 144
+
+
+--- Page 145 ---
+
+Now the output port of the Merge Module sends an event with the value "1". This should 
+be reflected in the Instrument Panel where the value display should display "+1.0". Each 
+new event at any of the input ports of the Merge Module triggers an event at the output 
+port with the same value as the last incoming event. During initialization, the value from 
+the lowest input port of the Merge Module is sent last to its output port so in the current 
+structure, if you press the Run/Stop Audio button twice (turning the audio off and then on 
+again) to reinitialize the structure, your value display will show the initialization value com­
+ing from the "Db" output port of the Mouse Area Module, namely "1". Depending on the 
+circumstances, this might not be what you want, so changing the port order of the wires 
+connected to the Merge Module can be a way to get the desired reinitiation behavior. In 
+this case switching the port orders around will yield the initialization value "0" from the "Y" 
+port of the Mouse Area Module to be sent to the Merge Module's output last.
+Regardless of the port order of the wires at the Merge Module's input, you might not want 
+the value edit field to be reset to "+1.0" when you double click the display. Having a reset-
+behavior of "0" might be much more natural. This can be changed very easily with the help 
+of only one additional Module. Insert a Value Module into the structure and connect the 
+"Db" output port of the Mouse Area Module to the "Trig" input port. Any event at the "Trig" 
+input port will cause an event with the value lying at the "In" input port of the Value Mod­
+ule to be sent from its output port. In this case we leave the "In" input port disconnected 
+which means that an event from the "Db" output port of the Mouse Area Module causes an 
+event with the value "0" to be sent from the output of the Value Module. This is exactly 
+what you want: you replaced an event carrying the value "1" with an even carrying the val­
+ue "0"! Now replace the wire at the input port of the Merge Module that is connected to 
+the "Db" output port of the Mouse Area Module with a wire to the output port of the Value 
+Module. Now go to the Instrument Panel, make sure the value display is nonzero and dou­
+ble click it. Voila! The value display should now reset to the value "0".
+Your value edit field is almost complete. You are probably asking, “Why almost and not 
+fully complete??” The reason lies yet again in the initialization behavior. If you reinitialize 
+the structure or load the Instrument anew, regardless of the value that the display was set 
+to, it will always show "0". If you want to use this structure in an Instrument, it is desirable 
+to have the Instrument's state upon saving fully recalled. Knob, fader, and value display 
+settings count among the things you usually do not want to change when you reload an 
+Instrument. This is where the Snap Value Module comes into play. Insert one into the 
+structure and connect its input port to the output port of the Merge Module. The output 
+port of the Snap Value Module should now be connected to the input port of the Rectify/
+Panel
+Mouse Area
+ 
+REAKTOR 5.5 - Module Reference - 145
+
+
+--- Page 146 ---
+
+Sign Module and the "Out" Out Port that you added to your Macro's structure in the very 
+beginning. The Snap Value Module takes the last value that was received at its input port 
+and stores it in memory. When the structure is reinitialized or the Instrument is reloaded, 
+this value will be sent to the output port of the Snap Value Module (and on to the struc­
+ture downstream) instead of the initialization values from the Mouse Area Module. To en­
+sure that the Snap Value Module properly deals with the values that it is supposed to 
+store, go to its Function page and set the Max Value edit field to "9.9" and the Min Value edit 
+field to "-9.9". This range is the one we have been using in this example. Also, to retain 
+the functionality that we have achieved until now, that is, that the values from the Mouse 
+Area Module are sent to the rest of the structure (and now, to the Out Port), make sure 
+that the Event Thru checkbox in the Function page of the Snap Value Module is engaged. If 
+the Event Thru checkbox would be disengaged, the values arriving at the Snap Value Mod­
+ule's input port would not be forwarded to the output port except during initialization. Your 
+complete structure should now look like the following picture.
+Fig. 1.70 The final Structure of the value edit field.
+1.19
+Stacked Macro
+ 
+Fig. 1.71 A Stacked Macro
+Panel
+Stacked Macro
+ 
+REAKTOR 5.5 - Module Reference - 146
+
+
+--- Page 147 ---
+
+1.19.1
+Overview
+ 
+The Stacked Macro enables multiple graphical objects to share the same area of the In­
+strument Panel. Which objects are displayed within the area at any one time can then be 
+controlled using the Panel Index Module (↑1.20, Panel Index Module).
+Application
+After inserting a Stacked Macro into your Structure, place it in the correct position on the 
+panel, and set the desired size in the properties. Then insert 2 or more Macros ("normal" 
+Macros, not additional Stacked Macros) inside the Stacked Macro, along with a Panel In­
+dex Module (↑1.20, Panel Index Module). Only one of the "normal" Macros (along with any 
+panel elements inside it) will be visible at any one time. Which Macro is visible depends 
+on the input value at the Panel Index Module's input port. Please refer to the Panel Index 
+Module for an example on how to use the Stacked Macro feature.
+To discover the index number of a Macro, first unlock the Panel by clicking on the Panel Lock 
+button. Then right-click on the Stacked Macro frame on the Instrument panel - the list of 
+Macros and their corresponding indices will be displayed in the context menu.
+1.19.2
+Properties: View Page
+ 
+Setting the Stacked Macro Display Size
+Depending on your Instrument Panel layout, you might want a larger or smaller display 
+area for your Stacked Macro.
+Note that Macros inside the Stacked Macro which have a larger display area than that set in 
+the Stacked Macro's View page will appear "clipped" on the Instrument Panel.
+► To set the width and height of the Stacked Macro, go to the Module's View page and 
+enter the desired values into the Width and Height edit fields, as shown in the figure below.
+Panel
+Stacked Macro
+ 
+REAKTOR 5.5 - Module Reference - 147
+
+
+--- Page 148 ---
+
+Other than the feature of switching between displayed Macros on a fixed area, the Stacked 
+Macro functions analogously to the "normal" Macro. Please refer to section 8.4 in the Appli­
+cation Reference for more information on the View page of the Stacked Macro.
+1.20
+Panel Index Module
+ 
+Fig. 1.72A Panel Index Module
+1.20.1
+Overview
+ 
+The Panel Index Module is a key component in activating the functionality of Stacked 
+Macros (↑1.19, Stacked Macro). Into each Stacked Macro exactly one Panel Index Module 
+needs to be placed. Additionally, this Panel Index Module needs to be active. The Panel 
+Index Module receives at its input port values in the range [0 … N - 1] (where "N" denotes 
+the number of Macros inside the Stacked Macro) which determine which Macro should ap­
+pear within the Stacked Macro's area in the Instrument Panel.
+Application
+The Stacked Macro feature (which includes the Panel Index Module) enables multiple 
+graphical objects to share the same area of the Instrument Panel.
+1.20.2
+Ports
+ 
+▪
+(In) "In" is the Event input port which receives values that determine which Macro 
+should appear within the Stacked Macro's area in the Instrument Panel. The range of 
+these values should be [0 … N - 1] (where "N" denotes the number of Macros inside 
+the Stacked Macro, see also ↑1.19, Stacked Macro).
+1.20.3
+Properties: Function Page
+ 
+Keeping the Panel Index Module Always Active
+If the Panel Index Module is not connected to an active signal flow, then the Stacked 
+Macro Functionality is disabled. In such a case you can activate the Module with the Always 
+Active checkbox.
+Panel
+Panel Index Module
+ 
+REAKTOR 5.5 - Module Reference - 148
+
+
+--- Page 149 ---
+
+► To activate the Panel Index Module, go to its Function page and engage the Always Active 
+checkbox, shown in the figure below.
+1.20.4
+Example: 2 Stacked Macros
+ 
+This example shows how to place 2 Macros in the Structure that one the Instrument Panel 
+appear in the same area. Which Macro is displayed, can be chosen using the List Module. 
+First, however, place a Stacked Macro into the Structure, as shown in the figure below, 
+and then navigate into the Macro by double-clicking it.
+Fig. 1.73 Macros placed inside the Stacked Macro can be displayed one at a time using the Panel Index Module.
+Next, place two Macros into the Structure, naming them "Macro 1" and "Macro 2", corre­
+sponding to the order in which they were placed inside the Structure. Now place a Panel 
+Index Module into the Structure. Engage the Always Active checkbox in its Function page and 
+connect it to a List Module (↑1.3, List), for example, to be able to address from the Instru­
+ment Panel, the contents of which Macro is to be displayed in the area of the Stacked 
+Macro Module's (↑1.19, Stacked Macro) Panel representation. This is shown in the Struc­
+ture below. Sending the value "1" from the List Module to the Panel Index Module causes 
+the first Macro to be displayed, and sending the value "2" causes the second Macro to be 
+displayed.
+Fig. 1.74 The Macros receive their "Panel Index" according to the order in which they were placed inside the Stacked Macro.
+Panel
+Panel Index Module
+ 
+REAKTOR 5.5 - Module Reference - 149
+
+
+--- Page 150 ---
+
+Now place some contents with Panel representations inside the two Macros so that you 
+can test out the Stacked Macro feature from the Instrument Panel. The resulting Instru­
+ment Panel is shown in the figure below, where a Lamp Module (↑1.5, Lamp) was placed 
+inside the first Macro.
+To increase the area of the Stacked Macro (↑1.19, Stacked Macro), go to its View page and 
+increase the values in the Width and Height edit fields.
+Fig. 1.75 Choosing the "Macro 1" entry from the List Module causes the value "1" to be sent to the Panel Index Module. This 
+displays the contents of the first Macro.
+Panel
+Panel Index Module
+ 
+REAKTOR 5.5 - Module Reference - 150
+

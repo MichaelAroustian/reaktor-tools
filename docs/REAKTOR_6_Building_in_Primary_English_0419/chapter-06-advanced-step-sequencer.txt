@@ -1,0 +1,496 @@
+--- Page 89 ---
+
+6
+Advanced Step Sequencer
+ 
+6.1
+Overview
+ 
+REAKTOR offers a number of Modules that you can combine to create custom controls.
+Building on the ↑5, Basic Step Sequencer tutorial, this tutorial will guide you through using
+the advanced Panel Modules and techniques to create your own Step Sequencer interface.
+6.1.1
+Previous Knowledge
+ 
+As well as assuming a basic understanding of building in REAKTOR, this tutorial also assumes
+that you have completed the tutorial in section ↑5, Basic Step Sequencer ↑5, Basic Step Se-
+quencer.
+The following will not only build on the Ensemble created in that tutorial, but will also assume
+all knowledge acquired to that point.
+6.1.2
+The Theory
+ 
+By this stage you should have already created a ↑5, Basic Step Sequencer, however certain as-
+pects of this sequencer are limited - the information in the sequencer is stored in the Ensem-
+ble, and not in the Snapshots.
+Building on the ↑5, Basic Step Sequencer also makes a good starting point for learning some
+advanced concepts about REAKTOR's GUI (Graphical User Interface) capabilities.
+Until now you will have been using simple, pre-made Panel Modules like knobs and buttons.
+While these are useful, sometimes you'll need a control with an option that is unavailable in
+those on offer, and this is why REAKTOR also offers additional advanced Panel Modules.
+In this tutorial, you will replace the Event Table Module used in the ↑5, Basic Step Sequencer
+with your own table, built from scratch. This new table will allow you to save sequences in
+Snapshots, and not just in the Ensemble.
+Advanced Step Sequencer
+Overview
+ 
+REAKTOR 6 - Building In Primary - 89
+
+
+--- Page 90 ---
+
+6.2
+Tutorial
+ 
+6.2.1
+Setting Up
+ 
+This tutorial will build on the ↑5, Basic Step Sequencer, focusing on replacing the Event Table
+Module.
+1.
+If you do not have the Step Sequencer Ensemble loaded, open it now.
+2.
+Enter the Sequencer Macro structure and delete the Event Table Module and the Order
+Module.
+3.
+Create a new empty Macro.
+4.
+Rename it to "Table".
+5.
+Attach the Table Macro to the structure as follows:
+6.2.2
+Building the Sequencer Interface
+ 
+Before you build any of the step sequencer functionality, you will create the interface elements
+needed.
+1.
+Enter the Table Macro structure.
+2.
+Create a Mouse Area Module.
+The Mouse Area Module allows you to access the state and position of the user's mouse
+when it is over a defined area on the Panel. Because of this, the Mouse Area is a very
+useful Module when creating custom interfaces.
+The Mouse Area sends the actions of the user to our structure, but this is only one part of the
+functionality of an interface control; the sequencer will also need a display to show the values
+of the sequencer to the user.
+Advanced Step Sequencer
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 90
+
+
+--- Page 91 ---
+
+To ensure the display stays under the Mouse Area (so as not to block the user's input) you
+should create a new Macro to contain the display.
+1.
+Create a new empty Macro.
+2.
+Name this Macro "Display".
+3.
+Enter this Macro and create a Multi Display Module.
+⇨Because the Multi Display is contained in a Macro one level below the Mouse Area, it will
+be placed under of the Mouse Area on the panel.
+The Multi Display Module is a Panel element that can contain a number of objects, which can
+be made of basic shapes, like lines and rectangles. In this tutorial, the Multi Display will be
+used to create the bars of the sequencer.
+The Mouse Area and the Multi Display will be the only Panel elements you'll need for this tuto-
+rial, so now is a good time to adjust the Panel to make sure everything is in the right place.
+1.
+Return to the Ensemble Panel and Unlock the Panel.
+2.
+When you unlock the Panel, you will notice that the Mouse Area is shaded so that you can
+see where it is located.
+3.
+Select the Multi Display to show its properties.
+4.
+Navigate to the View tab and uncheck the Show Label option to hide the label.
+5.
+Select the Display Macro to show its properties.
+Advanced Step Sequencer
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 91
+
+
+--- Page 92 ---
+
+6.
+Navigate to the View tab and set the Frame parameter to None. This will hide the frame of
+the Macro without hiding its contents.
+7.
+Move the Table Macro so that it is no longer overlapping with the rate control.
+The interface is starting to come together, but the default square shape of the Table Module is
+not ideal for a 16-step sequencer.
+To re-size the Table:
+1.
+Select the Mouse Area Module.
+2.
+Navigate to the View tab of its Properties.
+3.
+Change the Width parameter to 300.
+4.
+Repeat this process for the Multi Display.
+Advanced Step Sequencer
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 92
+
+
+--- Page 93 ---
+
+⇨The Table is now a 300 x 150 rectangle.
+With the panel organized, now is time to connect the Mouse Area to the Multi Display:
+1.
+Enter the Table Macro structure.
+2.
+Connect the X and Y outputs of the Mouse Area to the Display Macro.
+3.
+Rename the ports on the Display Macro to match the corresponding ports on the Mouse
+Area. You can do this by double-clicking on the ports and typing in the new names.
+When the user interacts with the sequencer interface, the X position of the mouse will corre-
+spond to the step in the sequence, and the Y position will give the value at that step.
+Advanced Step Sequencer
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 93
+
+
+--- Page 94 ---
+
+When using the Multi Display, you need to select which object you are editing by using the Idx
+(index) port. Once you have selected an object, you can set its parameters using the other in-
+put ports.
+Therefore, the X position of the mouse should select the object index, and that the Y value will
+define the object height.
+Using this information, you can connect the X and Y ports to the various input ports on the
+Multi Display Module:
+1.
+Enter the Display Macro.
+2.
+Connect the X port to the Order Module. The Order Module ensures that the object index
+is set before the X co-ordinates are set.
+3.
+Connect output 1 of the Order Module to the Idx (index) input of the Multi Display.
+4.
+Connect output 2 to the X1 input
+5.
+Create an Add Module with a Constant of 1 attached to the bottom input.
+6.
+Wire the Modules as follows:
+With the Modules connected in this way, the index will be selected, and then an object will be
+drawn from X1 to X2. X2 will be the same as X1 of the next object, so the bars should be
+placed next to each other.
+The Y1 position will always be the center of the display, and therefore should always have a
+value of 0. Y2 will define the height of the bar.
+Advanced Step Sequencer
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 94
+
+
+--- Page 95 ---
+
+1.
+To ensure the Y values arrive after the Idx value is set, you will need to create another
+Order Module.
+2.
+Create Value Module. When the Value Module receives an event at the Trig input, it out-
+puts a new event with a value defined at the lower input.
+3.
+Create a Constant and set it to 0.
+4.
+Connect the Modules as follows:
+You will notice that you have used the second output of the Order Module for the Y values.
+This is to ensure that the Y values are also processed after the Index is set.
+With everything wired up, you will need to set the properties of the Mouse Area and the Multi
+Display to produce the desired results.
+1.
+Enter the Mouse Area properties.
+2.
+The Y range will set the value of each step, which you'll want to be -12 to +12. So in the
+RANGE Y section, set the Max value to 12 and the Min value to -12.
+3.
+Set the Step Size in the RANGE Y section to 1.
+Advanced Step Sequencer
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 95
+
+
+--- Page 96 ---
+
+The X range will select the bar in step in the sequencer, so you will want a range of 1 to 16.
+However, this will not align with the display, as and X value of 1.5 will round up to 2 and se-
+lect the next step even though you are still in the first section of the Mouse Area.
+1.
+To compensate for this, set the Min value of the RANGE X section to 0.6 and the Max
+value to 16.4. Leave the Step Size at 0.
+2.
+Then enter the Table structure and create a Quantize Module.
+3.
+Connect the Quantize Module like so:
+4.
+The Quantize Module needs to round the X values to the nearest whole number, so set the
+St (steps) to 1 by connecting a Constant to that port.
+Now that the Mouse Area properties are defined, it is time to edit the Multi Display:
+1.
+Enter the Display Macro and select the Multi Display to show its properties.
+Advanced Step Sequencer
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 96
+
+
+--- Page 97 ---
+
+2.
+For the Table you'll need 16 objects in the display (one for each bar), so locate the OB-
+JECTS section and set the Number to 16.
+3.
+In the RANGE section, set the X Origin to 1 and the X Range to 16.
+4.
+Set the Y Origin to -12 and the Y Range to 24 (the minimum value is -12 and the maxi-
+mum is 12, this is why the range is 24).
+The final step here is very important, and is a common stumbling block for first time
+builders who are unfamiliar with REAKTOR.
+1.
+Check the Always Active option in the Multi Display properties.
+Checking this option ensures that the Multi Display will function, even though none of its out-
+puts are connected to anything.
+It is now time to return to the Panel and check your work.
+1.
+Click and drag the mouse on the table to draw in a sequence.
+The bars of the Table are black outlines, which are not ideal, but you can change this easily:
+Advanced Step Sequencer
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 97
+
+
+--- Page 98 ---
+
+1.
+Return to the Multi Display Module in the structure.
+2.
+The Multi Display has 3 inputs for setting the object color, labeled R, G, and B for Red,
+Green, and Blue. They all accept values between 0 and 1.
+3.
+Create a Constant of 1 and connect it to the G and B ports.
+⇨This will set the object colors to cyan (a mix of green and blue).
+The Multi Display also has an input for setting the object type (Obj). Without anything connect-
+ed to this input, the current object is a Rectangle.
+1.
+Create a Constant with a value of -1.
+2.
+Connect this to the Obj port of the Multi Display.
+⇨The objects are set to solid bars.
+You can use Info Hints on ports to see the available options and value ranges. Using In-
+fo Hints on the Obj port gives you a list of the available object types and their corre-
+sponding values.
+Using Info Hints on the Obj Port
+Return to the Panel and take another look at the Sequencer.
+Advanced Step Sequencer
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 98
+
+
+--- Page 99 ---
+
+The Current Look of Your Sequencer
+Before you move on to the next section, you need to do a little optimization of your sequencer.
+At the moment, dragging the mouse along the X axis, without moving in the Y axis, doesn't up-
+date the values of the steps of the sequencer; this is because the Mouse Area is not sending
+any events from the Y output, since the Y value is not changing.
+You can fix this using a Value Module and a Merge Module:
+1.
+Enter the Table Macro structure.
+2.
+Create a Value Module and a Merge Module.
+Advanced Step Sequencer
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 99
+
+
+--- Page 100 ---
+
+3.
+Connect these Modules to the structure like this:
+⇨Now the Y value will send an event when either it changes or when the X value changes.
+6.2.3
+Storing Values in a Snapshot
+ 
+The sequencer you have created looks good and the interface is working, but it does not func-
+tion like a sequencer yet.
+Before you get the sequencer running, you will need a way of storing the values of the se-
+quencer in a Snapshot.
+REAKTOR includes a Snap Value Module that stores a value when a Snapshot is saved, and
+outputs that value when the Snapshot is recalled. For the Sequencer you will need to store 16
+values in the snapshot, and this requires a Snap Value Array, which has similar functionality to
+the Snap Value Module, but can store an array of values, rather than just one.
+1.
+Enter the Table Macro structure and create a Snap Value Array Module.
+2.
+Open the Snap Value Array's properties.
+Advanced Step Sequencer
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 100
+
+
+--- Page 101 ---
+
+3.
+In the RANGE section, set the Array Size to 16.
+⇨You now have a Snap Value Array that can store 16 values.
+The Snap Value Array needs to store the values sent by the Mouse Area, and send them to the
+Display.
+1.
+Connect the Snap Value Array in the structure like this:
+As with the Multi Display Module, the Snap Value Array will use the X value of the Mouse Area
+to set the index (Idx), and the Y value to write (W) a value into this index.
+You do not need an Order Module in this case because the additional Modules in the structure
+ensure that the X value reaches the Snap Value Array before the Y value.
+When you set the Array Size, you may have noticed the options Write Thru and Self-iteration,
+which were both checked.
+•
+The Write Thru option means that when a new value is written into the Snap Value Array,
+the index and value are automatically sent to the Module's corresponding outputs.
+•
+Self-iteration means that the Snap Value Array will automatically send all of its values
+when a Snapshot is recalled, or when the Ensemble is initialized.
+For this sequencer, both of these options should remain checked, as they allow the Display to
+update when a Snapshot is loaded and when the user edits the values of the sequencer from
+the interface.
+Advanced Step Sequencer
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 101
+
+
+--- Page 102 ---
+
+6.2.4
+Adding Playback
+ 
+The Sequencer is nearly there: the interface is in place and its values can be stored and recal-
+led with Snapshots.
+However, the sequencer is neither connected to the clock, nor is it outputting its values to the
+Sine Oscillator.
+Unfortunately, you cannot connect the clock directly to the Snap Value Array, as the single Idx
+port will cause it to interfere with the events coming from the Mouse Area. So, to add play-
+back, you'll need to create a new Event Table.
+This Event Table will not be accessed by the user, and is only used to temporarily hold the se-
+quencer values for the clock to trigger. Accordingly, you will need to remove the Event Table
+from the panel.
+1.
+In the Table Macro, create an Event Table.
+2.
+In the Event Table's properties, navigate to the View tab.
+3.
+At the bottom of the tab, in the VISIBLE section, uncheck the On option.
+With the Event Table now hidden, you need to set it up to hold 16 values with a range of -12
+to +12:
+1.
+In the Event Table Properties, locate the SIZE section in the Function tab.
+2.
+Click on the Set button.
+3.
+A window will open, asking you to set the table size for the event table.
+Advanced Step Sequencer
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 102
+
+
+--- Page 103 ---
+
+4.
+You will be creating a 16 step sequencer, so set the X value to 16 and leave the Y value
+at 1.
+5.
+Click Apply.
+6.
+Navigate to the VALUE RANGE section in the Function tab.
+7.
+Set the Max value to 12 and the Min value to -12.
+The Snap Value Array and the Multi Display use 1 indexed arrays, this means that the first ar-
+ray value is accessed with an index of 1. The Event Table uses a 0 based indexing system, so
+the first value is accessed with an index of 0.
+When you connect the Event Table to the Snap Value Array, you will need to compensate for
+this.
+1.
+Create a Subtract Module and connect it to a Constant of 1 to its lower input.
+2.
+Create another Add Module and connect it to a Constant of 0.
+The -1 function will be used to adjust the index from the Snap Value Array to the Event Table.
+The +0 function is a dummy function used to ensure that the indices and the values have the
+same number of modules between the Snap Value Array and the Event table. This means that
+their timing will remain consistent.
+Advanced Step Sequencer
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 103
+
+
+--- Page 104 ---
+
+1.
+Wire these Modules into the structure as follows:
+2.
+Next, you can connect the clock so that it reads values from the Event Table.
+An Order Module is not needed here. When the RX and R ports receive events at the same
+time, as they will do here, the Event Table automatically applies them in the correct order.
+Advanced Step Sequencer
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 104
+
+
+--- Page 105 ---
+
+1.
+Finally, connect the Event Table to the Out port of the Macro.
+Congratulations! With the Event Table connected, the sequencer will be fully functional. You
+can now return to the Panel and use it as before.
+6.3
+Going Further
+ 
+Although you only created a series of solid bars, the techniques you have learnt will allow you
+to create your own interface elements, with their own unique look.
+For example, by using a transparent image as the background of a Multi Display, you can layer
+multiple Multi Displays to create more complex interfaces:
+An Interface created by layering Multi Display Modules.
+Advanced Step Sequencer
+Going Further
+ 
+REAKTOR 6 - Building In Primary - 105
+
+
+--- Page 106 ---
+
+You can also access the color and opacity of individual objects in the Multi Display to create
+more responsive displays.
+An Interface created by layering Multi Display Modules and changing the opacity of individual objects.
+6.3.1
+Related Factory Content
+ 
+Although they tend to use Poly Display Modules rather than Multi Displays, any of the Ensem-
+bles from the Sequencers section of the Factory Library will use techniques similar to the ones
+you have learnt in this tutorial.
+Advanced Step Sequencer
+Going Further
+ 
+REAKTOR 6 - Building In Primary - 106
+
+
+--- Page 107 ---
+
+The SQX Ensemble
+Advanced Step Sequencer
+Going Further
+ 
+REAKTOR 6 - Building In Primary - 107
+

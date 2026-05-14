@@ -1,0 +1,887 @@
+--- Page 282 ---
+
+5
+Signal Path
+ 
+Signal Path Modules allow both control and audio data to be flexibly routed
+in REAKTOR Structures. These include Mixer Modules, input and output Selector Mod­
+ules, remote-control switches (known as Relay Modules), Crossfader Modules, and Distrib­
+utor Modules.
+5.1
+Selector
+ 
+Fig. 5.1 Selector module
+5.1.1
+Overview
+ 
+The Selector Module forwards one input signal or a mix of two input signals to its output 
+port depending on the value at the "Pos" input port. The input signals are connected to the 
+input ports below the "Pos" input port. These dynamic input ports are called "channel" in­
+put ports. Additional "channel" input ports can be created (if all existing "channel" input 
+ports are already connected) by holding down the Ctrl key in Windows (Cmd key in Mac OS 
+X) while dragging a wire from an output port of another Module to the three dots on the 
+Selector Module. The minimum number of "channel" input ports can be defined with the 
+Min Num Port Groups edit field in the Function page of the Properties Tab. An Event at select­
+ed input ports triggers an Event at the output port.
+Controlling the Routing
+One can distinguish between three cases for the functionality of the Module depending on 
+the value at the "Pos" input port:
+▪
+When the value at the "Pos" input port is an integer "n", the signal at the "n"-th "chan­
+nel" input port, counting from the top, is forwarded to the output port.
+▪
+When the "Pos" value lies between two integers, the Module's behavior depends on the 
+Interpolation setting in the Function page of the Properties Tab. There are three possibili­
+ties: linear and sine interpolation (this means that a mix of the two input signals whose 
+"channel" index is closest to the "Pos" value is sent to the output port) and no interpo­
+Signal Path
+Selector
+ 
+REAKTOR 5.5 - Module Reference - 282
+
+
+--- Page 283 ---
+
+lation (only the input signal with the „channel" index closest to the "Pos" value is sent 
+to the output port). The difference between linear and sine interpolation lies in the way 
+that the values between the two "channels" are calculated.
+▪
+If the value at the "Pos" input port is greater than the number of "channel" input ports, 
+the Module's behavior depends on the setting of the Wrap checkbox in the Function 
+page of the Properties Tab. If the Wrap checkbox is disengaged, the signal at the lowest 
+lying "channel" input port is forwarded to the output port. Otherwise, the "Pos" value 
+wraps around the number of "channel" input ports, "Max", so that Max + 1 becomes 
+"0", Max + 2 becomes "1", and so on.
+Application
+Applications of the Selector Module include:
+▪
+Using the Selector Module in conjunction with a Compare Module or a Compare/Equal 
+Module to selectively route signals. See the example for the Compare Module for de­
+tails on this.
+▪
+Feeding the "channel" input ports of the Selector Module with the signal from the out­
+put ports of the Multi-Tap Delay Module and the "Pos" input port with the output signal 
+of a Ramp Osc Module. This creates a nice delay effect.
+5.1.2
+Ports
+ 
+Input Ports:
+▪
+(Pos) "Pos" (position) is the hybrid input port for selecting the "channel" input port(s) 
+which are forwarded to the output port. Pos = 0 selects In0 (the first "channel"), Pos = 
+1 selects In1 (the second "channel"), and so on. Pos = 0.5 gives a mix of In0 and In1. 
+The exact crossfading curve between the two "channels" depends on the Interpolation set­
+ting in the Function page of the Properties Tab. The typical range for the "Pos" value is 
+[0 ... Max] where "Max" is the number of "channel" input ports.
+▪
+(In0) "In0" is the first hybrid "channel" input port for the signal that may be forwarded 
+to the output port depending on the value at the "Pos" input port.
+▪
+(In1) "In1" is the second hybrid "channel" input port for the signal that may be forward­
+ed to the output port depending on the value at the "Pos" input port.
+Signal Path
+Selector
+ 
+REAKTOR 5.5 - Module Reference - 283
+
+
+--- Page 284 ---
+
+▪
+(…) "In2, In3, …" are the dynamic "channel" input ports. Additional "channel" input 
+ports can be created (if all existing "channel" input ports are already connected) by 
+holding down the Ctrl key in Windows (Cmd key in Mac OS X) while dragging a wire 
+from an output port of another Module to the three dots on the Selector Module. The 
+maximum number of "channel" input ports for the Selector Module is 16.
+Output Ports:
+▪
+(Out) "Out" is the output port for one input signal or a mix of two input signals depend­
+ing on the value at the "Pos" input port.
+5.1.3
+Properties: Function Page
+ 
+Changing the Minimum Number of Input Ports
+To change the minimum number of "channel" input ports, type the desired number into 
+the Min Num Port Groups edit field (shown below). The maximum number of "channel" input 
+ports for the Selector Module is 16.
+Fig. 5.2 Use the Min Num Ports Groups edit field to set the minimum number of "channel" input ports appearing on the 
+Selector Module.
+Changing the Interpolation Setting
+If the "Pos" value is between two integers the signal at the output port depends on the In­
+terpolation setting (shown in the second picture below):
+► To have no interpolation, that is, for the input signal with the „channel" index closest to 
+the "Pos" value to be sent to the output port, click on the No Interpolation radio button.
+► To have linear interpolation, that is, for the "Pos" value to linearly crossfade between 
+the two input signals whose "channel" index is closest to the "Pos" value, click on the Linear 
+Interpolation radio button. The linear interpolation curve is represented by the thin lines in 
+the picture below.
+Signal Path
+Selector
+ 
+REAKTOR 5.5 - Module Reference - 284
+
+
+--- Page 285 ---
+
+► To have sine interpolation, that is, for the "Pos" value to linearly crossfade between the 
+two input signals whose "channel" index is closest to the "Pos" value, click on the Sine Inter­
+polation radio button. The sine interpolation curve is shown as the thick lines in the picture 
+below. As seen on the graph, sine interpolation curve delivers a higher level for the when 
+the crossfading parameter is in the center position.
+Fig. 5.3 Crossfading curves for linear and sine interpolation.
+In the picture above, the vertical axis represents the amplitude factor by which the corre­
+sponding signal is multiplied and the horizontal axis represents the value of "Pos", with a 
+range from the lower "channel" index (here, "0") up to the higher "channel" index (here, 
+"1"). In the graph you see that at Pos = 0 the signal from "channel" "0" (falling curve) is 
+multiplied by "1" and the signal from "channel" "1" (rising curve) is multiplied by "0", that 
+is, only the signal from "channel" "0" is passed to the output. Furthermore, at Pos = 1 the 
+signal from "channel" "0" is multiplied by "0" and the signal from "channel" "1" is multi­
+plied by "1", that is, only the signal from "channel" "1" is passed to the output. The graph 
+shows how the signal amplitudes behave between these "Pos" values. The thin lines repre­
+sent a linear crossfading curve and the thick lines represent a sine crossfading curve.
+Signal Path
+Selector
+ 
+REAKTOR 5.5 - Module Reference - 285
+
+
+--- Page 286 ---
+
+Fig. 5.4 Use the Curve radio button selector to choose the Module's Interpolation setting. Engage the Wrap checkbox to acti­
+vate the Wrapping feature.
+Wrapping the "Pos" Value
+If you want the value at the "Pos" input port to "wrap" around the number of "channel" in­
+put ports, engage the Wrap checkbox, shown in the figure above. This means that for "Pos" 
+greater than the number of "channel" input ports, "Max", the new "Pos" value is equal to 
+the old value minus a multiple of "Max" so that the new "Pos" value is in the range [0 …
+Max]. For example, Max + 1, becomes 0, Max + 2 becomes 2, and so on. For "Pos" less 
+than zero the new "Pos" value is equal to the negative value plus a multiple of "Max". If the 
+Wrap checkbox is disengaged and Pos > Max, the signal at the "channel" input port with 
+the greatest index is forwarded to the output port and if Pos < 0, the signal at the smallest 
+index is forwarded to the output port.
+5.1.4
+Example: Linear Interpolation Curve
+ 
+In this example, the Selector Module has Constants connected to the "channel" input ports 
+and a "Pos" value of "2.25". The Interpolation setting is set to "linear" with the Linear Interpola­
+tion selector in the Function page. Since 2 < Pos < 3, the output signal will be a mix be­
+tween the signals from the "2" and "3" channel input ports. In other words, the mix is a 
+linearly crossfaded signal between the constants "6" and "7" with the crossfading parame­
+ter "0.25", yielding the output value "6.25".
+Fig. 5.5 Here the output value has been linearly interpolated between "6" and "7".
+Signal Path
+Selector
+ 
+REAKTOR 5.5 - Module Reference - 286
+
+
+--- Page 287 ---
+
+5.2
+Relay
+ 
+Fig. 5.6 Relay Module
+5.2.1
+Overview
+ 
+The Relay Module acts as a router that selects between two signals at the input ports be­
+low the "Ctl" input port, called "channel" input ports. For a value "Ctl" > 0, the upper 
+"channel" input signal is sent to the output. Otherwise the lower "channel" input signal is 
+sent to the output, unless the lower "channel" input port is not present. In that case a zero 
+signal is produced at the output port. The "channel" input ports support dynamic input 
+port management: if the existing "channel" input port is already connected, an additional 
+"channel" input port can be created by holding down the Ctrl key in Windows (Cmd key in 
+Mac OS X) while dragging a wire from an output port of another Module to the three dots 
+on the Relay Module. The minimum number of "channel" input ports can be defined with 
+the Min Num Port Groups edit field in the Function page of the Properties Tab. An Event at any 
+input port triggers an Event at the output port.
+Application
+This Module can be substituted by a Selector Module with one or two "channel" input 
+ports. The Relay Module is only available for backward compatibility because the "Ctl" sig­
+nal is interpreted differently.
+5.2.2
+Ports
+ 
+Input Ports
+▪
+(Ctl) "Ctl" (control) is the hybrid input port for selecting the "channel" input port which 
+is forwarded to the output port. For a value "Ctl" > 0, the upper "channel" input signal 
+is sent to the output. Otherwise the lower "channel" input signal is sent to the output, 
+unless the lower "channel" input port is not present. In that case a zero signal is pro­
+duced at the output port.
+Signal Path
+Relay
+ 
+REAKTOR 5.5 - Module Reference - 287
+
+
+--- Page 288 ---
+
+▪
+(In0) "In0" is the upper hybrid "channel" input port for the signal that may be forwarded 
+to the output port depending on the value at the "Ctl" input port.
+▪
+(In1) "In1" is the lower hybrid "channel" input port for the signal that may be forwarded 
+to the output port depending on the value at the "Ctl" input port.
+Output Ports
+▪
+(Out) "Out" is the output port for an input signal depending on the value at the "Ctl" 
+input port.
+5.2.3
+Properties: Function Page
+ 
+Changing the Minimum Number of Input Ports
+To change the minimum number of "channel" input ports, type the desired number into 
+the Min Num Port Groups edit field (shown below). The maximum number of "channel" input 
+ports for the Selector Module is 2.
+Fig. 5.7 Use the Min Num Ports Groups edit field to set the minimum number of "channel" input ports appearing on the 
+Relay Module.
+5.2.4
+Example: Choose One Signal
+ 
+In this example a Relay Module is employed to route one of two Constants to the output. 
+The control signal telling the Relay Module which Constant to forward to the output comes 
+from the In Port labeled "Ctl". Since the "Ctl" signal carries the value "1" ( > 0 ), the signal 
+from the upper "channel" input port, the constant "8", is forwarded to the output.
+Fig. 5.8 A "Ctl" value of "1" at the corresponding Relay input port causes the value at the upper "channel" input port to be 
+forwarded to the Relay Module's output.
+Signal Path
+Relay
+ 
+REAKTOR 5.5 - Module Reference - 288
+
+
+--- Page 289 ---
+
+5.3
+Crossfade
+ 
+Fig. 5.9 Crossfade Module
+5.3.1
+Overview
+ 
+The Crossfade Module crossfades between two input signals and forwards the resulting mix 
+to the corresponding output port. The two input signals are taken from a pair of input ports 
+below the "X" input port, called "channel" input ports. Since the Crossfade Module sup­
+ports dynamic port management, additional pairs of "channel" input ports can be created 
+if all existing "channel" input port pairs already have at least one connection. Additional 
+output ports can be created if all existing ports already have a connection. This is done by 
+holding down the Ctrl key in Windows (Cmd key in Mac OS X) while dragging a wire from 
+an input or output port of another Module to the three dots on the left edge of the Cross­
+fade Module for input ports, and on the right edge of the Crossfade Module for output 
+ports. The minimum number of "channel" pairs can be defined with the Min Num Port Groups 
+edit field in the Function page of the Properties Tab. An Event at any input port triggers an 
+Event at the output port.
+Controlling the Routing
+The value at the "X" input port determines the mix of the two "channel" input signals at the 
+corresponding output port:
+▪
+When the value at the "X" input port is "0", only the signal at the higher lying port of a 
+pair of "channel" input ports is forwarded to the output port.
+▪
+When the value at the "X" input port is "1", only the signal at the lower lying port of a 
+pair of "channel" input ports is forwarded to the output port.
+▪
+For values of "X" between "0" and "1", the mix depends on the Interpolation setting in the 
+Function page of the Properties Tab.
+Signal Path
+Crossfade
+ 
+REAKTOR 5.5 - Module Reference - 289
+
+
+--- Page 290 ---
+
+Application
+The Crossfade Module is best applied in cases where you need to crossfade between two 
+types of signals with only one parameter. The two signals would then correspond to the dry 
+and wet signals in an effect, for example.
+5.3.2
+Ports
+ 
+Input Ports
+▪
+(X) "X" (crossfade) is the hybrid input port for the mixing ratio which is determined by 
+values between "0" ( Out = In0 ) and "1" ( Out = In1 ). Values beyond this range are 
+clipped.
+▪
+(In0 0) "In0 0" is a hybrid input port for the first of two "channel" input signals to be 
+mixed for the corresponding output port.
+▪
+(In0 1) "In1 1" is a hybrid input port for the second of two "channel" input signals that 
+are mixed for the corresponding output port.
+▪
+(…) "In1 0, In1 1, …" are the dynamic "channel" input ports. Additional pairs of 
+"channel" input ports can be created (if all existing "channel" input ports have at least 
+one connected port) by holding down the Ctrl key in Windows (Cmd key in Mac OS X) 
+while dragging a wire from an output port of another Module to the three dots on the 
+left edge of the Crossfade Module. The maximum number of "channel" input port pairs 
+for the Crossfade Module is 8.
+Output Ports
+▪
+(0) "0" is the hybrid output for the mix of the "channel" input signals at the input ports 
+labeled with "0".
+▪
+(…) "1, 2, …" are the dynamic output ports for the mix of the "channel" input signals 
+at the input ports labeled with "1", "2", and so on, respectively. Since the Crossfade 
+Module supports dynamic port management, additional pairs of output ports can be 
+created (if all existing output ports already have a connection) by holding down the Ctrl 
+key in Windows (Cmd key in Mac OS X) while dragging a wire from an input port of 
+another Module to the three dots on the right edge of the Crossfade Module.
+Signal Path
+Crossfade
+ 
+REAKTOR 5.5 - Module Reference - 290
+
+
+--- Page 291 ---
+
+5.3.3
+Properties: Function Page
+ 
+Changing the Minimum Number of Port Groups
+To change the minimum number of "channel" input ports, type the desired number into 
+the Min Num Port Groups edit field (shown below). The maximum number of "channel" input 
+port pairs for the Crossfade Module is 8.
+Fig. 5.10 Use the Min Num Ports Groups edit field to set the minimum number of "channel" input port appearing on the 
+Crossfade Module.
+Changing the Interpolation Setting
+The "X" input port accepts values in the range [0 … 1]. Values outside this range are clip­
+ped. The crossfading curve between the two "channel" input signals depends on the Inter­
+polation setting, set with the Curve radio button selector shown in the figure below:
+► To have linear interpolation, that is, for the "X" value to linearly crossfade between a 
+pair of two input signals, click on the Linear Interpolation radio button. The linear interpola­
+tion curve is represented by the thin lines in the picture below.
+► To have sine interpolation, that is, for the "X" value to crossfade between the pair of two 
+input signals according to a sine function, click on the Sine Interpolation radio button. The 
+sine interpolation curve is shown as the thick lines in the picture below. As seen on the 
+graph, sine interpolation curve delivers a higher level when the crossfading parameter is in 
+the center position.
+Fig. 5.11 Use the Curve radio button selector to choose the Module's Interpolation setting.
+Signal Path
+Crossfade
+ 
+REAKTOR 5.5 - Module Reference - 291
+
+
+--- Page 292 ---
+
+Fig. 5.12 Crossfading curves for linear and sine interpolation.
+The vertical axis represents the amplitude factor by which the corresponding signal is mul­
+tiplied and the horizontal axis represents the value of "X", from the lower "channel" index, 
+"0", to the higher "channel" index, "1". In the graph you see that at X = 0 the signal from 
+"channel" "0" (falling curve) is multiplied by "1" and the signal from "channel" "1" (rising 
+curve) is multiplied by "0", that is, only the signal from "channel" "0" is passed to the out­
+put. Furthermore, at X = 1 the signal from "channel" "0" is multiplied by "0" and the signal 
+from "channel" "1" is multiplied by "1", that is, only the signal from "channel" "1" is passed 
+to the output. The graph shows how the signal amplitudes behave between these "X" val­
+ues. The thin lines represent a linear crossfading curve and the thick lines represent a sine 
+crossfading curve.
+5.3.4
+Example: Parallel Crossfading Between Two Signals
+ 
+In this example you have two pairs of dry and wet signals that you want to mix using the 
+same parameter. The first pair is labeled "dry0" and "wet0", and the signals carry the val­
+ues "2" and "4", respectively. The second pair is labeled "dry1" and "wet1", and the signals 
+carry the values "5" and "6", respectively. The crossfading parameter "X" is equal to "0.49" 
+and the Linear Interpolation radio button has been selected in the Function page of the Cross­
+fade Module. Now you have a case where the output port "0" is a linearly crossfaded mix 
+between the signals "dry0" and "wet0" and the output port "1" carries a linearly crossfaded 
+Signal Path
+Crossfade
+ 
+REAKTOR 5.5 - Module Reference - 292
+
+
+--- Page 293 ---
+
+mix between the signals "dry1" and "wet1". Since the parameter "X" is set to "0.49", the 
+signal at the "0" output port is a linearly crossfaded signal between the constants "2" and 
+"4" with the crossfading parameter "0.49", yielding the output value "2.98". The same 
+way, , the signal at the "1" output port is a linearly crossfaded signal between the con­
+stants "5" and "6" with the crossfading parameter "0.49", yielding the output value "5.49". 
+The picture below shows how the Structure to this example would look like in REAKTOR.
+Fig. 5.13 The Crossfade Module in this example performs a linear crossfade between Dry0 and Wet0, and Dry1 and Wet1, 
+respectively.
+5.4
+Distributor
+ 
+Fig. 5.14 Distributor Module
+5.4.1
+Overview
+ 
+The Distributor Module distributes the signal at the "In" input port between one or two out­
+put ports, depending on the value at the "Pos" input port. Since the Distributor Module 
+has dynamic output ports, additional output ports can be created (if all existing output 
+ports are already connected) by holding down the Ctrl key in Windows (Cmd key in Mac OS 
+X) while dragging a wire from an input port of another Module to the three dots on the 
+right edge of the Distributor Module. The minimum number of input ports can be defined 
+with the Min Num Port Groups edit field in the Function page of the Properties Tab. An Event 
+at any input port triggers Events only at the output ports that are sending nonzero signals.
+Signal Path
+Distributor
+ 
+REAKTOR 5.5 - Module Reference - 293
+
+
+--- Page 294 ---
+
+The output ports send Events in the order of their index, from smallest to greatest. For exam­
+ple, an Event at an input port causes the "0" output port first to send the Event, followed by 
+the "1" output port (granted that the "Pos" value is in the range between of the said port indi­
+ces).
+Controlling the Routing
+One can distinguish between three cases for the functionality of the Module depending on 
+the value at the "Pos" input port:
+▪
+When the value at the "Pos" input port is an integer "n", the input signal is forwarded to 
+the "n"-th output port.
+▪
+When the "Pos" value lies between two integers, the Module"s behavior depends on the 
+Interpolation setting in the Function page of the Properties Tab. There are three possibili­
+ties: linear and sine interpolation (this means that the input signal is distributed be­
+tween the two output ports whose index is closest to the "Pos" value) and no interpola­
+tion (the input signal is only sent to the output port with its index closest to the "Pos" 
+value. The difference between linear and sine interpolation lies in the way that the sig­
+nal is distributed between the two output ports.
+▪
+If the value at the "Pos" input port is greater than the number of output ports, the Mod­
+ule's behavior depends on the setting of the Wrap checkbox in the Function page of the 
+Properties Tab. If the Wrap checkbox is disengaged, the input signal is forwarded to the 
+lowest lying output port. Otherwise, the "Pos" value wraps around the number of output 
+ports, "Max", so that Max + 1 becomes "0", Max + 2 becomes "1", and so on.
+Application
+The Distributor Module is used to dynamically route signals, such as choosing a "send" ef­
+fect from a number of effects, connected to the output ports, for an audio signal.
+5.4.2
+Ports
+ 
+Input Ports
+▪
+(Pos) "Pos" (position) is the hybrid input port for selecting the output port(s) between 
+which the signal is distributed. Pos = 0 selects "0" (the first output port), Pos = 1 se­
+lects "1" (the second output port), and so on. Pos = 0.5 evenly distributes the input 
+signal between the output ports "0" and "1". In this case, the exact levels of the signals 
+Signal Path
+Distributor
+ 
+REAKTOR 5.5 - Module Reference - 294
+
+
+--- Page 295 ---
+
+at these output ports depend on the Interpolation setting in the Function page of the 
+Properties Tab. The typical range for the "Pos" value is [0 ... Max] where "Max" is the 
+number of output ports.
+▪
+(In) "In" is the hybrid input port for the input signal to be distributed between one or 
+two output ports depending on the value at the "Pos" input port.
+Output Ports
+▪
+(0) "0" is the first hybrid output port to which the input signal may be sent depending 
+on the value at the "Pos" input port.
+▪
+(1) "1" is the second hybrid output port to which the input signal may be sent depend­
+ing on the value at the "Pos" input port.
+▪
+(…) "2, 3, …" are the dynamic output ports. Additional output ports can be created (if 
+all existing output ports are already connected) by holding down the Ctrl key in Win­
+dows (Cmd key in Mac OS X) while dragging a wire from an output port of another 
+Module to the three dots on the right edge of the Distributor Module. The maximum 
+number of output ports for the Distributor Module is 16.
+5.4.3
+Properties: Function Page
+ 
+Changing the Minimum Number of Output Ports
+To change the minimum number of output ports, type the desired number into the Min Num 
+Port Groups edit field (shown below). The maximum number of output ports for the Distribu­
+tor Module is 16.
+Fig. 5.15 Use the Min Num Ports Groups edit field to set the minimum number of output ports appearing on the Distributor 
+Module.
+Changing the Interpolation Setting
+If the "Pos" value is between two integers the signal is distributed between two output 
+ports according to the Interpolation setting, set with the Curve radio button selector, shown 
+in the second figure below:
+▪
+To have no interpolation, that is, for the input signal only to be sent to the output port 
+with an index closest to the "Pos" value, click on the No Interpolation radio button.
+Signal Path
+Distributor
+ 
+REAKTOR 5.5 - Module Reference - 295
+
+
+--- Page 296 ---
+
+▪
+To have linear interpolation, that is, for the input signal to be distributed with a linear 
+crossfading curve between two output ports, click on the Linear Interpolation radio button. 
+The input signal is distributed between the two output ports whose index is closest to 
+the "Pos" value. The linear interpolation curve is represented by the thin lines in the 
+picture below.
+▪
+To have sine interpolation, that is, for the input signal to be distributed with a sine 
+crossfading curve between two output ports, click on the Sine Interpolation radio button. 
+The input signal is distributed between the two output ports whose index is closest to 
+the "Pos" value. The sine interpolation curve is represented by the thick lines in the 
+picture below. As seen on the graph, sine interpolation curve delivers a higher level for 
+the when the crossfading parameter is in the center position.
+Fig. 5.16 Crossfading curves for linear and sine interpolation.
+In the picture above, the vertical axis represents the amplitude factor by which the corre­
+sponding signal is multiplied and the horizontal axis represents the value of "Pos", with a 
+range from the lower port index (here, "0") up to the higher port index (here, "1"). In the 
+graph you see that at Pos = 0 the signal at output port "0" (falling curve) is the input sig­
+nal multiplied by "1" and the signal at output port "1" (rising curve) is the input signal 
+multiplied by "0". In other words, that is, the input signal is only passed to the "1" output 
+port. Furthermore, at Pos = 1 the signal at output port "0" (falling curve) is the input sig­
+nal multiplied by "0" and the signal at output port "1" (rising curve) is the input signal 
+Signal Path
+Distributor
+ 
+REAKTOR 5.5 - Module Reference - 296
+
+
+--- Page 297 ---
+
+multiplied by "1". The graph shows how the signal amplitudes behave between these "Pos" 
+values. The thin lines represent a linear crossfading curve and the thick lines represent a 
+sine crossfading curve.
+Fig. 5.17 Use the Curve radio button selector to choose the Module's Interpolation setting. Engage the Wrap checkbox to 
+activate the Wrapping feature.
+Wrapping the "Pos" Value
+If you want the value at the "Pos" input port to "wrap" around the number of "channel" out­
+put ports, engage the Wrap checkbox shown in the figure above. This means that for "Pos" 
+greater than the number of output ports, "Max", the new "Pos" value is equal to the old 
+value minus a multiple of "Max" so that the new "Pos" value is in the range [0 …Max]. For 
+example, Max + 1, becomes 0, Max + 2 becomes 2, and so on. For "Pos" less than zero, 
+the new "Pos" value is equal to the negative value plus a multiple of "Max". If the Wrap 
+checkbox is disengaged and Pos > Max, the signal is sent to the output port with the 
+greatest index and if Pos < 0, the signal is sent to the output port with the smallest index.
+5.4.4
+Example: Distribution Between 4 Ports
+ 
+This example portrays a case where a Distributor Module distributes an incoming constant 
+signal at the "In" input port, carrying the value "3", to four output ports. Since the value at 
+the "Pos" input port is "2.5", the input signal is distributed between the "2" and "3" output 
+ports. The Linear Interpolation selector has been selected in the Function page of the Cross­
+fade Module and since the crossfading parameter is "0.5", the "2" and "3" output ports 
+carry the same value, "1.5". The "0" and "1" output ports are sending a zero signal.
+Signal Path
+Distributor
+ 
+REAKTOR 5.5 - Module Reference - 297
+
+
+--- Page 298 ---
+
+Fig. 5.18 The Distributor Module in this example distributes the input signal (the value "3") between four output ports. The 
+"Pos" value causes the value to be linearly interpolated between the "2" and "3" output ports.
+5.5
+Stereo Pan
+ 
+Fig. 5.19 Stereo Pan Module
+5.5.1
+Overview
+ 
+The Stereo Pan Module acts as stereo panner for an adjustable number of „channel" input 
+signals which are connected to the "In" input ports. The "channel" input signals are pan­
+ned between the left and right stereo channels according to the value at the "Pan" input 
+port. The sum of the "L" and "R" output port values is always exactly twice the value at the 
+corresponding "channel" input port. The "channel" input signal is split across the two cor­
+responding output ports at a variable ratio. The Stereo Pan Module has dynamic port man­
+agement. Additional "channel" input ports can be created if all existing input ports have a 
+connection. Additional output ports can be created if all existing output port pairs already 
+have at least one connection. The ports are created by holding down the Ctrl key in Win­
+dows (Cmd key in Mac OS X) while dragging a wire from an output port or input port of 
+another Module to the three dots on the left or right edge of the Stereo Pan Module for 
+"channel" input ports or output ports, respectively. The minimum number of "channel" in­
+put ports can be defined with the Min Num Port Groups edit field in the Function page of the 
+Signal Path
+Stereo Pan
+ 
+REAKTOR 5.5 - Module Reference - 298
+
+
+--- Page 299 ---
+
+Properties Tab. An Event at the "Pan" input port triggers Events at all output ports. An 
+Event at a "channel" input port triggers Events only at the "L" and "R" output ports associ­
+ated with that particular "channel".
+The order of the Events at the output ports goes from top to bottom.
+Application
+Applications of the Stereo Pan Module include:
+▪
+Placing individual voices of a Polyphonic Instrument in the stereo field, as shown in 
+the tutorial in subsection 9.3.4 of the Application Reference.
+▪
+Panning Event related signal processing such as LFOs or Envelopes in the stereo field.
+5.5.2
+Ports
+ 
+Input Ports
+▪
+(Pan) "Pan" is the input port for the control signal that specifies the position of the 
+"channel" input signals in the stereo panorama. When Pan = -1, the signals are com­
+pletely panned to the left stereo channel, when Pan = 0, the signals are in the center 
+of the stereo field, and when Pan = 1, the signals are completely panned to the right 
+stereo channel.
+▪
+(In0) "In0" is the "channel" input port for the first audio signal to be amplified and to 
+be positioned in the stereo panorama.
+▪
+(…) "In1, In2, …" are the dynamic input ports. Additional input ports be created (if all 
+existing input ports already have a connection) by holding down the Ctrl key in Win­
+dows (Cmd key in Mac OS X) while dragging a wire from an output port of another 
+Module to the three dots on the left side of the Stereo Pan Module. The maximum 
+number of input ports for the Stereo Pan Module is 8.
+Output Ports
+▪
+(L0) "L0" (left) is the output port for the left stereo channel of the mixed signal.
+▪
+(R0) "R0" (right) is the output port for the right stereo channel of the mixed signal. (…) 
+"L1, R1, L2, R2, …" are the dynamic output ports. Additional output ports be created 
+(if all existing output port groups already have at least one connection) by holding 
+Signal Path
+Stereo Pan
+ 
+REAKTOR 5.5 - Module Reference - 299
+
+
+--- Page 300 ---
+
+down the Ctrl key in Windows (Cmd key in Mac OS X) while dragging a wire from an 
+input port of another Module to the three dots on the right side of the Stereo Pan Mod­
+ule. The maximum number of output port groups for the Stereo Pan Module is 8.
+5.5.3
+Properties: Function Page
+ 
+Changing the Minimum Number of Port Groups
+► To change the minimum number of input port groups, type the desired number into the 
+Min Num Port Groups edit field (shown below). The maximum number of port groups for the 
+Stereo Pan Module is 8
+Changing the Interpolation Setting
+The "Pan" input port accepts values in the range [-1 … 1]. Values outside this range are 
+clipped. The crossfading curve between the left and right "Pan" settings depends on the 
+Interpolation setting, set with the Curve radio button selector shown in the figure below:
+► To have linear interpolation, that is, for the "Pan" value to linearly crossfade from left 
+panning to right panning, click on the Linear Interpolation radio button. The linear interpola­
+tion curve is qualitatively represented by the thin lines in the picture below.
+► To have sine interpolation, that is, for the "Pan" value to crossfade from left panning to 
+right panning according to a sine function, click on the Sine Interpolation radio button. The 
+sine interpolation curve is qualitatively shown as the thick lines in the picture below. As 
+seen on the graph, sine interpolation curve delivers a higher overall output level when the 
+crossfading parameter is in the center position.
+► Use the Curve radio button selector to choose the Module's Interpolation setting.
+Signal Path
+Stereo Pan
+ 
+REAKTOR 5.5 - Module Reference - 300
+
+
+--- Page 301 ---
+
+Fig. 5.20 Qualitative Crossfading curves for linear and sine interpolation. From left to right, the graph goes from left panning 
+to center panning to right panning.
+5.5.4
+Example: Panning Constant Signals
+ 
+This example demonstrates that the sum of the "L" and "R" output port values of the Ster­
+eo Pan Module is always exactly twice the value at the corresponding "channel" input port. 
+As shown in the picture below, we have two "channel" input ports labeled "In1" and "In2", 
+and a "Pan" parameter of "-0.25". Since the value carried by "channel" input signal "In1" is 
+"3", the range for the values at the output ports "L1" and "R1" is [0 … 6]. The maximum 
+value is twice the value at the corresponding "channel" input port. For a Pan = -1 the 
+"channel" input signal with double amplitude would only be sent to the left stereo channel 
+and a zero signal would be sent to the right stereo channel, that is, "L1" = 6 and "R1" = 0. 
+For a Pan = 1 the "channel" input signal with double amplitude would only be sent to the 
+right stereo channel and a zero signal would be sent to the left stereo channel, that is, 
+"L2" = 0 and "R1" = 6. All other values for "Pan" results in output signal levels that are 
+linearly interpolated between these two extreme cases. Hence, a "Pan" value of "-0.25" 
+yields a signal carrying the value "3.75" for the "L1" output port and a signal carrying the 
+value "2.25" for the "R1" output port
+Signal Path
+Stereo Pan
+ 
+REAKTOR 5.5 - Module Reference - 301
+
+
+--- Page 302 ---
+
+Fig. 5.21 The Stereo Pan Module distributes the In1 signal between the first pair of "L" and "R" output ports and the In2 
+signal between the second pair of "L" and "R" output ports.
+5.6
+Mixer
+ 
+Fig. 5.22 Mixer Module
+5.6.1
+Overview
+ 
+The Mixer Module acts as an amplifier or mixer for an adjustable number of „channel" in­
+put signals. The "channel" input signals are connected to the "In" input ports and are am­
+plified (or attenuated) by the values (in dB) at the respective "Lvl" input ports and then 
+summed to form the output signal at the output port. The Mixer Module has dynamic input 
+port management. Additional input port pairs ("Lvl" and "In") can be created (if all existing 
+input port pairs already have at least one connection) by holding down the Ctrl key in Win­
+dows (Cmd key in Mac OS X) while dragging a wire from an output port of another Module 
+to the three dots on the left edge of the Mixer Module. The minimum number of input port 
+pairs can be defined with the Min Num Port Groups edit field in the Function page of the Prop­
+erties Tab.
+Application
+The Mixer Module can be used, for example, to mixdown the oscillator section of a synthe­
+sizer (with each oscillator having its own signal level) before sending the mix to the filters. 
+A qualitatively similar implementation of this is shown in the example.
+Signal Path
+Mixer
+ 
+REAKTOR 5.5 - Module Reference - 302
+
+
+--- Page 303 ---
+
+5.6.2
+Ports
+ 
+Input Ports
+▪
+(Lvl0) "Lvl0" (level) is the logarithmic control input port for controlling the amplifier 
+gain factor for the first "channel" input port, given in dB. When the value is negative, 
+the output signal level is smaller than the input signal level.
+▪
+(In0) "In0" is the "channel" input port for the audio signal to be amplified.
+▪
+(…) "In1, Lvl1, In2, Lvl2, …" are the dynamic input ports. Additional input port pairs 
+can be created (if all existing input port pairs already have at least one connection) by 
+holding down the Ctrl key in Windows (Cmd key in Mac OS X) while dragging a wire 
+from an output port of another Module to the three dots on the left side of the Mixer 
+Module. The maximum number of input port pairs for the Mixer Module is 20.
+Output Ports
+▪
+(Out) "Out" is the output port for the mixed signal: Out = In0 ⋅ 10 ^ (Lvl0 / 20) + In1 ⋅ 
+10 ^ (Lvl1 / 20) + ….
+5.6.3
+Properties: Function Page
+ 
+Changing the Minimum Number of Input Port Pairs
+► To change the minimum number of output ports, type the desired number into the Min 
+Num Port Groups edit field (shown below). The maximum number of input port pairs for the 
+Mixer Module is 20.
+5.6.4
+Example: Mixing Two Oscillators
+ 
+The Mixer Module can be used to mixdown the oscillator section of a synthesizer (with 
+each oscillator having its own signal level) before sending the mix to the filters. In this ex­
+ample the oscillator section consists of a Sine Module and a Sawtooth Module, both send­
+ing an oscillator waveform with unit amplitude and the same pitch, determined by the 
+Note Pitch Module. The output signals of the two oscillators are connected to the "In" 
+ports of the Mixer Module. The signal level for the sine wave and the sawtooth wave is 
+specified by the "Sine Level" and "Saw Level" Knob Modules, respectively. The signal at 
+Signal Path
+Mixer
+ 
+REAKTOR 5.5 - Module Reference - 303
+
+
+--- Page 304 ---
+
+the output port of the Mixer Module is then a mix of both sine and oscillator waves with 
+each having a signal level that you can specify with their corresponding Knob Modules. 
+Such a Structure is shown in the picture below.
+Fig. 5.23 For example, you can use the Mixer Module to mix two oscillator signals.
+5.7
+Stereo Mixer
+ 
+Fig. 5.24 Stereo Mixer Module
+5.7.1
+Overview
+ 
+The Stereo Mixer Module acts as an amplifier or mixer with stereo output for an adjustable 
+number of „channel" input signals which are connected to the "In" input ports. The "chan­
+nel" input signals are amplified (or attenuated) by the values (in dB) at the respective "Lvl" 
+input ports and panned between the left and right stereo channels according to the value 
+at the respective "Pan" input port. Then the left and right stereo channels are each sum­
+med up separately and sent to the "L" and "R" output port, respectively. The Stereo Mixer 
+Module has dynamic input port management. Additional input port groups ("Lvl", "Pan", 
+and "In") can be created (if all existing input port groups already have at least connection) 
+by holding down the Ctrl key in Windows (Cmd key in Mac OS X) while dragging a wire 
+from an output port of another Module to the three dots on the left edge of the Stereo Mix­
+er Module. The minimum number of input port groups can be defined with the Min Num Port 
+Groups edit field in the Function page of the Properties Tab.
+Signal Path
+Stereo Mixer
+ 
+REAKTOR 5.5 - Module Reference - 304
+
+
+--- Page 305 ---
+
+Application
+The Stereo Mixer Module can be used, for example, to mixdown the drums of the sampler 
+section of a drum instrument. Each drum sample can have its own signal level and loca­
+tion in the stereo panorama. The output signal is then a stereo mix of the drums that can 
+be sent to the effects for further treatment. A qualitatively similar implementation of this 
+is shown in the example.
+5.7.2
+Ports
+ 
+Input Ports:
+▪
+(Lvl0) "Lvl0" (level) is the logarithmic control input port for controlling the amplifier 
+gain factor of the first "channel" input port, given in dB. When the value is negative, 
+the output signal level is smaller than the input signal level.
+▪
+(Pan0) "Pan0" is the input port for the control signal that specifies the position of the 
+corresponding "channel" input signal in the stereo panorama. When Pan = -1, the sig­
+nal is completely panned to the left stereo channel, when Pan = 0, the signal is in the 
+center of the stereo field, and when Pan = 1, the signal is completely panned to the 
+right stereo channel.
+▪
+(In0) "In0" is the "channel" input port for the audio signal to be amplified and to be 
+positioned in the stereo panorama.
+▪
+(…) "In1, Lvl1, Pan1, In2, Lvl2, Pan2, …" are the dynamic input ports. Additional in­
+put port groups can be created (if all existing input port groups already have at least 
+one connection) by holding down the Ctrl key in Windows (Cmd key in Mac OS X) while 
+dragging a wire from an output port of another Module to the three dots on the left side 
+of the Stereo Mixer Module. The maximum number of input port groups for the Stereo 
+Mixer Module is 13.
+Output Ports:
+▪
+(L) "L" (left) is the output port for the left stereo channel of the mixed signal.
+▪
+(R) "R" (right) is the output port for the right stereo channel of the mixed signal.
+Signal Path
+Stereo Mixer
+ 
+REAKTOR 5.5 - Module Reference - 305
+
+
+--- Page 306 ---
+
+5.7.3
+Properties: Function Page
+ 
+Changing the Minimum Number of Input Port Groups
+► To change the minimum number of input port groups, type the desired number into the 
+Min Num Port Groups edit field (shown below). The maximum number of input port groups for 
+the Stereo Mixer Module is 13.
+5.7.4
+Example: Stereo Drums
+ 
+The Stereo Mixer Module can be used to mixdown the drums of the sampler section of a 
+drum instrument. Each drum sample can have its own signal level and location in the ster­
+eo panorama. The output signal is then a stereo mix of the drums that can be sent to the 
+effects for further treatment. In this example, two Sampler Modules with the labels "Kick" 
+and "Snare" were employed to provide the monophonic signal of a kick drum and snare 
+drum, respectively, for the Stereo Mixer Module. The pitch and triggering signals are re­
+ceived externally, perhaps from a sequencer, through the "P" and "Tr" In Ports. Since we 
+are manually specifying the signal level and panorama position of both drums with the 
+Stereo Mixer, both "A" input ports of the Sampler Modules receive a Constant with the val­
+ue "1". You can now use the Knob Modules, as seen in the picture below, to specify both 
+the signal level and the positioning of the signal in the stereo field for both drums sepa­
+rately, before they are mixed down to the two stereo channels, "L" and "R".
+Fig. 5.25 Use the Stereo Mixer Module to mix stereo signals such as output signals of stereo Sampler Modules.
+Signal Path
+Stereo Mixer
+ 
+REAKTOR 5.5 - Module Reference - 306
+

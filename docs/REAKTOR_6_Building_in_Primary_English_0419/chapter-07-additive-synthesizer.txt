@@ -1,0 +1,504 @@
+--- Page 108 ---
+
+7
+Additive Synthesizer
+ 
+7.1
+Overview
+ 
+Using event signals in REAKTOR not only lets you control their timing, but also allows you to
+use a process called iteration.
+The idea of iteration was introduced in the previous tutorial with the Snap Value Array and its
+Self-iteration property.
+For those of you with previous programming experience, iteration can be thought of as REAK-
+TOR's version of a loop (with the Iteration Module functioning like a For Loop).
+In REAKTOR, iteration can be used to generate a large number of events that are processed
+simultaneously, but are treated as if they came one after the other. This technique is very use-
+ful when using Modules which behave like arrays (like the Multi Display seen in the previous
+tutorial, ↑5, Basic Step Sequencer ↑5, Basic Step Sequencer)
+This tutorial will teach you about iteration using the example of building an additive synthesiz-
+er.
+7.1.1
+Previous Knowledge
+ 
+As well as assuming a basic understanding of building in REAKTOR, this tutorial also assumes
+that you have completed tutorial ↑5, Basic Step Sequencer ↑5, Basic Step Sequencer.
+The following will not only build on the Ensemble created in that tutorial, but will also assume
+all knowledge acquired to that point.
+Additive Synthesizer
+Overview
+ 
+REAKTOR 6 - Building In Primary - 108
+
+
+--- Page 109 ---
+
+7.1.2
+Theory
+ 
+An additive synthesizer creates sounds by combining large numbers of sine waves with differ-
+ent frequencies, amplitudes and phases. In the context of an additive synthesizer these sine
+waves are called partials or harmonics (throughout the rest of the tutorial they will be referred
+to as partials).
+REAKTOR offers a Module created specifically for this purpose: the Sine Bank.
+Rather than creating a large number of individual Sine Oscillator Modules, this one Module al-
+lows you to generate many sine waves with only a single Module. It is also optimized for this
+function, and is thus a more CPU-friendly option.
+The Sine Bank Oscillator is at the heart of REAKTOR synthesizers LAZERBASS and RAZOR.
+The best way to control the Sine Bank is to use iteration, as it can be used to set the properties
+of many sine waves in a single process.
+For this tutorial, you will be guided through the process of building an additive synthesizer that
+uses 64 partials, the amplitudes of which are edited from the interface via a table similar to
+the one built in tutorial ↑5, Basic Step Sequencer ↑5, Basic Step Sequencer.
+7.2
+Tutorial
+ 
+7.2.1
+Setting Up
+ 
+This tutorial will build on the ↑5, Basic Step Sequencer, as it already uses many of the Mod-
+ules you will need. However, it also has a lot of Modules that you will not need, so the first
+thing to do is delete them:
+1.
+If you do not have the Step Sequencer Ensemble loaded, open it now.
+Additive Synthesizer
+Overview
+ 
+REAKTOR 6 - Building In Primary - 109
+
+
+--- Page 110 ---
+
+2.
+Enter the structure and delete the Modules highlighted below:
+3.
+Enter the Sequencer Macro and delete all of the Modules that are used to generate the
+clock signal.
+4.
+Rename the Sequencer Macro to "Additive Synth".
+Additive Synthesizer
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 110
+
+
+--- Page 111 ---
+
+5.
+Enter the Table Macro and delete the Event Table and the Modules highlighted below:
+6.
+Rename the Table Macro to "Partials".
+⇨The Ensemble is now ready to be converted to an additive synthesizer.
+7.2.2
+The Sine Bank Oscillator
+ 
+The Sine Bank can be a daunting Module, but it works on the same principals as the Multi
+Display, only with audio partials in place of visual objects.
+The Sine Bank Module
+Additive Synthesizer
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 111
+
+
+--- Page 112 ---
+
+Like the Multi Display, you need to select a partial using its index (Idx). With the index select-
+ed you can then set a variety of parameters for that partial. In the case of the sine bank, the
+available parameters are:
+•
+Rtio: Sets the ratio of the partial. The frequency of the partial will be the main frequency
+(defined by the pitch (P) input) multiplied by the number set at this port.
+•
+AL: Sets the amplitude of the partial in the left channel.
+•
+AR: Sets the amplitude of the partial in the right channel.
+•
+Ph: Sets the phase of the partial.
+Where the Sine Bank differs from the Multi Display is the inclusion of the App (apply) port.
+When you set parameters for the partials in the Sine Bank, the changes need to be applied by
+sending an event to the App port before they take effect.
+Although the P (pitch) input isn't set per partial, it is also not applied until an event is
+sent to the App port.
+So, when creating this Ensemble, you will need to set the parameters for all of the partials,
+and then apply these settings. The App port will also need set every time the user plays a note,
+in order to update the pitch of the Module.
+7.2.3
+Building the Synthesizer
+ 
+The first section of this tutorial for building the 64-partial additive synthesizer will explain how
+to update the table that you created in the ↑5, Basic Step Sequencer tutorial from 16 bars to
+64 bars.
+1.
+Select the Mouse Area Module to display its Properties.
+2.
+Set the Max parameter in the RANGE X section to 64.4
+Additive Synthesizer
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 112
+
+
+--- Page 113 ---
+
+3.
+Select the Snap Value Array Module to display its Properties.
+4.
+Set the Array Size to 64
+5.
+Enter the Display Macro and select the Multi Display to show its Properties.
+6.
+In the OBJECTS section, set the Number parameter to 64
+7.
+In the RANGE section, set the X Range to 64
+If you now return to the Panel view, you will see that the table has many more bars in it, but
+still behaves as before.
+Additive Synthesizer
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 113
+
+
+--- Page 114 ---
+
+The Table now with 64 Bars
+With the interface updated, you can now connect this to the Sine Bank Module.
+1.
+In the structure view, navigate to the Partials Macro.
+2.
+Create a Sine Bank Module.
+3.
+Create a Constant of 64 and attach it to the Num input.
+4.
+Connect the Snap Value Array to the Sine Bank as shown below.
+You only need to connect to the AL input as the additive synthesizer you are creating
+will be mono, and therefore only requires one output channel.
+In order to make the Sine Bank playable, you'll need to add pitch and gate MIDI inputs.
+1.
+Create a Note Pitch (MIDI In) Module and a Gate (MIDI In) Module.
+Additive Synthesizer
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 114
+
+
+--- Page 115 ---
+
+2.
+Connect these Modules to the Sine Bank as shown below.
+Now the MIDI pitch input will define the pitch of the Sine Bank, and the MIDI gate will apply
+the settings. However, you still need a way of controlling the output with velocity.
+1.
+Create a Multiply Module.
+2.
+Use it to multiply the Sine Bank output with the Gate output, as illustrated below.
+3.
+Attach the output of the Multiply Module to the Macro Out port.
+⇨When you play a MIDI keyboard, you should now be able to hear the output of the Sine
+Bank.
+Return to the Panel and edit the table of partials. Each time you play a new note, you will hear
+the sound update according to the settings of the table.
+Additive Synthesizer
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 115
+
+
+--- Page 116 ---
+
+The Output of this synthesizer may be quite loud, so you should adjust the output level of the
+synthesizer accordingly:
+1.
+Create a Constant of 0.1 and connect it to the Multiply Module at the synthesizers output.
+7.2.4
+Adding Real-time Updates
+ 
+The additive synthesizer you have built has one flaw: its sound does not update in real-time, it
+only updates when the user plays a new note.
+To resolve this, you can add a clock that triggers the App port at regular intervals while the
+user's mouse is interacting with the interface.
+1.
+Enter the structure and navigate to the Partials Macro.
+2.
+Create a Clock Oscillator.
+3.
+Create Constants at the F and A ports.
+4.
+Set the Constant at the F Port to 50.
+5.
+Set the Constant at the A Port to -1.
+⇨You now have a clock that will oscillate between -1 and 0 at a rate of 50 times per second.
+Additive Synthesizer
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 116
+
+
+--- Page 117 ---
+
+The reason you want the clock value to be negative is that when you send an event high-
+er than 0 to the App input of the Sine Bank, the phases of the partials will update. If
+the phases update while a sound is being played, then this will cause an audible click.
+Sending an event of 0 or lower to the App input will update all of the partial parameters
+except the phase, which should produce a less noticeable transition.
+Next you will create a way to make sure the clock only updates the Sine Bank while the user's
+mouse is pressed on the table.
+1.
+Create a Router 1,2 Module.
+2.
+Connect the BL output of the Mouse Area to the Ctl input of the Router.
+The Router Modules act as switches that control the flow of signals. With the BL port of the
+Mouse Area, which outputs the pressed state of the left mouse button, connected to the Ctl
+input of the Router, the signal from the 1 input will only be sent to the output when the left
+mouse button is pressed.
+1.
+Connect the Clock Oscillator to the 1 port of the Router.
+2.
+Create a Merge Module.
+3.
+Connect the output of the Router to the input of the Merge Module.
+4.
+While holding the [Ctrl]/[Cmd] key, connect the Gate Module to the Merge Module in such
+a way that it creates another port in the Merge Module.
+5.
+Connect the output of the Merge Module to the App input of the Sine Bank.
+Additive Synthesizer
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 117
+
+
+--- Page 118 ---
+
+⇨When you return to the Panel view, you will be able to hear the changes to the partials as
+you edit the values in the table.
+7.2.5
+Adjusting the Partial Ratio Spread
+ 
+By now you should have an additive synthesizer that you can edit in real-time, but you have not
+yet needed to use iteration.
+This final section will add a knob that will alter the harmonic spread of the partials. Since this
+single knob will need to edit the ratio parameter of all of the partials, it will require iteration to
+do so.
+1.
+Enter the structure of the Partials Macro.
+2.
+Create a Knob Module.
+3.
+In the Knob's properties, set the Max value to 2.
+4.
+Re-name the Knob to "Spread".
+5.
+Go to the Panel view and move the Spread knob so that it is not overlapping with the ta-
+ble.
+At the moment the ratios of the partials are set to their default settings, which is the Harmonic
+Series (partial 1 has a ratio of 1, partial 2 has a ratio of 2, and so on).
+The Spread knob that you just created will be used to multiply the ratio values of the partials
+to control the spread of the harmonics.
+The process that the knob will trigger will be rather complex. You can use a Macro to keep the
+structure of your synthesizer organized.
+Additive Synthesizer
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 118
+
+
+--- Page 119 ---
+
+Creating the Ratio Calculation Macro
+1.
+Create a New Macro.
+2.
+Re-name it to "Ratio Calc"
+3.
+While holding the [Ctrl]/[Cmd] key, connect the Spread knob to the Macro in such a way
+that it creates an input port in the Macro.
+4.
+The Ratio Calc Macro will not have any controls, so it can be hidden from the Ensemble's
+Panel. Click on the Ratio Calc Macro to display its properties.
+5.
+Click on the View Tab.
+6.
+In the VISIBLE section, uncheck the On option.
+The Iteration Loop
+The process that needs to occur in the Ratio Calc Macro each time the user uses the Spread
+knob is a loop that generates values from 0 to 63, these values will then access the indices of
+the partials of the Sine Bank, and then also be used to calculate the ratios of the partials. You
+can build this with an Iteration Module:
+1.
+Enter the Ratio Calc Macro.
+2.
+Create an Iteration Module and a Value Module.
+3.
+Connect these Modules with some additional Constants as illustrated below.
+Additive Synthesizer
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 119
+
+
+--- Page 120 ---
+
+What will happen in the structure you have just created is the following:
+•
+When the Spread knob sends an event into the Macro, the Value Module will output an
+event with a value of 0.
+•
+This event will trigger the Iteration Module to start its process.
+•
+The iteration process will create 63 additional events (specified by the Constant at the N
+port).
+•
+Each additional event will be of a value 1 higher than the last event (specified by the
+Constant at the Inc port).
+So the Iteration Module has effectively become the loop that generates the values of 0 to 63
+every time the knob is moved.
+The Ratio Calculation
+Now you can add the harmonic ratio spread calculation:
+1.
+Create the structure illustrated below.
+The calculation is very simple; it only needs one Mult/Add Module. The power of this process is
+that the calculation happens 64 times at an effectively instantaneous rate.
+Note that you also need to add an Order Module. This ensures that all of the values coming
+from the Iteration Module are processed with the same value from the Spread knob.
+Calculating Partial Indices
+An additional calculation is needed to send the corresponding indices for the partials:
+Additive Synthesizer
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 120
+
+
+--- Page 121 ---
+
+1.
+Add the following Modules to your structure and connect them as illustrated below:
+The final step in this Macro will be to create the outputs needed to send these values to the
+Sine Bank.
+1.
+Create 2 Out Port Modules.
+2.
+Re-name the first one "Idx".
+3.
+Connect the Out Ports to the structure as follows:
+Snapshot Storage
+The values generated by the Spread knob will be stored in the Snap Value Array as another var-
+iable.
+1.
+Navigate to the Partials Macro.
+2.
+Select the Snap Value Array to display its Properties.
+Additive Synthesizer
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 121
+
+
+--- Page 122 ---
+
+3.
+In the VARIABLES section, click the APPEND button.
+⇨A new variable has been created and a new W input has been added to the Snap Value Ar-
+ray Module, coupled with a new Out port.
+Connecting the Ratio Values to the Synthesizer
+The next step is to connect the Ratio values that are generated in the Ratio Calc Macro to the
+Sine Bank via the Snap Value Array.
+Additive Synthesizer
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 122
+
+
+--- Page 123 ---
+
+1.
+Connect the Idx output of the Ratio Calc Macro to the Idx input of the Snap Value Array,
+using a Merge Module to combine it with the current connection.
+2.
+Connect the Out port of the Ratio Calc Macro to the second W input of the Snap Value
+Array, using a second Merge Module as a dummy to keep the event timings correct.
+Additive Synthesizer
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 123
+
+
+--- Page 124 ---
+
+3.
+Connect the second Out port of the Snap Value Array to the Rtio input of the Sine Bank
+Module.
+Applying the Ratio Setting Changes
+There needs to be an event sent to the App port of the Sine Bank in order for these changes to
+be heard in real-time.
+The apply event should happen after the iteration has taken place. You can use a Separator
+Module to split the Idx signal from the Ratio Calc Macro so that the final Idx event from the
+Iteration Module triggers a 0 valued event to the App port.
+1.
+Create a Separator and set the threshold (Thld) to 63.
+2.
+Create a Value Module and attach a Constant of 0 to its lower input.
+3.
+Connect the Hi output of the Separator to the Trig input of the Value Module.
+Additive Synthesizer
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 124
+
+
+--- Page 125 ---
+
+4.
+Connect the output of the Value Module to the Merge Module that leads to the Sine
+Bank's App port.
+5.
+Connect the Idx output of the Ratio Calc Macro to the In port of the Separator.
+⇨When the final index value (64) comes from the Iteration Module, it will also trigger an
+event with a value of 0, which will then apply the ratio changes in the Sine Bank.
+Congratulations! You have created an additive synthesizer with controls for setting the ampli-
+tude of each partial, and for setting the harmonic spread of the partials, and all in real-time.
+Additive Synthesizer
+Tutorial
+ 
+REAKTOR 6 - Building In Primary - 125
+
+
+--- Page 126 ---
+
+7.3
+Going Further
+ 
+The Modal Bank Filter Module shares many similarities with the Sine Bank. It has many of the
+same input ports and shares the same input paradigm; it simply creates a bank of resonant
+band-pass filters rather than a bank of sine wave oscillators.
+The Modal Bank is the Module at the heart of REAKTOR PRISM and MIKRO PRISM.
+Additive synthesis and modal synthesis are both very powerful. By adding more calculations to
+the iteration process, you can create complex sounds that are not possible with any other forms
+of synthesis.
+Try adapting your additive synthesizer to use the Modal Bank. Note that the Modal Bank re-
+quires an "exciter" signal (like a short click) to produce sound.
+7.3.1
+Related Factory Content
+ 
+The LAZERBASS synthesizer uses a Sine Bank as its main sound generator. Almost all of the
+available controls on the interface apply calculations to parameters of the partials in the Sine
+Bank.
+Although it is a large structure, you will be able to find Iteration Modules driving many of the
+parameter calculations.
+An Iteration Module inside LAZERBASS.
+As an example of how iteration can be used outside of additive synthesis, it is also used in Oki
+Computer 2 to drive the calculations that create the wavetables.
+Additive Synthesizer
+Going Further
+ 
+REAKTOR 6 - Building In Primary - 126
+
+
+--- Page 127 ---
+
+The Iteration Module that drives the Wavetable creation.
+Additive Synthesizer
+Going Further
+ 
+REAKTOR 6 - Building In Primary - 127
+

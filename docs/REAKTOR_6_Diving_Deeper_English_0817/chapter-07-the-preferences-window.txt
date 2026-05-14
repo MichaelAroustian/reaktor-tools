@@ -1,0 +1,249 @@
+--- Page 57 ---
+
+7
+The Preferences Window
+ 
+The Preferences Window contains options for some of REAKTOR's general functions and be-
+havior. These are options that affect REAKTOR overall, but not the loaded Ensembles. Things
+like Library folder directories and color schemes are located here.
+►
+The Preferences Window can be accessed from the File Menu, by clicking on Preferences
+…, or by using the keyboard shortcut [Ctrl]/[Cmd] + [,]
+The Preferences Window has four tabs, which will be described in the following sections…
+7.1
+General Preferences
+ 
+►
+Click on the General tab to display the General Preferences.
+The Preferences Window
+General Preferences
+ 
+REAKTOR 6 - Diving Deeper - 57
+
+
+--- Page 58 ---
+
+The General Preferences
+•
+Create backup file before saving: When this checkbox is engaged, REAKTOR will create a
+backup file of your Ensemble titled “Backup of <Ensemble name>” when you execute the
+Save Ensemble command. This backup is the version of the Ensemble as it was from the
+last save or load command.
+•
+On startup: This menu determines which Ensemble, if any, REAKTOR will load when it
+starts up. There are three options:
+◦Load new ensemble
+◦Load last ensemble
+◦Don’t load anything
+The Preferences Window
+General Preferences
+ 
+REAKTOR 6 - Diving Deeper - 58
+
+
+--- Page 59 ---
+
+•
+Save workspace state with ensemble: This option restores the Ensemble's GUI (graphical
+user interface) to the state it was when the Ensemble was last saved.
+•
+Globally disable event loops: This prevents Event signal feedback loops from occurring in
+Ensembles.
+•
+Mute audio during core compilation: When enabled, this option turns off all audio proc-
+essing during the period of time that it takes to compile a Core Object. This makes compi-
+lation faster.
+•
+Number of undos: This edit field allows you to set the maximum number of undos that
+can be performed in a row. Enter “0” to disable the undo function completely. More un-
+dos require more memory, but also provides more opportunities to correct mistakes.
+•
+Computer Keyboard MIDI Channel: This drop-down menu specifies the MIDI channel for
+MIDI Notes played from the computer keyboard. This is set to 1 by default because RE-
+AKTOR Ensembles are set to receive MIDI messages on channel 1 by default.
+•
+Structure Theme: This menu contains color scheme options for the Structure View. There
+are four options to choose from:
+◦Reaktor 6 Standard: the default color scheme.
+The Preferences Window
+General Preferences
+ 
+REAKTOR 6 - Diving Deeper - 59
+
+
+--- Page 60 ---
+
+◦Reaktor 5: the color scheme of REAKTOR 5.
+◦Dark Grey: a darker variant of the Standard color scheme.
+◦White: a bright color scheme with white Modules and Macros.
+7.2
+CPU Usage Preferences
+ 
+►
+Click on the CPU Usage tab to view the CPU Usage Preferences.
+The Preferences Window
+CPU Usage Preferences
+ 
+REAKTOR 6 - Diving Deeper - 60
+
+
+--- Page 61 ---
+
+The CPU Usage Preferences
+The Max CPU usage (%) setting in this window is directly linked to the Automatic Voice Re-
+duction feature, which is described in the REAKTOR 6 Building in Primary document.
+Below the description of this feature is a section called System Info that displays technical in-
+formation about your computer's CPU. This information may be useful to include if you ever
+need to contact technical support.
+7.3
+Directories Preferences
+ 
+►
+Click on the Directories tab to view the Directories Preferences.
+The Preferences Window
+Directories Preferences
+ 
+REAKTOR 6 - Diving Deeper - 61
+
+
+--- Page 62 ---
+
+The Directories Preferences
+From the Directories Preferences you can set where on your computer's hard drive REAKTOR
+will search for files and folders in order to populate the Browser.
+Content Directories
+In the top half of this window there are three locations you can set for REAKTOR to search for
+REAKTOR content like Ensembles, Instruments, and Macros:
+The Preferences Window
+Directories Preferences
+ 
+REAKTOR 6 - Diving Deeper - 62
+
+
+--- Page 63 ---
+
+•
+Player - User: Defines the path for content to populate the User sub-section of the Player
+tab in the Browser. This is a good location for any Ensembles you may have purchased or
+downloaded from third-party developers that are not official content products activated
+using Native Access.
+The Preferences Window
+Directories Preferences
+ 
+REAKTOR 6 - Diving Deeper - 63
+
+
+--- Page 64 ---
+
+•
+Library - Factory: Defines the location of official content products from Native Instru-
+ments as well as third-party developers. Find more information about official content
+products from third-party developers in section Third-Party and Protected Content in the
+REAKTOR 6 Getting Started document.
+The Preferences Window
+Directories Preferences
+ 
+REAKTOR 6 - Diving Deeper - 64
+
+
+--- Page 65 ---
+
+•
+Library - User: Defines the location of content for the User sub-section of the Library tab
+in the Browser.
+►
+Click on the folder icon to change the location of any of these directories.
+External Sample Editor
+It is possible to launch an external sample editing program from the Sample Map Editor (see
+section ↑8, The Sample Map Editor ↑8, The Sample Map Editor for more information on
+launching an external sample editor).
+You can define which program REAKTOR will launch as the external sample editor from this
+area.
+The Preferences Window
+Directories Preferences
+ 
+REAKTOR 6 - Diving Deeper - 65
+
+
+--- Page 66 ---
+
+►
+Click on the folder icon to open a dialog window, and then select an application that can
+load wav and aiff files (for example, Audacity)
+→
+The selected program will launch whenever you open the external sample editor from the
+Sample Map Editor.
+Compiled Core Cell Code Cache
+When opening an Ensemble with large Core Cell structures in REAKTOR, a cache file of the
+compiled Core Cell code is saved on your hard drive. The next time you load the Ensemble,
+REAKTOR will access this cache file and skip the compiling stage, which significantly speeds
+up the loading process.
+•
+The Compiled Core Cell Code is only used when REAKTOR is in Play Mode.
+•
+Switching to Edit Mode when using Ensembles with large Core Cell structures causes a re-
+load of the Core Cells, which can cause REAKTOR to pause momentarily.
+More information on the Compiled Core Cell Code Cache can be found in the REAKTOR 6
+Building in Primary document available from the Help menu.
+User Presets
+This folder is the default directory for KOMPLETE KONTROL and MASCHINE user content.
+The path is not editable, but gives you the information required to add user content to the MA-
+SCHINE and KOMPLETE KONTROL Browser. After the folder is scanned by MASCHINE or
+KOMPLETE KONTROL, you can access the content from the user content area in the MA-
+SCHINE and KOMPLETE KONTROL Library Pane. More information about preparing Ensem-
+bles for KOMPLETE KONTROL and MASCHINE can be found in the Building in Primary docu-
+ment.
+7.4
+Usage Data
+ 
+►
+Click on the Usage Data tab to view the Usage Data Preferences.
+The Preferences Window
+Usage Data
+ 
+REAKTOR 6 - Diving Deeper - 66
+
+
+--- Page 67 ---
+
+The Usage Data Tab
+REAKTOR tracks anonymous usage data and sends that data to Native Instruments so that
+they can improve future updates by seeing which features are most often used and in which
+environments REAKTOR is most commonly used.
+•
+In the Usage Data tab, click on the Read More… link to be directed to the Native Instru-
+ments webpage with more information on Usage Data tracking.
+•
+You can opt in or out of Usage Data tracking by clicking on the checkbox labelled Yes,
+enable usage data tracking.
+Data Being Tracked
+The following data will be transmitted by Usage Data Tracking:
+The Preferences Window
+Usage Data
+ 
+REAKTOR 6 - Diving Deeper - 67
+
+
+--- Page 68 ---
+
+•
+System profile (your Operating System, Audio Drivers, etc)
+•
+Current location (country and city)
+•
+Data about your interaction with the software (e.g. actions you perform or audio interfaces
+you connect)
+Data Not Being Tracked
+The following data will not be gathered by Usage Data Tracking:
+•
+Personal data (Name, email address, payment details, serial numbers, etc.)
+•
+User content (file names being referenced, samples, songs, tags, comments, mappings
+etc.)
+•
+Any user activity outside of the NI application
+The Preferences Window
+Usage Data
+ 
+REAKTOR 6 - Diving Deeper - 68
+

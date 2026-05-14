@@ -1,0 +1,436 @@
+--- Page 19 ---
+
+2
+Introductory Topics
+ 
+2.1
+Browsing and Loading Modules and Macros
+ 
+The Primary level of REAKTOR uses two types of building-blocks to create structures, these
+are:
+•
+Modules: These are the lowest level of building-block in the REAKTOR Primary level.
+•
+Macros: These are containers used to group together sub-structures of other Modules and
+Macros.
+There are a few different ways to browse for and load Modules and Macros.
+2.1.1
+Using the Context Menu
+ 
+Clicking the right mouse button (or [Ctrl] + click on OSX) on any empty area in the structure
+view will open the context menu.
+The Context Menu.
+Introductory Topics
+Browsing and Loading Modules and Macros
+ 
+REAKTOR 6 - Building In Primary - 19
+
+
+--- Page 20 ---
+
+For the purposes of browsing and loading Modules and Macros, you will only need to use the
+following entries:
+•
+Built-In Module: Opens a sub-menu from which you can browse for Modules. Once you
+have located the Module you wish to load, click on its name in the menu.
+•
+Library: Opens a sub-menu from which you can browse for and load Macros, and Instru-
+ments.
+•
+Open Searchbox: Opens the Searchbox, which is covered in section ↑2.1.2, Using the
+Searchbox ↑2.1.2, Using the Searchbox.
+•
+New Macro: Creates a new empty Macro.
+The Context Menu is a useful thing to use when you are unsure of the name of the Module or
+Macro you wish to load.
+2.1.2
+Using the Searchbox
+ 
+When you are familiar with the Modules and Macros available in REAKTOR, you may find it
+faster to use the Searchbox to browse for and load content.
+1.
+The fastest way to open the Searchbox is to press the [Enter] key when in the structure
+view.
+2.
+Alternatively, you can open the Searchbox by selecting Open Searchbox in the Context
+Menu.
+3.
+With the Searchbox now displayed, you can search for a Module or Macro by typing its
+name.
+Introductory Topics
+Browsing and Loading Modules and Macros
+ 
+REAKTOR 6 - Building In Primary - 20
+
+
+--- Page 21 ---
+
+4.
+The Searchbox will autocomplete your entry.
+5.
+When the Module/Macro you wish to load appears, you can load it by clicking on its name.
+6.
+If the Module/Macro you want is the first or only entry that appears, you can load it by
+pressing [Enter].
+7.
+You can also select from the list by using the arrow keys, before clicking [Enter].
+When you next open the Searchbox, it will display a list of your most recently loaded
+Modules and Macros. You can then load any of the Modules/Macros in this list as you
+would normally.
+You can also search for mathematical functions by typing their symbol rather than their
+full name. For example, typing “*” will load the Multiply Module and typing “+” will
+load the Add Module.
+You can also search for mathematical functions by typing their symbol rather than their
+full name. For example, typing “*” will load the Multiply Module and typing “+” will
+load the Add Module.
+2.2
+Connecting Modules and Macros
+ 
+REAKTOR uses wires to connect the input and output Ports of the Modules and Macros.
+1.
+Connecting two Ports is as simple as clicking on one port, dragging a wire to another Port,
+and then releasing the mouse to create the connection.
+Introductory Topics
+Connecting Modules and Macros
+ 
+REAKTOR 6 - Building In Primary - 21
+
+
+--- Page 22 ---
+
+However, there are some rules to making connections:
+•
+Wires can only be used to create a connection between an output Port and an input Port.
+•
+An input can only ever accept one connection at a time, but an output can make multiple
+connections.
+•
+Event outputs can connect to Audio inputs, but not vice versa.
+2.2.1
+Creating Ports with Wires
+ 
+Some Modules and all Macros will allow you to make new ports by holding the [Ctrl]/[Cmd] key
+while dragging a wire.
+Modules that can accept additional ports are identified by the … below their lowest
+port.
+2.3
+Event Signals and Audio Signals
+ 
+The Primary level of REAKTOR uses two main signal types:
+•
+Audio: Audio signals run at the audio rate (typically 44.1kHz or 48kHz). Anything that
+produces audio (like an oscillator), processes audio (e.g. a filter), or requires a high level
+of fidelity (e.g. an envelope), should use Audio signals.
+•
+Event: Event signals run at a slower rate, known as the Control Rate, the default value of
+which is 400Hz. Since they run at a slower rate, event signals require less CPU, but have
+less fidelity. This makes them ideal for signals which we do not directly hear. For exam-
+ple, the pitch input for an oscillator uses Event signals, as our ears cannot perceive
+changes in pitch at rates faster than the Control Rate. Event signals are also useful when
+creating displays or sequencers.
+Certain ports are predefined to send or receive one kind of signal. These ports are color-coded:
+Introductory Topics
+Connecting Modules and Macros
+ 
+REAKTOR 6 - Building In Primary - 22
+
+
+--- Page 23 ---
+
+•
+Light Grey ports are Audio ports.
+•
+Yellow ports are Event ports.
+Some Modules can operate at either the Audio Rate or the Control Rate. Most Math Modules
+can operate at either rate.
+•
+Dark Grey ports show that the Module can operate at either the Audio Rate or the Control
+Rate.
+•
+The processing rate of these Modules depends on how the ports are connected:
+◦If all ports are connected to other Event ports, then the Module will run at the Control
+Rate.
+◦If any of the ports are connected to an Audio port, then the Module will run at the
+Audio Rate.
+There are also Modules with hollow or black Ports. This shows that the Module can accept
+Event signals or Table References.
+Table References will be explored in detail in the tutorial in section ↑8, Drag and Drop
+Sampler ↑8, Drag and Drop Sampler.
+Introductory Topics
+Event Signals and Audio Signals
+ 
+REAKTOR 6 - Building In Primary - 23
+
+
+--- Page 24 ---
+
+2.4
+Mono and Poly Modes
+ 
+Many Modules have two modes of operation: Monophonic (mono) and Polyphonic (poly).
+These modes are a common stumbling block for users who are new to REAKTOR, as
+their function is not always obvious.
+•
+Monophonic Modules will only process a single signal.
+•
+Polyphonic Modules can process a separate signal for each voice.
+The easiest way to think of these concepts is how you would think of synthesizers:
+•
+Monophonic synthesizers can only produce a single note at a time.
+•
+Polyphonic synthesizers can produce several notes at once.
+The mono/poly modes in REAKTOR work much in the same way.
+Another way to think about it is like this: a monophonic Module is a single item, whereas a
+polyphonic Module is like a simplified representation of several duplicate Modules, one for
+each voice.
+You can see if a Module is set to mono or poly mode by looking at the icon to the bottom right:
+•
+If the icon is of a single note, then the Module is monophonic.
+•
+If the icon is of two notes, one on top of the other, then the Module is polyphonic.
+It is possible to connect the output of a monophonic Module to the input of a polyphon-
+ic Module, but it is not possible to connect the output of a polyphonic Module directly
+to monophonic Module.
+Introductory Topics
+Mono and Poly Modes
+ 
+REAKTOR 6 - Building In Primary - 24
+
+
+--- Page 25 ---
+
+Connecting a polyphonic Module to a monophonic Module will produce an error and the con-
+nection will not work. A connection like this will be colored red and an “!” will mark the input
+of the monophonic Module.
+A Polyphonic Module Connected to a Monophonic Module
+This kind of warning is reserved exclusively for this kind of error.
+2.4.1
+Setting the Number of Polyphonic Voices
+ 
+By default, the Ensemble that is created when you select File -> New Ensemble has its num-
+ber of voices set to 1. This effectively makes everything in the Ensemble monophonic, regard-
+less of the individual mono/poly settings of the Modules. This is because a polyphonic module
+that only uses one voice is functionally the same as a monophonic Module.
+For some cases, like creating a polyphonic synthesizer, you will need to change the number of
+voices.
+1.
+Create a New Ensemble.
+2.
+Select the Ensemble by clicking in an empty space, or on the Ensemble Header.
+3.
+Open the Ensemble's Properties in the Side Pane.
+4.
+In the Function tab is an area called VOICES.
+5.
+Locate the Voices parameter, which should be set to 1.
+6.
+Click and drag on this number to change it.
+Introductory Topics
+Mono and Poly Modes
+ 
+REAKTOR 6 - Building In Primary - 25
+
+
+--- Page 26 ---
+
+7.
+Alternatively, you can also double-click on it and type in a specific number (in the range
+of 1 to 1024).
+Lock Voices
+The Lock Voices option below the Voices parameter disables the editing of the properties relat-
+ed to polyphony. If your Ensemble requires a specific number of voices to function correctly,
+checking this box will help to avoid accidental editing of the Voices parameter.
+2.4.2
+Setting the Mono State of a Module
+ 
+Any Module that can be either monophonic or polyphonic will have an option in its properties
+for this setting.
+The Mono setting is located in the STATUS section of the Function tab.
+The Mono Option.
+•
+Checking this box will set the Module to be monophonic.
+•
+Unchecking this box will set the Module to be polyphonic.
+It is also possible to set the mono/poly state of a Module without entering the properties:
+1.
+Right-click on the Module to open a menu.
+Introductory Topics
+Mono and Poly Modes
+ 
+REAKTOR 6 - Building In Primary - 26
+
+
+--- Page 27 ---
+
+2.
+Select Mono to set the Module monophonic mode.
+3.
+Re-opening the menu and unchecking the Mono option will set the Module to polyphonic
+mode.
+2.4.3
+Polyphony and Macros
+ 
+Macros also have a Mono option in their menu; however the functionality is a little different.
+A Macro is never truly monophonic or polyphonic, but checking the Mono option will set all
+Modules inside the Macro to be monophonic.
+In other words, setting the mono/poly state of a Macro is a shortcut to changing the settings of
+all the Modules within the Macro, rather than being a state of the Macro itself.
+However, it is then possible to enter the Macro and set a single Module to be polyphonic, with-
+out altering the mono/poly state of the Macro.
+2.4.4
+Voice Combiners
+ 
+Voice Combiners are Modules that can be used to merge a polyphonic signal into a monophon-
+ic signal.
+The outputs of REAKTOR are monophonic, since they can only output a single audio signal.
+Therefore, Voice Combiners are important to add before the final output of any Ensemble that
+uses polyphonic signals.
+Introductory Topics
+Mono and Poly Modes
+ 
+REAKTOR 6 - Building In Primary - 27
+
+
+--- Page 28 ---
+
+Audio Voice Combiners.
+Voice Combiner Modules merge polyphonic signals into a monophonic signal.
+In some cases it may be necessary to use voice combiners before the Ensemble output
+ports, for example, if you are using effects like Delay or Reverb.
+2.5
+Debugging
+ 
+Debugging is always an important part of development, and REAKTOR is no exception. As
+such, REAKTOR has a handful of built-in tools for debugging.
+1.
+The debugging tools are located in the Options menu, under Debug Structure.
+Introductory Topics
+Debugging
+ 
+REAKTOR 6 - Building In Primary - 28
+
+
+--- Page 29 ---
+
+2.5.1
+Wire Debugging
+ 
+When debugging in REAKTOR, it will be common for you to want to see the value of a signal as
+it passes from Module to Module, and Wire Debugging is quick and easy way of doing this.
+There are two ways of activating Wire Debugging:
+1.
+In the structure view, click on the bug icon to the left of the breadcrumb navigation.
+Or…
+1.
+Enter the Options Menu.
+2.
+Select Debug Structure to display the debugging tools.
+3.
+Click on the Enable Wire Debugging option.
+With Wire Debugging active, you can hover the mouse over any wire in the structure and see its
+current value.
+Wire Debugging.
+If the value is changing faster than the display refresh rate (i.e. if it is an audio signal), then
+you will be shown the minimum and maximum values that pass through the wire, like this:
+Debugging an Audio Signal.
+If the wire is polyphonic, then you will be given a list of the values on each voice:
+Introductory Topics
+Debugging
+ 
+REAKTOR 6 - Building In Primary - 29
+
+
+--- Page 30 ---
+
+Debugging a Polyphonic Signal.
+2.5.2
+CPU Usage
+ 
+In REAKTOR, it is possible to measure the CPU usage of the individual elements in your struc-
+ture. This can help you locate any areas that may be causing CPU spikes, or that could be opti-
+mized.
+To toggle the Measure CPU Usage option on or off:
+1.
+Enter the Options Menu.
+2.
+Select Debug Structure to display the debugging tools.
+3.
+Click on the Measure CPU Usage option.
+With this option activated, you will be able to see numbers in place of the names of some of
+the Modules and Macros.
+Introductory Topics
+Debugging
+ 
+REAKTOR 6 - Building In Primary - 30
+
+
+--- Page 31 ---
+
+Measuring CPU Usage.
+These numbers show the CPU usage of the Modules and Macros.
+If a Module or Macro does not have a number, this means that its CPU usage is less than
+0.1%
+All audio outputs will be muted while the Measure CPU Usage option is active. They will
+return to normal when the option is deactivated.
+2.5.3
+Module Sorting
+ 
+In Primary Level when performing signal processing with Audio signals, the order of operations
+becomes important. This is particularly crucial if you have feedback in your Structure.
+You can use the Module Sorting Debug Tool to see in which order the operations are performed
+on your Audio signal.
+To toggle the Measure CPU Usage option on or off:
+1.
+Enter the Options Menu.
+2.
+Select Debug Structure to display the debugging tools.
+3.
+Click on the Show Module Sorting option.
+Introductory Topics
+Debugging
+ 
+REAKTOR 6 - Building In Primary - 31
+
+
+--- Page 32 ---
+
+The Module Sorting of Audio Modules.
+With this Debug Tool active, a purple display for each Module shows its place in the sequence
+in which the operations are performed on the Audio signal.
+Note that only Audio Modules have Module Sorting numbers, Event Modules have no Module
+sorting number.
+2.5.4
+Event Initialization Order
+ 
+When you load an Ensemble, it goes through a process called Initialization. During this proce-
+dure, the Modules are initialized in a certain order and each only once.
+At the moment of its Initialization, the Module looks at all values that have arrived at its input
+ports and then sends the appropriate values and/or Events from its output port(s). In more
+complex Structures, Event Initialization becomes a crucial part of your Structure. Some Mod-
+ules require Events to arrive in a certain order at their input ports before functioning in the in-
+tended way.
+To see the order in which Modules that process or send Events are initialized, use the Event
+Initialization Order Debug Tool.
+To toggle the Event Initialization Order option on or off:
+1.
+Enter the Options Menu.
+2.
+Select Debug Structure to display the debugging tools.
+3.
+Click on the Show Event Init Order option.
+Introductory Topics
+Debugging
+ 
+REAKTOR 6 - Building In Primary - 32
+
+
+--- Page 33 ---
+
+Modules displaying their Event Init Order.
+With this Debug Tool active, a magenta display for each Module shows its place in the se-
+quence in which Event functions are initialized.
+Introductory Topics
+Debugging
+ 
+REAKTOR 6 - Building In Primary - 33
+

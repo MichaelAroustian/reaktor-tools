@@ -1,0 +1,294 @@
+--- Page 71 ---
+
+3
+Reaktor Core Fundamentals: The Core Signal Model
+ 
+3.1
+Values
+ 
+Most of the outputs of Reaktor Core modules produce values. (Producing a value means 
+that at any moment in time there is a value associated with the output.) The values are 
+available to all modules whose inputs are connected to those outputs.
+In the following example an adder module gets values 2 and 3 from the two modules 
+whose outputs are connected to its inputs, and it produces a value of 5 at its output.
+If you want to draw an analogy to the hardware world you can think of values as signal levels 
+(voltages), especially with relatively large-scale modules such as oscillators, filters, envelopes, 
+and so on. However, values are not limited to those kinds of processing—they are just values 
+and can be used to implement any processing algorithm, not just voltage-modeling algorithms.
+3.2
+Events
+ 
+Time is not continuous in the digital world; it is discrete. Probably the most familiar exam­
+ple of this is that a digitally stored recording doesn’t store the full information about an 
+audio signal, which is continuously changing over time, but rather stores only information 
+about the signal level at regularly spaced points in time. The number of points per second 
+bears the famous name of sampling rate.
+Here is a picture of a continuous signal:
+Reaktor Core Fundamentals: The Core Signal Model
+ 
+REAKTOR 5.5 - Core Reference - 71
+
+
+--- Page 72 ---
+
+and its digital representation:
+Because we are in the digital world, the outputs of our modules cannot change values con­
+tinuously. On the other hand, we don’t have to limit ourselves to changing values at regu­
+larly spaced points in time. For one thing, we do not have to maintain a particular sam­
+pling rate all over our structures. For another thing, in certain areas of our structures we do 
+not even have to maintain any sampling rate at all; that is, our changes do not have to 
+happen at regular intervals.
+For example, at time zero the output of our adder could have a value of 5. The first change 
+could occur at time 1 ms (one millisecond). The second change could occur at 4 ms. The 
+third at 6 ms:
+Reaktor Core Fundamentals: The Core Signal Model
+Events
+ 
+REAKTOR 5.5 - Core Reference - 72
+
+
+--- Page 73 ---
+
+In the picture above we can see changes of the output of our adder occurring during the 
+time from 0 to 7 ms. At the moment in time that the output changes its value, it generates 
+an event. An event means that the output reports a change of its state, meaning that it has 
+got a new value.
+In the following example, the upper left module has changed its output value from 2 to 4, 
+generating an event. In response, the adder module will change its output value and gen­
+erate an event at its output, too.
+Alternatively, the upper left module could have generated a new event with the same value 
+as the old one. The adder would have still responded by generating a new event, but this 
+time, without changing its output value.
+Reaktor Core Fundamentals: The Core Signal Model
+Events
+ 
+REAKTOR 5.5 - Core Reference - 73
+
+
+--- Page 74 ---
+
+The new value appearing at the output is not required to be different from the old one. Howev­
+er, the only way an output can change its value is by generating an event.
+As you have seen from the previous examples, an event occurring at an output of some 
+module will be sensed by downstream modules, which would in turn produce further 
+events (remember the adder producing an output event in response to an incoming event). 
+Those new events would be sensed by the modules connected to the corresponding out­
+puts and propagated further downstream, until the propagation stops for one of the rea­
+sons discussed later in this text.
+Events in Reaktor Core are not the same as events on the Reaktor primary level. They behave 
+according to different rules, which will be explained below.
+3.3
+Simultaneous Events
+ 
+Consider the situation in which the two modules on the left side in the previous examples 
+simultaneously produce an event.
+Reaktor Core Fundamentals: The Core Signal Model
+Simultaneous Events
+ 
+REAKTOR 5.5 - Core Reference - 74
+
+
+--- Page 75 ---
+
+This is one of the key features of the Reaktor Core event model—events can occur simulta­
+neously at several places. In that situation, the events originating at both the left-side 
+modules will arrive at the inputs of the adder simultaneously, and most importantly, the 
+adder will produce exactly one output event in response.
+That is not the same as on the Reaktor primary level, where events cannot happen simultane­
+ously, and the Add module (in event mode) would produce two output events in such a situa­
+tion.
+Of course, in reality, the events are not produced simultaneously by the upper-left and the 
+lower-left modules, because both modules are being processed by the same CPU, and the 
+CPU can process only one module at a time. But, what is important for us, is that these 
+events are logically simultaneous, that is they are treated as simultaneous by the modules 
+receiving them.
+Here is another example of simultaneous event propagation:
+In the example above, the leftmost module is sending an event, changing its output value 
+from 2 to 3. The event is sent simultaneously to both the inverter (–x) and the multiplier 
+(*) modules. In response to the incoming event the inverter will produce a new output val­
+ue –3. It is important to notice that although the output event of the inverter was pro­
+duced in response to the event sent by the leftmost module, and as such should happen 
+later than the incoming event, both events are still logically simultaneous. That means 
+they simultaneously arrive at the inputs of the multiplier, and the multiplier again produ­
+ces only one output event, with a value of –9.
+Again, on the primary level you would have had two events at the output of the Event Mult 
+module. It is also not defined whether the event at the output of the leftmost module would 
+have been sent first to the inverter or to the multiplier (although that is irrelevant for the given 
+structure).
+Reaktor Core Fundamentals: The Core Signal Model
+Simultaneous Events
+ 
+REAKTOR 5.5 - Core Reference - 75
+
+
+--- Page 76 ---
+
+In general you can use the following rule to figure out whether two events are simultane­
+ous or not:
+All events originating from (sent in response to) the same event are simultaneous. All events 
+originating from an arbitrary number of simultaneous events (occurring at different outputs, 
+but known to be simultaneous) are also simultaneous.
+The last example shows the benefit of having simultaneous events. In that case, we elimi­
+nate the redundant processing of the second event by the multiplier, which would have 
+taken extra CPU time. In longer structures, in the absence of simultaneous events, the 
+number of events can grow uncontrollably unless the structure designer pays particular at­
+tention to keeping the number of duplicate events low.
+In addition to saving CPU time, the concept of simultaneity leads to important differences 
+in one’s approach to structure construction, especially for the structures implementing 
+low-level DSP algorithms. You will become more familiar with these differences as you 
+start constructing your own structures.
+3.4
+Processing Order
+ 
+As you have seen from the previous examples, when a module sends an event, the down­
+stream modules respond to that event. From that, one might conclude that, despite pro­
+ducing logically simultaneous events, the modules are definitely not processed simultane­
+ously. One might further conclude that, for a given connection, it would be reasonable to 
+process the upstream module of the connection before the downstream module of the con­
+nection. All those conclusions are, in fact, correct.
+The general rule of processing order of the modules is:
+If two connected modules are processing logically simultaneous events, then the upstream 
+module will be processed first. If the events are not simultaneous, then of course, the order of 
+processing for the modules is the order of the processed events.
+From the above rule it follows that as long as there is a one-direction connection path (al­
+ways upstream or always downstream) between two modules, then there is a defined proc­
+essing order for these two modules: the upstream module is processed first.
+Reaktor Core Fundamentals: The Core Signal Model
+Processing Order
+ 
+REAKTOR 5.5 - Core Reference - 76
+
+
+--- Page 77 ---
+
+If there is no one-direction connection path between two modules, their processing order rela­
+tive to each other is undefined for logically simultaneous events. That means that the order is 
+arbitrary and can change as a result of various actions. The structure designer must take care 
+that such situations occur only for modules whose relative processing order is unimportant. 
+That is normally automatically the case as long as no OBC connections (see below) are in­
+volved.
+Here is an example, the digits showing the order of module processing:
+For the above structure, there is an alternative valid processing order:
+There is no way to tell which one will be taken by the software. Fortunately, as long as you 
+do not use OBC connections, the relative order of modules in such cases is really unimpor­
+tant.
+The above rules for processing order cannot be applied if there is feedback in the structures, 
+because in that case, for any pair of modules in the feedback loop we cannot tell which one is 
+upstream to the other. The problem of handling feedback loops, including the processing or­
+der, will be addressed later.
+Reaktor Core Fundamentals: The Core Signal Model
+Processing Order
+ 
+REAKTOR 5.5 - Core Reference - 77
+
+
+--- Page 78 ---
+
+For the above structure, it is not possible to define whether, for example, module B is up­
+stream to module D or vice versa, because there is an upstream connection going from D 
+to B as well as an upstream connection going from B to D (via E).
+3.5
+Event Core Cells Reviewed
+ 
+ 
+Let’s take a look at event core cells from the point of view of the just described event con­
+cept of Reaktor Core.
+As you’ll remember, event core cells have event inputs and event outputs. These inputs 
+and outputs are the interface between Reaktor’s primary level and the Reaktor Core level; 
+they perform the conversion between primary-level events and core events, and vice versa. 
+The rules of the conversion are as follows:
+▪
+Event Inputs send core events to the inside of the structure in response to primary-level 
+events coming from outside. Because the outside primary-level events cannot arrive 
+simultaneously at the inputs, the internally produced events also do not occur simul­
+taneously.
+▪
+Event Outputs send primary-level events to the outside of the structure in response to 
+core events coming from the inside. Although core events can occur simultaneously at 
+several outputs, primary-level events cannot be sent simultaneously. Therefore, for si­
+multaneous core events, the corresponding primary-level events will be sent one after 
+another, with upper outputs always sending before lower ones.
+Reaktor Core Fundamentals: The Core Signal Model
+Event Core Cells Reviewed
+ 
+REAKTOR 5.5 - Core Reference - 78
+
+
+--- Page 79 ---
+
+Let’s try that in practice by building an event processing module that performs signal 
+shaping according to the formula: y = 0.25*x*(4-|x|)
+The graph of this function looks as follows:
+Let’s start by creating a new event core cell with one input and one output, labeled “x” 
+and “y”, respectively.
+Now let’s create the structure which computes the formula. We need to create |x| (absolute 
+value), - (subtract), and two * (multiply) modules in the normal area. These are not core 
+macros, but rather true Reaktor Core built-in modules. To insert built-in modules into core 
+structures, right-click in the background of the normal area and select the Built‑In Module
+submenu:
+Reaktor Core Fundamentals: The Core Signal Model
+Event Core Cells Reviewed
+ 
+REAKTOR 5.5 - Core Reference - 79
+
+
+--- Page 80 ---
+
+You’ll find all the necessary modules in the Built‑In In Module > Math submenu:
+We’ll need two constant values: 0.25 and 4. We could use QuickConsts exactly like we did 
+earlier, but we can also insert real constant modules: Built‑In Module > Const (as with the
+QuickConst, their values can be specified in the Properties window):
+Reaktor Core Fundamentals: The Core Signal Model
+Event Core Cells Reviewed
+ 
+REAKTOR 5.5 - Core Reference - 80
+
+
+--- Page 81 ---
+
+Of course, in this particular case there is no benefit in using Const modules instead of 
+QuickConsts, but sometimes you might want to. For example, if the same constant has to 
+be connected to multiple inputs, it may be better to use a Const module, because then 
+you need only one of them and you also have a single place to edit the value.
+The above structure now shapes the signal in the way described, but as we’ll see at the 
+end of this section, the implementation is not perfect. For now, let’s give our module a 
+name and go back to the primary level:
+Now let’s test it. Set the number of voices for the Reaktor instrument to 1, so that it will 
+be easier to use a Meter module:
+Reaktor Core Fundamentals: The Core Signal Model
+Event Core Cells Reviewed
+ 
+REAKTOR 5.5 - Core Reference - 81
+
+
+--- Page 82 ---
+
+Create a Knob and a Meter and connect them to the input and output of your module:
+Set up the properties for the knob and the meter. Don’t forget to set the meter to display 
+its value:
+Reaktor Core Fundamentals: The Core Signal Model
+Event Core Cells Reviewed
+ 
+REAKTOR 5.5 - Core Reference - 82
+
+
+--- Page 83 ---
+
+and to check the Always Active box:
+Reaktor Core Fundamentals: The Core Signal Model
+Event Core Cells Reviewed
+ 
+REAKTOR 5.5 - Core Reference - 83
+
+
+--- Page 84 ---
+
+Now move the knob and watch the output value change.
+The event-shaper structure we’ve built should work perfectly for shaping control signals, 
+but it still has one minor flaw in its event-processing behavior. We will return to that prob­
+lem and fix it a little bit later.
+Reaktor Core Fundamentals: The Core Signal Model
+Event Core Cells Reviewed
+ 
+REAKTOR 5.5 - Core Reference - 84
+

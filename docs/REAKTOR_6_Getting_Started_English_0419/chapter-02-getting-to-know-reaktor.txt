@@ -1,0 +1,386 @@
+--- Page 13 ---
+
+2
+Getting to Know REAKTOR
+ 
+REAKTOR can be used in many different ways, from loading and playing pre-built Ensembles,
+to building new Instruments using the Modules and Macros Library, to programming your own
+DSP building blocks in Core. REAKTOR’s interface and file hierarchy are optimized to facilitate
+all these use cases, offering clear workflows for the task at hand. This section gives an over-
+view over the interface, the Play Mode and the Edit Mode, as well as the file types used in RE-
+AKTOR.
+2.1
+The Interface at a Glance
+ 
+REAKTOR's interface can be divided into three main areas:
+The REAKTOR Interface
+Getting to Know REAKTOR
+The Interface at a Glance
+ 
+REAKTOR 6 - Getting Started - 13
+
+
+--- Page 14 ---
+
+(1) Toolbar: The area along the top is called the Toolbar and contains a lot of REAKTOR's glob-
+al options and settings (see section ↑2.2, The Toolbar).
+(2) Main area: The main area in the center displays either the loaded Instrument Panel, the
+Structure of the Ensemble, or both (the area can be split with the options in the upper-right
+corner).
+(3) Side Pane: The area to the left is called the Side Pane and contains a number of different
+functions categorized by tabs:
+•
+Browser (see section The Browser)
+•
+Snapshots (see section ↑6.3, Snapshots and Presets)
+•
+Connection Manager (see section ↑9.2, Connection Manager)
+•
+Panelsets (find more information in the Diving Deeper document)
+•
+Properties (find more information in the Diving Deeper document)
+2.2
+The Toolbar
+ 
+The toolbar, located along the top of REAKTOR's interface, gives you access to many of the
+main options and parameters in REAKTOR.
+The toolbar in REAKTOR
+(1) REAKTOR icon: Clicking on the REAKTOR icon opens a window displaying information about
+the software. This window can be used to find the version number of your current REAKTOR
+installation, which is located to the top left of the window.
+Getting to Know REAKTOR
+The Toolbar
+ 
+REAKTOR 6 - Getting Started - 14
+
+
+--- Page 15 ---
+
+(2) Open main menu: The arrow to the right of the REAKTOR icon opens the main menu. This
+contains many different options and functions which are referenced throughout the documen-
+tation.
+(3) Show Side Pane: The magnifying glass button shows or hides the Side Pane. The Side Pane
+hosts a variety of functions and settings, organized in tabs. See sections The Browser, ↑6.3,
+Snapshots and Presets, and ↑9.2, Connection Manager for more information. The Panelsets
+and Properties tabs are described in the Diving Deeper document.
+(4) Toggle Edit Mode: The EDIT button toggles Edit Mode on or off. See section ↑2.3, Play
+Mode vs Edit Mode for more information.
+(5) Snapshot menu: The Snapshot menu is where you can browse and load Snapshots from the
+loaded Ensemble. Snapshots are REAKTOR's main sound preset type and are explored in more
+detail in section ↑6.3, Snapshots and Presets. Clicking on the Snapshot name opens the snap-
+shot menu. The up and down arrows to the right of the menu can be used to cycle through the
+sSnapshots.
+(6) Transport: The transport controls are used to control the global playback. See section
+↑2.2.1, Transport for more information.
+(7) Show Sample Map Editor: The button with the waveform icon shows or hides the Sample
+Map Editor. This button is only available if the loaded Ensemble contains a Sampler Module.
+The Sample Map Editor is described in the Diving Deeper document.
+(8) Show Player and Recorder: The button with the tape reel icon shows or hides the Player and
+Recorder. The Player and Recorder utilities allow you to play back and record audio files. The
+Player and Recorder are described in the Diving Deeper document.
+(9) Show Info Hints: This button shows or hides the tool tip information when placing the mouse
+over an element in the user interface. See section ↑2.2.2, Info Hints for more information.
+(10) Audio input level meter: The audio input level meter lets you monitor and adjust the input
+level for signals arriving at REAKTOR’s inputs. The audio input meter is only visible if the load-
+ed Ensemble includes audio inputs. See section ↑2.2.3, Audio Input & Output Level Meters for
+more information.
+Getting to Know REAKTOR
+The Toolbar
+ 
+REAKTOR 6 - Getting Started - 15
+
+
+--- Page 16 ---
+
+(11) MIDI/OSC input and output: The MIDI/OSC input and output indicators light up when REAK-
+TOR sends or receives any MIDI and OSC messages. MIDI and OSC are the main ways of con-
+trolling REAKTOR with hardware. The indicators are useful for checking if your hardware is
+communicating with REAKTOR. See section ↑9, Controlling REAKTOR for more information
+about MIDI and OSC.
+(12) Audio output level meter: The audio output level meter lets you monitor and adjust the out-
+put level for signals sent from REAKTOR’s outputs. See section ↑2.2.3, Audio Input & Output
+Level Meters for more information.
+(13) System info: The system info area contains displays and controls for the system and audio
+status. See section ↑2.2.4, System Info for more information.
+(14) NI icon: Clicking on the NI icon opens a window displaying information about the software.
+This window can be used to find the version number of your current REAKTOR installation,
+which is located to the top left of the window.
+2.2.1
+Transport
+ 
+The Transport controls in REAKTOR
+Since REAKTOR can be used to create sequencers, REAKTOR has its own transport for con-
+trolling playback.
+The transport controls are not available in the plug-in version of REAKTOR since it uses
+the host’s transport settings.
+Getting to Know REAKTOR
+The Toolbar
+ 
+REAKTOR 6 - Getting Started - 16
+
+
+--- Page 17 ---
+
+•
+The leftmost button resets the play position (meaning it rewinds the play head to position
+zero). You can also reset the play position by pressing [ctrl] + [space] (Windows) or [cmd]
++ [space] (OS X) on your computer keyboard.
+•
+The center button is the play button. It is used to start or pause playback. You can also
+start or pause playback by pressing [space] on your computer keyboard.
+•
+The value display to the right is where you can define the playback tempo in BPM (beats
+per minute). You can do this either by clicking and dragging the value up and down, or by
+double-clicking and typing in a new tempo.
+2.2.2
+Info Hints
+ 
+Many of the elements in REAKTOR’s user interface show tool tip information when you place
+the mouse over them. This information is called an Info Hint in REAKTOR. The Info Hints can
+be enabled from the toolbar.
+1.
+Click on the Show Info Hints button in the toolbar to enable the Info Hints. Alternatively,
+press the keyboard shortcut [ctrl] + [i] (Windows) or [cmd] + [i] (OS X).
+Getting to Know REAKTOR
+The Toolbar
+ 
+REAKTOR 6 - Getting Started - 17
+
+
+--- Page 18 ---
+
+⇨The Info Hints are now shown as soon as you place the mouse over an element in REAK-
+TOR’S user interface.
+2.2.3
+Audio Input & Output Level Meters
+ 
+The audio input and output level meters in REAKTOR
+The audio input and output level meters let you monitor and adjust the level of audio signals
+arriving at REAKTOR’s audio inputs as well as audio signals sent from REAKTOR’s audio out-
+puts.
+The audio input level meter is only visible if the loaded Ensemble includes audio inputs.
+If the signal level is too high and the input or output is overloading, red lights will appear at
+the right edge of the meters.
+Getting to Know REAKTOR
+The Toolbar
+ 
+REAKTOR 6 - Getting Started - 18
+
+
+--- Page 19 ---
+
+Below each of the meters is an arrow. Clicking and dragging on the arrow sets the input or out-
+put signal level. For example, if the output of an instrument is too loud, you can lower the sig-
+nal level by moving the arrow below the output meter to the left.
+2.2.4
+System Info
+ 
+The system info in REAKTOR
+The rightmost area in the toolbar contains the system info and controls.
+•
+The top left desplay shows a measure of the CPU load in percent.
+•
+The bottom left display shows the currently set sample rate. Clicking on it opens a drop-
+down menu for selecting the sample rate (see section ↑2.2.4.1, Changing the Sample
+Rate).
+•
+The power button to the right stops and starts REAKTOR's audio engine. If the audio com-
+ing from an Ensemble cuts out unexpectedly, sometimes switching the power button off
+and on can fix the problem.
+2.2.4.1
+Changing the Sample Rate
+ 
+By default REAKTOR uses the sample rate of your audio interface for processing. This is also
+the default setting for most Ensembles. However, some Ensembles (e.g. MONARK, ROUNDS)
+use a higher sample rate to improve audio quality.
+1.
+Clicking on the sample rate display opens the sample rate drop-down menu.
+Getting to Know REAKTOR
+The Toolbar
+ 
+REAKTOR 6 - Getting Started - 19
+
+
+--- Page 20 ---
+
+The sample rate setting in the toolbar
+The sample rate menu contains a number of entries, organized in three categories:
+•
+Host/System: This entry sets REAKTOR to operate at the same sample rate as your audio
+interface. This is the default setting for most Ensembles.
+•
+Fixed:: The fixed entries are multiples of your audio interface’s sample rate. They can be
+saved with the Ensemble and are used to improve the audio quality. Keep in mind that
+higher sampling rates require more CPU.
+•
+Factor:: These entries allow you to reduce or increase the sample rate in the current RE-
+AKTOR session.
+2.3
+Play Mode vs Edit Mode
+ 
+REAKTOR has two modes of operation:
+•
+Play Mode: This mode optimizes REAKTOR for loading and playing Ensembles and Racks.
+It decreases loading times and streamlines the interface, but removes the options for
+deep editing of Ensembles and Instruments. This mode is especially useful when using
+REAKTOR in a DAW or host.
+Getting to Know REAKTOR
+Play Mode vs Edit Mode
+ 
+REAKTOR 6 - Getting Started - 20
+
+
+--- Page 21 ---
+
+•
+Edit Mode: This mode gives you access to all of the controls and options REAKTOR has to
+offer, allowing you to create or edit Ensembles and Instruments.
+1.
+To toggle Edit Mode on or off, click on the EDIT button in REAKTOR's toolbar.
+2.4
+File Types and Hierarchy
+ 
+REAKTOR uses several distinct file types, each representing a different structural level in the
+application. These levels help to organize your REAKTOR projects in a meaningful way, and
+the corresponding files can be used to share aspects of your work between projects or with oth-
+er users.
+Ensembles
+At the top level is the Ensemble, which holds all relevant information of a REAKTOR session. It
+represents the basic project file you are working with in REAKTOR. An Ensemble can contain a
+single instrument or a full suite of sequencers, synthesizers, and effects. Pre-built instruments
+and effects also come as Ensembles, ready to be used in your music or sound design projects.
+Ensembles are saved as *.ens files.
+Getting to Know REAKTOR
+File Types and Hierarchy
+ 
+REAKTOR 6 - Getting Started - 21
+
+
+--- Page 22 ---
+
+A REAKTOR Ensemble containing one Instrument
+Racks
+Racks facilitate analog-style modular synthesizer patching using pre-built modules in the
+Blocks format. In a Rack, you can arrange, connect, and control Blocks directly in the Panel.
+The patch is also mirrored in the Structure, allowing you to choose your preferred patching
+workflow. All settings including the arrangement of Blocks and the connections made between
+them are saved and recalled with your host sequencer project (host chunk saving). Racks are
+saved as *.nksr files.
+Getting to Know REAKTOR
+File Types and Hierarchy
+ 
+REAKTOR 6 - Getting Started - 22
+
+
+--- Page 23 ---
+
+A REAKTOR Rack containing Blocks
+Information about Racks can be found in the Getting Started and REAKTOR Blocks
+Manual documents.
+Instruments
+An Instrument is a container for a synthesizer, sequencer, an effect, or any other musical tool
+you create, representing the so-called Primary level of REAKTOR. It includes the internal
+Structure, MIDI processing, Panel (user interface), and Snapshots (presets) associated with
+your musical tool. In order to connect an Instrument with REAKTOR’s audio inputs and out-
+Getting to Know REAKTOR
+File Types and Hierarchy
+ 
+REAKTOR 6 - Getting Started - 23
+
+
+--- Page 24 ---
+
+puts, it has to be loaded in an Ensemble. You can combine multiple Instruments in one En-
+semble. In REAKTOR Blocks, each module is a separate Instrument, allowing you to patch be-
+tween multiple modules within an Ensemble or a Rack. Instruments are saved as *.ism files.
+A REAKTOR Instrument containing several Macros.
+Information about Instruments can be found in the Getting Started and Diving Deeper
+documents.
+Modules and Macros
+Instruments are created using Modules. These are REAKTOR’s basic building blocks. Modules
+can be organized into containers called Macros. This is especially useful if your Instrument
+consists of a complex structure with a large number of Modules. Macros can be saved as *.mdl
+files.
+Getting to Know REAKTOR
+File Types and Hierarchy
+ 
+REAKTOR 6 - Getting Started - 24
+
+
+--- Page 25 ---
+
+A REAKTOR Macro containing several Modules and another Macro.
+Information about Modules and Macros can be found in the Building in Primary docu-
+ment.
+Core Cells
+Core Cells are a way of creating your own DSP modules using REAKTOR’s visual programming
+language. Core is the most advanced level of programming in REAKTOR. Core Cells can be
+saved as *.rcc files.
+A REAKTOR Core Cell.
+Information about Core Cells can be found in the Building in Core document.
+Getting to Know REAKTOR
+File Types and Hierarchy
+ 
+REAKTOR 6 - Getting Started - 25
+
+
+--- Page 26 ---
+
+2.5
+Third-Party and Protected Content
+ 
+Third-party developers are welcome to develop official content products for REAKTOR. These
+products are activated using Native Access.
+Find information about installing and activating third-party content products for REAK-
+TOR using Native Access in the following article on our website: https://support.native-
+instruments.com/hc/articles/115004430405
+After installing and activating your third-party content product, you will find it in the Player tab
+of the Browser, sorted by vendor:
+The Player tab containing content by Native Instruments and third-party developer Tim Exile
+Blocks Content for Use in Racks
+Blocks need to be officially licensed for use in REAKTOR Racks. After obtaining the license for
+an official Blocks content product you can install it via Native Access. After the installation,
+the included Racks and Blocks are shown in the Browser’s Player tab, as well as the Library
+tab and the search box when a Rack is loaded.
+Getting to Know REAKTOR
+Third-Party and Protected Content
+ 
+REAKTOR 6 - Getting Started - 26
+
+
+--- Page 27 ---
+
+Content Protection
+Any official REAKTOR content product from third-party developers and Native Instruments can
+be protected. This means that the Structure of the Ensemble – or Instrument in the case of a
+protected module for REAKTOR Blocks – cannot be accessed by the user. As a user, you will
+notice the following restrictions:
+•
+If you load a protected Ensemble into REAKTOR’s Full mode, you will not be able to ena-
+ble Edit Mode. The EDIT button will be greyed out, as if you were loading an Ensemble
+into REAKTOR’s Player mode.
+•
+If you add a protected Instrument (module for REAKTOR Blocks) to an Ensemble, you will
+not be able to access the Structure of the added Instrument.
+•
+If you import a protected Ensemble into another Ensemble, you can still enable Edit
+Mode, however you will not be able to access the Structure of the imported Ensemble.
+If you add a protected Instrument or import a protected Ensemble, the Properties for the
+Instrument or Ensemble are still available. For example, this allows you to setup MIDI
+and OSC control.
+Samples that are embedded into a content product can also be protected. In this case, you will
+notice the following restrictions:
+•
+Embedded samples are marked as [Copy Protected Content] in the Sample Map Editor,
+showing a lock icon in the Embed column of the Sample List.
+•
+Certain functions are disabled in the context menu and the corresponding buttons are
+greyed out.
+If you are a developer and want to contact Native Instruments about your content prod-
+ucts, please use the email address provided on the following website: https://www.na-
+tive-instruments.com/en/specials/komplete/developer/
+Getting to Know REAKTOR
+Third-Party and Protected Content
+ 
+REAKTOR 6 - Getting Started - 27
+

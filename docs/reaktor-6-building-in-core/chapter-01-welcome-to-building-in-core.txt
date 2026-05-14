@@ -1,0 +1,204 @@
+--- Page 9 ---
+
+1
+Welcome to Building in Core
+ 
+Welcome to Building in Core, a manual describing the Core level in REAKTOR with its low-lev-
+el building features. Using a run-time optimizing compiler, this graphical audio programming
+language can be used for implementing your own custom DSP algorithms. This document also
+includes reference information about the Core Macro Library, a comprehensive collection of
+DSP building blocks.
+1.1
+The REAKTOR 6 Documentation
+ 
+The REAKTOR documentation is accessible from the Help menu
+The documentation for REAKTOR 6 is divided into five separate documents, guiding you from
+loading and playing pre-built Ensembles to building your own Instruments.
+•
+REAKTOR 6 What Is New is written for users who are already familiar with previous versions
+of REAKTOR and only describes the latest features in brief.
+Welcome to Building in Core
+The REAKTOR 6 Documentation
+ 
+REAKTOR 6 - - 9
+
+
+--- Page 10 ---
+
+•
+REAKTOR 6 Getting Started is for new users. It is the only document needed for users who
+intend to use REAKTOR for loading and playing pre-built REAKTOR instruments and ef-
+fects.
+•
+REAKTOR 6 Diving Deeper expands on the concepts introduced in the Getting Started docu-
+ment. It provides more detail on subjects like Snapshots (REAKTOR's preset system), and
+introduces advanced topics like OSC control and combining multiple Instruments in one
+Ensemble.
+•
+REAKTOR 6 Building in Primary shows you how to build your own Instruments in REAK-
+TOR’s Primary level. It focuses on a series of tutorials that guide you through building
+your first synthesizers, effects, and sequencers.
+•
+REAKTOR 6 Building in Core describes the Core level of REAKTOR with its low-level build-
+ing features, which can be used for implementing custom DSP algorithms. It includes ref-
+erence information about the Core Macro Library, an comprehensive collection of DSP
+building blocks.
+With the exception of the What Is New document, each of the documents listed above builds
+on the knowledge of the previous documents. While it is not necessary to read all of every
+document, some of the more advanced documents, like Building in Primary, assume knowl-
+edge from the previous documents.
+ 
+Welcome to Building in Core
+The REAKTOR 6 Documentation
+ 
+REAKTOR 6 - - 10
+
+
+--- Page 11 ---
+
+1.2
+Manual Conventions
+ 
+This section introduces you to the signage and text highlighting used in this manual.
+•
+Text appearing in (drop-down) menus (such as Open…, Save as… etc.) and paths to loca-
+tions on your hard disk or other storage devices is printed in italics.
+•
+Text appearing elsewhere (labels of buttons, controls, text next to checkboxes etc.) is
+printed in blue. Whenever you see this formatting applied, you will find the same text ap-
+pearing somewhere on the screen.
+•
+Important names and concepts are introduced in bold. Furthermore, bold text is used to
+stress important statements in the text.
+•
+References to keys on your computer’s keyboard you’ll find put in square brackets (e.g.,
+“Press [Shift] + [Enter]”).
+1.
+Single instructions are introduced by this play button type arrow.
+⇨Results of actions are introduced by this smaller arrow.
+An indented, gray paragraph contains additional, contextual information.
+Furthermore, this manual uses particular formatting to point out special facts and to warn you
+of potential issues. The icons introducing these notes let you see what kind of information is to
+be expected:
+The speech bubble icon indicates a useful tip that may often help you to solve a task
+more efficiently.
+The exclamation mark icon highlights important information that is essential for the giv-
+en context.
+The red cross icon warns you of serious issues and potential risks that require your full
+attention.
+Welcome to Building in Core
+Manual Conventions
+ 
+REAKTOR 6 - - 11
+
+
+--- Page 12 ---
+
+1.3
+Core Updates in REAKTOR 6.0.1
+ 
+Here is a brief list of what has been changed in Core compared to REAKTOR 5.
+•
+Two new major features, Scoped Buses (see section ↑3.3, Scoped Buses) and Bundles
+(see section ↑3.4, Bundles) have been introduced. Particularly the former SR.C and SR.R
+connections are now a part of the Scoped Buses/Bundles framework (see section ↑4.9, SR
+and CR Buses).
+•
+Unification of audio and event Core Cells. Now there is only one Core Cell type. The input
+and output ports of the Core Cells can be switched between audio and event types (see
+sections ↑2.5.1, Inputs and ↑2.5.2, Outputs).
+•
+SR.C does not send an initialization event anymore (see section ↑4.9.6, Internal Structure
+of Clock Buses).
+Upon importing the older Core Cells special adapter Macros are automatically inserted at the top
+level of the Structures to simulate the REAKTOR 5 behavior of SR.C.
+•
+Nonsolid Macros and Structures now have a dedicated look (see section ↑2.6.3, Proper-
+ties).
+•
+The feedback loop highlighting now highlights the entire loop instead of just the resolu-
+tion point (see section ↑4.10.1, Automatic Resolution).
+•
+The Macro library has been completely restructured (see section ↑6, Macro Reference).
+◦No more Expert / Standard parts.
+◦New oscillators, filters, FX, LFOs, envelopes and smoothers.
+◦Dedicated set of Macros for audio and control rate handling (see section ↑4.9, SR and
+CR Buses).
+◦The former Expert > Modulation part is now found under Math Mod.
+◦The logic signals have been slightly reworked (see section ↑6.1.9, Logic).
+◦The Flow submenu contains a number of value-controlled routers.
+Welcome to Building in Core
+Core Updates in REAKTOR 6.0.1
+ 
+REAKTOR 6 - - 12
+
+
+--- Page 13 ---
+
+◦The z^-1 Macros have been reworked. Now they are intended to be used exclusively
+for audio (see section ↑4.10.2, Manual Resolution). For other one-clock delay purpos-
+es use Memory > Latch[-1] or Event Proc > Event[-1] Macros.
+◦The ~exp and ~log Modules used inside the Macros (such as e.g. Convert > P2F) are
+typically set to the highest precision. Set them to a lower precision if the highest pre-
+cision is not needed.
+1.4
+Core Updates in REAKTOR 6.2.2
+ 
+In REAKTOR 6.2.2 the Macro Library has received significant updates.
+New Additions
+•
+(Non-transposed) nonlinear Sallen–Key filter
+•
+8-pole ladder filter
+•
+6-pole and 8-pole band-pass Butterworth filters
+•
+2nd kind (resonating) Butterworth filters (as described in The Art of VA Filter Design by
+Vadim Zavalishin)
+•
+Completely reworked set of shelving filters
+•
+Completely reworked set of crossover Macros
+•
+Configurable notch count for phasers
+•
+Thru-zero phaser and flanger, barber pole phaser and flanger, harmonic phaser
+•
+Asymmetric overdrive, anti-aliased versions of symmetric and asymmetric overdrives
+•
+Bit and sample rate reduction effects
+•
+Compressor
+•
+Tempo and transport position synced LFO
+•
+LFO toolkit
+•
+Zero-crossing detector event processing Macro
+Welcome to Building in Core
+Core Updates in REAKTOR 6.2.2
+ 
+REAKTOR 6 - - 13
+
+
+--- Page 14 ---
+
+Updates and Improvements
+•
+Cleaned up the internal structure of the transposed Sallen–Key filters. The TSK NLA filter
+sound is slightly changed.
+•
+Improved CPU consumption of the Delay and Delay (ZDF Toolkit) Macros.
+Fixes
+•
+Wrong phase deviation value at the output of the Phase Splitter Macro inside the
+Freq Shift Macro (this issue did not affect the sound, but provided wrong information).
+•
+Some Math Macros were sending initialization when they should not.
+•
+xy2polar and toPolar Macros did not handle zero input.
+Welcome to Building in Core
+Core Updates in REAKTOR 6.2.2
+ 
+REAKTOR 6 - - 14
+

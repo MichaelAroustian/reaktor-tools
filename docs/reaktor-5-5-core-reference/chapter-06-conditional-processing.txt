@@ -1,0 +1,148 @@
+--- Page 127 ---
+
+6
+Conditional Processing
+ 
+6.1
+Event Routing
+ 
+Events in Reaktor Core do not always have to travel along the same predefined paths. It is 
+possible to dynamically change these paths. You can achieve this by using the Router 
+module (Built‑In In Module > Flow > Router):
+The Router module accepts events at its signal input (bottom) and routes them to either 
+its output 1 (top) or its output 0 (bottom). The routing, i.e. whether the event goes to out­
+put 1 or output 2, depends on the current state of the Router, which is controlled from the 
+Ctl input (top)
+The Ctl input accepts a connection of a new type, which is not compatible with either nor­
+mal signals or OBC connections. It is a BoolCtl (Boolean control) signal type. The BoolCtl 
+signal can be in one of two states: true or false (on or off, 1 or 0). If the control signal is in 
+the true state the events are routed to output 1. If the control signal is in the false state 
+the events are routed to output 0.
+The control signals have a significant difference from normal signals in Reaktor Core: they do 
+not transmit events and therefore cannot trigger any processing by their own.
+To control a Router you obviously need a control signal source, the most common of which 
+is the Comparison module found under Built‑In In Module > Flow > Compare:
+This module performs a comparison of the two incoming signals and outputs the result as 
+a BoolCtl signal. The upper input is assumed to be on the left of the comparison sign and 
+the lower input, on the right. So a module reading ‘>’ produces a true control signal if the 
+value at the upper input is greater than the value at the lower input.
+You can change the comparison criterion in the properties of the module:
+Conditional Processing
+ 
+REAKTOR 5.5 - Core Reference - 127
+
+
+--- Page 128 ---
+
+The available criteria are:
+▪
+= equal
+▪
+!= not equal (≠)
+▪
+<= less or equal (≤)
+▪
+< less
+▪
+>= greater or equal (≥)
+▪
+> greater
+It is, of course, possible to connect several routers to the same comparison module, in which 
+case they will change their state simultaneously.
+The Router module splits the event path into two branches. Quite often these branches 
+will later be merged:
+Depending on the result of the comparison the above structure will either invert the input 
+signal or leave it intact.
+An alternative implementation of this structure would be:
+Conditional Processing
+Event Routing
+ 
+REAKTOR 5.5 - Core Reference - 128
+
+
+--- Page 129 ---
+
+In this version, the 0 output of the Router is disconnected; therefore, the Router works as 
+a gate, letting the events through only if it’s in the ‘true’ state. The inverted value then 
+arrives at the second input of the Merge, thus overriding the non-inverted value, which is 
+always arriving at the first input. If the router is in ‘false’ state the inverter doesn’t receive 
+an event and doesn’t send an event to the second input of the Merge; therefore, the origi­
+nal unmodified signal goes to the output of the Merge.
+The branches are most often merged with a Merge module. But theoretically speaking you 
+could use many other modules (for example, arithmetic modules like adder, multiplier, and so 
+on) instead.
+Routers treat the initialization event just like any other event. Therefore, one could filter out 
+the initialization event by using routers, thereby ensuring that the initialization event won’t ap­
+pear in particular areas of the structure.
+6.2
+Building a Signal Clipper
+ 
+Let’s build a Reaktor Core macro structure that would clip the incoming audio signal from 
+the top at a specified level:
+Conditional Processing
+Building a Signal Clipper
+ 
+REAKTOR 5.5 - Core Reference - 129
+
+
+--- Page 130 ---
+
+If the input signal is not greater than the threshold it will be routed to output 0 of the 
+Router and, through the Merge, to the output of the structure. Otherwise, the signal will be 
+routed to output 1, where it triggers the latch, sending the threshold value to the Merge 
+instead. The same thing happens during initialization.
+Note that this structure will not change its output in response to changes to the threshold. 
+Rather the new threshold value will be used for the next and all subsequent events at the sig­
+nal input. This is in a way similar to a modulation macro’s behavior, where modulator changes 
+do not result in output events.
+Here is a testing structure for the clipper module we have built (an audio core cell has 
+been used):
+And this is what you should see in the panel:
+In fact, there are a number of such “modulation” clipper macros found in the Expert Mac­
+ro > Clipping menu.
+Conditional Processing
+Building a Signal Clipper
+ 
+REAKTOR 5.5 - Core Reference - 130
+
+
+--- Page 131 ---
+
+6.3
+Building a Simple Sawtooth Oscillator
+ 
+Let’s build a simple sawtooth oscillator, generating a sawtooth waveform with amplitude 1 
+and a specified frequency. We will use the following algorithm: increment the output sig­
+nal level at constant speed and at the moment the level becomes greater than 1 drop it by 
+2.
+Instead of dropping by 2 we could reset the level to –1, but that is generally not as good, be­
+cause we won’t be able to precisely maintain the specified oscillator frequency.
+The incrementing speed defines the oscillator frequency by the following equation:
+▪
+d = 2f / fSR
+where d is the level increment per one audio sample, f is the oscillator frequency and fSR 
+is the sampling rate. First we are going to build the circuitry for computing the increment­
+ing speed:
+Now we need the increment loop. It’s time to use a pair of Read and Write modules exact­
+ly as we did in the accumulator:
+The Read module triggers the level increment at each audio event. The sum of the old lev­
+el and the increment is then compared against 1 and routed either directly to the result 
+writing or to the wraparound circuitry.
+The third input of the Merge module ensures that the oscillator is initialized to zero. Theo­
+retically, the module that subtracts 2 from the signal level should have been a modulation 
+macro, but we didn’t bother, because the Merge overrides the initialization result anyway.
+Here’s the suggested test structure (don’t forget the P2F converter inside the core cell):
+Conditional Processing
+Building a Simple Sawtooth Oscillator
+ 
+REAKTOR 5.5 - Core Reference - 131
+
+
+--- Page 132 ---
+
+And here is the panel view:
+Conditional Processing
+Building a Simple Sawtooth Oscillator
+ 
+REAKTOR 5.5 - Core Reference - 132
+

@@ -1,0 +1,863 @@
+--- Page 30 ---
+
+2
+Getting Into Reaktor Core
+ 
+2.1
+Event and Audio Core Cells
+ 
+ 
+Core cells exist in two flavors: Event and Audio. Event core cells can receive only primary-
+level event signals at their inputs and produce only primary-level event signals at their out­
+puts in response to such input events. Audio core cells can receive both event and audio 
+signals at their inputs but provide only audio outputs:
+Flavor
+Înputs
+Outputs
+Clock Src
+Event
+Event
+Event
+Disabled
+Audio
+Event/Audio
+Audio
+Enabled
+Therefore audio cells can implement oscillators, filters, envelopes, effects and other stuff, 
+while event cells are suitable only for event processing tasks.
+The HighShelf EQ and MultiWave Osc modules that you are already familiar with are ex­
+amples of audio core cells (you can tell that by the fact that they have audio outputs):
+And here is an example of an event core cell:
+This module is a parabolic shaper for control signals, which can be used to implement ve­
+locity curves or LFO signal shaping, for example.
+Getting Into Reaktor Core
+ 
+REAKTOR 5.5 - Core Reference - 30
+
+
+--- Page 31 ---
+
+As previously mentioned, event core cells are restricted to event processing tasks. Because 
+clock sources are disabled inside them (see the table above), they cannot generate their 
+own events and, therefore, cannot implement modules such as event-rate LFOs and enve­
+lopes. When you need such modules, we suggest that you take an audio cell and convert 
+its output to event rate using one of the primary-level audio to event converters:
+2.2
+Creating Your First Core Cell
+ 
+ 
+You create new core cells by right-clicking on the background in a primary-level structure 
+and selecting Core Cell > New Audio or, for event cells, Core Cell > New Event:
+Getting Into Reaktor Core
+Creating Your First Core Cell
+ 
+REAKTOR 5.5 - Core Reference - 31
+
+
+--- Page 32 ---
+
+We are going to build a new core cell from scratch inside the same One Osc.ens you al­
+ready played with. We will be using the modified version of that ensemble with the new 
+oscillator and chorus that we built in the last chapter, but if you didn’t save it don’t worry, 
+you can do the same steps using the original One Osc.ens.
+As you can see, in this ensemble we are modulating the filter at the P input, which ac­
+cepts only event signals. We are not using the FM version of the same filter because it 
+does not perform as well at higher cutoff frequencies, and because the modulation scale is 
+linear at an FM input, which generally gives less musical results when modulated by an 
+envelope. (That phenomenon is typically but incorrectly referred to as “slow envelopes”.):
+Because we need to apply the modulation at an event input, we also need to convert the 
+envelope’s output to an event signal, which we do with an A/E converter. As a result, our 
+control rate is pretty low. Of course we could have used a converter running at a signifi­
+cantly higher rate (and eating up significantly more CPU), but what we are going to do in­
+stead is replace this filter with one which we build as a core cell. Alternatively, we could 
+have taken an existing filter from the core-cell library, but then we would miss all the fun 
+of making our first Reaktor Core structure.
+We’ll start by creating a new audio core cell. Select Core Cell > New Audio and an empty 
+audio core cell will appear:
+Getting Into Reaktor Core
+Creating Your First Core Cell
+ 
+REAKTOR 5.5 - Core Reference - 32
+
+
+--- Page 33 ---
+
+Double-click it to see its structure, which is obviously empty. As you surely remember, the 
+three areas are meant for input, output, and normal modules:
+Attention: we are going to insert our first module into a core structure right now! Right-
+click in the normal area to bring up the module creation menu:
+Getting Into Reaktor Core
+Creating Your First Core Cell
+ 
+REAKTOR 5.5 - Core Reference - 33
+
+
+--- Page 34 ---
+
+The first submenu is called Built‑In Module and provides access to the built-in modules of
+Reaktor Core, which are generally meant to do really low-level stuff and will be discussed 
+later.
+The second submenu is called Expert Macro and contains macros meant to be used along­
+side built-in modules for low-level stuff.
+The third submenu, called Standard Macro, is the one we want to use:
+Getting Into Reaktor Core
+Creating Your First Core Cell
+ 
+REAKTOR 5.5 - Core Reference - 34
+
+
+--- Page 35 ---
+
+The VCF section could be promising, let’s look inside:
+Getting Into Reaktor Core
+Creating Your First Core Cell
+ 
+REAKTOR 5.5 - Core Reference - 35
+
+
+--- Page 36 ---
+
+Let’s try Diode Ladder:
+Well, maybe that was not the best idea, because a diode ladder might sound significantly 
+different from the primary-level filter module we are trying to replace. At minimum, Diode 
+Ladder is a 4-pole (24dB/octave) filter, and the one we are replacing is a 2-pole filter 
+(12dB/octave). To delete it there are two options. One is to right-click on the module and 
+select Delete Module:
+The other option is to select the module by clicking on it and pressing the Delete key.
+After deleting the Diode Ladder, insert a 2 Pole SV C filter from the same VCF section of 
+the Standard Macro submenu:
+Getting Into Reaktor Core
+Creating Your First Core Cell
+ 
+REAKTOR 5.5 - Core Reference - 36
+
+
+--- Page 37 ---
+
+This is a 2-pole, state-variable filter and is similar to the one we are replacing (there are 
+some differences, but they are quite subtle). What’s important is that we can modulate 
+this filter at audio rates.
+Obviously, we need some inputs and some outputs for our core cell. To be exact we need 
+only one output – for the LP signal. To create it right-click in the outputs area:
+There’s only one kind of module you can create there, so select it. This is what the struc­
+ture is going to look like:
+Getting Into Reaktor Core
+Creating Your First Core Cell
+ 
+REAKTOR 5.5 - Core Reference - 37
+
+
+--- Page 38 ---
+
+Double-click the output module to open the Properties window (if it’s not already open). 
+Type “LP” in the label field:
+Now connect the LP output of the filter to the output module:
+Now let’s start with the inputs. The first input will be an audio-signal input. Right-click in 
+the background of the inputs area and select New > In:
+The input is automatically created with the right type – it’s an audio input, as you can tell 
+by the large black dot. Rename this input to “In” in the same way you renamed the output 
+to “LP”, then connect it to the first input of the filter module:
+Getting Into Reaktor Core
+Creating Your First Core Cell
+ 
+REAKTOR 5.5 - Core Reference - 38
+
+
+--- Page 39 ---
+
+The second input is a little bit more complicated. As you can see, the second input of the 
+filter Reaktor Core module is labeled “F”. That means frequency, and if you hold your 
+mouse over that input for a while (make sure the info button, the cursor with the “i,” is 
+active), you’ll see the info text, which says “Cutoff frequency (Hz)”:
+As we know, the cutoff of our primary-level filter module is controlled by an input labeled 
+“P”, and as you can see from the info text, the signal uses a semitone scale.
+We obviously need to convert from semitones to Hz. We can do that either on the primary 
+level (using the Expon. (F) module) or inside our Reaktor Core structure. Because we are 
+learning to build Reaktor Core structures, let’s go for the latter option. Right-click in the 
+background of the normal area and select Standard Macro > Convert > P2F:
+Getting Into Reaktor Core
+Creating Your First Core Cell
+ 
+REAKTOR 5.5 - Core Reference - 39
+
+
+--- Page 40 ---
+
+As the name implies (and the info text states), this module converts between P (pitch) and 
+F (frequency) scales – exactly what we need. So let’s create a second input labeled “P” 
+and connect it using the P2F module:
+That should do it, but wait! In our instrument we have a “P Cutoff” knob defining the base 
+cutoff of the filter, and to that is added the modulation signal from the envelope, which we 
+have to convert to an event signal on the primary level in order to feed it into the P input 
+of the filter. Now that the conversion is no longer necessary, we can remove the A/E mod­
+ule and plug the audio signal directly into the audio P input of our new filter. Although 
+this approach is fine, let’s look at another way, just for fun.
+We’ll start with our P input in event mode and add another modulation input in audio 
+mode. (If you remember our discussion about slow envelopes, you will understand why we 
+decided to call this input “PM”, not “FM”.) We also need to have the modulation input 
+use the semitones (pitch) scale. That’s exactly how it was done in our original instrument: 
+we added our envelope signal to the “P Cutoff” signal and plugged the sum into the P in­
+put.
+So first change the P input to the event mode (as described previously) and add another 
+PM input, which should be in audio mode:
+As a user of the Reaktor primary level, you probably expect us to add the two signals to­
+gether now. In fact, we could do that, but in Reaktor Core the Add is considered a low-
+level module, and using it generally requires some knowledge of fundamental Reaktor Core 
+low-level working principles. They are not that complex and will be described later in this 
+text. For now, you don’t need to know them; just use a control signal mixer instead, for 
+example, Standard Macro > Control > Ctl Mix:
+Getting Into Reaktor Core
+Creating Your First Core Cell
+ 
+REAKTOR 5.5 - Core Reference - 40
+
+
+--- Page 41 ---
+
+The last input that we need is a resonance input, it doesn’t need to be at audio rate, so 
+let’s use an event input:
+One other thing we need to do is to give our core cell a name. If the Properties window is 
+already open, click on the background to display the core cell’s properties. If it’s not open, 
+right-click on the background and select the Owner Properties command:
+Getting Into Reaktor Core
+Creating Your First Core Cell
+ 
+REAKTOR 5.5 - Core Reference - 41
+
+
+--- Page 42 ---
+
+Now you can type some text into the label field:
+Double-click the background to see your result:
+Getting Into Reaktor Core
+Creating Your First Core Cell
+ 
+REAKTOR 5.5 - Core Reference - 42
+
+
+--- Page 43 ---
+
+Wow, looks nice except that the audio-signal input is at the top of the core cell, while the 
+primary-level filter module input is on the bottom. We could leave it as is, but it’s easy to 
+fix, and you already know how. Let’s do it together, and we’ll show you a new feature on 
+the way.
+The first thing to do is go back inside and drag the audio-signal input all the way to the 
+bottom:
+That does the trick, but that diagonal wire over the whole structure doesn’t look particular­
+ly nice. That’s what we are going to fix now.
+Right-click on the output of the In input module and select the Connect to New QuickBus 
+command:
+Getting Into Reaktor Core
+Creating Your First Core Cell
+ 
+REAKTOR 5.5 - Core Reference - 43
+
+
+--- Page 44 ---
+
+This is what you should see now:
+Also, the Properties window should open to display the properties of the QuickBus you’ve 
+just created. The most useful QuickBus property is the ability to change its name (other 
+properties are quite advanced, so don’t touch them for now). You can open the Properties 
+window later by double-clicking on the QuickBus.
+Although you can rename this QuickBus, we believe the current name is perfect, because 
+it matches the name of the input connected to the QuickBus. (QuickBusses are local to 
+the given structure, so you don’t need to worry about possible name conflicts when a 
+neighboring or nested structure is using a QuickBus with the same name.)
+The next thing you should do is right-click on the top input of the 2 Pole SV C filter mod­
+ule and select Connect to QuickBus > In:
+In the above menu “In” is the name of the QuickBus you are connecting to. You don’t 
+want to create a new QuickBus, you want to connect to one that already exists, and that’s 
+what you’re doing. This is how your structure should look now:
+Getting Into Reaktor Core
+Creating Your First Core Cell
+ 
+REAKTOR 5.5 - Core Reference - 44
+
+
+--- Page 45 ---
+
+Instead of a nasty looking diagonal wire, we get two nice references, stating that the input 
+and output are connected by a QuickBus whose name is “In”.
+Now we can go back out to the primary level and modify our structure to use the new filter 
+we’ve just built. The Add and A/E modules can be thrown away. This is our final result:
+Takes quite a bit more CPU, doesn’t it? Well, don’t forget that this filter is modulated at 
+audio rate in pitch scale. If you don’t like it, you can still revert to the old structure or use 
+the Multi 2‑pole FM filter module from the primary level (slow envelopes, remember?), but
+we hope that you do like it. Even if you don’t, there are quite a few other filters with new 
+features that you might like better. And, if you don’t like the new Reaktor Core filters, 
+there are a whole bunch of other Reaktor Core modules you can try.
+Getting Into Reaktor Core
+Creating Your First Core Cell
+ 
+REAKTOR 5.5 - Core Reference - 45
+
+
+--- Page 46 ---
+
+2.3
+Audio and Control Signals
+ 
+Before we proceed we need to take a look at one particular convention used in the Stand­
+ard Macros of the Reaktor Core library. The modules you find in that area are best descri­
+bed in terms of several different types of signals: audio, control, event, and logic. We will 
+explain event and logic signals a little bit later; for now we’ll concentrate on the first two 
+types.
+Audio signals are obviously signals which carry audio information. These include signals 
+taken at the outputs of oscillators, filters, amplifiers, delays, and so on. Furthermore, mod­
+ules such as filters, amplifiers, saturators, delays and the like would normally receive an 
+incoming audio signal to process.
+Control signals, on the other hand, do not carry audio, they are used to control other mod­
+ules. For example, outputs of envelopes and LFOs as well as keyboard pitch and velocity 
+signals do not carry any sound, but can be used to control a filter’s cutoff or resonance, or 
+a delay line’s delay time, and so on. Correspondingly, a filter’s cutoff or resonance input 
+port, or a delay’s time input port are intended to receive control signals.
+Here is an example of a Reaktor Core filter module which you already know:
+The upper input of the filter is for the audio signal to be filtered and, therefore, expects an 
+audio-type signal. The F and Res inputs are obviously control type. The outputs of the fil­
+ter carry different kinds of filtered audio, so all those signals are also audio type.
+A sine oscillator module, on the other hand, has only a single control input (for the fre­
+quency), and a single audio output:
+Getting Into Reaktor Core
+Audio and Control Signals
+ 
+REAKTOR 5.5 - Core Reference - 46
+
+
+--- Page 47 ---
+
+And if we take a look at the Rect LFO module, it has two control inputs – for controlling 
+the frequency and pulse width (the third input is of event type) – and one control output 
+(because it would be used to control things like filter cutoff or VCA levels, and so on):
+Some types of processing, mixing for example, make sense for both audio and control types of 
+signals. In those cases, you will find versions of such macros dedicated to processing audio 
+and versions dedicated to processing control signals. For example, there are audio mixers and 
+control mixers, audio amplifiers and control amplifiers, and so on. Generally it’s not a very 
+good idea to misuse a module to process signals of types it was not intended for, unless you 
+really know what you’re doing.
+Having said that, quite often it’s possible to use audio signals for control purposes. The most 
+common example would be to modulate an oscillator’s frequency or a filter’s cutoff by an au­
+dio signal. That is absolutely OK because you are intending to use an audio signal as a control 
+signal. We assume that the opposite case, in which you really mean to use a control signal as 
+an audio signal, would be pretty rare.
+The separation between audio, control, event, and logic signals is not to be confused with 
+event/audio separation on the Reaktor primary level. The primary-level event/audio classifi­
+cation refers to speed of processing, audio signals being processed faster and requiring 
+more CPU. Also as you probably know, primary-level event signals have different propaga­
+tion rules than audio signals. The difference between audio, control, and event signals in 
+Reaktor Core terminology is purely semantic, defining the meaning of the signal rather 
+than the type of processing. There is not a one-to-one relationship between primary-level 
+event/audio and Reaktor Core audio/control/event/logic terms, but we can still try to ex­
+plain their relationship:
+▪
+A primary-level audio signal normally corresponds to either a Reaktor Core audio sig­
+nal (for example, an output of an oscillator or an audio filter) or a Reaktor Core con­
+trol signal (for example, an output of an envelope).
+▪
+A primary-level event signal is typically a control signal in terms of Reaktor Core. An 
+example of such signal would be an output of an LFO, a knob, or a MIDI pitch or ve­
+locity source.
+Getting Into Reaktor Core
+Audio and Control Signals
+ 
+REAKTOR 5.5 - Core Reference - 47
+
+
+--- Page 48 ---
+
+▪
+Sometimes a primary-level event signal corresponds to a Reaktor Core event signal. 
+The most typical example of that is a MIDI gate (Reaktor Core event signals will be 
+described later, as we promised).
+▪
+Sometimes a primary event signal resembles a Reaktor Core logic signal; however, 
+they are not fully compatible, and there must be explicit conversion between them (a 
+topic that also will be covered later). Examples include signals processed by Logic 
+AND or similar primary-level modules.
+It’s important to understand that when you select the type for a core-cell input port, you are 
+choosing between the primary-level event and audio signals, not between Reaktor Core event 
+and audio signals. The core-cell ports are the place where both worlds meet, and therefore, 
+they use a bit of the primary-level terminology.
+We are going to learn a little bit more about this concept while trying to build a tape-echo-
+effect emulation. We will start by building a simple digital echo, then enhance it to emu­
+late some features of a tape echo.
+Start by creating an empty audio core cell; then go inside and set its name to “Echo”.
+The first module we are going to put into the structure is a delay module. We will pick a 4-
+point interpolating delay, because it has better quality than a 2-point delay, and a non-
+interpolating delay would not be suitable for our tape emulation: Standard Macro > Delay 
+> Delay 4p:
+We obviously need an audio input and an audio output for our delay core cell. We will use 
+a QuickBus connection for the input and a normal connection for the output:
+Getting Into Reaktor Core
+Audio and Control Signals
+ 
+REAKTOR 5.5 - Core Reference - 48
+
+
+--- Page 49 ---
+
+We also need an event input for controlling the delay time. One thing to be aware of here 
+is that, on the primary level, the delay time is usually expressed in milliseconds, while Re­
+aktor Core library delay macros expect it to be in seconds. No problem, there is a conver­
+sion module available for that. Standard Macro > Convert > ms2sec:
+So far, we only have a single echo, and it would also be nice to hear the original signal, 
+not just the echo. To get the original signal at the output we need to mix it with the de­
+layed signal. Because we are mixing audio signals here, we need to use an audio mixer 
+(you may remember we used a control mixer to mix control signals when we were building 
+a filter core cell). Even better, we can use a particular audio mixer type that is specifically 
+designed to crossfade between two signals: Standard Macro > Audio Mix-Amp > XFade 
+(par):
+Here “(par)” stands for parabolic, which produces a more natural sounding crossfade than 
+a linear crossfade. We will connect the control (x) input of the crossfade to a new event 
+input to control the mix between the dry (unprocessed) and wet (delayed) signals. When 
+the control signal is 0 we will hear only the original signal, and when it’s 1, we will hear 
+only the delayed signal:
+Getting Into Reaktor Core
+Audio and Control Signals
+ 
+REAKTOR 5.5 - Core Reference - 49
+
+
+--- Page 50 ---
+
+Now we can hear the original signal and the echo, but there’s still only one echo. To have 
+multiple echoes we need to feed a fraction of the delayed signal back to the delay input. 
+First we need to attenuate the delayed signal. Following the same guidelines, use an audio 
+amplifier to attenuate an audio signal by choosing Standard Macro > Audio Mix‑Amp >
+Amount.
+We use the Amount amp because we want to control the amount of the signal that is fed 
+back. Also, this amplifier will allow us to invert the signal by using negative amount set­
+tings. In contrast, for example Amp (dB), which would be quite suitable to control the sig­
+nal volume, is not very good here because it doesn’t allow us to invert signals. We connect 
+the amplitude control input of the amplifier to an event input controlling the feedback 
+amount:
+Getting Into Reaktor Core
+Audio and Control Signals
+ 
+REAKTOR 5.5 - Core Reference - 50
+
+
+--- Page 51 ---
+
+The reasonable feedback amount range is something like [‑0.9..0.9] here. When you try out
+this delay, be careful with the feedback amount, because you can easily reach excessive sig­
+nal levels (there is no saturation in our circuitry yet). We could have embedded a safety feed­
+back amount clipper into our delay core cell, but because we are going to have saturation 
+there a little bit later, we didn’t think that was necessary. Without it, you will be able to ex­
+periment with high feedback levels and hear the delay saturating.
+We need to mix the feedback signal with the input signal. An audio mixer (Standard Macro 
+> Audio Mix‑Am Amp > Audio Mix) is a natural choice
+You may wonder what happened to the upper input of the Amount module above, which 
+now shows a large orange “Z”:
+Actually, depending on the version of the software and other conditions, the Z sign could 
+appear at some other input in the structure, but don’t worry you too much about it. The Z 
+sign indicates that a digital feedback has occurred in the structure, and it is meant for ad­
+vanced structure design, where such information can be an important hint for the struc­
+ture designer.
+For simple structures like the one above, one normally needn’t worry about the Z sign; its 
+presence just shows that there will be a 1-sample delay (about 0.02ms at 44.1kHz, even 
+less at higher sampling rates) at that point in the structure. We assume you won’t notice if 
+your delay time is 0.02ms off the specified value.
+Getting Into Reaktor Core
+Audio and Control Signals
+ 
+REAKTOR 5.5 - Core Reference - 51
+
+
+--- Page 52 ---
+
+Let’s get back to our structure, which now can produce a series of decaying echoes. It is 
+already a decent digital echo, but we want to show you a feature of the library that you can 
+use as a trick to make your structure smaller.
+Among the audio amplifiers are amplifiers called “Chain”. These amplifiers are capable of 
+amplifying a given signal and mixing it with another, chained signal. One of them is the 
+Audio Mix‑Amp > Chain(amount) amplifier, which works similarly to the Amount amplifier
+except that it also does chained mixing:
+The signal at the second input of this module will be attenuated according to the amount 
+given at the A input and mixed with the signal at the chain (>>) input. The signal at the 
+chain input is not attenuated. Such amplifiers can be used to build mixing chains, where 
+the >> port connections constitute a mixing bus:
+case we don’t need a mixing bus, but we can use this module to replace both our Audio 
+Mix and Amount modules. The fed back signal will be attenuated by the amount specified 
+by the Fbk input and mixed to the input signal exactly as it was before:
+Congratulations, you have built a simple digital-echo effect. The next step is to add some 
+tape feel to it.
+Getting Into Reaktor Core
+Audio and Control Signals
+ 
+REAKTOR 5.5 - Core Reference - 52
+
+
+--- Page 53 ---
+
+2.4
+Building Your First Reaktor Core Macros
+ 
+In the echo effect we just built, we used a Delay 4p macro from the library, which gives us 
+a reasonably high-quality digital delay. But, high-quality or not, it still sounds too digital. 
+We will make it sound warmer by adding two features found in tape delays: saturation and 
+flutter.
+Let’s start by deleting the delay macro from the structure and creating an empty macro in­
+stead. Right-click on the background as select Built‑In In Module > Macro:
+Double-click it to dive inside. You will see an empty structure, similar to the one you are 
+diving from:
+It also works similarly, but there are some important differences because the previous one 
+was a structure of a Reaktor Core cell, whereas this one is an internal structure of a Reak­
+tor Core macro. These differences have to do with the available input and output modules, 
+which are different:
+Getting Into Reaktor Core
+Building Your First Reaktor Core Macros
+ 
+REAKTOR 5.5 - Core Reference - 53
+
+
+--- Page 54 ---
+
+The Latch and Bool C types of ports will be explained much later in this manual and are 
+used for advanced stuff. We are interested now only in the first type, which is called “Out” 
+(or “In” for inputs). It’s a general type of port that can accept audio-, control-, event-, and 
+logic-type signals. In fact, the port doesn’t care whether it’s audio, control, event, or logic; 
+the difference is important only for you as a user, because it describes how the signal is to 
+be used; for Reaktor Core they are all the same. There is also no difference between audio/
+event inputs/outputs as on the previous structure level, because we don’t have Reaktor pri­
+mary-level signals on the outside any longer, it is pure Reaktor Core now. The first thing 
+we are going to do is name the macro, which is done in the same way as for core cells, by 
+right-clicking on the background, selecting Owner Properties, and typing in the name:
+Getting Into Reaktor Core
+Building Your First Reaktor Core Macros
+ 
+REAKTOR 5.5 - Core Reference - 54
+
+
+--- Page 55 ---
+
+The remaining properties of the macro control various aspects of its appearance and its 
+signal processing.
+While you are free to experiment with remaining properties as you see fit, we strongly advise 
+against turning the Solid parameter off. We also advise changing the FP Precision sparingly. 
+The meaning of these parameters will be described in the advanced topics of this manual.
+The next thing is to create a set of inputs and outputs for our Tape Delay macro:
+The upper input will receive the audio input, and the lower will receive the time parame­
+ter. You may have noticed extra ports on the left side of the input modules; we will explain 
+them a little bit later.
+As the central part of our macro we will use the same Delay 4p module:
+Getting Into Reaktor Core
+Building Your First Reaktor Core Macros
+ 
+REAKTOR 5.5 - Core Reference - 55
+
+
+--- Page 56 ---
+
+A simple emulation of the saturation effect can be done easily by connecting a saturator 
+module before the delay. Saturator is a kind of signal shaper, so we will look for it among 
+the audio shapers (because it is an audio saturator). Standard Macro > Audio Shaper > 
+Parabol Sat:
+The input signal will now 
+be saturated within the range of –1..+1. Actually, the range is controlled by the L input of 
+the saturator module, if it is disconnected it defaults to 1. That might be surprising to you 
+because you are probably used to disconnected inputs being treated as if they receive no 
+signal, or put differently, a zero signal. Well, this is not exactly the case in Reaktor Core 
+structures—modules can specify special treatment for disconnected inputs. The saturator, 
+for example, specifies the L input to have a default value of 1.
+Now we are going to learn to do exactly the same, by specifying a new default value for our 
+T input. Let’s say that if our T input is disconnected we would like it to be treated as if the 
+input value was 0.25 sec. Very easy. Right-click on the port on the left of the T input mod­
+ule and select Connect to New QuickConst. This is what you should see:
+In addition, you should have the properties window displaying the properties of the con­
+stant (if it shows a different page, press the cog wheel tab):
+Getting Into Reaktor Core
+Building Your First Reaktor Core Macros
+ 
+REAKTOR 5.5 - Core Reference - 56
+
+
+--- Page 57 ---
+
+In the value field type a new value of 0.25:
+This is how the QuickConst should look now in the structure:
+Let’s explain what we have just done. The port on the left side of the input module speci­
+fies a so-called default signal. That means that if the input is not connected (on the out­
+side of the macro), the default signal will be taken as the input source. In our case, if the 
+T input of the Tape Delay macro is not connected on the outside, it will behave as if you 
+have connected a constant value of 0.25 to it.
+Of course, a connection to the QuickConst is not the only possible connection for the de­
+fault signal input. You can connect it to any other module in the structure, including other 
+input modules.
+Getting Into Reaktor Core
+Building Your First Reaktor Core Macros
+ 
+REAKTOR 5.5 - Core Reference - 57
+
+
+--- Page 58 ---
+
+Now that we have saturation and a default value for the T input, let’s emulate a tape flut­
+ter effect. A simple way to do that is to modulate the delay time with an LFO. You could 
+experiment with different LFO shapes for better flutter effect, but for now, just take one 
+from the library: Standard Macro > LFO > Par LFO:
+This is a parabolic LFO, which produces a signal similar in shape to a sine, but uses less 
+CPU. Its F input must receive a signal specifying the oscillation rate. We can use a Quick­
+Const again here. A rate of 4 Hz seems reasonable so we can try that:
+The Rst input is used for restarting the LFO; we won’t need it for now.
+Now we need to specify a modulation amount by scaling the output of the LFO. Currently 
+the LFO output signal varies in the range –1 .. 1 and that is way too much. Because we 
+are dealing with control signals here, we are going to use a control amount module, which 
+is similar to the Amount amplifier we used for audio. Standard Macro > Control > Ctl 
+Amount:
+A modulation amplitude of 0.0002 should do fine, so we scale the signal to that amount:
+Ultimately, we can mix the two control signals (one from the T input and one from the Ctl 
+Amount module) and feed them into the T input of the delay module. The already familiar 
+Ctl Mix module can be used for that:
+Getting Into Reaktor Core
+Building Your First Reaktor Core Macros
+ 
+REAKTOR 5.5 - Core Reference - 58
+
+
+--- Page 59 ---
+
+Actually, we have a Chain type of control mixer that is similar to the mixer we have for au­
+dio signals. We could use it to replace the Ctl Amount and the Ctl Mix modules in the 
+same way we did earlier in the audio path. Standard Macro > Control > Ctl Chain:
+As one last touch for our macro, we are going to change the buffer size for our delay, 
+which defines the maximum possible delay time. If you hold your mouse cursor over the 
+Delay 4p macro (provided the cursor info button for info popus on rollover is active), you 
+can read in the hint text that the default buffer size corresponds to 1 sec of delay at 
+44.1kHz:
+Getting Into Reaktor Core
+Building Your First Reaktor Core Macros
+ 
+REAKTOR 5.5 - Core Reference - 59
+
+
+--- Page 60 ---
+
+Let’s increase the amount to 5 seconds (44,100*5 = 220,500 samples). Because each 
+sample requires 4 bytes, we need 220,500*4 = 882,000 bytes, which is almost 1MB). 
+Double-click on the Delay 4p macro:
+The module on the left is the delay buffer module. Double-click it (or right-click and select 
+Show Properties) to edit its properties. Select the cog wheel tab and you should see the 
+Size property. Change it to 220,500 samples:
+As we have seen, a delay buffer for 5 seconds of audio takes almost 1MB of memory, so be 
+careful when changing delay buffers. That’s most important when the delays are used in poly­
+phonic areas of the structure, because the size of the buffer will be multiplied by the number 
+of voices.
+Now we can go outside the Delay 4p macro and then outside the Tape Delay macro we’ve 
+just created (double-click the background) and make the outside connections:
+Getting Into Reaktor Core
+Building Your First Reaktor Core Macros
+ 
+REAKTOR 5.5 - Core Reference - 60
+
+
+--- Page 61 ---
+
+If you haven’t done so yet, try out the echo module now. Here’s a Reaktor primary-level 
+test structure, as simple as possible (note that the Echo module is set to mono):
+You might want to enhance it in various ways, for example, by providing knobs controlling 
+the echo parameters, by using a real synthesizer as a signal source, and so on.
+2.5
+Using Audio as Control Signal
+ 
+We have mentioned above that it is possible to use an audio signal as a control signal. As 
+an example of that, we are going to create a Reaktor Core cell implementing a pair of os­
+cillators, in which one modulates the other. Start by creating two multiwave oscillators:
+Getting Into Reaktor Core
+Using Audio as Control Signal
+ 
+REAKTOR 5.5 - Core Reference - 61
+
+
+--- Page 62 ---
+
+We need pitch control for both of the oscillators, and we are going to listen to the output 
+of the second one, so let’s create the necessary inputs and outputs:
+Now we want to take the output of the left oscillator and use it to modulate the frequency 
+of the right oscillator:
+The Mod input controls the modulation amount.
+Notice that we are mixing the modulation signal with the P1 input after a P2F converter so 
+the modulation will take place in frequency scale. (It’s also possible to modulate in pitch 
+scale.)
+It’s also a good idea to scale the modulation amount according to the base oscillation fre­
+quency:
+Getting Into Reaktor Core
+Using Audio as Control Signal
+ 
+REAKTOR 5.5 - Core Reference - 62
+
+
+--- Page 63 ---
+
+If you analyze the above structure from the point of view of control and audio signals you 
+will notice that all of the signals in the structure except the outputs of the oscillators are 
+control signals. The outputs of both oscillators are obviously audio signals. Notice, howev­
+er, that we are misusing the output of the left oscillator as control signal at the point at 
+which we feed it into the Ctl Chain mixer.
+2.6
+Event Signals
+ 
+ 
+As we said earlier, there are different meanings of the term event signal. You should al­
+ready be familiar with the idea of Reaktor primary-level event signals. There are several 
+ways of using a primary-level event signal. One is as a control signal (for example, LFO 
+output, knob output, and so on), because it uses less CPU than a primary-level audio sig­
+nal. In that case, you probably could achieve the same effect with an audio signal. But, 
+there are also cases in which an audio signal won’t work for control, for instance, when you 
+are interested in both the value of the signal and when the value is sent. A primary-level 
+envelope-gate signal is an example of that, because the envelope will be triggered when 
+the event arrives at the gate input.
+When we were talking about audio, control, event, and logic signals in Reaktor Core we 
+were not really talking about different types of signals (technically they are all the same in 
+Reaktor Core). Rather we are talking about different ways of using a signal. As we now 
+know, a Reaktor primary-level event signal can be used as a control, event, or even logic 
+signal, and as we’ve seen from an earlier example, a Reaktor primary-level audio signal 
+can be used as audio or control.
+We have already learned to feed primary-level event signals into Reaktor Core structures 
+and use them there as control signals. Event-mode inputs for an audio core cell imple­
+menting a filter that we built earlier is a good example of that. There are also cases in 
+which you would use an event core cell to process some primary-level event signals used 
+as control signals. Here’s an example in which an event core cell wraps a control shaper 
+core macro:
+Getting Into Reaktor Core
+Event Signals
+ 
+REAKTOR 5.5 - Core Reference - 63
+
+
+--- Page 64 ---
+
+The control shaper receives an event rate control signal from the primary level (for exam­
+ple, a MIDI velocity signal, or a primary-level LFO signal), bends it according to the Shp 
+parameter, and forwards the result to the output.
+An important restriction of event core cells, which we mentioned earlier, is that all clock sour­
+ces are disabled inside them. That means that not only oscillators and filters, but also enve­
+lopes and LFOs do not work inside event core cells. Those modules are restricted to receiving 
+events from the primary level of Reaktor, processing them, and sending them back to the pri­
+mary level, as in the above example.
+Alternatively, signals derived from primary-level events can be used as true event signals 
+inside Reaktor Core structures. Let’s take a look at a couple of simple cases of using 
+events inside Reaktor Core.
+The first case is using an envelope in a core structure. As you can guess from the disa­
+bled-clock restriction on event core cells, this has to be an audio core cell. So, create a 
+new audio core cell and choose Standard Macro > Envelope > ADSR:
+Getting Into Reaktor Core
+Event Signals
+ 
+REAKTOR 5.5 - Core Reference - 64
+
+
+--- Page 65 ---
+
+The top input of the envelope is a gate input, which works similarly to the gate inputs of 
+primary-level envelopes—that is, it opens or closes the envelope in response to incoming 
+events. For that we create an event input for our core cell:
+This input will translate the incoming primary-level gate events into the core events.
+Now let’s take a look at the A, D, S, R inputs. The S (sustain level) input works similarly to 
+the primary level; it expects the incoming signal to be in the 0 to 1 range:
+The A, D, R inputs are different, however. Unlike primary-level envelopes they expect time 
+to be specified in seconds:
+That can be solved by using a Standard Macro > Convert > logT2sec, which converts the 
+primary-level envelope times to seconds:
+Getting Into Reaktor Core
+Event Signals
+ 
+REAKTOR 5.5 - Core Reference - 65
+
+
+--- Page 66 ---
+
+Although all inputs in the above structure are in event mode, the first input produces an 
+event signal, whereas the others produce control signals.
+Our envelope still has two unconnected ports. The GS port sets the gate sensitivity 
+amount. At 0 the envelope completely ignores the gate level and is always at full ampli­
+tude. At 1 the gate level has maximum effect, as on the Reaktor primary level. We can 
+control this amount from the outside by adding another input:
+The RM port specifies the retrigger mode for the envelope:
+Getting Into Reaktor Core
+Event Signals
+ 
+REAKTOR 5.5 - Core Reference - 66
+
+
+--- Page 67 ---
+
+The look of this port is different from the others because it expects integer values, but that 
+doesn’t mean we cannot connect non-integer signals to this port. We can simply use an­
+other event input, and the incoming values will be rounded to the nearest integer:
+Now let’s take a look at another example using a true event signal:
+Getting Into Reaktor Core
+Event Signals
+ 
+REAKTOR 5.5 - Core Reference - 67
+
+
+--- Page 68 ---
+
+The above structure implements a kind of pitch modulation effect. The effect is produced 
+by a delay whose time varies in the range 250±100 ms. The rate of variation is deter­
+mined by the Rate input, which controls the rate of the modulating LFO (the value is in 
+Hz)—that is a pure control signal. The Rst input is a true event signal and can be used for 
+restarting the LFO. The incoming value specifies the restart phase, where 0 would restart 
+the LFO at the beginning of the cycle, 0.5 in the middle, and 1 in the end. You can try it 
+out by connecting a button to send a specific value to this input.
+2.7
+Logic Signals
+ 
+Now that we have learned about control and event signals, it’s time to learn about another 
+way of using signals in Reaktor Core, that would be as logic signals. Here’s an example of 
+a module that processes logic signals:
+Notice that the ports of this module are integer type, just as was the RM input of the enve­
+lope. That is because, generally, logic signals carry only integer values; more precisely, 
+they carry only values of 0 and 1.
+For logic signals, a value of 1 stands for true, and a value of 0 stands for false. The mean­
+ing of “true” and “false” is, of course, up to the user; for instance, it could mean (as in 
+the example here) whether a particular gate is open (true) or closed (false):
+Getting Into Reaktor Core
+Logic Signals
+ 
+REAKTOR 5.5 - Core Reference - 68
+
+
+--- Page 69 ---
+
+Here a Gate2L macro checks the incoming gate signal and produces a true (1) output if 
+the gate is open and false (0) output if the gate is closed.
+We can use logic signals to do logical processing. For example, here we’ve built a gate pro­
+cessor that applies a regular clocked gate over a MIDI gate:
+The Gate2L, AND, and L2Gate modules are logic modules and can be found in Standard 
+Macro > Logic menu. The Gate LFO is a macro, which we’ve built for this processor; it 
+generates an opening and closing gate signal at regular intervals.
+The input gate and the output of the LFO are connected to Gate2L converters, which con­
+vert the gate signals to logic signals, transforming open gates into true and closed gates 
+into false. The AND module outputs a true signal only if both gates are in the open state at 
+the same time. In other words the output of the AND module is true if and only if the user 
+holds a key and at the same time the LFO outputs an open gate. That means that, as long 
+as the user holds a key, there will be alternating true and false values at the output of the 
+AND module, the speed of the alternation defined by the LFO rate. The output of the AND 
+module is converted back to a gate signal, whose amplitude is taken from the gate input, 
+thereby leaving the gate level unchanged. Here is the structure for our Gate LFO macro:
+The F input defines the rate of the gate repetitions, and the W input defines the duration 
+of open gates (at 0 they are 50% of the gate period, at –1 it’s 0%, and at 1 it’s 100%). 
+The Rst input restarts the LFO in response to incoming events (hence the LFO is restarted 
+each time there’s a gate event at the main gate input).
+Getting Into Reaktor Core
+Logic Signals
+ 
+REAKTOR 5.5 - Core Reference - 69
+
+
+--- Page 70 ---
+
+The module connected to the Rst input of the Rect LFO is called Value and can be found 
+in Standard Macro > Event Processing. It ensures the LFO is restarted at zero phase by 
+replacing the values of all incoming events by the value at its lower input, which is zero. 
+The LFO output is converted into a gate signal by using a Ctl2Gate converter, also found in 
+Standard Macro >Event Processing.
+Remember, LFOs do not work inside event core cells. If you want to try out this structure, 
+you’ll need to use an audio core cell.
+Getting Into Reaktor Core
+Logic Signals
+ 
+REAKTOR 5.5 - Core Reference - 70
+

@@ -1,0 +1,292 @@
+--- Page 68 ---
+
+9
+Controlling REAKTOR
+ 
+REAKTOR Instruments can be remotely controlled from a wide range of hardware controllers.
+This enables you to play REAKTOR with a physical interface, be it a MIDI keyboard, a special
+MIDI controller with knobs and buttons, or a device supporting Open Sound Control.
+REAKTOR uses two protocols for sending and receiving control messages:
+•
+MIDI: Musical Instrument Digital Interface - a standard communication protocol for musi-
+cal instruments created in the early 80s that is still commonly used today. Virtually all
+keyboard controllers use MIDI to communicate with your computer. It is also used by
+hosts to communicate with the REAKTOR plug-in.
+•
+OSC: Open Sound Control - a more modern protocol that offers faster data rates, higher
+resolutions, and a more flexible architecture compared to MIDI. However, OSC is less
+common and requires a more advanced setup.
+This Getting Started document only describes basic MIDI options. Since the MIDI and OSC
+functionality is tied together, the following description refers to combined functions in some
+cases.
+For more information on using the OSC protocol with REAKTOR, refer to the Diving
+Deeper document.
+9.1
+MIDI Learn
+ 
+In order to be able to remotely control REAKTOR from your hardware controller, its MIDI con-
+trols need to be connected to the Panel controls in REAKTOR.
+Your hardware controller has to be enabled in REAKTOR’s MIDI settings first. See sec-
+tion ↑3.2, MIDI Settings for more information.
+The easiest way to connect a MIDI control to a Panel control is the MIDI learn function. It es-
+tablishes the connection between the MIDI control and the Panel control in a semi-automatic
+fashion.
+Controlling REAKTOR
+MIDI Learn
+ 
+REAKTOR 6 - Getting Started - 68
+
+
+--- Page 69 ---
+
+1.
+Right-click on the Panel control you want to connect the MIDI control to.
+2.
+Select MIDI & OSC Learn to enable the MIDI learn function.
+3.
+Move the MIDI control you want to use.
+⇨The MIDI control is connected to the Panel control, which can now be remotely controlled
+from your MIDI controller. The MIDI learn function is disabled automatically as soon as the
+connection is established.
+9.2
+Connection Manager
+ 
+The Connection Manager is located in the Side Pane. It allows you to manage the MIDI con-
+nections in the currently loaded Ensemble.
+Controlling REAKTOR
+Connection Manager
+ 
+REAKTOR 6 - Getting Started - 69
+
+
+--- Page 70 ---
+
+1.
+To view the Connection Manager, click on the Side Pane tab with the controller icon.
+⇨The Connection Manager appears in the Side Pane.
+The Connection Manager has two tabs, one for MIDI and one for OSC.
+1.
+When working with MIDI, select the MIDI tab.
+All established connections are shown in the list at the top of the MIDI tab. They appear in the
+following order:
+Controlling REAKTOR
+Connection Manager
+ 
+REAKTOR 6 - Getting Started - 70
+
+
+--- Page 71 ---
+
+MIDI messages in the Connection Manager
+(1) Current: The current connections appear at the top of the list. They are identifiable by the
+information present in the Target column.
+(2) Recent: Recently received messages appear below the current connections (by default, this
+list is only refreshed each time you open the tab).
+Note messages appear below controller messages, both for current connections as well as for
+recently received messages.
+1.
+To view incoming messages in real-time, activate the Auto button below the list. Not only
+will this re-populate the list in real-time, but it will also highlight currently used messag-
+es.
+2.
+To clear any unconnected controllers from the table, click on the Clean button below the
+list.
+Creating Connections
+You can connect MIDI controls to Panel controls from the Connection Manager by drag and
+drop:
+Controlling REAKTOR
+Connection Manager
+ 
+REAKTOR 6 - Getting Started - 71
+
+
+--- Page 72 ---
+
+1.
+Click on the arrow icon next to the MIDI control you wish to use and keep the mouse but-
+ton pressed.
+2.
+Drag the control over the Panel control you wish to connect it to and release the mouse
+button.
+⇨The MIDI control is connected to the Panel control and appears among the other current
+connections at the top of the list.
+Alternatively, you can activate the MIDI Learn function from the Connection Manager:
+Controlling REAKTOR
+Connection Manager
+ 
+REAKTOR 6 - Getting Started - 72
+
+
+--- Page 73 ---
+
+1.
+Click on the Learn button at the top right of the Connection Manager to activate MIDI
+Learn.
+2.
+Click on the Panel control you want to connect the MIDI control to.
+3.
+Move the MIDI control you want to use.
+⇨The MIDI control is connected to the Panel control and appears among the other current
+connections at the top of the list.
+Deleting Connections
+You can also use the Connection Manager to remove MIDI connections:
+Controlling REAKTOR
+Connection Manager
+ 
+REAKTOR 6 - Getting Started - 73
+
+
+--- Page 74 ---
+
+1.
+Select the connection you wish to remove by clicking on it in the list.
+2.
+Click on the Delete icon below the list or press the [delete] key on your keyboard.
+⇨The selected connection is removed.
+Filtering the Connections List by Controller Data Type
+You can filter the MIDI connections list by the data type. The available filters are:
+•
+All: All MIDI message types are shown.
+•
+CC: Only MIDI CC (Continuous Controller) data is shown.
+•
+Note: Only MIDI Note data is shown.
+•
+AT: Only MIDI Aftertouch data is shown.
+Controlling REAKTOR
+Connection Manager
+ 
+REAKTOR 6 - Getting Started - 74
+
+
+--- Page 75 ---
+
+1.
+To filter the list of controller messages by data type, right-click on the Control column's
+header and select one of the available data type filters from the context menu.
+Filtering the MIDI List by MIDI Channel
+You can also filter the MIDI connections list by MIDI channel.
+1.
+To filter the list of controller messages by MIDI channel, right-click on the Ch (Channel)
+column's header and select the MIDI channel from the context menu.
+Filtering the Lists by Ensemble or Instrument
+Finally, you can filter the MIDI connections list so that only controller messages assigned to a
+specific Ensemble or Instrument are shown:
+Controlling REAKTOR
+Connection Manager
+ 
+REAKTOR 6 - Getting Started - 75
+
+
+--- Page 76 ---
+
+1.
+To filter the list of controller messages by Ensemble or Instrument, right-click on the Tar-
+get column's header and select the Ensemble or Instrument from the context menu.
+9.3
+MIDI Clock
+ 
+If REAKTOR is running as a stand-alone application, it can synchronize its internal clock to
+other devices via MIDI clock. This could be hardware such as a drum machines, hardware se-
+quencers, synthesizers, and effects processors, or even software running on another computer.
+REAKTOR can also synchronize its internal clock to Ableton Link. For more information,
+see section ↑9.4, Synchronization using Ableton Link.
+1.
+To access the MIDI clock settings, go the Settings sub-menu in the REAKTOR main
+menu.
+Controlling REAKTOR
+MIDI Clock
+ 
+REAKTOR 6 - Getting Started - 76
+
+
+--- Page 77 ---
+
+The MIDI clock settings
+(1) Sync to External Clock: When enabled, all Sync Clock and 1/96 Clock modules synchronize
+to MIDI clock received on any of the active MIDI inputs (see section ↑3.2, MIDI Settings for
+information about changing the status of MIDI inputs). In this case, the BPM value of REAK-
+TOR’s transport in the toolbar cannot be adjusted manually; instead, the internal clock is auto-
+matically adjusted according to the external clock. Sync to External Clock also allows for con-
+trol of Start/Stop modules by external MIDI-Start/Stop messages.
+(2) MIDI Clock Out: When enabled, REAKTOR’s transport sends out MIDI clock ticks on all ac-
+tive MIDI outputs inputs (see section ↑3.2, MIDI Settings for information about changing the
+status of MIDI outputs). Note that playback needs to be running in REAKTOR, otherwise no
+MIDI clock will be sent.
+9.4
+Synchronization using Ableton Link
+ 
+Ableton Link is a protocol that synchronizes beat, phase and tempo of Link-enabled applica-
+tions on the same computer or over a shared network. This means you can conveniently keep
+applications synchronized across different devices or join a group jam with others with minimal
+setup. Connecting applications via Link provides you with the ability to synchronize them to a
+shared timeline and change the tempo globally from each of the connected applications.
+Controlling REAKTOR
+Synchronization using Ableton Link
+ 
+REAKTOR 6 - Getting Started - 77
+
+
+--- Page 78 ---
+
+9.4.1
+Connecting to a Network
+ 
+Applications that support Ableton Link can join a Link session when connected to the same
+network. To enable Link within REAKTOR, simply make sure the computer running REAKTOR
+is connected to the same local network as the other applications you want to link to. This can
+either be a local network or an ad-hoc (computer-to-computer) connection.
+To ensure maximum security and reliability while using Link, there are several things you may
+want to consider:
+•
+For reliability, connect to the local network using a router via an Ethernet cable.
+•
+If you do use a Wi-Fi network, be sure to use a password to prevent excluded users from
+joining your session.
+•
+For the most secure and reliable connection, create a Link session via a direct connection
+from one computer to another using a Thunderbolt or Ethernet cable.
+For more general information on setting up and using Link, please refer to the Link FAQs arti-
+cle located on the Ableton website:
+https://help.ableton.com/hc/en-us/articles/209776125-Link-FAQs.
+9.4.2
+Joining and Leaving a Link Session
+ 
+It is possible to join a Link session at any time by clicking the LINK button. When another
+Link-enabled application is connected, a moving bar within the LINK button is displayed even
+though REAKTOR’s transport is not running. This bar represents the global phase of Link that
+all participating applications lock into.
+After clicking the Play button, playback will resume on the downbeat once the moving bar
+within the LINK button is filled. The first participant to join the session sets the initial tempo,
+from then on any participant in the session can change the tempo in their respective applica-
+tion. If multiple participants change the tempo at the same time, the last tempo change will
+take effect.
+To start or join a Link session, proceed as follows:
+1.
+Click the LINK button located in the header.
+Controlling REAKTOR
+Synchronization using Ableton Link
+ 
+REAKTOR 6 - Getting Started - 78
+
+
+--- Page 79 ---
+
+⇨REAKTOR will either join an existing Link session or begin a new session.
+2.
+Start REAKTOR’s playback by clicking the play button.
+⇨REAKTOR’s playback is now synchronized with the Link timeline.
+3.
+To stop using Link, and leave the session, click LINK again.
+While connected, the LINK button displays how many other Link-enabled applications are con-
+nected via Link. The example below indicates that there are two other applications connected.
+Active Link session with two other instances connected.
+When Link is active, it is not possible to synchronize REAKTOR to incoming MIDI Clock
+or OSC Sync as a slave. Link will take priority. Sending MIDI Clock and OSC Sync from
+REAKTOR as a master is still possible.
+ 
+Controlling REAKTOR
+Synchronization using Ableton Link
+ 
+REAKTOR 6 - Getting Started - 79
+

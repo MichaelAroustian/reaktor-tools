@@ -1,0 +1,280 @@
+--- Page 16 ---
+
+1
+First Steps in Reaktor Core
+ 
+1.1
+What is Reaktor Core
+ 
+Reaktor Core is a new level of functionality within Reaktor with a new and different set of 
+features. Because there is also an older level of functionality, we will hereinafter refer to 
+these two levels as the core level and the primary level, respectively. Also when we say 
+“primary-level structure” we will mean the structure of an instrument or macro, but not 
+the structure of an ensemble.
+The features of Reaktor Core are not directly compatible with those of the primary level, so 
+some interfacing is required between them, and that comes in the form of core cells. Core 
+cells exist inside primary-level structures, and they look similar and behave similarly to pri­
+mary-level built-in modules. Here is an example structure, using a HighShelf EQ core cell, 
+which differs from the primary-level built-in module version in that it has frequency and 
+boost controls:
+Inside of core cells are Reaktor Core structures. Those provide an efficient way to imple­
+ment custom low-level DSP functionality as well as to build larger-scale signal-processing 
+structures using such functionality. We will take a detailed look at these structures later.
+Although one of the main purposes of Reaktor Core is to build low level DSP structures, it 
+is not limited to that. For users with little DSP programming experience, we have provided 
+a library of pre-built modules, which you can connect inside core structures, just as you do 
+with ordinary modules and macros in primary-level structures. We have also provided you 
+with a library of pre-built core cells, which are immediately available for you to use in pri­
+mary-level structures.
+First Steps in Reaktor Core
+ 
+REAKTOR 5.5 - Core Reference - 16
+
+
+--- Page 17 ---
+
+In the future, Native Instruments will put less emphasis on creating new primary-level mod­
+ules. Instead, we will use our new Reaktor Core technology and provide them in the form of 
+core cells. For example, you will already find a set of new filters, envelopes, effects, and so on 
+in the core cell library.
+1.2
+Using Core Cells
+ 
+ 
+The core cell library can be accessed from primary-level structures by right-clicking on the 
+background and using the Core Cell submenu:
+As you can see, there are all different kinds of core cells; they can be used in the same 
+way as primary-level built-in modules.
+An important limitation of core cells is that you are not allowed to use them inside event 
+loops. Any event loop occurring through a core cell will be blocked by Reaktor.
+You can also insert core cells that are not in the library. To do that, use the Load… com­
+mand from the Core Cell menu:
+First Steps in Reaktor Core
+Using Core Cells
+ 
+REAKTOR 5.5 - Core Reference - 17
+
+
+--- Page 18 ---
+
+You may also want to save core cells you’ve created or modified, so that you can load them 
+into other structures. To save a core cell, right-click on it and select Save Core Cell As:
+First Steps in Reaktor Core
+Using Core Cells
+ 
+REAKTOR 5.5 - Core Reference - 18
+
+
+--- Page 19 ---
+
+Rather than using the Load… command, you can have your core cells appear in the menu 
+by putting them into the Core Cells subdirectory of your user library folder. Better still, you 
+can further organize them into subgroups. Here’s an example:
+“My Documents\Reaktor 5” is the user library folder in this example. On your computer 
+there may be a different path, depending on the choice you’ve made during installation 
+and any changes you’ve made in Reaktor’s preferences. Inside the user library folder 
+there’s a folder named “Core Cells”. (Create it manually if it doesn’t exist.)
+Inside the Core Cells folder, notice the folder structure consisting of the Effects, Filters, 
+and Oscillators folders. Inside those folders are core cell files that will be displayed in the 
+user part of the Core Cell menu:
+First Steps in Reaktor Core
+Using Core Cells
+ 
+REAKTOR 5.5 - Core Reference - 19
+
+
+--- Page 20 ---
+
+The menu contents are scanned once during Reaktor startup, so after putting new files in­
+to these folders, you should restart Reaktor.
+Empty folders are not displayed in the menu; a folder must contain some files to be dis­
+played.
+Under no circumstances should you put your own files into the system library. The system 
+library may be changed or even completely replaced when installing updates, in which 
+case your files will be lost. The user library is the right place for any content that is not 
+included in the software itself.
+1.3
+Using Core Cells in a Real Example
+ 
+ 
+Here we are going to take a Reaktor instrument built using only primary-level modules and 
+modify it by putting in a few core cells. In the Core Tutorial Examples folder in your Reak­
+tor installation, find the One Osc.ens ensemble and open it. This ensemble consists of on­
+ly one instrument, which has the internal structure shown:
+First Steps in Reaktor Core
+Using Core Cells in a Real Example
+ 
+REAKTOR 5.5 - Core Reference - 20
+
+
+--- Page 21 ---
+
+As you can see this is a very simple subtractive synthesizer consisting of one oscillator, 
+one filter and one envelope. We are going to replace the oscillator with a different, more 
+powerful one. Right-click on the background and select Core Cell > Oscillator > MultiWave 
+Osc:
+The most important feature of this oscillator is that it simultaneously provides different an­
+alog waveforms that are locked in phase. We are going to replace the Sawtooth oscillator 
+with the MultiWave Osc and use a mix of its waveforms instead of a single sawtooth wave­
+form. Fortunately, there’s already a mixer macro available from Insert Macro > Classic 
+Modular > 02‑Mixer Mixer Amp > Mixer– Simple–Mono:
+First Steps in Reaktor Core
+Using Core Cells in a Real Example
+ 
+REAKTOR 5.5 - Core Reference - 21
+
+
+--- Page 22 ---
+
+Connect the mixer and the oscillator together and use their combination to replace the 
+sawtooth oscillator:
+Switch to the panel view. Now you can use the four faders of the mixer to vary the wave­
+form mix.
+Let’s do one more modification to the instrument and add a Reaktor Core-based chorus ef­
+fect. We say Reaktor Core based, because although the chorus itself is built as a core cell, 
+the part containing panel controls for this chorus is still built using the primary-level fea­
+tures. That’s because at this time Reaktor Core structures cannot have their own control 
+panels – the panels have to be built on the primary level.
+Select Insert Macro > Building Blocks > Effects > SE‑IV Chorus and insert it after the
+Voice Combiner module:
+If you look inside the chorus you can see the chorus core cell and the panel controls:
+First Steps in Reaktor Core
+Using Core Cells in a Real Example
+ 
+REAKTOR 5.5 - Core Reference - 22
+
+
+--- Page 23 ---
+
+1.4
+Basic Editing of Core Cells
+ 
+ 
+Now we are about to learn a few things about editing core cells. We are going to start with 
+something simple: modifying an existing core cell to your particular needs.
+First, double-click the MultiWave Osc to go inside:
+First Steps in Reaktor Core
+Basic Editing of Core Cells
+ 
+REAKTOR 5.5 - Core Reference - 23
+
+
+--- Page 24 ---
+
+What you see now is a Reaktor Core structure. The three areas separated by vertical lines 
+are for three different kinds of modules: inputs (on the left), outputs (on the right), and 
+normal modules (center).
+Whereas normal modules can move in all directions, the inputs and outputs can only be 
+moved vertically, and their relative order matches the order in which they appear outside. 
+So, you can easily rearrange their outside order by moving them around. Try moving the 
+FM input below the PW input:
+You can double-click the background now to ascend to the outside, primary-level structure 
+and see the changed port order:
+Now go back to the core level and restore the original port order:
+As you have probably already noticed, if you move modules around, the three areas of the 
+core structure automatically grow to accommodate all modules inside them. However, they 
+do not automatically shrink, which can lead to these areas sometimes becoming unneces­
+sarily large:
+First Steps in Reaktor Core
+Basic Editing of Core Cells
+ 
+REAKTOR 5.5 - Core Reference - 24
+
+
+--- Page 25 ---
+
+You can shrink them back by right-clicking on the background and selecting Compact 
+Board command:
+Now that we have learned to move the things around and rearrange the port order of a core 
+cell, let’s try a few more options.
+For a core cell that has audio outputs it’s possible to switch the type of its inputs between 
+audio and event (a more detailed explanation can be found later in this manual). In the 
+above example, we used a MultiWave Osc module, all of whose inputs and outputs are au­
+First Steps in Reaktor Core
+Basic Editing of Core Cells
+ 
+REAKTOR 5.5 - Core Reference - 25
+
+
+--- Page 26 ---
+
+dio. However, in this example we don’t really need them as audio, because the only thing 
+connected to the oscillator is a pitch knob. Wouldn’t it be more CPU efficient to have at 
+least some of the ports set to event type? The obvious answer is, “yes, it would.” Here’s 
+how to do that.
+Changing both P and PM inputs to event mode should produce the largest CPU improve­
+ment. To do that double-click on the P port module to open its properties window:
+Switch the properties window to the function page, if necessary, by clicking on the cog 
+wheel tab. You should now see the Signal Mode property:
+Change it to event. Note how the large dot at the left of the input module changes from 
+black to red indicating that the input is now in event mode (it’s more easily visible after 
+you deselect the port – just click elsewhere):
+First Steps in Reaktor Core
+Basic Editing of Core Cells
+ 
+REAKTOR 5.5 - Core Reference - 26
+
+
+--- Page 27 ---
+
+Now click on the PM input to select it, and change it to event mode, too. If you want, you 
+can change the two remaining inputs to event mode as well. Finally, double-click the 
+structure background to return to the primary level and observe that the port colors have 
+changed to red and the CPU usage has gone down.
+Sometimes it doesn’t make sense to switch a port from one type to another. For example, 
+it doesn’t make sense to switch an input that receives a real audio signal (meaning real 
+audio, not just an audio-rate control signal like an envelope) to an event rate. In some cas­
+es such switching could even ruin the functionality of the module. Going in the other di­
+rection, it doesn’t make sense to change an event input that is really event sensitive, such 
+as an envelope’s event trigger input (for example, gate inputs of Reaktor primary-level en­
+velopes). If you change such an input to audio, it will no longer work correctly.
+In addition to cases in which port-type switching obviously does not make sense there may 
+be cases in which it does make sense, but in which the modules will not work correctly if 
+you switch their port types. Such cases are quite special, although they can also result 
+from mistakes in the implementation or design of the module. Generally, port-type switch­
+ing should work; hence the following switching rule:
+In a well designed core cell, an audio-rate control input can typically be switched to event 
+mode without any problem. An event input can be switched to audio only if it doesn’t have a 
+trigger (or other event-sensitive) function.
+Another way to save CPU is to disconnect the outputs that you don’t need, thereby deacti­
+vating unused parts of the Reaktor Core structure. You have to do that from inside the 
+structure – outside connections do not have any effect on deactivating the core structure 
+elements.
+Suppose in our example we decide that we only need the sawtooth and pulse outputs. We 
+can lower the CPU usage by going inside the MultiWave Osc and disconnecting the unused 
+outputs. Disconnecting is simple in Reaktor Core, you click on the input port of the con­
+First Steps in Reaktor Core
+Basic Editing of Core Cells
+ 
+REAKTOR 5.5 - Core Reference - 27
+
+
+--- Page 28 ---
+
+nection, drag the mouse to the any empty part of the background and release it. For exam­
+ple, click on the input port of the Tri output and drag the mouse into empty space on the 
+background.
+There’s another way to delete a connection. Click on the wire between the sine output of 
+the MultiWave Osc and Sin output of the core cell, so that it gets selected (you can tell 
+that it’s selected by its blue color):
+Now you can press the Delete key to delete the wire:
+After you deleted both wires, the CPU meter should go down a little more.
+If you change your mind, you can reactivate the outputs by clicking on either the input or 
+the output that you want to reconnect and dragging the mouse to the other port. For exam­
+ple, click on the Tri output of the MultiWave Osc and drag to the input of the Tri output 
+module. The connection is back:
+First Steps in Reaktor Core
+Basic Editing of Core Cells
+ 
+REAKTOR 5.5 - Core Reference - 28
+
+
+--- Page 29 ---
+
+Of course, numerous fine-tuning adjustments can be made to core cells. You will learn 
+about many more options as you proceed through this manual.
+First Steps in Reaktor Core
+Basic Editing of Core Cells
+ 
+REAKTOR 5.5 - Core Reference - 29
+

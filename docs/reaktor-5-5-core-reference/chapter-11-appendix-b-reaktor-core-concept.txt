@@ -1,0 +1,97 @@
+--- Page 175 ---
+
+11
+Appendix B. Reaktor Core Concept
+ 
+11.1
+B.1. Signals and Events
+ 
+There are signals of float and integer types.
+Float ports look like this:
+An integer ports look like this:
+Signals propagate through connections from outputs to connected inputs in the form of 
+events. An event is a basic action that happens at a particular output and usually results 
+in a change of the value at that output; an event can also result in the same value at the 
+output.
+All events originating from the same event source are considered simultaneous. Simultane­
+ous means that if two such events arrive at several inputs of the same module, they arrive 
+at the same time.
+The same source means the same output, additionally under certain circumstances several 
+outputs can be considered the same event source. For example, all core-cell audio inputs 
+and standard sampling-rate clock connections are considered to be the same event source. 
+During initialization all outputs sending events are considered the same event source. The 
+same source doesn’t mean the same value in this context, but rather it means simultane­
+ousness.
+Unless a given module is an event source, the only thing that can trigger it to process in­
+coming values is one or more events arriving at its inputs. In case of multiple events only 
+one output event will be generated, since the input events are considered to arrive simul­
+taneously.
+Appendix B. Reaktor Core Concept
+ 
+REAKTOR 5.5 - Core Reference - 175
+
+
+--- Page 176 ---
+
+11.2
+B.2. Initialization
+ 
+Initialization of the structures is done as follows. First, all values are reset to zeroes. Then 
+an initialization event is sent simultaneously from all initialization sources. Generally, 
+those are constants, core-cell inputs (not always), and clocks. That’s it.
+11.3
+B.3. OBC Connections
+ 
+OBC (Object Bus Connections) are connections between modules which do not send any 
+signals, but declare that the modules share a common state (memory). The most common 
+example of an OBC connection is a connection between Read and Write modules access­
+ing the same stored value.
+11.4
+B.4. Routing
+ 
+You can use Router modules to direct the flow of events between two possible paths. In 
+case a Router chooses one output path for incoming events, the other output receives no 
+events (in particular, that means the value of the other output cannot change).
+The Router is controlled by a BoolCtl type of input connection. On the other side of the 
+connection you would typically have a Compare module (sometimes a few intermediate 
+modules like BoolCtl macro ports can be placed between the Compare and the Router).
+By using Routers you can dynamically enable or disable evaluations in parts of your struc­
+ture.
+Typically, after splitting the signal path in two using a Router, you would merge the two 
+branches using a Merge or other module. Often you would merge a branch with the origi­
+nal, unsplit signal. But generally you are free to do whatever you want there (be careful 
+with performance issues though).
+11.5
+B.5. Latching
+ 
+Latching is probably the most common technique in Reaktor Core. It means using Latch 
+modules to prevent events from being sent at the wrong time. For example you wouldn’t 
+want a control signal event to trigger a computation in an audio loop.
+Appendix B. Reaktor Core Concept
+B.2. Initialization
+ 
+REAKTOR 5.5 - Core Reference - 176
+
+
+--- Page 177 ---
+
+Alternatively you can use macros from the Expert Macros > Modulation group, which are 
+basically a set of the most typical combinations of Latches with arithmetic processing 
+modules.
+11.6
+B.6. Clocking
+ 
+Clocks are sources of events. The clock events typically occur at regular time intervals cor­
+responding to the clock rate. You normally need clocks to drive various modules, such as 
+oscillators, filters, and so on. Most of the implementations of such modules do not require 
+an explicit clock connection from the outside, but implicitly use a standard clock source 
+available in core structures. That source is the sample rate clock, which runs at the de­
+fault audio rate.
+Note that in event core cells, although the connection to the sample rate clock is availa­
+ble, the clock signal itself is not available. Therefore most oscillators, filters, and similar 
+modules will not run in event core cells.
+Appendix B. Reaktor Core Concept
+B.6. Clocking
+ 
+REAKTOR 5.5 - Core Reference - 177
+

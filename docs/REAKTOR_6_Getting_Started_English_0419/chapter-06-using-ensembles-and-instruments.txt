@@ -1,0 +1,269 @@
+--- Page 51 ---
+
+6
+Using Ensembles and Instruments
+ 
+An Instrument is a container for a synthesizer, sequencer, or an effect in REAKTOR. In order to
+connect an Instrument with REAKTOR’s audio inputs and outputs, it has to be loaded in an
+Ensemble. An Ensemble holds all relevant information of a REAKTOR session. It represents
+the basic project file you are working with in REAKTOR. An Ensemble can contain a single in-
+strument or a full suite of sequencers, synthesizers, and effects. If you open an Instrument
+from the Browser’s Player tab, it automatically loads in an Ensemble and can be used immedi-
+ately.
+See also
+2 A/B View [➙ 52]
+2 Snapshots and Presets [➙ 53]
+6.1
+Instrument Header
+ 
+The Instrument Header is located at the top of the panel of any Instrument you load into RE-
+AKTOR.
+The Instrument Header
+(1) A/B View: Selects A or B view for the Instrument. See section ↑6.2, A/B View ↑6.2, A/B
+View for more information on these controls.
+Using Ensembles and Instruments
+Instrument Header
+ 
+REAKTOR 6 - Getting Started - 51
+
+
+--- Page 52 ---
+
+(2) Minimize: Hides the Instrument Panel to show only the Instrument Header. Clicking on this
+button again will reveal the Instrument Panel.
+(3) Instrument Name: Displays the name of the Instrument.
+(4) Snapshot Menu: A menu for loading Instrument Snapshots. See section ↑6.3, Snapshots
+and Presets ↑6.3, Snapshots and Presets for more information on Snapshots.
+(5) MIDI/OSC Indicators: A set of 4 activity indicators, which light up whenever the Instrument
+sends or receives MIDI and OSC messages.
+(6) Polyphony Info: Shows the number of voices used by the Instrument. Generally this equates
+to the number of notes that the Instrument can produce at once, but this may not always be
+the case.
+The Instrument Header can contain any combination of the described controls and dis-
+plays, or even not be shown at all for specific Instruments.
+6.2
+A/B View
+ 
+REAKTOR Instruments can have two different Panel layouts, which are called the A view and
+the B view. Not all Instruments use this feature.
+Generally the A view is the main view, featuring the main controls needed to use the instru-
+ment or effect.
+The B view can be any number of things. MONARK for example uses the B view for the set-
+tings, MOLEKULAR uses the B view for a simplified interface, and KONTOUR uses the B view
+to display the full set of controls.
+Using Ensembles and Instruments
+A/B View
+ 
+REAKTOR 6 - Getting Started - 52
+
+
+--- Page 53 ---
+
+1.
+You can select to view the A or B views by clicking on the A and B buttons in the Instru-
+ment Header.
+6.3
+Snapshots and Presets
+ 
+Snapshots and Presets, which are REAKTOR's sound preset formats used with Ensembles and
+Instruments, enable you to store and recall the state of Panel controls. When you recall a
+Snapshot, all the Panel controls are restored to the state they were in when the Snapshot was
+originally created.
+Most pre-built Ensembles include a number of Snapshots for the included Instruments, ready
+to be used in your music. Each REAKTOR Instrument can store 16 Snapshot Banks containing
+128 Snapshots each, for a total of 2048 Snapshots.
+While both Snapshots and Presets accomplish the same thing on the surface, the details of
+their use and function differ:
+•
+Snapshots are embedded in the Ensemble file, whereas Presets are external files.
+•
+Snapshots can be recalled using MIDI Program Change messages.
+•
+Presets can be saved when using REAKTOR is Play mode; Snapshots are written into the
+Ensemble file, and so REAKTOR must be on Edit mode in order to create new Snapshots.
+•
+Presets save the state of the Ensemble, whereas Snapshots can be per Instrument.
+•
+An Ensemble can contain only a limited number of Snapshots (2048).
+Using Ensembles and Instruments
+Snapshots and Presets
+ 
+REAKTOR 6 - Getting Started - 53
+
+
+--- Page 54 ---
+
+For more information about Snapshots in REAKTOR, refer to the Diving Deeper docu-
+ment.
+6.4
+Recalling Snapshots
+ 
+You can recall Snapshots from several locations:
+•
+The Snapshot menu in REAKTOR's Toolbar: This method recalls Snapshot settings for all In-
+struments in an Ensemble.
+•
+The Instrument Header: This method recalls Snapshot settings for this particular Instru-
+ment only.
+Using Ensembles and Instruments
+Recalling Snapshots
+ 
+REAKTOR 6 - Getting Started - 54
+
+
+--- Page 55 ---
+
+•
+The Presets tab in the Side Pane: Clicking on the camera icon labelled Embedded will dis-
+play the Snapshot Banks contained in an Ensemble/Instrument. This area gives you a bet-
+ter overview over the available Snapshots for the selected Instrument. In Edit Mode, the
+Snapshot tab allows you to store and edit your own Snapshots (see section ↑6.5, Storing
+Snapshots ).
+•
+Via MIDI: REAKTOR can accept Program Change messages and use them to select Snap-
+shots. The MIDI Program Change message selects a Snapshot by its number (an integer in
+the range [0 … 127]). A Program Change value of “0” selects the first Snapshot; a Pro-
+gram Change value of “1” selects the second Snapshot, and so on.
+6.5
+Storing Snapshots
+ 
+Storing and editing Snapshots can be done from the Snapshots tab in the Side Pane.
+1.
+In order to be able to store and edit Snapshots, enable Edit Mode by clicking on the EDIT
+button in the Toolbar.
+When viewing Snapshots in the Presets pane, there are three buttons at the bottom for storing
+Snapshots:
+Using Ensembles and Instruments
+Storing Snapshots
+ 
+REAKTOR 6 - Getting Started - 55
+
+
+--- Page 56 ---
+
+The buttons to Add, Store, and Insert Snapshots
+•
+Add: Creates a new Snapshot with the current settings of your Instrument at the end of
+the Snapshot list.
+•
+Store: Overwrites the currently highlighted Snapshot with the current settings of your In-
+strument.
+•
+Insert: Creates a new Snapshot with the current settings of your Instrument directly after
+the currently highlighted Snapshot, moving any other Snapshots down one slot in order to
+make space.
+Snapshots are stored in the Ensemble, so you need to save the Ensemble or Instrument
+in order to make changes to the Snapshots permanent.
+Using Ensembles and Instruments
+Storing Snapshots
+ 
+REAKTOR 6 - Getting Started - 56
+
+
+--- Page 57 ---
+
+6.6
+Presets
+ 
+REAKTOR Preset files are a single Snapshot, saved as an external file. Presets contain a link to
+their original Ensemble file, which is automatically loaded as soon as the Preset file is opened.
+If the Ensemble file is already open, then the Preset is loaded like a Snapshot.
+Presets can also be saved and loaded when using REAKTOR PLAYER, or the full version of RE-
+AKTOR when in Play Mode.
+Preset files can be saved and loaded via the Files menu:
+1.
+To save a preset, go to the main menu and select File > Save Preset As ….This opens a
+dialog window asking you choose a location and a name for the new Preset file.
+2.
+To load a preset, go to the main menu and select File > Open Preset .... This opens a
+dialog window asking you choose a Preset file from your hard drive to load.
+Presets can also be saved and loaded via the Presets tab of the Side Pane.
+Creating Presets and Folders in the Presets Tab
+As an example, this section will walk through the process of creating a Preset folder and saving
+Presets into that folder.
+1.
+Click on the list icon to open the Presets tab in the Side Pane.
+2.
+Right-click on the icon labelled User to open the context menu and select New Folder.
+Using Ensembles and Instruments
+Presets
+ 
+REAKTOR 6 - Getting Started - 57
+
+
+--- Page 58 ---
+
+3.
+When the folder appears, you are able to name it. Type in the name My Presets and press
+Enter.
+⇨The My Presets folder will appear in the Presets folder list.
+Now that you have a Presets folder created, it is time to populate it with Presets.
+To create a Preset:
+1.
+Select the folder into which you wish to store the Preset.
+2.
+Click on the Add button at the bottom of the Presets tab.
+3.
+Type a name for the Preset.
+4.
+Press Enter to save the Preset.
+⇨The Preset will be saved and added to the selected Preset folder.
+To overwrite a saved Preset:
+1.
+Select a Preset from the Presets list.
+2.
+Click on the Store button at the bottom of the Presets tab.
+⇨The selected Preset will be overwritten with the current settings.
+Deleting Presets and Folders
+To remove a Preset or Folder:
+1.
+Right-click on the item you wish to delete.
+Using Ensembles and Instruments
+Presets
+ 
+REAKTOR 6 - Getting Started - 58
+
+
+--- Page 59 ---
+
+2.
+Select Move to Trash from the menu.
+3.
+A window will pop up asking you to confirm the action; click OK to confirm.
+⇨The Preset or Folder will be deleted.
+If you delete a Folder, you will also delete all Presets contained within it.
+Also note that this deletion is not permanent, as the Preset files and folders are move to your
+operating system’s recycle bin, and so can be restored or permanently deleted from there.
+Managing Presets outside REAKTOR
+Since Presets and Preset folders exist as files and folders on your hard disk, they can be man-
+aged from there as well. You can rename, sort, and delete Presets without even having REAK-
+TOR open.
+User presets are located in the following directories:
+•
+On Windows: C:\Users\<User>\Documents\Native Instruments\User Content\Reaktor\<En-
+semble Name> \
+•
+On OS X: Macintosh HD:\Users\<User>\Documents\Native Instruments\User Content\Re-
+aktor\<Ensemble Name> \
+Powered by REAKTOR products (like THE MOUTH or ROUNDS) will have their own folders be-
+side the Reaktor folder, as they are managed as their own products.
+You can jump to these locations from within REAKTOR:
+1.
+To view the Preset or folder in your operating system’s file browser, right-click on it and
+select Show in Folder.
+Using Ensembles and Instruments
+Presets
+ 
+REAKTOR 6 - Getting Started - 59
+
+
+--- Page 60 ---
+
+⇨A window will open displaying the location of the folder or Preset on your hard disk.
+If you are managing Presets outside REAKTOR, it is advised that you have REAKTOR or the
+target Ensemble closed while you do so.
+Using Ensembles and Instruments
+Presets
+ 
+REAKTOR 6 - Getting Started - 60
+

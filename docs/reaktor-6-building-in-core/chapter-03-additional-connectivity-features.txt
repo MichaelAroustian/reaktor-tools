@@ -1,0 +1,641 @@
+--- Page 40 ---
+
+3
+Additional Connectivity Features
+ 
+3.1
+QuickConsts
+ 
+QuickConsts are a lightweight alternative to Const Modules. To create a QuickConst do the fol-
+lowing:
+1.
+Right-click on a scalar input and select the Connect to New QuickConst.
+2.
+A new QuickConst is created (if the input is already connected, the old connection will be
+deleted).
+Additional Connectivity Features
+QuickConsts
+ 
+REAKTOR 6 - - 40
+
+
+--- Page 41 ---
+
+3.
+The value and the type of the QuickConst can be adjusted in the QuickConst's Properties.
+The Properties show up whenever the QuickConst is selected.
+1.
+To select a QuickConst, simply click on the QuickConst.
+2.
+To delete a QuickConst, you can either select it and press [Del] or [Backspace], right-click
+on it and select Delete Connection, or click-and-drag from the input port into the Struc-
+ture background.
+Functionally the QuickConsts are fully identical to the ordinary Const Modules. However,
+unlike the Const Modules, they cannot be copied and pasted. Additionally, multiple con-
+nections to a QuickConst are not possible.
+3.2
+QuickBuses
+ 
+QuickBuses are an 'invisible' alternative to the wires and can be used to reduce the connection
+clutter within a Structure.
+QuickBuses do not support cross-Structure connectivity. For cross-Structure connectivity
+use Scoped Buses (see section ↑3.3, Scoped Buses).
+To create a QuickBus, do the following.
+Additional Connectivity Features
+QuickBuses
+ 
+REAKTOR 6 - - 41
+
+
+--- Page 42 ---
+
+1.
+Right-click on an input or an output and select Connect to New QuickBus.
+2.
+A new QuickBus with a default name (in this case "QBus") is created and the correspond-
+ing QuickBus accessor is connected to the port.
+3.
+The name and the type of the QuickBus can be adjusted in the QuickBus's Properties.
+Additional Connectivity Features
+QuickBuses
+ 
+REAKTOR 6 - - 42
+
+
+--- Page 43 ---
+
+The QuickBus itself is not visible in the Structure. What is connected to the port is not
+the QuickBus itself, but the QuickBus accessor. Selecting an accessor (by clicking on it)
+switches the Properties to the associated QuickBus.
+QuickBuses are supported for all port types, not just the scalar ports as QuickConsts.
+In order for the QuickBus to establish a connection between an output port and an input port it
+has to be connected to both an input and an output. To connect a port to the existing Quick-
+Bus, do the following.
+1.
+Right-click on the port and select the respective QuickBus's name in the Con-
+nect to QuickBus submenu.
+2.
+Another accessor is created, thereby establishing a connection between the output and
+the input. Both accessors are referring to the same QuickBus object and thus are connect-
+ed to each other.
+Additional Connectivity Features
+QuickBuses
+ 
+REAKTOR 6 - - 43
+
+
+--- Page 44 ---
+
+The same QuickBus can be used to connect several inputs to one output. Simply right-click on
+an input and select the QuickBus from the Connect to QuickBus submenu to establish an ad-
+ditional connection to the same QuickBus:
+Two connections established via a single QuickBus.
+While it is possible to connect several inputs to a single QuickBus, at most one output can be
+connected to a given QuickBus at any given time. An attempt to connect a second output to
+the same QuickBus will disconnect the previously connected output from the QuickBus.
+A QuickBus that is not connected to an output will be 'default-connected' according to the
+conventions explained in section ↑2.4.5, Connection Defaults. An input connected to a Quick-
+Bus accessor is formally a connected input (regardless of whether there is an output connected
+to the QuickBus or not), thus the default connection mechanism for this input is not active in
+this case. The explicit usage of QuickBuses which are not connected to an output is not advis-
+able in finished Structures.
+QuickBuses can have the same name within the Structure, even though giving each
+QuickBus a unique name is recommended. Duplicate names are automatically extended
+with extra indices "(1)", "(2)", "(3)" etc. These extra indices are not a part of the name
+and are merely a visual display feature, allowing you to distinguish between identically
+named QuickBuses. In principle these indices are intended to be used exclusively in
+temporary situations, such as after a QuickBus name collision upon copying and past-
+ing. QuickBus name collisions in finished Structures are not recommended.
+Additional Connectivity Features
+QuickBuses
+ 
+REAKTOR 6 - - 44
+
+
+--- Page 45 ---
+
+QuickBus connections can only be used between ports within the same Structure. Therefore,
+identically named QuickBuses from different Structures (if existing) represent completely differ-
+ent QuickBus objects and do not generate a collision either. In the terminology of programming
+languages, the QuickBus namespaces are per-Structure.
+A QuickBus exists as long as there is at least one accessor associated with the QuickBus. The
+accessors are deleted in the same way as other connections and QuickConsts.
+Disconnecting accessors by clicking and dragging to the background works only for the accessors
+at the input ports.
+3.3
+Scoped Buses
+ 
+Scoped Buses allow invisible connections across several Structure layers. Unlike QuickBuses,
+Scoped Bus connections are asymmetric in the following sense:
+•
+A QuickBus connection is established between two (lightweight) accessors.
+•
+A Scoped Bus connection is established between a single (heavy-weight) definition point
+and one or multiple (lightweight) accessors.
+The accessors connected to a definition point must be located within the definition scope. The
+definition scope includes the same Structure as the definition point and the Macros contained
+within that Structure (including the Macros contained within those Macros, etc.).
+More strictly speaking the definition scope is the same solid area and all nested ones. See section
+↑3.3.6, Solid Areas for more details.
+3.3.1
+Definitions
+ 
+The definition points are provided in the form of built-in Modules and come in two different
+flavors:
+Additional Connectivity Features
+Scoped Buses
+ 
+REAKTOR 6 - - 45
+
+
+--- Page 46 ---
+
+•
+Distribution Scoped Buses: The definition point acts as the output side of a connection (the
+signal flows from the definition point to the accessors). The input side of a connection is
+represented by a scoped pickup accessor. There can be multiple scoped pickup accessors
+connected to a single distribution bus. This is the most useful flavor of the two.
+•
+Reception Scoped Buses: The definition point acts as the input side of a connection (the
+signal flows from the accessor to the definition point). The output side of a connection is
+represented by a scoped send accessor. The current implementation of REAKTOR Core al-
+lows only single-reception Scoped Buses, which do not support more than one connected
+scoped send accessor.
+The connection classes supported by Scoped Buses in the current implementation of REAK-
+TOR Core are scalar and Bundle. The Built-In Module > Scoped Bus menu allows you to create
+the definition points of distribution and reception flavors within these connection classes.
+Scoped Bus submenu for creating distribution and reception definition Modules
+A distribution definition Module has an input which is supposed to be connected to a signal
+source. A reception definition Module has an output which is supposed to be connected to a
+signal's destination:
+Additional Connectivity Features
+Scoped Buses
+ 
+REAKTOR 6 - - 46
+
+
+--- Page 47 ---
+
+Newly created scalar scoped distribution (left) and reception (right) Modules.
+A newly created definition does not have a name and thus does not define a Scoped
+Bus. In order to define a Scoped Bus, the definition must be given a nonempty name in
+its Properties.
+Both the distribution definition and reception definition Modules have a connection status in-
+dicator that turns green when one or more accessors are connected to this definition. It turns
+red in case of a definition conflict (see section ↑3.4.3, Definition Conflicts and Pickup Errors.).
+A distribution definition of a Scoped Bus named "Bus" with a green ('connected') connection status indicator.
+3.3.2
+Simple Scoped Access
+ 
+In order to make a scoped connection to a definition point an accessor needs to be created
+within the definition scope. For distribution buses a scoped pickup accessor (or simply 'pick-
+up') needs to be created, for reception buses a scoped send accessor (or simply 'send') needs
+to be created.
+To create a scoped pickup accessor do the following:
+Additional Connectivity Features
+Scoped Buses
+ 
+REAKTOR 6 - - 47
+
+
+--- Page 48 ---
+
+1.
+Right-click on an input of the scalar or Bundle type and select Pickup Distribution Bus….
+2.
+A text entry field appears next to the input. Enter a nonempty name for the scoped pickup
+accessor.
+3.
+Press [Enter] to create a pickup with the name you just typed in. If you want to abort the
+creation of the pickup, press [Esc].
+Additional Connectivity Features
+Scoped Buses
+ 
+REAKTOR 6 - - 48
+
+
+--- Page 49 ---
+
+Scoped sends are created in the same way, except that you have to right-click on an output
+port:
+Creation of a scoped send.
+The scoped accessors can be distinguished from QuickBus accessors by the 'broken' arrow next to
+them:
+A scoped accessor is looking for an identically named definition, within the scope of which the
+accessor is located. The search is started in the same Structure (more correctly, in the same
+solid area, see section ↑3.3.6, Solid Areas) where the accessor is located. If an identically
+named definition is found, the accessor connects to that definition. If such definition is not
+found, the accessor looks in the parent Structure (parent solid area), and so on. If the defini-
+tion is not found at the topmost (Core Cell) level, the accessor fails to connect.
+The following example demonstrates a pickup named "Cutoff" connecting to the identically-
+named definition one level higher:
+Additional Connectivity Features
+Scoped Buses
+ 
+REAKTOR 6 - - 49
+
+
+--- Page 50 ---
+
+A scoped connection.
+A scoped accessor can be selected by a single left-click. Differently from QuickBuses, accessor
+selection does not provide access to the bus's Properties.
+A scoped accessor can be renamed by double-clicking it. Renaming is confirmed by pressing
+[Enter] or aborted by pressing [Esc], just like when giving an accessor a name upon creation.
+An accessor cannot have an empty name. If renamed to an empty name, the accessor is delet-
+ed. Otherwise, the deletion of scoped accessors can be done in the same way as for other con-
+nections and QuickBus accessors.
+Differently from QuickBus accessors, which always stay connected to the same Quick-
+Bus and where the rename function renames the bus itself and not the accessors, the
+name of a scoped definition or of an accessor applies only to this specific definition or
+the accessor. If a scoped accessor or definition is renamed, it gets reconnected to a dif-
+ferent definition or to a different set of accessors according to the new name.
+3.3.3
+Scoped Connection Errors
+ 
+The scoped name lookup completely disregards the definition flavor and type (in programming
+language terminology, all Scoped Buses share the same namespace). If a scoped accessor
+finds a definition with a matching name that it cannot connect to (because the flavor and/or
+type are incompatible), it will fail to connect. Equally a scoped accessor fails to connect if it
+does not find a definition of a matching name at all. Such accessors are highlighted in red:
+Additional Connectivity Features
+Scoped Buses
+ 
+REAKTOR 6 - - 50
+
+
+--- Page 51 ---
+
+A scoped pickup accessor that fails to connect.
+Aside from highlighting the accessor itself, the Core compiler highlights the parent Macros
+containing this accessor. The highlighting of Macros goes up in the Macro hierarchy as far as
+the 'error locality area' reaches.
+The error locality area is (approximately) defined as the area that can affect the accessor error.
+E.g. if an accessor does not find a definition of a matching name, the parent Macros will be
+highlighted all the way up to the Core Cell's Structure. If, on the other hand, the error is due to
+a type or flavor incompatibility, the highlighting will go up only to the level of the respective
+bus definition.
+3.3.4
+Name Collisions and Definition Overriding
+ 
+Two identically named definitions within the same Structure produce a name collision, regard-
+less of their types and flavors. The connection status indicators of the conflicting definitions
+turn red:
+Additional Connectivity Features
+Scoped Buses
+ 
+REAKTOR 6 - - 51
+
+
+--- Page 52 ---
+
+Two conflicting definitions.
+It is however possible to have identically named definitions if one Structure is a (direct or indi-
+rect) parent of the other. In this case the lower-level (the 'more nested') definition overrides the
+higher level one. Overriding means that from this Structure on, the new definition will be used
+by the respectively named accessors.
+The overriding effect is naturally following from the described earlier lookup process for a name-
+matched definition from the accessor. Clearly, the lookup process will find the 'most nested' defi-
+nition above (or at) the accessor's level.
+Identically named definitions in 'unrelated' Structures (that is, when neither of two different
+Structures is the parent of the other) do not produce a conflict, as their name visibility scopes
+do not overlap.
+3.3.5
+Parent Mode Accessors
+ 
+Sometimes, when overriding a definition, the new definition needs to be specified 'in terms' of
+the old definition. This makes it necessary (or at least highly desireable) to be able to access
+the old definition within the Structure of the new definition. This can be done by using a pa-
+rent-mode accessor.
+The accessor parent mode is specified by typing two dots in front of the accessor's name (when
+creating or renaming the accessor). The parent mode causes the accessor to ignore the defini-
+tion within the same Structure and start the lookup for the matching definition one level high-
+er, from the parent Structure. So, in case of a definition override, a parent-mode accessor will
+connect to the old rather than the new definition.
+Additional Connectivity Features
+Scoped Buses
+ 
+REAKTOR 6 - - 52
+
+
+--- Page 53 ---
+
+An example of parent-mode accessor usage
+In the above example there is an (overriding) redefinition of the "Cutoff" Scoped Bus to a
+halved value. If the scoped pickup accessor on the left had not been set to parent mode, it
+would have connected to the new definition, creating a feedback loop (see section ↑4.10,
+Feedback Connections for a discussion of feedback loops):
+An example of a logical error caused by the missing parent mode of the accessor.
+3.3.6
+Solid Areas
+ 
+If a Scoped Bus is defined inside a Macro, the definition scope does not include the Macro's
+parent Structure. This makes it impossible to create a Macro the purpose of which is to define
+a Scoped Bus. This restriction can be lifted by turning off the Solid property of the Macro. In
+this case the Scoped Bus definitions contained directly within the Macro become visible on the
+parent level:
+Using a non-solid Macro to define Scoped Buses for the parent Structure.
+Additional Connectivity Features
+Scoped Buses
+ 
+REAKTOR 6 - - 53
+
+
+--- Page 54 ---
+
+The Macro solidity also affects the resolution of the feedback loops (see section
+↑4.10.3, Nonsolid Macros and Feedback Loops).
+Whether using the non-solid Macros to define Scoped Buses within the parent Macro's context
+is good practice or not is questionable, since in this case the definitions are not visible at the
+top Structure of the definition scope. In any case this possibility should be used with care.
+The description of the Scoped Bus functionality up to this point in the manual is ap-
+proximate. It is only correct assuming that all Macros are solid. This assumption was
+done for simplifying the material presentation. A precise description of the Scoped Bus
+functionality follows below.
+A Precise Description of Scoped Bus Rules
+The Scoped Bus mechanism of REAKTOR Core works in terms of the solid areas rather than in
+terms of Structures. A solid area is the area bounded by the boundaries of solid Macros. If a
+Macro is solid and so are all directly nested Macros, then the Macro's Structure constitutes a
+solid area. If all Macros in a Core Cell are solid, then there is no difference between Structures
+and solid areas. If in such a Core Cell one Macro is made non-solid, then the solid boundary
+between this Macro and its parent Structure disappears, meaning that the parent Structure
+and the Macro's Structure now constitute one solid area, etc.
+Consequently, the following applies:
+•
+The scope of a definition starts at the solid area of the definition and extends to all nested
+solid areas, unless overridden by another definition in a nested solid area.
+•
+Two identically named definitions within one solid area produce a conflict.
+•
+A parent-mode accessor looks up for the matching definition starting from the parent solid
+area, rather than the parent solid Structure.
+Additional Connectivity Features
+Scoped Buses
+ 
+REAKTOR 6 - - 54
+
+
+--- Page 55 ---
+
+3.3.7
+Name Normalization and Escaping
+ 
+Normalization
+Since scoped connections are established by name, it is very important that the names are vis-
+ually distinguishable in the Structure. For that reason REAKTOR Core automatically collapses
+all whitespace within the names:
+•
+Whitespaces in the middle of a name are collapsed to a single space.
+•
+Whitespaces at the beginning and at the end of a name are eliminated completely.
+This process is referred to as normalization.
+Escaping
+The dot symbol has a special meaning in the scoped accessors. It is used to specify the acces-
+sor parent mode. It is also used as a fiber separator in the Bundle subfiber pickup accessors
+(see section ↑3.4.4, Scoped Bus Subfiber Pickups). At the same time it is still possible to de-
+fine a Scoped Bus with one or more dots within its name. In order to be able to access such
+definition the accessor must be able to specify that a certain dot should not be treated as a
+special syntactical element (parent mode specifier or fiber separator), but an ordinary dot. This
+possibility is implemented in the form of the so called escaping.
+In order to specify that a certain dot in the accessor name is an ordinary dot, the dot must be
+prefixed by a backslash.
+The backslash is referred to as the escape character.
+The backslash thereby also obtains a special syntactical meaning and thus needs to be escaped
+itself if an ordinary backslash character is being meant.
+Additional Connectivity Features
+Scoped Buses
+ 
+REAKTOR 6 - - 55
+
+
+--- Page 56 ---
+
+Dot escaping in an accessor.
+In the above case the Scoped Bus name ("B.u.s.") contains three dots. In the accessor each of
+these dots needs to be prefixed by a backslash.
+Escaping is only applied to accessors, not to definitions.
+If some special symbol within an accessor name is used at an inappropriate position (e.g. three
+dots are used in a row at the beginning of an accessor), then REAKTOR Core will not 'approve' it
+as a special symbol and will automatically escape it, explicitly highlighting its non-special mean-
+ing.
+3.4
+Bundles
+ 
+Bundles are a connection type, in which each 'cable' has multiple wires internally. These inter-
+nal wires are referred to as the Bundle fibers.
+3.4.1
+Bundle Pack
+ 
+In order to put several fibers into one Bundle use a Built-In Module > Bundle > Pack:
+Additional Connectivity Features
+Bundles
+ 
+REAKTOR 6 - - 56
+
+
+--- Page 57 ---
+
+A newly created Bundle Pack Module.
+A newly created Bundle Pack Module has no inputs and one Bundle output. Having no inputs
+means that the outgoing Bundle has no fibers. In order to add fibers to the Bundle, navigate
+into the internal Structure of the Pack Module by double-clicking on it, in the same way as it is
+done with Macros. The Pack Module's internal Structure will show up:
+The empty internal Structure of a newly created Pack Module.
+The only editable part of the Pack Module's internal Structure is the input area on the left. The
+inputs correspond to the Bundle fibers and are referred to as fiber definitions. Currently, only
+scalar and Bundle fiber definitions are supported:
+Additional Connectivity Features
+Bundles
+ 
+REAKTOR 6 - - 57
+
+
+--- Page 58 ---
+
+The Pack Module's input area context menu.
+The fiber definitions of Bundle type allow to nest Bundles.
+The fiber definitions created in the Pack Module's internal Structure show up as inputs on the
+outside of the Module:
+Fiber definitions and the corresponding inputs of the Pack Module.
+Each fiber definition has to be given a name. Definitions with empty names cannot be
+picked up on the other side of the Bundle.
+Additional Connectivity Features
+Bundles
+ 
+REAKTOR 6 - - 58
+
+
+--- Page 59 ---
+
+Similarly to the Scoped Bus names, the fiber names are automatically normalized.
+Most commonly the output of the Pack Module is connected to:
+•
+a Macro output port from the inside of a Macro (if the Pack Module is contained within a
+Macro and the Macro output interface is employing a Bundle), or
+•
+a Macro input from the outside of a Macro, or
+•
+a scoped distribution definition.
+3.4.2
+Bundle Unpack
+ 
+In order to access individual fibers within a Bundle use Built-In Modules > Bundle > Unpack:
+A newly created Bundle Unpack Module
+A newly created Bundle Unpack Module has a Bundle input and no outputs. The Bundle input
+is supposed to be connected to the Bundle, the fibers of which need to be accessed. The out-
+puts of the Unpack Module correspond to the fibers which need to be accessed and are creat-
+ed as outputs in the Unpack Module's internal Structure. They are referred to as fiber pickups.
+Fiber pickups and the corresponding outputs of the Unpack Module.
+Additional Connectivity Features
+Bundles
+ 
+REAKTOR 6 - - 59
+
+
+--- Page 60 ---
+
+The fiber pickups need to be given names identical to the names of the fibers that are
+being picked up. They also need to have a compatible type.
+It is not necessary to pick up all the fibers of the Bundle in the Unpack Module. Only a subset of
+the fibers may be picked up. E.g. in the above example the "Also a Fiber" fiber is not being picked
+up. The pickups do not have to be arranged in the same order as definitions either.
+3.4.3
+Definition Conflicts and Pickup Errors
+ 
+Definition Conflicts
+The fibers within a Bundle are getting distinguished by their name. Thus, a Bundle should not
+have two identically named fibers. If it does, then these fibers generate a conflict error:
+A definition conflict created by two identically named fibers.
+A conflicting definition does not generate a fiber in the Bundle.
+More precisely, all conflicting definitions of the same name generate a phantom fiber in
+the Bundle. Phantom fibers cannot be picked up, but are participating in Bundle merg-
+ing (see section ↑3.4.5, Bundle Merging) and splitting (see section ↑3.4.6, Bundle
+Splitting).
+Definitions with empty names are considered void and do not conflict with each other.
+Additional Connectivity Features
+Bundles
+ 
+REAKTOR 6 - - 60
+
+
+--- Page 61 ---
+
+Pickup Errors
+An attempt to pick up a missing fiber, a phantom fiber or an incompatible fiber will generate a
+pickup error:
+Pickup errors generated by missing and incompatible fibers.
+The above picture shows two errors:
+•
+The error in the pickup "B" is due to the type incompatibility (since the fiber "B" is of
+Bundle type, while the pickup is scalar).
+•
+The error in the pickup "C" is due to the missing fiber (since the fiber "C" is not present in
+the incoming Bundle).
+Pickup errors cause the Bundle wire to be highlighted in red all the way up to the definitions.
+This is done for use cases such as connecting together two library Macros by a Bundle wire. If
+the Bundle output of one Macro is incompatible to the Bundle input of the other Macro, the
+wire between the Macros will be highlighted in red. The wire highlighting also helps tracing the
+erroneous connection all the way between the definitions and the pickups in both directions.
+This highlighting approach follows the same idea of the error locality discussed in section ↑3.3.3,
+Scoped Connection Errors.
+Additional Connectivity Features
+Bundles
+ 
+REAKTOR 6 - - 61
+
+
+--- Page 62 ---
+
+3.4.4
+Scoped Bus Subfiber Pickups
+ 
+As a convenience feature, when accessing a Bundle Scoped Bus, the scoped pickup accessor
+can access individual fibers of a Bundle. To do this, simply type the fiber name after the bus
+name, separated by a dot in between:
+Scoped subfiber pickup.
+In case of nested Bundles, subfiber pickups can be chained within one scoped pickup:
+Scoped nested subfiber pickup.
+There is no corresponding feature for scoped send accessors.
+3.4.5
+Bundle Merging
+ 
+As a means of Bundle manipulation, two Bundles can be merged together into a single Bundle
+by the Built-In Module > Bundle > Merge:
+Additional Connectivity Features
+Bundles
+ 
+REAKTOR 6 - - 62
+
+
+--- Page 63 ---
+
+Merging two Bundles into a single one.
+The merged Bundles should not have identically named fibers, otherwise a merge conflict will
+occur. The conflicting name is turned into a phantom fiber in the output Bundle and cannot be
+picked up:
+A Bundle merge conflict.
+A phantom fiber can generate further merge conflicts downstream if merged with identically
+named fibers.
+Override Merging
+By selecting an overriding input in the Bundle Merge's Properties the Bundle Merge Module
+can be switched into override mode:
+Additional Connectivity Features
+Bundles
+ 
+REAKTOR 6 - - 63
+
+
+--- Page 64 ---
+
+An override mode Merge.
+This causes the fibers at the overriding input to take precedence over the fibers of the other
+input in case of a name conflict.
+The overriding mode is also useful as a means to provide default definitions for optional Bun-
+dle fibers in a library or framework Macro:
+Using the override mode to provide defaults for optional fibers.
+In the above example the incoming Bundle is expected to contain certain fibers, among which
+the "A" fiber is optional. If the "A" fiber is not present in the incoming Bundle, a default scalar
+fiber of zero value is inserted into the Bundle before it goes further into the "Process" Macro.
+In the 'providing the defaults' use case the main Bundle has to go into the overriding
+input of the Merge Module, while the defaults should be connected to the other ('lower
+priority') input.
+Additional Connectivity Features
+Bundles
+ 
+REAKTOR 6 - - 64
+
+
+--- Page 65 ---
+
+3.4.6
+Bundle Splitting
+ 
+The reverse of Bundle merging is Bundle splitting, done by Built-In Module > Bundle > Split:
+A Bundle Split Module.
+The Bundle that needs to be split should be connected to the lower input of the Split Module.
+The upper input of the Split Module is the template input. It controls the routing of the split
+fibers. The routing control is purely name-based. The fibers in the lower input for which there
+is an identically-named fiber in the template are routed to the upper output. The remaining fi-
+bers are routed to the lower output.
+One can explicitly 'route off' certain fibers from a Bundle by connecting a 'dummy' Pack Mod-
+ule to the template input:
+'Routing off' of fibers "A" and "B" from the Bundle.
+Another use case is to remove the fibers that have been 'temporarily' merged into the Bundle:
+Removing the temporarily merged 'default fibers'.
+Additional Connectivity Features
+Bundles
+ 
+REAKTOR 6 - - 65
+
+
+--- Page 66 ---
+
+In the above example it is important that the Split Module is using the original Bundle
+as the template. A possible alternative implementation using the defaults as the tem-
+plate will not work correctly if the default fibers are already present in the input Bundle
+of the Macro, because these fibers are routed off by the Split:
+Additional Connectivity Features
+Bundles
+ 
+REAKTOR 6 - - 66
+

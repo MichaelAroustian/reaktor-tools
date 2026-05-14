@@ -1,0 +1,48 @@
+--- Page 178 ---
+
+12
+Appendix C. Core Macro Ports
+ 
+12.1
+C.1. In
+ 
+Accepts an incoming event from the outside and forwards it unmodified to its own inside 
+output.
+The inside input connection can be used for overriding the default (disconnected) meaning 
+of this port.
+12.2
+C.2. Out
+ 
+Accepts an incoming event at the inside input and forwards it unmodified to the outside.
+12.3
+C.3. Latch (input)
+ 
+Forwards an OBC connection from the outside of the macro to the inside of the macro. The 
+inside input connection can be used for overriding the default (disconnected) meaning of 
+this port.
+12.4
+C.4. Latch (output)
+ 
+Forwards an OBC connection from the inside of the macro to the outside of the macro.
+Appendix C. Core Macro Ports
+ 
+REAKTOR 5.5 - Core Reference - 178
+
+
+--- Page 179 ---
+
+12.5
+C.5. Bool C (input)
+ 
+Forwards a BoolCtl connection from the outside of the macro to the inside of the macro. 
+The inside input connection can be used for overriding the default (disconnected) meaning 
+of this port.
+12.6
+C.6. Bool C (output)
+ 
+Forwards a BoolCtl connection from the inside of the macro to the outside of the macro.
+Appendix C. Core Macro Ports
+C.5. Bool C (input)
+ 
+REAKTOR 5.5 - Core Reference - 179
+

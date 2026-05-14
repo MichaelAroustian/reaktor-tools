@@ -1,0 +1,555 @@
+--- Page 107 ---
+
+5
+Audio Processing at Its Core
+ 
+5.1
+Audio signals
+ 
+ 
+There is no special type for audio signals in Reaktor Core; audio signals are represented by 
+events that, from the structure point of view, do not differ from any other event. What is 
+different is that along the audio signal path the events are normally produced at regularly 
+spaced time intervals, where the time between events is determined by the sampling rate.
+To produce regularly spaced events (or for that matter, any events) we need some event 
+source. As with event core cells, where the inputs of the module are the event sources, in 
+audio core cells the inputs are also event sources. However, we now have an extra input 
+type available:
+▪
+Audio Inputs repeatedly send core events to the inside of the structure at the rate de­
+termined by the sampling rate setting of the outside primary-level structure. The 
+events are sent simultaneously from all audio inputs of a core-cell structure.
+▪
+The audio inputs also send the initialization event to the core-cell structure. This 
+event is sent regardless of what happens in the primary-level structure outside. How­
+ever the value sent by these inputs during the initialization is dependent on the out­
+side initialization process.
+There is also a new output type which has to be used instead of event outputs.
+▪
+Audio Outputs deliver the last value received from the inside core structure to the out­
+side primary-level structure. Because the audio outputs in the primary level do not 
+send events, no events are sent to the outside.
+Now we are going to rebuild the same shaper we built for events in audio mode. Therefore 
+we create a new audio core cell. Generally we can use exactly the same structure, except 
+instead of event inputs and outputs we will have audio inputs and outputs:
+Audio Processing at Its Core
+ 
+REAKTOR 5.5 - Core Reference - 107
+
+
+--- Page 108 ---
+
+You may wonder why didn’t we use the modulation macros in this case? The reason is that 
+we are processing audio signals here, and audio signals always send the initialization 
+event, so it’s safe to do it this way. (You could use modulation macros if you prefer; it 
+doesn’t really matter.)
+We could also pack the above structure into a macro, which could be used inside other 
+Reaktor Core structures for both audio and event processing. In that case, we better use 
+modulation macros inside, because we don’t know in advance what kind of signal will be 
+processed by the macro:
+This is the inside structure of the audio core cell in that case:
+To test it we are going to connect a sawtooth oscillator and an oscilloscope to it. An oscil­
+loscope can be found under Insert Macro > Classic Modular > 00 Classic Modular – Dis­
+play > Simple Scope (from a primary-level structure). Also don’t forget to make sure the 
+number of voices for the instrument is 1.
+We are using the external trigger for the oscilloscope for better synchronization at high dis­
+tortion levels (the Ext button on the oscilloscope panel must be on for that to work). 
+Change the range of the Ampl knob to something like 0 to 5 to be able to see the shaping.
+Audio Processing at Its Core
+Audio signals
+ 
+REAKTOR 5.5 - Core Reference - 108
+
+
+--- Page 109 ---
+
+5.2
+Sampling Rate Clock Bus
+ 
+A couple more features are needed for building audio structures. One is to be able to cre­
+ate audio core cells with no audio inputs. (More precisely, we can create them, but what 
+do we use as an audio event source?) Because many DSP algorithms need to know the cur­
+rent sampling rate, the other feature we need is to be able to access that. Of course, we 
+have included both features:
+There is a special connection possibility available in every Reaktor Core structure called 
+the “sampling rate clock bus”. The bus carries two signals: the clock and the rate.
+▪
+Clock is a signal source that sends regularly spaced events at the audio sampling rate. 
+As do all standard audio signals, it also sends an initialization event. The values of all 
+events are currently zero, but generally any structure using the clock signal should ig­
+nore the values, because it may be changed in the future.
+▪
+Rate is a signal source whose value is always equal to the current audio sampling rate 
+in Hz. The events are sent from this source during the initialization and whenever the 
+sampling rate is changed.
+You can access the sampling-rate bus by right-clicking on any signal input and selecting 
+“Connect to SR.C” for clock signal or “Connect to SR.R” for rate signal.
+Audio Processing at Its Core
+Sampling Rate Clock Bus
+ 
+REAKTOR 5.5 - Core Reference - 109
+
+
+--- Page 110 ---
+
+The connection will be displayed next to the input:
+The sample rate clock bus doesn’t work inside event core cells.
+5.3
+Connection Feedback
+ 
+ 
+As we have already seen, the processing order rules cannot be applied if there are feed­
+back connections within a structure. Therefore we need to provide additional rules, defin­
+ing how feedback is handled.
+The main rule is: Reaktor Core structures cannot handle feedback.
+Well, not exactly so. You can make feedback connections in Reaktor Core; but because the 
+Reaktor Core engine cannot handle structures with feedback, it will resolve them. Resolv­
+ing the feedback means that the structure will be modified internally (you won’t see it on 
+the screen) in a way that results in no feedback.
+The reason that is necessary is that, in the digital world, feedback without delay is not 
+possible. Normally there is a one-sample (minimum) delay in the digital audio feedback 
+path, and that is what the Reaktor Core engine will do during feedback resolution—it will 
+introduce a one-sample delay module (Z^-1) into the feedback path.
+As you already know, places where implicit Z^-1’s have been introduced are indicated by 
+the large orange Z displayed in place of the normal port icon:
+Audio Processing at Its Core
+Connection Feedback
+ 
+REAKTOR 5.5 - Core Reference - 110
+
+
+--- Page 111 ---
+
+We have already seen a structure built using a Read and a Write module that implements 
+Z^-1 functionality. Let’s try putting that construction into our structure. We will put it on 
+the wire where the automatic feedback resolution took place:
+So, first we write, then we read (note that the Read module is clocked by SR.C to make 
+sure that the reading is happening once per audio tick). That makes the read value always 
+one audio sample behind the written one. Now there is no feedback in the structure. Don’t 
+see it? OK, let’s move the modules around a little bit (we won’t change a single connec­
+tion):
+Do you see it now? Of course.
+Audio Processing at Its Core
+Connection Feedback
+ 
+REAKTOR 5.5 - Core Reference - 111
+
+
+--- Page 112 ---
+
+So, inserting an explicit Z^-1 module formally removes the feedback from the structure, 
+while keeping it there logically (with a one audio sample delay).
+Actually, the inside structure of a Z^-1 macro is a little bit more complicated than a pair of 
+Read and Write modules. We will learn how and why in the next section.
+You don’t have any control over the place where automatic feedback resolution will occur. 
+It occurs on an arbitrary signal wire in the feedback loop. It is not even guaranteed that 
+the resolution will always occur on a particular wire—it could change in the next version of 
+the software, it could change in response to a change elsewhere in the structure, and it 
+could be different the next time you load the structure from disk.
+Hence, automatic feedback resolution is meant for the structures for which it’s not impor­
+tant where exactly the resolution occurs. For example, such structures might be built by 
+users who are not deep enough into DSP to understand these problems. Automatic feed­
+back resolution allows them to still get reasonable results.
+If you need to have precise control over feedback resolution points you can achieve that by 
+explicitly inserting Z^-1 modules in your structures. These modules will formally explicitly 
+eliminate the feedback and automatic resolution will not be needed.
+Here is a version of the above structure with a Z^-1 macro inserted (it can be found in 
+Expert Macro > Memory submenu):
+As you can see, the big orange Z mark is gone now. Also note that the 1-sample delay 
+point is different from the one which was automatically inserted (the automatic one was on 
+the wire going from the Adder output to the Multiplier input and now it’s on the wire going 
+from the Multiplier output to the Adder input).
+Audio Processing at Its Core
+Connection Feedback
+ 
+REAKTOR 5.5 - Core Reference - 112
+
+
+--- Page 113 ---
+
+The meaning of the second input of the Z^-1 module will be explained later. Typically you 
+would just leave it disconnected.
+Feedback on OBC and other types of non-signal connections (which will be introduced lat­
+er) does not make any sense and, therefore, is not allowed. Should feedback loops occur 
+that do not have any signal wires in them, one of the connections will be marked as invalid 
+and considered not to exist. The Invalid mark is displayed as a big red X-shaped cross in 
+the place of the port:
+On the other hand, feedback loops with mixed types of the connections, are perfectly OK 
+as long as they contain some normal signal wires in them; in that case they will be re­
+solved in the normal way, with the resolution occurring on one of the normal signal wires:
+In essence, this means that non-signal connections are never affected by feedback resolution, 
+unless you make a completely non-signal feedback, which doesn’t make any sense.
+5.4
+Feedback Around Macros
+ 
+In terms of feedback resolution, macros are generally treated in the same way as built-in 
+modules.
+Let’s consider a macro which just passes the incoming signal through to the output. Here 
+is the internal structure of such a macro:
+Audio Processing at Its Core
+Feedback Around Macros
+ 
+REAKTOR 5.5 - Core Reference - 113
+
+
+--- Page 114 ---
+
+Now assume we build a feedback structure using this macro:
+The feedback loop goes through two wires in the above structure and through another wire 
+inside of the macro. Now where is the resolution going to occur? (OK, you can see in the 
+above picture that is occurring at the adder input in this particular case, but we know it 
+might as well have occurred at another point.)
+Imagine for a moment that Thru was not a macro but a built-in module. In that case, it’s 
+obvious that the feedback resolution could not occur within the module, it must occur out­
+side.
+Well, we are trying our best to make macros look and behave as if they were built-in mod­
+ules. For that reason by default, the resolution of feedback loops will occur outside the 
+macro. It’s not specified exactly where it will take place, but it will take place outside of 
+the macro.
+As a general rule, feedback resolution occurs on the highest structure level of the feedback 
+loop.
+However, you can change that behavior and allow feedback resolution to happen inside the 
+macros. In fact, you should have wondered, if macros are treated the same as built-in 
+modules, how can a Z^-1 macro resolve the feedback. Consider the following structure:
+Audio Processing at Its Core
+Feedback Around Macros
+ 
+REAKTOR 5.5 - Core Reference - 114
+
+
+--- Page 115 ---
+
+If macros and built-in modules are the same then nothing should change when we replace 
+the multiplier by a Z^-1 macro:
+But it is different, because the implicit feedback is now gone. There must be something 
+special about the Z^-1 macro. And, in fact, there is.
+If we look inside this macro we’ll see almost the same structure as the one we mentioned 
+earlier to implement the Z^-1 functionality:
+As you can see, the clock input of the macro is connected to the internal Read module. 
+The default connection for this input is not to a zero constant, but the audio clock, and 
+that’s what you would want in most cases. The module connected between the upper input 
+and the write module will be explained later, for now just ignore it.
+So far, there’s nothing special about this macro, except that it seems to implement the 
+Z^‑1 structure we have discussed earlier. So how does the Reaktor Core engine know that
+this structure is meant to resolve feedback loops? Obviously, the engine can know that it 
+can resolve feedback loops, but how does it know that it’s intended to?
+This is controlled by the Solid setting in the macro properties:
+Audio Processing at Its Core
+Feedback Around Macros
+ 
+REAKTOR 5.5 - Core Reference - 115
+
+
+--- Page 116 ---
+
+The Solid property tells the Reaktor Core engine whether the macro is to be considered as 
+a solid built-in module for the purposes of feedback resolution or whether it is to be con­
+sidered transparent. In 99% of the cases, you would want to keep this property on. That’s 
+because you typically don’t want implicit feedback resolution to happen inside your mac­
+ros.
+One reason for that is that the resolution happening inside a macro won’t be visible unless 
+you go into the macro, so that some of the implicit feedback delays can go unnoticed. For 
+example, we can take our previous structure with the Thru macro and disable the Solid 
+setting (make sure you are editing the Solid setting for the right macro, you can see it by 
+the Thru text in the label field of the properties):
+Audio Processing at Its Core
+Feedback Around Macros
+ 
+REAKTOR 5.5 - Core Reference - 116
+
+
+--- Page 117 ---
+
+Now your outside structure probably still looks the same (we say probably because you 
+never can be sure where exactly the automatic feedback resolution will happen):
+But if you change your structure a little, connecting the output to another module, it could 
+look like this:
+Audio Processing at Its Core
+Feedback Around Macros
+ 
+REAKTOR 5.5 - Core Reference - 117
+
+
+--- Page 118 ---
+
+Our feedback resolution delay seems gone. So in a larger and more complicated structure 
+we could easily miss the fact that there’s an implicit delay. Where’s this delay gone? Of 
+course, it’s now inside the Thru macro—the only place left which we cannot see from the 
+outside:
+Another reason for keeping the Solid property on is that with it off, in some cases the mac­
+ro’s internal operation could change once it’s put in the feedback path. So please do your­
+self a favor and turn the property off only if you build macros which are meant to resolve 
+feedback. There won’t be many.
+Now let’s return to the Z^-1 module. Because the Solid property is turned off for this mac­
+ro, the boundary of this macro is completely transparent for feedback resolution. Thus the 
+Z^-1 macro is not really treated as a built-in module and is capable of resolving feedback 
+in the way described earlier in this text.
+5.5
+Denormal Values
+ 
+The signal values in the structures that we have been building in the previous sections are 
+represented inside the computer by a binary data type called floating point numbers or 
+floats for short. Floats are an efficient representation for a wide range of values.
+The term floating point numbers does not exactly specify how the numbers are represent­
+ed. It just describes the approach taken to represent them, still leaving lots of freedom for 
+implementation details.
+The CPUs of today’s personal computer use the IEEE floating point standard. This stand­
+ard defines exactly how the floating point numbers should be represented and what should 
+be the results of operations on them (for example, how to handle limited precision issues, 
+and so on.) In particular, this standard says that, for a group of particularly small floating 
+point values, which because of limited floating point precision cannot be represented in 
+the normal way, a special representation form is to be used. This other form is called “de­
+normal” representation.
+Audio Processing at Its Core
+Denormal Values
+ 
+REAKTOR 5.5 - Core Reference - 118
+
+
+--- Page 119 ---
+
+Denormal representation for 32 bit float values is used roughly in the range from 10-38 to 10-45 
+and from -10-38 to -10-45. Values less than 10-45 in absolute magnitude cannot be represented 
+at all and are considered to be zero.
+Because their representation is somewhat different from that of normal numbers, some 
+CPUs have certain problems with handling these numbers. In particular, operations on 
+these numbers can be performed much much more slowly (as much as 10 times or more) 
+on some processors.
+A typical situation in which denormal numbers appear for prolonged periods of time is in cal­
+culating exponentially decaying values, as in filters, some envelopes, and feedback structures. 
+In such structures, after the input signal reaches zero level, the output signal asymptotically 
+decays to zero. Asymptotically means that the signal gets closer and closer to zero without ev­
+er reaching it. In that situation, denormal numbers can appear and stay in the structure for 
+relatively long time (until their absolute value falls below 10-45), and that can cause a signifi­
+cant increase in CPU load.
+Another situation in which denormal numbers may occur is when you change the precision of 
+a floating point value from a higher precision (64 bit) to a lower precision (32 bit), because a 
+value 10-41 is not a denormal in a 64 bit precision float but it is a denormal in a 32 bit preci­
+sion float (changing the precision of floats is discussed later).
+Let’s consider modeling an analog 1-pole lowpass filter with its cutoff set to 20 Hz. Our 
+digital signal values will correspond to analog voltages (measured in volts). Let’s imagine 
+that the input signal level was equal to 1V (volt) over a long enough period of time. Then 
+the voltage at the filter output is also equal to 1V. Now we abruptly change the input volt­
+age to zero. The output voltage will decay according to the law:
+Vout=V0e-2πfct
+where fc is the filter cutoff in Hz, t is time in seconds and Vo=1V (initial voltage).
+Then the output voltage will change as follows:
+▪
+after 0.5 sec Vout ≈10-29 volt
+▪
+after 0.6 sec Vout ≈10-33 volt
+▪
+after 0.7 sec Vout ≈10-38 volt
+▪
+after 0.8 sec Vout ≈10-44 volt
+Audio Processing at Its Core
+Denormal Values
+ 
+REAKTOR 5.5 - Core Reference - 119
+
+
+--- Page 120 ---
+
+Oops, the numbers between 10-38 and 10-45 are in the denormal range. So in the time peri­
+od from approximately 0.7 to 0.8 seconds, our voltage is represented by a denormal value. 
+And it’s not only inside the filter. The filter output is probably further processed by the 
+downstream structure, causing at least the few following modules also to deal with denor­
+mal values.
+At a sampling rate of 44.1 kHz, the time interval of 0.1 second corresponds to 4,410 
+samples. Assuming that the typical ASIO buffer size is a few hundred samples, we have to 
+produce several buffers at a significantly higher CPU load. Should the CPU load (per buf­
+fer computation) get close enough to or exceed 100%, it will cause audio dropouts.
+From the above text you need to draw one conclusion: denormal values are bad in real-time 
+audio.
+Reaktor primary-level modules are programmed in a way that generally prevents denormals 
+from occurring inside them. Specifically, the DSP algorithms have been modified in a way 
+that they generally shouldn’t produce any denormal values. If you are designing your own 
+low-level DSP structures in Reaktor Core you also have to take care of denormals. To help 
+you with that job we have introduced the Denormal Cancel module, available in Built‑In
+Module > Math submenu:
+Audio Processing at Its Core
+Denormal Values
+ 
+REAKTOR 5.5 - Core Reference - 120
+
+
+--- Page 121 ---
+
+The Denormal Cancel module has one input and one output, and it tries to slightly modify 
+the incoming value in a way that prevents denormals from occurring at the output:
+The way this module modifies the signal is not fixed and may change from one software 
+version to another, or even from one place in the structure to another. Currently it adds a 
+very small constant to the input value. Because of precision losses, this addition does not 
+modify values that are large enough (a value as large as 10-10 will not be modified at all), 
+and because of the same precision losses, it is very unlikely that the result of addition can 
+be a denormal value (in most of the cases it is probably even impossible).
+If for whatever reason the Denormal Cancel module does not work for your structure, you are, 
+of course, free to use your own denormal canceling techniques. But the problem may be that 
+a technique that works on one platform sometimes may not work on another, whereas we are 
+going to adapt the built-in DN Cancel algorithm to each supported platform. So whenever pos­
+sible, try to use the DN cancel module. We will even consider building alternative algorithms 
+into this module – feel free to discuss this with us on the support forum.
+Some CPUs offer an option to violate the IEEE standard by disabling the production of denor­
+mal numbers, forcing the denormal results to zero. Because Reaktor Core structures are meant 
+to be platform independent, it’s strongly advised to always take care of denormal canceling in 
+your structures, even if your particular system does not suffer from them.
+Because one of the most typical situations for the denormals to appear are exponentially 
+decaying feedback loops, and because most of feedback loops in audio processing are ex­
+ponentially decaying (including but not limited to filters and feedback structures with de­
+lays), we decided to build denormal canceling into the standard Z^-1 macro.
+As you remember, the inside of this macro looks like this:
+Audio Processing at Its Core
+Denormal Values
+ 
+REAKTOR 5.5 - Core Reference - 121
+
+
+--- Page 122 ---
+
+Now you probably can tell what the Denormal Cancel module is doing in there. Because 
+you would often use the Z^-1 macro inside feedback structures, there’s a good possibility 
+of denormals occurring. We therefore decided to put the DNC module into the Z^-1 macro 
+structure.
+There’s another version of this macro called Z^-1 ndc which does not perform denormal 
+canceling (ndc = no denormal cancel). You can use it in the structures that you are sure 
+do not generate denormals (for example, FIR filters):
+5.6
+Other Bad Numbers
+ 
+ 
+Denormal numbers are not the only kind that can cause problems in Reaktor Core struc­
+tures with internal states, and particularly in feedback loops. Other examples include 
+INFs, NaNs and QNaNs. We are not going to discuss those in detail here, because that 
+information is available in other places, including the Internet. What’s important for us is 
+preventing those kinds of numbers from appearing in our structures.
+Generally, such numbers appear as the result of invalid operations. Division by zero is the 
+easiest case. Other cases involve numbers getting too large to fit in the floating point rep­
+resentation (that would be above 1038 in absolute magnitude), or outside the reasonable 
+range for a particular operation.
+Such numbers tend to get stuck inside structures, and in a way they are more sticky than 
+denormals. For example as soon as you add a denormal value to another value which is not 
+denormal, the result will be non-denormal (unless the other value is also very small and 
+close to being a denormal). On the other hand if you add a normal value to an INF, the 
+result will still be an INF.
+Besides having a tendency to stick in structures forever (or better said, until the structure 
+is reset), these numbers also have a bad habit of requiring much larger processing times 
+on some CPUs. Therefore you should do your best to prevent them from being created at 
+Audio Processing at Its Core
+Other Bad Numbers
+ 
+REAKTOR 5.5 - Core Reference - 122
+
+
+--- Page 123 ---
+
+all. That means, for example, that whenever you divide two numbers you ensure that the 
+denominator (the bottom part of the fraction) is not zero. The case of initialization requires 
+particular attention here. For example, consider the following structure element:
+If for whatever reason, the initialization event does not come on the lower input of the Di­
+vider module, a division by zero will happen during initialization processing. In this case 
+you might consider using a modulation delay macro instead, or depending on your particu­
+lar needs find another solution.
+5.7
+Building a 1-pole Low Pass Filter
+ 
+A simple 1-pole low pass filter can be built using a recursive equation:
+▪
+y=b*x+(1-b)*y-1 where
+▪
+x is the input sample,
+▪
+y is the new output sample,
+▪
+y-1 is the previous output sample, and
+▪
+b is the coefficient defining the filter’s cutoff.
+The value of the coefficient b can be taken equal to the normalized circular cutoff fre­
+quency, which can be computed using the following formula:
+▪
+Fc = 2*π*fc / fSR where
+▪
+fc is the desired cutoff frequency in Hz
+▪
+fSR is the sampling rate in Hz
+▪
+π is 3.14159…
+▪
+Fc is normalized circular cutoff (in radians)
+In fact, the coefficient b is equal to the normalized cutoff only approximately, the error in­
+creasing at high cutoff values, but it should be more or less OK for our purposes, especially if 
+we do not need to have a precise setting of the cutoff frequency for our filter.
+We start by creating an audio core cell with two inputs: one for the audio input and one for 
+cutoff. We are going to use an event input for the cutoff in this version of the module.
+Audio Processing at Its Core
+Building a 1-pole Low Pass Filter
+ 
+REAKTOR 5.5 - Core Reference - 123
+
+
+--- Page 124 ---
+
+Actually, because we think it’s a good habit to build Reaktor Core structures as core mac­
+ros to enhance their reusability, we a going to create our filter as a macro. So we create a 
+new macro inside the structure and create the same inputs for that macro:
+Now let’s build the circuitry for converting the cutoff frequency into the normalized circu­
+lar cutoff:
+6.28319 is 2*π, which is then divided by the sampling rate, forming the value to be mul­
+tiplied with the cutoff frequency. We don’t need a modulation multiplier, because F logi­
+cally is a control signal input, so we might perform the initial multiplication even if there 
+is no initialization event at the F input.
+We perform the division before the multiplication, because the division is relatively heavy on 
+the CPU, and the sampling rate doesn’t change that often. If only the cutoff frequency 
+changes, there are no events sent to the divisor module, and therefore, the division will not be 
+performed. This is one of the standard optimizations that can be done by the core-structure 
+designer.
+Let’s build the circuitry implementing the filter’s equation:
+Audio Processing at Its Core
+Building a 1-pole Low Pass Filter
+ 
+REAKTOR 5.5 - Core Reference - 124
+
+
+--- Page 125 ---
+
+audio inputThe is latched just in case events at this input arrive asynchronously to the 
+standard audio clock. That wouldn’t be necessary in the core-cell structure, where an au­
+dio input is known to send events at correct times, but in a general core macro it is a very 
+good practice.
+Two modulation multipliers are used to prevent events at the F input (which generally 
+speaking, can happen at any time) from triggering the computation in the feedback loop. 
+Here it should be more clear why they are called modulation macros, in this case the cut­
+off-derived signal is used to modulate gains in the feedback path.
+Latching is a standard Reaktor Core technique to make sure that incoming events do not trig­
+ger the computations at improper times. It’s also very widely employed in the form of modula­
+tion macros and in other similar situations.
+The Z^-1 module is used to store the previous output value and will automatically send an 
+event with the previous output value on every audio clock tick. It also takes care of possi­
+ble denormal values which otherwise could occur. Those familiar with DSP should notice 
+that the structure looks pretty much similar to the standard DSP filter diagrams.
+The Merge module at the adder output is making sure that the filter state after the initiali­
+zation will still be zero, even if the input signal has a non-zero value.
+Finally, we put the pitch to frequency converter into the core-cell structure and we are 
+ready to test:
+For testing we suggest using the following structure (don’t forget about the 1-voice setting 
+for the instrument):
+Audio Processing at Its Core
+Building a 1-pole Low Pass Filter
+ 
+REAKTOR 5.5 - Core Reference - 125
+
+
+--- Page 126 ---
+
+The Cutoff knob should be set to the range 0 to 100 or something similar. Beware of too 
+high cutoff values. Because of the increasing filter coefficient error at high cutoffs, the fil­
+ter will become unstable with large cutoff values.
+A better filter design should at least clip the cutoff values to the range where the filter is sta­
+ble. For our case this could have been achieved by clipping the b coefficient to the range of 
+0..0.99 or something similar. Techniques for value clipping will be described later in this text.
+This is what you should see in the panel now:
+Move the cutoff knob and watch the signal shape changing.
+Audio Processing at Its Core
+Building a 1-pole Low Pass Filter
+ 
+REAKTOR 5.5 - Core Reference - 126
+

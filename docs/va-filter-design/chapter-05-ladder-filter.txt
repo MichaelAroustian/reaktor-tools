@@ -1,0 +1,3184 @@
+--- Page 145 ---
+
+Chapter 5
+Ladder filter
+In this chapter we are going to discuss the most classical analog ﬁlter model:
+the transistor ladder ﬁlter. The main idea of this structure, which is to create
+resonance by means of a feedback loop, is encountered in many other ﬁlter
+designs, some of which we are also going to discuss. We will be referring to the
+class of such ﬁlters as simply ladder filters.1
+5.1
+Analog model
+The most classical example of a ladder ﬁlter is transistor ladder ﬁlter, which
+implements a 4-pole lowpass structure shown in Fig. 5.1.2
+The structure in
+Fig. 5.1 is not limited to transistor-based analog implementations. Particularly,
+there are many implementations of the same structure based on OTAs (oper-
+ational transconductance ampliﬁers). The diﬀerence between transistor- and
+OTA-based ladders is, however, lying in the nonlinear behavior, which we are
+not touching at this point yet. The linear aspects of both are identical.
+The LP1 blocks denote four identical (same cutoﬀ) 1-pole lowpass ﬁlters
+(Fig. 2.2). The k coeﬃcient controls the amount of negative feedback, which
+creates resonance in the ﬁlter. Typically k ≥0, although k < 0 is also sometimes
+used.
++
+ '!&"%#$
+/
+LP1
+/
+LP1
+/
+LP1
+/
+LP1
+/
+•/
+qqq
+M
+M
+M o
+−
+O
+/
+x(t)
+y(t)
+k
+Figure 5.1: Transistor (4-pole lowpass) ladder ﬁlter.
+1Quite unfortunately, there is already another class of filter structures commonly referred
+to as “ladder filters”. Fortunately, this class is not so widely encountered in the synth filter
+context, on the other hand “transistor ladder” is also a commonly used term. Therefore we’ll
+stick with using the term “ladder filters” for the flters based on a resonating feedback loop.
+2A widely known piece of work describing this linear model is Analyzing the Moog VCF
+with considerations for digital implementation by T.Stilson and J.Smith.
+133
+
+
+--- Page 146 ---
+
+134
+CHAPTER 5. LADDER FILTER
+Let
+H1(s) =
+1
+1 + s
+be the 1-pole lowpass transfer function. Assuming complex exponential x and
+y we write
+y = H4
+1(s) · (x −ky)
+from where
+y(1 + kH4
+1(s)) = H4
+1(s) · x
+and the transfer function of the ladder ﬁlter is
+H(s) = y
+x =
+H4
+1(s)
+1 + kH4
+1(s) =
+1
+(1+s)4
+1 + k
+1
+(1+s)4
+=
+1
+k + (1 + s)4
+(5.1)
+At k = 0 the ﬁlter behaves as 4 serially connected 1-pole lowpass ﬁlters.
+The poles of the ﬁlter are respectively found from
+k + (1 + s)4 = 0
+giving
+s = −1 + (−k)1/4
+where the raising to the 1/4th power is understood in the complex sense, there-
+fore giving 4 diﬀerent values:
+s = −1 + ±1 ± j
+√
+2
+k1/4
+(k ≥0)
+(5.2)
+(this time k1/4 is understood in the real sense). Thus there are 4-poles and we
+can also refer to this ﬁlter as a 4-pole lowpass ladder ﬁlter.
+At k = 0 all poles are located at s = −1, as k grows they move apart in 4
+straight lines,all going at “45◦angles” (Fig. 5.2). As k grows from 0 to 4 the
+two of the poles (at s = −1 + 1±j
+√
+2 k1/4) are moving towards the imaginary axis,
+producing a resonance peak in the amplitude response (Fig. 5.3). At k = 4 they
+hit the imaginary axis:
+Re
+
+−1 + 1 ± j
+√
+2 41/4
+
+= 0
+and the ﬁlter becomes unstable.3
+In Fig. 5.3 one could notice that, as the resonance increases, the ﬁlter gain at
+low frequencies begins to drop. Indeed, substituting s = 0 into (5.1) we obtain
+H(0) =
+1
+1 + k
+This is a general issue with ladder ﬁlter designs.
+3This time we will not develop an explicit expression for the transient response, since it’s
+getting too involved. Still, the general rule, which we will develop in Section 7.7, is that the
+transient response is always a linear combination of partials of the form epnt (and tνepnt in
+case of repeated poles), where pn are the filter poles. Respectively, as soon as some of the
+poles leave the left complex semiplane, the filter becomes unstable.
+
+
+--- Page 147 ---
+
+5.2. FEEDBACK AND RESONANCE
+135
+−1
+−j
+j
+Re s
+Im s
+Figure 5.2: Poles of the 4-pole lowpass ladder ﬁlter.
+ω
+|H(jω)|, dB
+k = 3
+k = 0
+ωc
+ωc/8
+8ωc
+0
+-6
+-12
+-18
+Figure 5.3: Amplitude response of the 4-pole lowpass ladder ﬁlter
+for various k.
+5.2
+Feedback and resonance
+Before we continue with discussing more practical aspects of the ladder ﬁlter,
+we’d like to make one important observation considering the resonance peaks
+created by the ladder ﬁlter feedback.
+In Fig. 5.3 we can see that, similarly to the 2-pole case, the resonance fre-
+quency is approaching the ﬁlter cutoﬀfrequency as the ﬁlter approaches selfos-
+cillation at k = 4. This is a manifestation of a more general principle concerning
+ladder ﬁlters as such. Consider a general ladder ﬁlter in Fig. 5.4, where G(s) de-
+notes a more or less arbitrary structure, whose transfer function is G(s). Notice
+that the feedback in Fig. 5.4 is not inverted.
+
+
+--- Page 148 ---
+
+136
+CHAPTER 5. LADDER FILTER
++
+ '!&"%#$
+/
+G(s)
+/
+•/
+qqq
+M
+M
+M o
+O
+/
+x(t)
+y(t)
+k
+Figure 5.4: Structure of a generic ladder ﬁlter.
+The transfer function of the entire structure is therefore
+H(s) =
+G(s)
+1 −kG(s) =
+1
+G−1(s) −k
+(5.3)
+and the poles are deﬁned by the equation
+G−1(s) = k
+(5.4)
+That is at k = 0 the poles of H(s) are the zeros of G−1(s) (the latter obviously
+simply being the poles of G(s)). As k begins to deviate from zero, the solutions
+of (5.4) will move in the s-plane, usually in a continuous fashion. E.g. for the
+4-pole lowpass ladder (Fig. 5.1) we had G−1(s) = (s + 1)4 and (5.4) takes the
+form (s + 1)4 = −k, where we take −k instead of k because of the inverted
+feedback in Fig. 5.1.
+The value of k at which the ﬁlter starts to selfoscillate should correspond
+to some of the poles being located on the imaginary axis. At this moment the
+inﬁnitely high resonance peak in the amplitude response is occurring exactly
+at these pole positions. Denoting a purely imaginary pole position as jω, we
+rewrite (5.4) for such poles as
+G−1(jω) = k
+or
+kG(jω) = 1
+(5.5)
+We can refer to (5.5) as the selfoscillation equation for a feedback loop. This
+equation implies that selfoscillation appears at the moment when the total fre-
+quency response across the feedback loop kG(jω) exactly equals 1 at some
+frequency ω. That is the total amplitude gain must be 1, and the total phase
+shift must be 0◦.
+This is actually a pretty remarkable result. Of course it is quite intuitive that
+selfoscillation tends to occur at frequencies where the feedback signal doesn’t
+cancel the input signal, but rather boosts it. And such boosting tends to be
+strongest at frequencies where we have a 0◦total phase shift across the feedback
+loop. However, what is quite counterintuitive, is that selfoscillation can appear
+(as k is reaching the respective threshold value) only at such frequencies.4
+Therefore for k > 0 the selfoscillation appears at frequencies where the phase
+response of G(s) is 0◦. For k < 0 the selfoscillation appears at frequencies where
+4As k continues to grow into the unstable range, the frequencies of the exploding (or still
+selfoscillating, if the filter is nonlinear) sinusoidal transient response partials can change, since
+the imaginary part of the resonating poles can change as the poles move beyond the imaginary
+axis.
+
+
+--- Page 149 ---
+
+5.3. DIGITAL MODEL
+137
+the phase response of G(s) is 180◦. The respective value of k can be found from
+(5.5) giving
+k =
+1
+G(jω)
+(5.6)
+or, rewriting (5.6) in terms of the amplitude response of G(s):
+k = ±
+1
+|G(jω)|
+(5.7)
+where we take the plus sign if the phase response of G(s) at ω is 0◦and the
+minus sign if the phase response of G(s) at ω is 180◦.
+The just discussed eﬀects are the reason that we used negative feedback in
+the 4-pole lowpass ladder ﬁlter. We want the resonance to occur at the ﬁlter’s
+cutoﬀ. The phase response of a single 1-pole lowpass at the cutoﬀfrequency
+is −45◦, respectively the phase response of a chain of four 1-poles is −180◦,
+exactly what we need for the resonance peak, if we use negative feedback.
+At the same time, the amplitude response of a 1-pole lowpass at the cutoﬀ
+is |1/(1 + j)| = 1/
+√
+2, respectively the amplitude response of a chain of four
+1-poles is (1/
+√
+2)4 = 1/4. According to (5.7), the inﬁnite resonance is attained
+at k = 1/(1/4) = 4.
+At ω = 0 a chain of four 1-pole lowpasses will have a phase shift of 0◦, while
+the amplitude response at ω = 0 is 1. Therefore, in Fig. 5.1 the “selfoscillation”
+at ω = 0 will occur at k = −1. However the amplitude response peak at ω = 0
+hardly can count as resonance.
+5.3
+Digital model
+A naive digital implementation of the ladder ﬁlter shouldn’t pose any problems.
+We will therefore immediately skip to the TPT approach.
+Recalling the instantaneous response of a single 1-pole lowpass ﬁlter (3.29),
+we can construct the instantaneous response of a serial connection of four of
+such ﬁlters. Indeed, let’s denote the instantaneous responses of the respective
+1-poles as fn(ξ) = gξ + sn (obviously, the coeﬃcient g is identical for all four,
+whereas sn depends on the ﬁlter state and therefore cannot be assumed identi-
+cal). Combining two such ﬁlters in series we have
+f2(f1(ξ)) = g(gξ + s1) + s2 = g2ξ + gs1 + s2
+Adding the third one:
+f3(f2(f1(ξ))) = g(g2ξ + gs1 + s2) + s3 = g3ξ + g2s1 + gs2 + s3
+and the fourth one:
+f4(f3(f2(f1(ξ)))) = g(g3ξ + g2s1 + gs2 + s3) =
+= g4ξ + g3s1 + g2s2 + gs3 + s4 = Gξ + S
+where
+G = g4
+
+
+--- Page 150 ---
+
+138
+CHAPTER 5. LADDER FILTER
+S = g3s1 + g2s2 + gs3 + s4
+Using the obtained instantaneous response Gξ + S of the series of 4 1-poles, we
+can redraw the ladder ﬁlter structure as in Fig. 5.5.
++
+ '!&"%#$
+/
+Gξ + S
+/
+•/
+qqq
+M
+M
+M o
+−
+O
+/
+x[n]
+y[n]
+k
+u[n]
+Figure 5.5: TPT 4-pole ladder ﬁlter in the instantaneous response
+form.
+Rather than solving for y, let’s solve for the signal u at the feedback point.
+From Fig. 5.5 we obtain
+u = x −ky = x −k(Gu + S)
+from where
+u = x −kS
+1 + kG
+(5.8)
+We can then use the obtained value of u to process the 1-pole lowpasses one
+after the other, updating their state, and computing y[n] as the output of the
+fourth lowpass.
+Apparently the total instantaneous gain of the zero-delay feedback loop in
+Fig. 5.5 and in (5.8) is −kG. As we should recall from the discussion of 1-pole
+lowpass ﬁlters, 0 < g < 1 for positive cutoﬀsettings. Respectively 0 < G < 1
+and the ﬁlter doesn’t become instantaneously unstable provided k ≥−1.
+5.4
+Feedback shaping
+We have observed that at high resonance settings the amplitude gain of the ﬁlter
+at low frequencies drops (Fig. 5.3). An obvious way to ﬁx this problem would be
+e.g. to boost the input signal by the (1+k) factor.5 However there’s another way
+to address the same issue. We could “kill” the feedback for the low frequencies
+only by introducing a highpass ﬁlter into the feedback path (Fig. 5.6). In the
+simplest case this could be a 1-pole highpass.
+The cutoﬀof the highpass ﬁlter can be static or vary along with the cutoﬀ
+of the lowpasses. The static version has a nice feature that it kills the resonance
+eﬀect at low frequencies regardless of the master cutoﬀsetting, which may be
+desirable if the resonance at low frequencies is considered rather unpleasant
+(Fig. 5.7).
+In principle one can also use other ﬁlter types in the feedback shaping. One
+has to be careful though, since this changes the total phase and amplitude re-
+sponses of the feedback path, thus the frequency of the resonance peak and the
+5We boost the input rather than the output signal for the same reason as when preferring
+to place the cutoff gains in front of the integrators.
+
+
+--- Page 151 ---
+
+5.4. FEEDBACK SHAPING
+139
++
+ '!&"%#$
+/
+LP1
+/
+LP1
+/
+LP1
+/
+LP1
+/
+•
+HP o
+qqq
+M
+M
+M o
+−
+O
+/
+x(t)
+y(t)
+k
+Figure 5.6: Transistor ladder ﬁlter with a highpass in the feedback.
+ω
+|H(jω)|, dB
+ωHP
+ωHP/8
+8ωHP
+0
+-6
+-12
+-18
+Figure 5.7: Amplitude response of the ladder ﬁlter with a static-
+cutoﬀhighpass in the feedback for various lowpass cutoﬀs.
+value of k at which selfoscillation is reached may be changed. E.g., quite coun-
+terintuitively, inserting a 1-pole lowpass into the feedback path can destabilize
+an otherwise stable ﬁlter.
+In order to establish and analyse the latter fact mathematically, we’d need
+to ﬁnd the total amplitude response across the feedback loop at the point where
+the total phase shift is 180◦. Let H1(s) = 1/(1 + s) be the underlying 1-pole
+lowpass of the ladder ﬁlter and let Hf(s) = 1/(1 + s/ωcf) be the lowpass in
+the feedback, with a generally speaking diﬀerent cutoﬀωcf. The 180◦point is
+found from the equation
+4 arg H1(jω) + arg Hf(jω) = 4 arg
+1
+1 + jω + arg
+1
+1 + jω/ωcf
+=
+= −4 arctan ω −arctan ω
+ωcf
+= −π
+(5.9)
+where we have used (2.8). The equation (5.9) looks a bit daunting, if having
+an analytic solution at all. Fortunately, we don’t actually need to know the
+frequency of the 180◦point, it would suﬃce to know the respective amplitude
+responses.
+Let ϕ1(ω) be the negated phase response of H1(s):
+ϕ1(ω) = −arg H1(jω) = arctan ω > 0
+∀ω
+Expressing ω as a function of ϕ1 we have ω = tan ϕ1. Respectively, expressing
+
+
+--- Page 152 ---
+
+140
+CHAPTER 5. LADDER FILTER
+the amplitude response as a function of the (negated) phase response we have
+A1 = |H1(jω)| =
+1
+√
+1 + ω2 =
+1
+p
+1 + tan2 ϕ2
+1
+= cos ϕ1
+(5.10)
+Thus, the total amplitude response of the four 1-poles in the feedforward path
+of the ladder ﬁlter is
+A4
+1(ω) =
+1
+(1 + ϕ2
+1)2
+and the total phase response of the feedforward path is 4ϕ1.
+Since (5.10) is cutoﬀ-independent, it also holds for Hf(s):
+Af = cos ϕf
+where Af = |Hf(jω)|, ϕf = −arg Hf(jω). Now let ω0 be the (unknown to us)
+solution of (5.9), that is the total phase shift at ω0 is 180◦. In terms of the just
+introduced functions ϕ1(ω) and ϕf(ω) equation (5.9) can be rewritten as
+4ϕ1(ω0) + ϕf(ω0) = π
+(5.11)
+Since ϕf(ω) > 0 ∀ω, the 180◦phase shift is achieved earlier than without the
+feedback ﬁlter, that is ω0 < 1 (whatever the value of ωcf is).
+Computing the total amplitude response of all ﬁve 1-pole lowpasses at ω0
+we have
+A4
+1(ω0) · Af(ω0) = cos4 ϕ1(ω0) · cos ϕf(ω0) = cos4
+π
+4 −ϕf(ω0)
+4
+
+· cos ϕf(ω0)
+Considering only the ﬁrst factor we have
+cos4 π
+4 −ϕf
+4
+
+=
+
+
+1 + cos
+π
+2 −ϕf
+2
+
+2
+
+
+2
+=
+
+
+1 + sin ϕf
+2
+2
+
+
+2
+(where we dropped the argument ω0, understanding it implicity). Respectively
+A4
+1 · Af = 1
+4 ·
+
+1 + sin ϕf
+2
+2
+· cos ϕf
+(ω = ω0)
+(5.12)
+Fig. 5.8 contains the graph of (5.12). The interpretation of this graph is like
+follows. Suppose the feedback lowpass’s cutoﬀωcf is very large (ωcf →+∞).
+In the limit the feedback lowpass has no eﬀct and
+ω0 = 1
+ϕf(ω0) = 0
+Af(ω0) = 1
+A4
+1(ω0)Af(ω0) = 1
+4
+(for ωcf = +∞)
+As we begin to lower ωcf back from the inﬁnity, the value of ϕf(ω0) grows
+from zero into the positive value range. The graph in Fig. 5.8 plots the total
+amplitude response of the ﬁve 1-pole lowpasses in the feedback loop against the
+growing ϕf(ω0). We see that the amplitude response grows for quite a while.
+As long as it is above 1/4, the ﬁlter will explode at k = 4. The zero amplitude
+response at ϕf = π/2 corresponds to ωcf = 0, where the extra lowpass is fully
+closed, thus the entire feedback loop is muted.
+
+
+--- Page 153 ---
+
+5.5. MULTIMODE LADDER FILTER
+141
+1
+4
+π/2
+π/5
+0
+ϕf
+A4
+1Af
+Figure 5.8: Total amplitude response of the four feedforward low-
+pass 1-poles plus the feedback lowpass 1-pole at the 180◦phase
+shift point, plotted against the phase shift by the feedback 1-pole.
+At ωcf = 1 (equal cutoﬀs of all 1-poles) from (5.11) we have ϕf(ω0) =
+ϕ1(ω0) = π/5. In Fig. 5.8 one can see that this is the “most unstable” situation
+among all possible ωcf.
+In comparison, if we had a 1-pole highpass in the feedback, then we would
+have arg Hf(jω) > 0 and respectively ϕf(ω) < 0 ∀ω. Therefore the 180◦point
+would be shifted to the right: ω0 > 1. Therefore A4
+1(ω0) < A4
+1(1) < 1/4, while
+Af(ω) < 1 ∀ω, thus the total amplitude response A4
+1Af at the 180◦point would
+decrease and the ﬁlter won’t become “more unstable” than it was before the
+introduction of the extra highpass ﬁlter.
+5.5
+Multimode ladder filter
+Warning! The multimode functionality of the ladder filter is a somewhat special
+feature. There are more straightforward ways to build bandpass and highpass
+ladders, discussed later in this chapter.
+By picking up intermediate signals of the ladder ﬁlter as in Fig. 5.9 we obtain
+the multimode version of this ﬁlter. We then can use linear combinations of
+signals yn to produce various kinds of ﬁltered signal.6
+Suppose k = 0. Apparently, in this case, the respective transfer functions
+6Actually, instead of y0 we could have used the input signal x for these linear combinations.
+However, it doesn’t matter. Since y0 = x−ky4, we can express x via y0 or vice versa. It’s just
+that some useful linear combinations have simpler (independent of k) coefficients if y0 rather
+than x is being used.
+
+
+--- Page 154 ---
+
+142
+CHAPTER 5. LADDER FILTER
++
+ '!&"%#$
+/
+•/
+LP1
+/
+•/
+LP1
+/
+•/
+LP1
+/
+•/
+LP1
+/
+•
+qqq
+M
+M
+M o
+−
+O
+/
+O
+O
+O
+O
+x
+y4
+k
+y0
+y1
+y2
+y3
+Figure 5.9: Multimode ladder ﬁlter.
+associated with each of the yn outputs are
+Hn(s) =
+1
+(1 + s)n
+(n = 0, . . . , 4)
+(5.13)
+If k ̸= 0 then from
+H4(s) =
+1
+k + (1 + s)4
+using the obvious relationship Hn+1(s) = Hn(s)/(s + 1) we obtain
+Hn(s) = (1 + s)4−n
+k + (1 + s)4
+(5.14)
+4-pole highpass mode
+Considering that the 4th order lowpass transfer function (under the assumption
+k = 0) is built as a product of four 1st order lowpass transfer functions 1/(1+s)
+HLP(s) =
+1
+(1 + s)4
+we might decide to build the 4th order highpass transfer function as a product
+of four 1st order highpass transfer functions s/(1 + s):
+HHP(s) =
+s4
+(1 + s)4
+Let’s attempt to build HHP(s) as a linear combination of Hn(s). Apparently,
+a linear combination of Hn(s) must have the denominator k + (1 + s)4, so let’s
+instead construct
+HHP(s) =
+s4
+k + (1 + s)4
+(5.15)
+which at k = 0 will turn into s4/(1 + s)4. We also have HHP(∞) = 1 while the
+four zeros at s = 0 provide a 24dB/oct rolloﬀat ω →0, thus we are still having
+a more or less reasonable highpass. In order to express HHP(s) as a sum of the
+modes we write
+s4
+k + (1 + s)4 = a0(1 + s)4 + a1(1 + s)3 + a2(1 + s)2 + a3(1 + s) + a4
+k + (1 + s)4
+
+
+--- Page 155 ---
+
+5.5. MULTIMODE LADDER FILTER
+143
+that is
+s4 = a0(1 + s)4 + a1(1 + s)3 + a2(1 + s)2 + a3(1 + s) + a4
+We need to ﬁnd an from the above equation, which generally can be done by
+equating the coeﬃcients at equal powers of s in the left- and right-hand sides.
+However, for the speciﬁc equation that we’re having here we could do a shortcut
+by simply formally replacing s + 1 by s (and respectively s by s −1):
+(s −1)4 = a0s4 + a1s3 + a2s2 + a3s + a4
+from where immediately
+a0 = 1, a1 = −4, a2 = 6, a3 = −4, a4 = 1
+The amplitude response corresponding to (5.15) is plotted in Fig. 5.10.
+ω
+|H(jω)|, dB
+ωc
+ωc/8
+8ωc
+0
+-6
+-12
+-18
+Figure 5.10: Amplitude response of the highpass mode of the lad-
+der ﬁlter for various k.
+4-pole bandpass mode
+A bandpass ﬁlter can be built as
+HBP(s) =
+s2
+k + (1 + s)4
+(5.16)
+The two zeros at s = 0 will provide for a −12dB/oct rolloﬀat low frequencies and
+will reduce the −24dB/oct rolloﬀat high frequencies to the same −12dB/oct.
+Notice that the phase response at the cutoﬀis zero:
+HBP(j) =
+−1
+k + (1 + j)4 =
+1
+4 −k
+The coeﬃcients are found from
+s2 = a0(1 + s)4 + a1(1 + s)3 + a2(1 + s)2 + a3(1 + s) + a4
+(s −1)2 = a0s4 + a1s3 + a2s2 + a3s + a4
+The amplitude response corresponding to (5.16) is plotted in Fig. 5.11.
+
+
+--- Page 156 ---
+
+144
+CHAPTER 5. LADDER FILTER
+ω
+|H(jω)|, dB
+ωc
+ωc/8
+8ωc
+0
+-6
+-12
+-18
+Figure 5.11: Amplitude response of the bandpass mode of the lad-
+der ﬁlter for various k.
+Lower-order modes
+Recalling the transfer functions of the modal outputs yn in the absence of the
+resonance (5.13), we can consider the modal signals yn and their respective
+transfer functions (5.14) as a kind of “n-pole lowpass ﬁlters with 4-pole reso-
+nance”.
+“Lower-order” highpasses can be build by considering the zero-resonance
+transfer functions
+HHP(s) =
+sN
+(s + 1)N = (s + 1)4−NsN
+(s + 1)4
+which for k ̸= 0 turn into
+HHP(s) = (s + 1)4−NsN
+k + (s + 1)4
+In a similar way we can build a “2-pole” bandpass
+HBP(s) =
+s
+(s + 1)2 = (s + 1)2s
+(s + 1)4
+(k = 0)
+HBP(s) =
+(s + 1)2s
+k + (s + 1)4
+(k ̸= 0)
+Other modes
+Continuing in the same fashion we can build further modes (the transfer func-
+tions are given for k = 0):
+s
+(s + 1)3
+3-pole bandpass, 6/12 dB/oct
+s2
+(s + 1)3
+3-pole bandpass, 12/6 dB/oct
+
+
+--- Page 157 ---
+
+5.6. HP LADDER
+145
+(s + 1)4 + Ks2
+(s + 1)4
+band-shelving
+s4 −1
+(s + 1)4
+notch
+(s2 + 1)2
+(s + 1)4
+notch
+(s2 + 2Rs + 1)2 + (s2 −2Rs + 1)2
+2(s + 1)4
+2 notches, neutral setting R = 1
+s2 + 1
+(s + 1)4
+2-pole lowpass + notch
+(1 + 1/s2)s4
+(s + 1)4
+2-pole highpass + notch
+(s + 1/s)s2
+(s + 1)4
+2-pole bandpass + notch
+etc. The principles are more or less similar. We are trying to attain a desired
+asymptotic behavior at ω →0 and ω →+∞by having the necessary orders and
+coeﬃcients of the lowest-order and highest-order terms in the numerator. E.g.
+by having s2 as the lowest-order term of the numerator we ensure a 12dB/oct
+rolloﬀat ω →0, or by having s4 as the highest-order term we ensure H(∞) = 1.
+The notch at ω = 1 is generated by placing a zero at s = ±j. The 2-notch version
+is obtained by explicitly writing out the transfer function of a 4-pole multinotch
+described in Section 11.3.
+5.6
+HP ladder
+Performing an LP to HP transformation on the lowpass ladder ﬁlter we ef-
+fectively perform it on each of the underlying 1-pole lowpasses, thus turning
+them into 1-pole highpasses. Thereby we obtain a “true” highpass ladder ﬁl-
+ter (Fig. 5.12).
+Obviously, the amplitude response of the ladder highpass is
+symmetric to the amplitude response of the ladder lowpass (Fig. 5.13).
++
+ '!&"%#$
+/
+HP1
+/
+HP1
+/
+HP1
+/
+HP1
+/
+•/
+qqq
+M
+M
+M o
+−
+O
+/
+x(t)
+y(t)
+k
+Figure 5.12: A “true” highpass ladder ﬁlter.
+The instantaneous gain of a 1-pole highpass is complementary to the instan-
+taneous gain of the 1-pole lowpass:
+1 −
+g
+1 + g =
+1
+1 + g
+
+
+--- Page 158 ---
+
+146
+CHAPTER 5. LADDER FILTER
+ω
+|H(jω)|, dB
+ωc
+ωc/8
+8ωc
+0
+-6
+-12
+-18
+Figure 5.13: Amplitude response of the 4-pole highpass ladder ﬁlter
+for various k.
+where g = ωcT/2.
+Thus the instantaneous gain of a single 1-pole highpass
+is varying within the range (0,1) and so does the gain of the chain of four
+highpasses: 0 < G < 1. Therefore, 4-pole highpass ladder doesn’t get instanta-
+neously unstable for k > −1.
+5.7
+BP ladder
+In order to build a “true” 4-pole bandpass ladder, we replace only half of the
+lowpasses with highpasses (it doesn’t matter which two of the four 1-pole low-
+passes are replaced).
+The total transfer function of the feedforward path is
+thereby
+s2
+(1 + s)4 =
+s
+(1 + s)2 ·
+s
+(1 + s)2
+where each of the s/(1+s)2 factors is built from a serial combination of a 1-pole
+lowpass and a 1-pole highpass:
+s
+(1 + s)2 =
+s
+1 + s ·
+1
+1 + s
+Apparently s/(1 + s)2 = s/(1 + 2s + s2) is a 2-pole bandpass with damping
+R = 1 and a serial combination of two of them makes a 4-pole bandpass. The
+frequency response of s/(1 + s)2 at ω = 1 is 1/2, that is there is no phase-shift.
+Respectively the frequency response of s2/(1 + s)4 at ω = 1 is 1/4, also without
+a phase shift. Therefore we need to use positive rather than negative feedback
+(Fig. 5.14), the selfoscillation still occuring at k = 4, the same as with lowpass
+and highpass ladders.
+Noticing that the ﬁlter structure is invariant relative to the LP to HP trans-
+formation, we conclude that its amplitude response must be symmetric (around
+ω = 1) in the logarithmic frequency scale (Fig. 5.15).
+The question of instantaneous instability is more critical for the bandpass
+ladder, since the feedback is positive.
+The instantaneous gain of a lowpass-
+highpass pair is a product of the instantaneous gains of a 1-pole lowpass and a
+
+
+--- Page 159 ---
+
+5.7. BP LADDER
+147
++
+ '!&"%#$
+/
+LP1
+/
+HP1
+/
+LP1
+/
+HP1
+/
+•/
+qqq
+M
+M
+M o
+O
+/
+x(t)
+y(t)
+k
+Figure 5.14: A “true” bandpass ladder ﬁlter.
+ω
+|H(jω)|, dB
+ωc
+ωc/8
+8ωc
+0
+-6
+-12
+-18
+Figure 5.15: Amplitude response of the 4-pole bandpass ladder
+ﬁlter for various k.
+1-pole highpass:
+g
+1 + g ·
+1
+1 + g
+(where g = ωcT/2). It’s not diﬃcult to verify that the maximum gain of this
+pair is attained at g = 1 and is equal to 1/4. The maximum instantaneous gain
+of two of these pairs is therefore 1/16, and thus the instantaneously unstable
+case doesn’t occur provided k < 16.
+Bandwidth control
+Using (5.3) and the fact that the frequency response of s2/(1 + s)4 at ω = 1
+is 1/4 we obtain the frequency response of the 4-pole bandpass ladder at the
+cutoﬀ
+H(j) =
+1
+4 −k
+Therefore, by multiplying the output (or the input signal) of the 4-pole bandpass
+ladder by 4−k we can turn it into a normalized bandpass, where the bandwidth
+is controlled by varying k.
+There is another way, however. Recall that the normalized 2-pole bandpass
+(4.15) is an LP to BP transformation of the 1-pole lowpass 1/(1 + s). At the
+same time,
+1
+1 + s ·
+s
+1 + s =
+s
+(1 + s)2 =
+s
+1 + 2s + s2 = 1
+2 ·
+2s
+1 + 2s + s2
+
+
+--- Page 160 ---
+
+148
+CHAPTER 5. LADDER FILTER
+is simply a halved version of (4.15) taken at R = 1 and therefore is an LP to BP
+transformation fo the halved 1-pole lowpass 1/2(1+s). This means that Fig. 5.14
+can be replaced by Fig. 5.16 which in turn is an LP to BP transformation of
+Fig. 5.17.
++
+ '!&"%#$
+/
+BPn
+/
+MMMq
+q
+q/
+BPn
+/
+MMMq
+q
+q/
+•/
+qqq
+M
+M
+M o
+O
+/
+x(t)
+y(t)
+k
+1/2
+1/2
+Figure 5.16: 4-pole bandpass ladder ﬁlter expressed in terms of
+normalized 2-pole bandpasses.
++
+ '!&"%#$
+/
+LP1
+/
+MMMq
+q
+q/
+LP1
+/
+MMMq
+q
+q/
+•/
+qqq
+M
+M
+M o
+O
+/
+x(t)
+y(t)
+k
+1/2
+1/2
+Figure 5.17: LP to BP transformation applied to this structure
+produces the 4-pole bandpass ladder in Fig. 5.16.
+We don’t even speciﬁcally care to analyse the structure Fig. 5.17. What is
+important is that the damping parameter of the LP to BP transformation con-
+trols the transformation bandwidth and thereby the bandwidth of the bandpass
+ladder in Fig. 5.16. Thus, introducing the damping control into the normalized
+2-pole bandpasses in Fig. 5.16 we can control the bandpass ladder’s bandwidth
+by simply varying the damping parameter of the underlying 2-pole bandpasses.
+At the same time we still have the k parameter available, which we still can
+use to control the bandwidth of the normalized bandpass (Fig. 5.18). Thus, k
+and R provide two diﬀerent ways of bandwidth control, resulting in somewhat
+diﬀerent amplitude response shapes (Fig. 5.19).7
+Obviously, normalized 2-pole bandpasses with damping control could be im-
+plemented using an SVF. If nonlinearities are involved, however, using TSK/SKF
+2-pole bandpasses might be a better option. Since we didn’t introduce the latter
+yet, we need to postpone the respective discussion. We will return to this ques-
+tion, however, in the discussion of 8-pole bandpass ladder in Section 5.9, where
+the bandwidth control via the 2-pole bandpass damping will be a particularly
+desired feature compared to being somewhat academic in the case of a 4-pole
+bandpass.
+7In principle, k and R have very similar effects. Fundamentally, they both affect the band-
+width and the resonance peak height. In Fig. 5.18 their effect on the resonance peak height is
+compensated, the compensation for k being the 4 −k gain at the output, the compensation
+for R being embedded into the normalized bandpasses. By removing the normalization from
+the bandpasses we effectively introduce the 1/R2 gain into the feedback, and the damping R
+thereby will control the resonance peak height too.
+
+
+--- Page 161 ---
+
+5.8. SALLEN–KEY FILTERS
+149
++
+ '!&"%#$
+/
+BPn
+/
+MMMq
+q
+q/
+BPn
+/
+MMMq
+q
+q/
+•/
+qqq
+M
+M
+M o
+O
+MMMq
+q
+q/
+/
+x(t)
+y(t)
+k
+4 −k
+1/2
+1/2
+Figure 5.18: 4-pole normalized bandpass ladder ﬁlter expressed in
+terms of normalized 2-pole bandpasses.
+ω
+|H(jω)|, dB
+ωc
+ωc/8
+8ωc
+0
+-6
+-12
+-18
+Figure 5.19: Amplitude response of the 4-pole normalized bandpass
+ladder ﬁlter in Fig. 5.18 for two diﬀerent combinations of k and R
+resulting in comparable bandwidths.
+5.8
+Sallen–Key filters
+In this section we are going to introduce two special kinds of 2-pole bandpass
+ladder ﬁlters, the Sallen–Key ﬁlter and its transpose.8
+They are important
+because of their nonlinear versions, since, as linear digital 2-pole ﬁlters go, the
+SVF ﬁlter could be suﬃcient for most applications, and it also provides probably
+the best performance among diﬀerent TPT 2-poles.
+For now we shall develop the linear versions of these ﬁlters. The Sallen–Key
+ﬁlter is more famous than its transpose, but we’ll start with the transpose, for
+the sake of a more systematic presentation of the material.
+Transposed Sallen–Key (TSK) filters
+Attempting to build a 2-pole lowpass ladder ﬁlter (Fig. 5.20) we don’t end up
+with a useful ﬁlter.
+8Despite essentially being bandpass ladder filters, the Sallen–Key filter and its transpose
+can be (and are) used to deliver lowpass and highpass responses as well.
+
+
+--- Page 162 ---
+
+150
+CHAPTER 5. LADDER FILTER
++
+ '!&"%#$
+/
+LP1
+/
+LP1
+/
+•/
+qqq
+M
+M
+M o
+−
+O
+/
+x(t)
+y(t)
+k
+Figure 5.20: 2-pole lowpass ladder ﬁlter (not very useful).
+Indeed, the transfer function of this ﬁlter is
+H(s) =
+1
+k + (1 + s)2
+and the poles are respectively at
+s = −1 ±
+√
+−k = −1 ± j
+√
+k
+(k ≥0)
+Interpreting these pole positions in terms of 2-pole cutoﬀand damping (which
+we can do using (4.13)), we obtain
+
+
+
+
+
+
+
+
+
+
+
+ωc =
+−1 ± j
+√
+k
+ =
+√
+1 + k
+R =
+−Re
+
+−1 ± j
+√
+k
+
+−1 ± j
+√
+k
+
+=
+1
+√
+1 + k
+Thus, ﬁrstly, there is coupling between the feedback amount and the eﬀective
+cutoﬀof the ﬁlter. Secondly, as k grows, R stays strictly positive, thus the ﬁlter
+poles never go into the right semiplane (and, as with the 4-pole ladder ﬁlter,
+this would be quite desired once we make the ﬁlter nonlinear). So, all in all, not
+a very useful structure.
+A similar situation occurs in an attempt to use two 1-pole highpasses instead
+of two 1-pole lowpass in the same structure (the readers may wish verify this
+on their own as an exercise).
+This result is no wonder, considering that the transfer function of a chain
+of two 1-pole lowpasses is 1/(1 + s)2, with the phase response being 0◦only
+at ω = 0 and being 180◦only at ω = ∞(for the highpasses the situation is
+opposite, we have 180◦only at ω = 0 and 0◦only at ω = ∞, which doesn’t
+make a big diﬀerence for our purposes). Thus we don’t get a good resonance
+peak at any ﬁnite location. This however hints at the idea that we might still
+try to build a 2-pole bandpass ladder ﬁlter from a chain of a 1-pole lowpass and
+a 1-pole highpass, as the total phase shift at the cutoﬀwould be 0◦in this case:
+
+1
+1 + s ·
+s
+1 + s
+ 
+s=j
+=
+s
+(1 + s)2
+
+s=j
+=
+j
+(1 + j)2 = 1
+2
+The respective structure is shown in Fig. 5.21. Notice that we don’t invert the
+feedback.
+Computing the transfer function of this ﬁlter we have
+H(s) =
+s
+(1 + s)2
+1 −k
+s
+(1 + s)2
+=
+s
+(1 + s)2 −ks =
+s
+s2 + (2 −k)s + 1
+
+
+--- Page 163 ---
+
+5.8. SALLEN–KEY FILTERS
+151
++
+ '!&"%#$
+/
+LP1
+/
+HP1
+/
+•/
+qqq
+M
+M
+M
+O
+/
+x(t)
+y(t)
+k
+Figure 5.21: 2-pole bandpass ladder ﬁlter.
+The obtained expression is identical to the transfer function of a 2-pole bandpass
+ﬁlter with a damping gain 2R = 2 −k. That is, the ﬁlter in Fig. 5.21 is pretty
+much the same as a linear 2-pole SVF bandpass, at least from the frequency
+response perspective. Notice that k = 0 corresponds to the resonance-neutral
+setting (R = 1) while k = 2 is the self-oscillation point (R = 0). As we should
+remember from the 4-pole bandpass ladder discussion, the maximum possible
+instantaneous gain of the lowpass-highpass pair is 1/4, therefore under the condi-
+tion k < 4 the TPT implementation of Fig. 5.21 doesn’t become instantaneously
+unstable.
+It might seem that we have failed to construct a 2-pole lowpass ﬁlter using
+the above approach, but in fact with a slight modiﬁcation we can obtain one
+from the bandpass ﬁlter in Fig. 5.21. Let’s replace the 1-pole highpass with a
+1-pole multimode with highpass and lowpass outputs (Fig. 5.22).
++
+ '!&"%#$
+/
+LP1
+/
+MM1
+/
+•/
+qqq
+M
+M
+M
+O
+/
+/
+LP
+HP
+x(t)
+y(t)
+y1(t)
+k
+Figure 5.22: 2-pole bandpass ladder ﬁlter with an extra output
+mode.
+Obviously, the signal y(t) is not aﬀected by this replacement. Let’s ﬁnd out
+what kind of signal is y1(t). In order to simplify the computation of the transfer
+function of the entire structure at y1, consider ﬁrst the transfer functions of the
+1-pole multimode ﬁlter used in isolation:
+HLP(s) =
+1
+1 + s
+HHP(s) =
+s
+1 + s
+or, for complex sinusoidal signals of the form est
+YLP(s) =
+1
+1 + sX(s)
+YHP(s) =
+s
+1 + sX(s)
+where X(s)est is the input signal of the multimode 1-pole and YLP(s)est and
+YHP(s)est are the respective output signals. This means that
+YLP(s) = YHP(s)
+s
+
+
+--- Page 164 ---
+
+152
+CHAPTER 5. LADDER FILTER
+Therefore a similar relationship exists between the outputs y1(t) and y(t) of the
+ﬁlter in Fig. 5.22:
+Y1(s) = Y (s)
+s
+and there is the same relationship between their respective transfer functions
+H1(s) = H(s)
+s
+= 1
+s ·
+s
+s2 + (2 −k)s + 1 =
+1
+s2 + (2 −k)s + 1
+where H1(s) the the transfer function for the signal y1(t) in respect to the input
+signal x(t). Therefore y1(t) is an ordinary 2-pole lowpass signal with damping
+gain 2R = 2 −k.
+Thus we have obtained a multimode 2-pole ladder ﬁlter with the lowpass and
+bandpass outputs. We redraw the structure in Fig. 5.22 once again as Fig. 5.23
+to reﬂect what we have just found out about this structure.
++
+ '!&"%#$
+/
+LP1
+/
+MM1
+/
+•/
+qqq
+M
+M
+M
+O
+/
+/
+LP
+HP
+x(t)
+yBP(t)
+yLP(t)
+k
+Figure 5.23: Transposed Sallen–Key (TSK) ﬁlter.
+The structure in Fig. 5.23 happens to be a transpose of the Sallen–Key
+ﬁlter, therefore we will refer to it as the transposed Sallen–Key (TSK) ﬁlter.9
+The transfer functions of the TSK ﬁlter are, as we have found out:
+HLP(s) =
+1
+s2 + (2 −k)s + 1
+HBP(s) =
+s
+s2 + (2 −k)s + 1
+A 2-pole highpass output mode cannot be picked up in a straightforward way,
+but can be obtained with some extra eﬀort. Let’s also turn the ﬁrst lowpass into
+a multimode (Fig. 5.24). It is not diﬃcult to realize that the transfer function
+for the signal at the LP output of MM1a, which is simultaneously the input
+signal of MM1b, is
+HMM1aLP(s) = HLP(s) ·
+
+1
+s + 1
+−1
+=
+s + 1
+s2 + (2 −k)s + 1
+respectively for the signal at the HP output of MM1a we have
+HMM1aHP(s) = s · HMM1aLP(s) =
+(s + 1)s
+s2 + (2 −k)s + 1
+9The author has used the works of Tim Stinchcombe as the information source on the
+Sallen–Key filter.
+The idea to introduce TSK filters as a systematic concept arose from
+discussions with Dr. Julian Parker.
+
+
+--- Page 165 ---
+
+5.8. SALLEN–KEY FILTERS
+153
+Thus we obtain
+HHP(s) = HMM1aHP(s) −HBP(s) =
+(s + 1)s
+s2 + (2 −k)s + 1 −
+s
+s2 + (2 −k)s + 1 =
+=
+s2
+s2 + (2 −k)s + 1
+MM1b
+MM1a
+/
++
+ '!&"%#$
+/
+/
+•/
+qqq
+M
+M
+M
+O
+/
+/
+LP
+HP
+HP
+LP
++
+ '!&"%#$
+−
+O/
+/
+x(t)
+yBP(t)
+yLP(t)
+yHP(t)
+k
+Figure 5.24: Fully multimode TSK ﬁlter.
+Alternative representations
+Recall that 1-pole highpass signal can be obtained as the diﬀerence of the 1-pole
+lowpass ﬁlter’s input and output signals:
+s
+1 + s = 1 −
+1
+1 + s
+Then we can replace the multimode 1-pole in Fig. 5.23 by a 1-pole lowpass,
+constructing the highpass signal “manually” by subtracting the lowpass output
+from the lowpass input (Fig. 5.25). A further modiﬁcation of Fig. 5.25 is formally
+using negative feedback (Fig. 5.26)
++
+ '!&"%#$
+/
+LP1
+/
+•/
+LP1
+/
+•/
++
+ '!&"%#$
+−
+o
+•o
+qqq
+M
+M
+M o
+O
+/
+/
+x(t)
+yLP(t)
+yBP(t)
+k
+Figure 5.25: TSK ﬁlter (alternative representation).
+Highpass TSK filter
+Let’s take the ﬁlter in Fig. 5.21 and switch the order of lowpass and highpass
+1-pole ﬁlters (Fig. 5.27).
+Since this doesn’t change the transfer function of
+the entire chain of 1-poles, the ﬁlter output stays the same, it is still a 2-pole
+bandpass.
+
+
+--- Page 166 ---
+
+154
+CHAPTER 5. LADDER FILTER
++
+ '!&"%#$
+/
+LP1
+/
+•/
+LP1
+/
+•/
++
+ '!&"%#$
+− o
+qqq
+M
+M
+M o
+−
+O
+/
+x(t)
+yLP(t)
+k
+Figure 5.26: TSK ﬁlter (alternative representation, negative feed-
+back form).
++
+ '!&"%#$
+/
+HP1
+/
+LP1
+/
+•/
+qqq
+M
+M
+M
+O
+/
+x(t)
+y(t)
+k
+Figure 5.27: 2-pole bandpass ladder ﬁlter with a diﬀerent order of
+1-pole lowpass and highpass ﬁlters.
+Turning the 1-pole lowpass into a multimode we obtain the structure in
+Fig. 5.28. It’s not diﬃcult to see that the signal at the other output of the
+multimode is a 2-pole highpass one. Therefore, in order to distinguish between
+the ﬁlters in Figs. 5.23 and 5.28 we will refer to the former more speciﬁcally as
+a lowpass TSK filter and to the latter as a highpass TSK filter. If necessary, we
+can add the lowpass output, using a way similar to Fig. 5.24.
++
+ '!&"%#$
+/
+HP1
+/
+MM1
+/
+•/
+qqq
+M
+M
+M
+O
+/
+/
+HP
+LP
+x(t)
+yBP(t)
+yHP(t)
+k
+Figure 5.28: Highpass TSK ﬁlter.
+The highpass versions of Fig. 5.25 and Fig. 5.26 could have been built by
+performing transformations of Fig. 5.28 similarly to how we did with Fig. 5.23.
+However it’s easier just to apply the LP to HP substitution (s ←1/s) to
+Figs. 5.25 and 5.26.
+Sallen–Key filter (SKF)
+We could take the structure in Fig. 5.27 and convert the 1-pole highpass ﬁlter
+into a tranposed multimode 1-pole (Fig. 5.29). By doing this one obtains a
+transpose of Fig. 5.23 which is (apparently) called Sallen–Key filter or shortly
+SKF. If necessary, the highpass input can be added, turning Fig. 5.23 into a
+transpose of Fig. 5.24.
+If instead we take the structure in Fig. 5.21 and convert the lowpass into a
+
+
+--- Page 167 ---
+
+5.8. SALLEN–KEY FILTERS
+155
+MM1
++
+ '!&"%#$
+LP1
+/
+•/
+qqq
+M
+M
+M o
+O/
+/
+/
+/
+LP
+HP
+xBP(t)
+xLP(t)
+y(t)
+k
+Figure 5.29: Sallen–Key ﬁlter.
+transposed multimode 1-pole, we can obtain the structure in Fig. 5.30. In order
+to distinguish between Fig. 5.29 and Fig. 5.30, we will, as we did with their
+transposes, refer to the structure in Fig. 5.29 more speciﬁcally as a lowpass
+Sallen–Key filter and to the structure in Fig. 5.30 as a highpass Sallen–Key
+filter. The lowpass input can be added to the highpass SKF using the transposed
+version of the idea of Fig. 5.24.
+MM1
++
+ '!&"%#$
+HP1
+/
+•/
+qqq
+M
+M
+M o
+O/
+/
+/
+/
+HP
+LP
+xBP(t)
+xHP(t)
+y(t)
+k
+Figure 5.30: Highpass SKF.
+The transposed versions of Fig. 5.25 and Fig. 5.26 make alternative repre-
+sentations of the lowpass SKF. E.g. by transposing the structure in Fig. 5.25 we
+obtain the one in Fig. 5.31.
++
+ '!&"%#$
+/
+LP1
+/
++
+ '!&"%#$
+/
+LP1
+/
+•/
+/
+qqq
+M
+M
+M o
++
+ '!&"%#$o
+•o
+O
+−
+O
+O
+xLP(t)
+xBP(t)
+y(t)
+k
+Figure 5.31: Sallen–Key ﬁlter (alternative representation).
+MIMO Sallen–Key filters
+By turning both 1-poles in Fig. 5.27 into multimodes we’ll obtain a MIMO
+(multiple input multiple output) Sallen–Key ﬁlter, as illustrated in Fig. 5.32.
+Note that the labelling of the inputs and outputs xLP, xHP, yLP, yHP is
+thereby formal. The actual transfer functions are deﬁned for signal paths from
+a given input to a given output:
+
+
+--- Page 168 ---
+
+156
+CHAPTER 5. LADDER FILTER
+MM1a
++
+ '!&"%#$
+MM1b
+/
+•/
+qqq
+M
+M
+M o
+O/
+/
+/
+/
+/
+LP
+HP
+HP
+LP
+xHP(t)
+xLP(t)
+yLP(t)
+yHP(t)
+k
+Figure 5.32: MIMO Sallen–Key ﬁlter (HP-LP).
+yLP
+yHP
+xLP
+2-pole lowpass
+2-pole bandpass
+xHP
+2-pole bandpass
+2-pole highpass
+By putting the feedback path around lowpass-highpass chain rather than
+lowpass-highpass, Fig. 5.32 is turned into Fig. 5.33.
+MM1a
++
+ '!&"%#$
+MM1b
+/
+•/
+qqq
+M
+M
+M o
+O/
+/
+/
+/
+/
+HP
+LP
+LP
+HP
+xLP(t)
+xHP(t)
+yHP(t)
+yLP(t)
+k
+Figure 5.33: MIMO Sallen–Key ﬁlter (LP-HP).
+Allpass TSK/SKF
+Consider again the 2-pole bandpass ladder ﬁlter structure in Fig. 5.21. Suppose
+that we use 1-pole allpasses (1 −s)/(1 + s) instead of low- and highpass ﬁlters.
+We also use negative, rather than positive feedback, although this is more a
+matter of convention. The result is shown in Fig. 5.34, where we also prepared
+the modal outputs.
++
+ '!&"%#$
+/
+•/
+AP1
+/
+•/
+AP1
+/
+•/
+qqq
+M
+M
+M
+−
+O
+/
+/
+/
+x(t)
+y2(t)
+y0(t)
+y1(t)
+k
+Figure 5.34: 2-pole ladder ﬁlter based on allpasses (not so useful).
+
+
+--- Page 169 ---
+
+5.8. SALLEN–KEY FILTERS
+157
+The transfer function of the main output is
+H2(s) =
+
+1−s
+1+s
+2
+1 + k
+
+1−s
+1+s
+2 =
+(1 −s)2
+(1 + s)2 + k(1 −s)2 =
+=
+(1 −s)2
+(1 + k)s2 + 2(1 −k)s + (1 + k) =
+1
+1 + k ·
+(1 −s)2
+s2 + 21 −k
+1 + k s + 1
+which is not exactly a 2-pole allpass transfer function. The denominator of H(s)
+however looks pretty usable, it’s a classical 2-pole transfer function denominator
+with damping R = (1 −k)/(1 + k).
+The transfer functions at the other two outputs can be obtained by “reverse
+application” of the transfer functions of the 1-pole allpasses to H2(s):
+H1(s) =
+1 −s
+1 + s
+−1
+· H2(s) =
+1
+1 + k ·
+(1 + s)(1 −s)
+s2 + 21 −k
+1 + k s + 1
+H0(s) =
+1 −s
+1 + s
+−1
+· H1(s) =
+1
+1 + k ·
+(1 + s)2
+s2 + 21 −k
+1 + k s + 1
+We can try building the desired transfer function
+H(s) = s2 −2Rs + 1
+s2 + 2Rs + 1 =
+s2 −21 −k
+1 + k s + 1
+s2 + 21 −k
+1 + k s + 1
+as a linear combination of H0(s), H1(s) and H2(s):
+a0H0(s) + a1H1(s) + a2H2(s) = H(s)
+Noticing that the denominators of H0(s), H1(s), H2(s) are all identical to the
+desired denominator already, we can discard the common denominator from the
+equation and simply write:
+a0
+(1 + s)2
+1 + k
++ a1
+(1 + s)(1 −s)
+1 + k
++ a2
+(1 −s)2
+1 + k
+= s2 −21 −k
+1 + k s + 1
+or
+a0(1 + 2s + s2) + a1(1 −s2) + a2(1 −2s + s2) = (1 + k)s2 −2(1 −k)s + (1 + k)
+From where a0 = k, a1 = 0, a2 = 1. Thus
+H(s) = H0(s) + kH2(s) =
+s2 −21 −k
+1 + k s + 1
+s2 + 21 −k
+1 + k s + 1
+and the corresponding structure is shown in Fig. 5.35.1011 The main idea of
+this structure is very similar to the one of a TSK ﬁlter with some “embedded”
+
+
+--- Page 170 ---
+
+158
+CHAPTER 5. LADDER FILTER
++
+ '!&"%#$
+/
+•/
+AP1
+/
+AP1
+/
+•/
+qqq
+M
+M
+M o
+−
+O
+MMMq
+q
+q/
++
+ '!&"%#$/
+/
+x(t)
+y(t)
+k
+k
+Figure 5.35: Allpass TSK ﬁlter.
+modal mixture. For that reason we can refer to the ﬁlter Fig. 5.35 as a allpass
+TSK ﬁlter, or we could call it a 2-pole allpass ladder filter.
+The 2-pole damping parameter R is related to k via
+R = (1 −k)/(1 + k)
+k = (1 −R)/(1 + R)
+so that for k = −1 . . . + ∞the damping varies from +∞to −1. The stable
+range R = +∞. . . 0 corresponds to k = −1 . . . 1.
+Transposing the structure in Fig. 5.35 we obtain the structure Fig. 5.36
+which for obvious reasons we will refer to as an allpass SKF.
+•/
++
+ '!&"%#$
+/
+AP1
+/
+AP1
+/
++
+ '!&"%#$
+/
+•/
+qqq
+M
+M
+M o
+−
+O
+MMMq
+q
+q/
+
+/
+x(t)
+y(t)
+k
+k
+Figure 5.36: Allpass SKF.
+5.9
+8-pole ladder
+Connecting eight 1-pole lowpass ﬁlters in series instead of four we can build an
+8-pole lowpass ladder ﬁlter (Fig. 5.37).
+The transfer function of the 8-pole lowpass ladder is obviously
+H(s) =
+1
+k + (1 + s)8
+10It is easy to notice that this structure is very similar to the one of a multinotch filter with
+some specific dry/wet mixing ratio.
+11The same structure can be obtained from a direct form II 1-pole allpass filter by the
+allpass substitution z−1 ←(1 −s)2/(1 + s)2. It is also interesting to notice that, applying
+the allpass substitution principle to the structure in Fig. 5.35, we can replace the series of the
+two 1-pole allpass filters in Fig. 5.35 by any other allpass filter, and the modified structure
+will still be an allpass filter.
+
+
+--- Page 171 ---
+
+5.9. 8-POLE LADDER
+159
++
+ '!&"%#$
+/
+8 × LP1
+/
+•/
+qqq
+M
+M
+M o
+−
+O
+/
+x(t)
+y(t)
+k
+Figure 5.37: 8-pole lowpass ladder ﬁlter.
+and the pole positions are deﬁned by
+k + (1 + s)8 = 0
+giving
+s = −1 + (−k)1/8
+where (−k)1/8 is understood in the multivalued complex root sense:
+(−k)1/8 = |k|1/8ejα
+where
+α = π + 2πn
+8
+The main diﬀerence from the 4-pole ladder lowpass, besides the steeper cutoﬀ
+slope, is that the 180◦phase shift by the chain of 1-pole lowpasses is no longer
+occurring at the cutoﬀ. Instead, the phase response of the lowpass chain at
+the cutoﬀis 360◦. In order to ﬁnd the frequency at which 180◦phase shift is
+occurring we need to solve
+arg
+
+1
+1 + jω
+8
+= −π
+that is
+arg(1 + jω) = π/8
+or
+arg(1 + jω) = 3π/8
+(apparently the values 5π/8 an larger cannot be attained by arg(1 + jω)). This
+gives
+ω = tan π/8
+or
+ω = tan 3π/8
+The value of tan π/8 can be easily found using the formula for the tangent of
+double angle:
+tan 2α =
+2 tan α
+1 −tan2 α
+where letting α = π/8 we obtain
+2 tan π/8
+1 −tan2 π/8 = 1
+2 tan π/8 = 1 −tan2 π/8
+tan2 π/8 + 2 tan π/8 −1 = 0
+ω = tan π/8 =
+√
+2 −1 ≈0.4142
+
+
+--- Page 172 ---
+
+160
+CHAPTER 5. LADDER FILTER
+For tan 3π/8 we can use the formula for the tangent of the complementary angle:
+ω = tan 3π/8 = tan(π/2 −π/8) =
+1
+tan π/8 =
+1
+√
+2 −1 =
+√
+2 + 1 ≈2.4142
+Thus the resonance peak can occur at ω = tan(π/4 ± π/8) =
+√
+2 ± 1. Let’s ﬁnd
+the values of k at which the respective poles hit the imaginary axis. According
+to (5.7), k is the reciprocal of the amplitude amplitude response of the chain of
+eight 1-pole lowpasses at the respective frequencies:
+k =
+ 
+1
+1 + jω
+
+8!−1
+=
+
+1
+√
+1 + ω2
+−8
+=
+p
+1 + ω2
+−8
+=
+=
+q
+1 + tan2(π/4 ± π/8)
+8
+= cos−8(π/4 ± π/8)
+ﬁnally giving
+ω1 ≈0.4142
+k1 ≈1.884
+ω2 ≈2.4142
+k2 ≈2174
+Thus the selfoscillation at ω1 is occurring way much earlier than the one at ω2.
+It is very unlikely that even in a nonlinear version of this ﬁlter, which allows
+going into unstable range of k, we will use k as large as 2174. It also hints
+to the fact that the second resonance is way much weaker than the ﬁrst one.
+Therefore, for practical purposes we will simply ignore the second resonance and
+say that the inﬁnite resonance is occuring at ω =
+√
+2 −1 ≈0.4142 at k ≈1.884.
+Fig. 5.38 illustrates the amplitude response behavior for various k.
+ω
+|H(jω)|, dB
+ωc
+ωc/8
+8ωc
+(
+√
+2 −1)ωc
++6
+0
+-6
+-12
+-18
+Figure 5.38: Amplitude response of the 8-pole lowpass ladder ﬁlter
+for various k.
+Considering that at k = 0 the amplitude response of a chain of eight 1-
+poles at the cutoﬀis (1/
+√
+2)8 = 1/16, which is ca. −24dB, we could treat the
+resonance frequency ω =
+√
+2 −1 as the “user-facing” cutoﬀfrequency instead,
+and in practical implementations of the ﬁlter let the cutoﬀof the underlying 1-
+poles equal the “user-facing” cutoﬀmultiplied by 1/(
+√
+2−1) =
+√
+2+1 ≈2.4142.
+
+
+--- Page 173 ---
+
+5.9. 8-POLE LADDER
+161
+One could ask the following question: the phase response of the chain of
+eight 1-poles at ω = 1 is 0◦, therefore why don’t we simply use positive feed-
+back to create the resonance peak at ω = 1? The problem is that the phase
+response at ω = 0 is also 0◦. Since the amplitude response at ω = 0 is 1, the
+selfoscillation will occur already at k = 1, whereas at ω = 1 it will occur only
+at k = 1/(1/
+√
+2)8 = 16.
+The instantaneously unstable range of k is found similarly to the 4-pole
+lowpass ladder and is k < −1.
+Various modal mixtures for the 8-pole lowpass ladder ﬁlter can be built in
+a similar way to the 4-pole ladder ﬁlter. However the fact that the resonance
+frequency is noticeably lower than the cutoﬀfrequency of the underlying 1-poles
+will aﬀect the shapes of the resulting modal mixtures.
+Some smart playing
+around with the modal mixture coeﬃcients can sometimes reduce the eﬀect of
+this discrepancy.
+8-pole highpass ladder
+Replacing the 1-pole lowpasses with highpasses we obtain an 8-pole highpass
+ladder ﬁlter (Fig. 5.39). As we already know from the discussion of the 4-pole
+highpass, it essentially the same as lowpass except for the s ←1/s substitution.
+The instantaneously unstable range of k is found similarly to the 4-pole highpass
+ladder and is k < −1.
++
+ '!&"%#$
+/
+8 × HP1
+/
+•/
+qqq
+M
+M
+M o
+−
+O
+/
+x(t)
+y(t)
+k
+Figure 5.39: 8-pole highpass ladder ﬁlter.
+8-pole bandpass ladder
+Replacing half of the lowpasses with highpasses in Fig. 5.37 we obtain the 8-pole
+bandpass ladder ﬁlter, where we shouldn’t forget that in a bandpass ladder the
+feedback shouldn’t be inverted (Fig. 5.40).
++
+ '!&"%#$
+/
+4 × LP1HP1
+/
+•/
+qqq
+M
+M
+M o
+O
+/
+x(t)
+y(t)
+k
+Figure 5.40: 8-pole bandpass ladder ﬁlter.
+The total gain at the cutoﬀof the 1-pole chain is
+
+s
+(1 + s)2
+4 
+s=j
+=
+1
+2
+4
+= 1
+16
+
+
+--- Page 174 ---
+
+162
+CHAPTER 5. LADDER FILTER
+therefore selfoscillation occurs at k = 16. Fig. 5.41 illustrates the amplitude
+response behavior at various k. Note that the amplitude response is pretty low
+(particularly, for k = 0 it peaks at −24dB), therefore additional boosting of the
+output signal may be necessary in practical usage.
+ω
+|H(jω)|, dB
+ωc
+ωc/8
+8ωc
+-12
+-18
+-24
+-30
+-36
+Figure 5.41: Amplitude response of the 8-pole bandpass ladder
+ﬁlter for various k ≥0.
+The instantaneously unstable range of k is found similarly to the 4-pole
+bandpass ladder and is k ≥28 = 256.
+An interesting feature of the 8-pole bandpass ladder is that at negative k
+the ﬁlter obtains two resonance peaks (Fig. 5.42).12
+Indeed, notice that the
+phase response of the 8-pole lowpass-highpass chain is the same as the one of
+the 8-pole lowpass chain:
+arg
+s4
+(1 + s)8 = arg
+1
+(1 + s)8
+s = jω, ω ∈R
+Thus we still have a 180◦phase shift at ω =
+√
+2 ± 1.
+The amplitude response of a single lowpass-highpass pair at ω =
+√
+2 ± 1 is
+
+
+
+s
+(1 + s)2
+
+s=j(
+√
+2±1)
+
+
+
+=
+√
+2 ± 1
+1 + (
+√
+2 ± 1)2 =
+1
+(
+√
+2 ∓1) + (
+√
+2 ± 1) =
+1
+2
+√
+2
+therefore selfoscillation occurs at k = −(2
+√
+2)4 = −64.
+8-pole bandpass ladder with bandwidth control
+The occurence of two resonance peaks in an 8-pole bandpass ladder at k < 0
+motivates the introduction of the possibility to control the distance between
+these two peaks. In Section 5.7 we have introduced two diﬀerent approaches
+to control the 4-pole bandpass ladder’s bandwidth. Apparently, the approach
+using the k parameter is not good for our goal here, since we don’t want to aﬀect
+12In nonlinear versions of this filter this can generate a particularly complex sound, as the
+two resonance peaks and the input signal fight for the saturation headroom.
+
+
+--- Page 175 ---
+
+5.9. 8-POLE LADDER
+163
+ω
+|H(jω)|, dB
+ωc
+ωc/8
+8ωc
+(
+√
+2 −1)ωc
+(
+√
+2 + 1)ωc
+-24
+-30
+-36
+-42
+-48
+Figure 5.42: Amplitude response of the 8-pole bandpass ladder
+ﬁlter for various k < 0.
+the amplitude response shape in the vertical direction. Also, from Fig. 5.42
+it seems that the variation of k in the negative range has little eﬀect on the
+actual bandwidth. On the other hand, the approach using the damping of the
+underlying 2-pole bandpasses looks much more promising.
+Representing the 8-pole bandpass ladder in terms of normalized 2-pole band-
+passes (Fig. 5.43) we notice that it is an LP to BP transformation of the ﬁlter
+in Fig. 5.44. The ﬁlter in Fig. 5.44 is essentially the same as the ordinary 4-pole
+lowpass ladder (Fig. 5.1), except that
+- the feedback is positive, so that selfoscillation at ω = 1 occurs at some
+negative value of k
+- the output signal amplitude and the feedback amount are 16 times lower,
+thus selfoscillation at ω = 1 doesn’t occur at k = −4 but at k = −64
+(which matches the already established fact of selfoscillation of Fig. 5.40
+and equivalently Fig. 5.43 at k = −64).
+Therefore by controlling the bandwidth of the LP to BP transformation, we will
+control the distance between the resonance peaks in Fig. 5.42.
++
+ '!&"%#$
+/
+BPn
+/
+MMMq
+q
+q/
+•/
+qqq
+M
+M
+M o
+O
+/
+x(t)
+y(t)
+k
+1/2
+_
+_
+_
+_
+_
+_
+_
+_
+_
+_
+_
+
+
+
+
+
+
+_ _ _ _ _ _ _ _ _ _ _
+
+
+
+
+
+
+×4 times
+Figure 5.43: 8-pole bandpass ladder ﬁlter expressed in terms of
+normalized 2-pole bandpasses.
+
+
+--- Page 176 ---
+
+164
+CHAPTER 5. LADDER FILTER
++
+ '!&"%#$
+/
+LP1
+/
+MMMq
+q
+q/
+•/
+qqq
+M
+M
+M o
+O
+/
+x(t)
+y(t)
+k
+1/2
+_
+_
+_
+_
+_
+_
+_
+_
+_
+_
+_
+
+
+
+
+
+
+_ _ _ _ _ _ _ _ _ _ _
+
+
+
+
+
+
+×4 times
+Figure 5.44: 4-pole lowpass ladder ﬁlter with positive feedback and
+additional gains of 1/2. The LP to BP substitution applied to this
+ﬁlter produces the ﬁlter in Fig. 5.43.
+Since the resonance peak in Fig. 5.44 is occurring at ω = 1, the formula
+(4.20) expresses R in terms of the distance between the two images of this peak
+after the LP to BP transformation. Therefore we can directly use the formula
+(4.20) to control the distance between the resonance peaks in Fig. 5.43. The
+prewarping techniques described in Section 4.6 also apply, thereby allowing us
+to achieve the exact positioning of the resonance peaks (in the limit k →−64).
+There is an important question concerning the choice of the speciﬁc topology
+for the normalized bandpasses BPn. Of course, the most obvious choice would
+be to use an SVF. This should work completely ﬁne in the linear case. In a
+nonlinear case, however, we might want to use a diﬀerent topology. Particularly,
+we might want that at R = 1 our controlled-bandwidth topology becomes fully
+identical to Fig. 5.40 (therefore obtaining the sound, which is identical to the
+one of the structure in Fig. 5.40 even in the presence of nonlinear eﬀects).
+Assuming that Fig. 5.40 implies interleaved 1-pole low- and highpasses (as
+shown in Fig. 5.45), a good solution is provided by the TSK/SKF ﬁlters. E.g.
+considering the structure in Fig. 5.21 (which is essentially the TSK ﬁlter from
+Fig. 5.23), we can notice that at k = 0 it becomes fully equivalent to a sin-
+gle lowpass-highpass pair. This suggests that we could use this structure to
+construct a halved normalized bandpass (Fig. 5.46), where expressing the TSK
+feedback k in terms of damping R we have k = 2(1 −R). Note that at R = 1
+not only the feedback path in Fig. 5.46 is disabled, but also the output gain
+element R is becoming transparent. Using the halved normalized bandpass in
+Fig. 5.46, we could reimplement Fig. 5.45 as Fig. 5.47.
+5.10
+Diode ladder
+In the diode ladder ﬁlter the serial connection of four 1-pole lowpass ﬁlters (im-
+plemented by the transistor ladder) is replaced by a more complicated structure
+of 1-pole ﬁlters (implemented by the diode ladder). The block diagram of the
+diode ladder is shown in Fig. 5.48, while the diode ladder ﬁlter adds the feed-
+back loop around that structure, feeding the fourth output of the diode ladder
+into the diode ladder’s input (Fig. 5.49).
+
+
+--- Page 177 ---
+
+5.10. DIODE LADDER
+165
++
+ '!&"%#$
+/
+LP1
+/
+HP1
+/
+•/
+qqq
+M
+M
+M o
+O
+/
+x(t)
+y(t)
+k
+_
+_
+_
+_
+_
+_
+_
+_
+_
+_
+_
+
+
+
+
+
+
+_ _ _ _ _ _ _ _ _ _ _
+
+
+
+
+
+
+×4 times
+Figure 5.45: Fig. 5.40 implemented by interleaved 1-pole low- and
+high-passes.
++
+ '!&"%#$
+/
+LP1
+/
+HP1
+/
+•/
+qqq
+M
+M
+M
+O
+MMMq
+q
+q/
+/
+x(t)
+y(t)
+2(1 −R)
+R
+Figure 5.46: Halved normalized TSK bandpass.
++
+ '!&"%#$
+/
++
+ '!&"%#$
+/
+LP1
+/
+HP1
+/
+•/
+qqq
+M
+M
+M
+O
+MMMq
+q
+q/
+•/
+qqq
+M
+M
+M o
+O
+/
+x(t)
+y(t)
+2(1 −R)
+R
+k
+_
+_
+_
+_
+_
+_
+_
+_
+_
+_
+_
+_
+_
+_
+_
+_
+_
+_
+_
+
+
+
+
+
+
+
+
+
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+
+
+
+
+
+
+
+
+×4 times
+Figure 5.47: 8-pole bandpass ladder ﬁlter expressed in terms of
+halved normalized TSK bandpasses.
+It is instructive to write out the 1-pole equations implied by Fig. 5.48:
+˙y1 = ωc
+ (x + y2) −y1
+
+˙y2 = ωc
+ (y1 + y3)/2 −y2
+
+˙y3 = ωc
+ (y2 + y4)/2 −y3
+
+˙y4 = ωc
+ y3/2 −y4
+
+(5.18)
+In this form it’s easier to guess the reason for the gain elements 1/2 used in
+Fig. 5.48, they perform the averaging between the feedforward and feedback
+signals. However this averaging in (5.18) and Fig. 5.48 is not done fully consis-
+
+
+--- Page 178 ---
+
+166
+CHAPTER 5. LADDER FILTER
++
+ '!&"%#$
+/
+LP1
+/
+•/
++
+ '!&"%#$
+/
+MMq
+q/
+LP1
+/
+•/
++
+ '!&"%#$
+/
+MMq
+q/
+LP1
+/
+•/
+MMq
+q/
+LP1
+/
+•/
+
+
+
+
+
+
+
+x(t)
+y1(t)
+y2(t)
+y3(t)
+y4(t)
+1/2
+1/2
+1/2
+Figure 5.48: Diode ladder.
++
+ '!&"%#$
+/
+Diode ladder
+/
+•/
+qqq
+M
+M
+M o
+−
+O
+/
+x(t)
+y(t)
+y4(t)
+k
+Figure 5.49: Diode ladder ﬁlter.
+tently. It would have been more consistent to have no 1/2 gain element at the
+input of the fourth lowpass, rather than of the ﬁrst one:
+˙y1 = ωc
+ (x + y2)/2 −y1
+
+˙y2 = ωc
+ (y1 + y3)/2 −y2
+
+˙y3 = ωc
+ (y2 + y4)/2 −y3
+
+˙y4 = ωc
+ y3 −y4
+
+(5.19)
+in which case the ﬁrst lowpass would take (x + y2)/2 as its input, the second
+lowpass would take (y1 + y3)/2 as its input, the third lowpass would take (y2 +
+y4)/2 as its input, and the fourth lowpass would take y3 as its input. However,
+(5.18) is a more traditional way to implement a diode ladder ﬁlter. Anyway, the
+diﬀerence between (5.18) and (5.19) is actually not that large, since (as we are
+going to show below) they result in one and the same transfer function,
+The more complicated connections between the 1-pole lowpasses present in
+the diode ladder “destroy” the frequency response of the ladder in a remarkable
+form, which, is responsible for the characteristic diode ladder ﬁlter sound.13
+Generally, the behavior of the diode ladder ﬁlter is less “straightforward” than
+the one of the transistor ladder ﬁlter.
+Transfer function
+We are going to develop the transfer function for the diode ladder in a gen-
+eralized form (Fig. 5.50), where Hn(s) denote blocks with respective transfer
+functions. In the case of Fig. 5.48 and (5.18) we would have
+H1(s) = G(s)
+H2(s) = H3(s) = H4(s) = G(s)
+2
+(5.20)
+13One could argue that the characteristic sound of diode ladder filters is due to nonlinear
+behavior, however the nonlinear aspects do not show up unless the filter is driven hot enough.
+
+
+--- Page 179 ---
+
+5.10. DIODE LADDER
+167
+while in the case of (5.19) we would respectively have
+H1(s) = H2(s) = H3(s) = G(s)
+2
+H4(s) = G(s)
+(5.21)
+where
+G(s) =
+1
+1 + s
+(5.22)
++
+ '!&"%#$
+/
+H1(s)
+/
+•/
++
+ '!&"%#$
+/
+H2(s)
+/
+•/
++
+ '!&"%#$
+/
+H3(s)
+/
+•/
+H4(s)
+/
+•/
+
+
+
+
+
+
+
+x(t)
+y1(t)
+y2(t)
+y3(t)
+y4(t)
+Figure 5.50: Generalized diode ladder in transfer function form.
+Assuming complex exponential signals est, for the H4(s) block we have
+y4 = H4y3
+(where H4 is short for H4(s)), therefore
+1
+H4
+y4 = y3
+(5.23)
+For the H3(s) block we have
+y3 = H3(y2 + y4)
+Substituting (5.23) we have
+1
+H4
+y4 = H3(y2 + y4)
+1
+H34
+y4 = y2 + y4
+1 −H34
+H34
+y4 = y2
+(5.24)
+where H34 is a short notation for H3H4.
+For the H2(s) block we have
+y2 = H2(y1 + y3)
+Substituting (5.23) and (5.24) we have
+1 −H34
+H34
+y4 = H2
+
+y1 + 1
+H4
+y4
+
+
+
+--- Page 180 ---
+
+168
+CHAPTER 5. LADDER FILTER
+1 −H34
+H234
+y4 = y1 + 1
+H4
+y4
+1 −H34 −H23
+H234
+y4 = y1
+(5.25)
+For the H1(s) block we have
+y1 = H1(x + y2)
+Substituting (5.24) and (5.25) we have
+1 −H34 −H23
+H234
+y4 = H1
+
+x + 1 −H34
+H34
+y4
+
+1 −H34 −H23
+H1234
+y4 = x + 1 −H34
+H34
+y4
+1 −H34 −H23 −H12(1 −H34)
+H1234
+y4 = x
+1 −H12 −H23 −H34 + H1234
+H1234
+y4 = x
+∆(s) = y4
+x =
+H1234
+1 −H12 −H23 −H34 + H1234
+(5.26)
+where ∆(s) is the diode ladder’s transfer function. It is easy to see that sub-
+stituting (5.20) or (5.21) into (5.26) gives identical results, therefore transfer
+functions arising out of (5.18) and (5.19) are identical.
+Formula (5.26) also
+gives one more hint at the reason to use a 1/2 gain with all 1-poles except the
+ﬁrst or the last one, as in this case we get unit amplitude response at ω = 0:
+∆(0) =
+1
+8
+1 −1
+2 −1
+4 −1
+4 + 1
+8
+= 1
+Since we are speciﬁcally interested in Fig. 5.48, let’s write its transfer func-
+tion in a more detailed form. Substituting ﬁrst (5.20) and then (5.22) into (5.26)
+we have
+∆(s) =
+G4/8
+1 −G2 + G4/8 =
+1
+8G−4 −8G−2 + 1 =
+=
+1
+8(1 + s)4 −8(1 + s)2 + 1 =
+1
+T4(s + 1)
+(5.27)
+where T4(x) = 8x4 −8x2 + 1 is the fourth-order Chebyshev polynomial.14 The
+poles of ∆(s) are therefore found from s + 1 = xn or s = −1 + xn where
+xn ∈(−1, 1) are the roots of the Chebyshev polynomial T4(x):
+xn = ±1
+2 ±
+1
+2
+√
+2
+14Although the denominator of Δ(s) is a Chebyshev polynomial, this has nothing to do
+with Chebyshev filters, despite the name.
+
+
+--- Page 181 ---
+
+5.10. DIODE LADDER
+169
+Therefore the poles of ∆(s) are purely real and located within (−2, 0):
+pn = −1 ± 1
+2 ±
+1
+2
+√
+2
+(5.28)
+Since the poles of ∆(s) are located on the negative real semiaxis and there are
+no zeros, |∆(jω)| is monotonically decreasing to zero on ω ∈[0, +∞). Thus
+∆(s) is a lowpass.15
+In Section 2.16 we have seen that two linear systems sharing the same trans-
+fer function are equivalent as long as the only modulation which is happening is
+the cutoﬀmodulation. Therefore, as long as our implementation is purely linear,
+we could replace the complicated diode ladder feedback system in Fig. 5.50 with
+simply a serial connection of four 1-poles, whose cutoﬀs are deﬁned by (5.28).16
+Further details of replacement of the diode ladder by a series of 1-poles can be
+taken from Section 8.2 where general principles of building serial ﬁlter chains
+are discussed.
+The transfer function of the diode ladder ﬁlter is obtained from (5.27) giving
+H(s) =
+∆
+1 + k∆=
+1
+k + ∆−1 =
+1
+k + T 4(1 + s) =
+1
+8(1 + s)4 −8(1 + s)2 + 1 + k
+(5.29)
+The corresponding amplitude response is plotted in Fig. 5.51.
+ω
+|H(jω)|, dB
+k = 16
+k = 0
+ωc
+ωc/8
+8ωc
+0
+-6
+-12
+-18
+-24
+Figure 5.51: Amplitude response of the diode ladder ﬁlter for var-
+ious k.
+The poles of the diode ladder ﬁlter, if necessary, can be obtained by solving
+8(1 + s)4 −8(1 + s)2 + 1 + k = 0
+which is a biquadratic equation in (1 + s).
+15The amplitude response of Δ(s) can be seen in Fig. 5.51 at k = 0.
+16Note that such replacement only gives a correct modal output y4, which is the one we
+usually need. Other modal outputs, if needed at all, would have to be obtained in a more
+complicated way by combining the output signals of the 1-poles.
+
+
+--- Page 182 ---
+
+170
+CHAPTER 5. LADDER FILTER
+In regards to the multimode diode ladder ﬁlter, notice that the transfer
+functions corresponding to the yn(t) outputs are diﬀerent from the ones of the
+transistor ladder, therefore the mixing coeﬃcients which worked for the modes
+of the transistor ladder ﬁlter, are not going to work the same for the diode
+ladder.
+Resonance
+In order to obtain the information about the resonating peak, we need to ﬁnd
+frequencies at which the phase response of ∆(s) is 0◦or 180◦. Therefore we are
+interested in the solutions to the equation
+Im
+ 8(1 + s)4 −8(1 + s)2 + 1
+
+= 0
+where s = jω, ω ∈R
+Substituting jω for s we have
+Im
+ 8(1 + s)4 −8(1 + s)2 + 1
+
+= 8 Im
+ (1 + jω)4 −(1 + jω)2
+=
+= Im
+ (1 −ω2 + 2jω)2 −(1 −ω2 + 2jω)
+
+= 4(1 −ω2)ω −2ω = 0
+The solution ω = 0 is not very interesting. Therefore we cancel the common
+factor 2ω obtaining
+2(1 −ω2) = 1
+and therefore
+ω = ± 1
+√
+2
+Now, in order to ﬁnd the selfoscillation boundary value of k we need to ﬁnd the
+frequency response of ∆(s) at ω = 1/
+√
+2. Substituting s = j/
+√
+2 into (5.27)
+and using (5.6) we have
+k = 8(1 + s)4 −8(1 + s)2 + 1 = 8
+
+1 + j
+√
+2
+4
+−8
+
+1 + j
+√
+2
+2
++ 1 =
+= 8
+1
+2 + j
+√
+2
+2
+−8
+1
+2 + j
+√
+2
+
++ 1 =
+= 8
+
+−7
+4 + j
+√
+2
+
+−8
+1
+2 + j
+√
+2
+
++ 1 = 1 −14 −4 = −17
+Now, since we are already having negative feedback in Fig. 5.48, the selfoscilla-
+tion occurs at k = 17.
+Note that the amplitude response in Fig. 5.51 is matching the above analysis
+results.
+TPT model
+Converting Fig. 5.48 to the instantaneous response form we obtain the structure
+in Fig. 5.52. From Fig. 5.52 we wish to obtain the instantaneous response of
+the entire diode ladder. Then we could use this response to solve the zero-delay
+feedback equation for the main feedback loop of Fig. 5.49.
+The structure in Fig. 5.52 looks a bit complicated to solve. Of course we
+could always write a system of linear equations and solve it in a general way,
+e.g. using Gauss elimination, but this has its own complications. Therefore we
+
+
+--- Page 183 ---
+
+5.10. DIODE LADDER
+171
++
+ '!&"%#$
+/
+2gξ+s1
+/
+•/
++
+ '!&"%#$
+/
+gξ+s2
+/
+•/
++
+ '!&"%#$
+/
+gξ+s3
+/
+•/
+gξ+s4
+/
+•/
+
+
+
+
+
+
+
+x
+y1
+y2
+y3
+y4
+Figure 5.52: Diode ladder in the instantaneous response form.
++
+ '!&"%#$
+/
+2gξ+s1
+/
+•/
++
+ '!&"%#$
+/
+gξ+s2
+/
+•/
++
+ '!&"%#$
+/
+gξ+s3
+/
+•/
+gξ+s4
+/
+•/
+
+
+
+
+
+
+
+x
+y1
+y2
+y3
+y4
+_
+_
+_
+_
+_
+_
+_
+_
+_
+_
+_
+_
+_
+
+
+
+
+
+
+_ _ _ _ _ _ _ _ _ _ _ _ _
+
+
+
+
+
+
+_
+_
+_
+_
+_
+_
+_
+_
+_
+_
+_
+_
+_
+_
+_
+_
+_
+_
+_
+_
+_
+
+
+
+
+
+
+
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+
+
+
+
+
+
+Figure 5.53: Diode ladder in the nested instantaneous response
+form.
+would rather like to see if we somehow could still use the approach of nested
+zero-delay feedback loops, as we have been doing with other ﬁlters until now.
+Introducing the nested systems, as shown in Fig. 5.53 by dashed lines, we
+can ﬁrst treat the innermost system which has input y2 and outputs y3 and y4.
+The equations for this system are
+y3 = g(y2 + y4) + s3
+y4 = gy3 + s4
+Solving for y3, we obtain
+y3 =
+g
+1 −g2 y2 + gs4 + s3
+1 −g2
+= g23y2 + s23
+where g23 and s23 are new variables introduced as shown above. Since gξ + sn
+denote 1-pole lowpasses with halved input signals, 0 < g < 1/2. Respectively
+0 < g2 < 1/4 and thus the zero-delay feedback loop doesn’t get instantaneously
+unstable. The range of g23 is
+0 < g23 =
+g
+1 −g2 <
+1/2
+1 −(1/2)2 = 1/2
+3/4 = 2
+3
+Going outside to the next nesting level we have
+y2 = g(y1 + y3) + s2 = gy3 + gy1 + s2 = g(g23y2 + s23) + gy1 + s2
+Solving for y2:
+y2 =
+g
+1 −gg23
+y1 + gs23 + s2
+1 −gg23
+= g12y1 + s12
+
+
+--- Page 184 ---
+
+172
+CHAPTER 5. LADDER FILTER
+where 0 < gg23 < 1/2 · 2/3 = 1/3, thus the zero-delay feedback loop doesn’t get
+instantaneously unstable. The range of g12 is
+0 < g12 =
+g
+1 −gg23
+<
+1/2
+1 −1
+2 · 2
+3
+=
+1/2
+1 −1/3 = 1/2
+2/3 = 3
+4
+Going outside to the outermost level we have
+y1 = 2g(x + y2) + s1 = 2gy2 + 2gx + s1 = 2g(g12y1 + s12) + 2gx + s1
+Solving for y1:
+y1 =
+2g
+1 −2gg12
+x + 2gs12 + s1
+1 −2gg12
+= g01x + s01
+where 0 < 2gg12 < 2 · 1/2 · 3/4 = 3/4, thus the zero-delay feedback loop doesn’t
+get instantaneously unstable. The range of g01 is
+0 < g01 =
+2g
+1 −2gg12
+<
+1
+1 −2 · 1
+2 · 3
+4
+=
+1
+1 −3/4 =
+1
+1/4 = 4
+Introducing for consistency the notation y4 = gy3 + s4 = g34y3 + s34, we
+obtain the instantaneous response for the entire ladder
+y4 = g34y3 + s34 =
+= g34(g23y2 + s23) + s34 = g34g23y2 + (g34s23 + s34) = g24y2 + s24 =
+= g24(g12y1 + s12) + s24 = g24g12y1 + (g24s12 + s24) = g14y1 + s14 =
+= g14(g01x + s01) + s14 = g14g01x + (g14s01 + s14) = g04x + s04
+it’s not diﬃcult to realize that
+0 < g04 = g01g12g23g34 < 4 · 3
+4 · 2
+3 · 1
+2 = 1
+Now g04 is the instantaneous gain of the entire diode ladder. Respectively the
+total gain of the of the zero-delay feedback loop in Fig. 5.49 is −kg04 and thus
+the feedback doesn’t get instantaneously unstable provided k ≥−1.
+SUMMARY
+The transistor ladder ﬁlter model is constructed by placing a negative feedback
+around a chain of four identical 1-pole lowpass ﬁlters. The feedback amount
+controls the resonance.
+The same idea of a feedback loop around a chain of several ﬁlters also results
+in further ﬁlter types such as 8-pole ladder, diode ladder and SKF/TSK.
+

@@ -1,0 +1,214 @@
+--- Page 194 ---
+
+16
+Appendix G. Expert Macros
+ 
+16.1
+G.1. Clipping > Clip Max / IClip Max
+ 
+The signal at the upper input is clipped from the top by the threshold value at the lower 
+input. Changes to the threshold do not generate events.
+16.2
+G.2. Clipping > Clip Min / IClip Min
+ 
+The signal at the upper input is clipped from the bottom by the threshold value at the low­
+er input. Changes to the threshold do not generate events.
+16.3
+G.3. Clipping > Clip MinMax / IClipMinMax
+ 
+The signal at the upper input is clipped from the bottom by the threshold value at the 
+middle input and from the top by the threshold value at the lower input. Changes to the 
+thresholds do not generate events.
+16.4
+G.4. Math > 1 div x
+ 
+Appendix G. Expert Macros
+ 
+REAKTOR 5.5 - Core Reference - 194
+
+
+--- Page 195 ---
+
+Computes the reciprocal of the input value
+16.5
+G.5. Math > 1 wrap
+ 
+Wraps the incoming value into the range [-0.5..0.5] (the wrapping period is 1).
+16.6
+G.6. Math > Imod
+ 
+Computes the remainder of the division of upper value by the lower value. The output 
+event is sent each time there is an event at either of the inputs or at both of them simulta­
+neously.
+16.7
+G.7. Math > Max / IMax
+ 
+Computes the maximum of the input values. The output event is sent each time there is 
+an event at either of the inputs or at both of them simultaneously.
+16.8
+G.8. Math > Min / IMin
+ 
+Computes the minimum of the input values. The output event is sent each time there is an 
+event at either of the inputs or at both of them simultaneously.
+Appendix G. Expert Macros
+G.5. Math > 1 wrap
+ 
+REAKTOR 5.5 - Core Reference - 195
+
+
+--- Page 196 ---
+
+16.9
+G.9. Math > round
+ 
+Rounds the incoming value to the nearest integer. The result of rounding values exactly in 
+the middle between two integers is not defined.
+E.g. 1.5 could be rounded either to 1 or 2.
+16.10 G.10. Math > sign +-
+ 
+Outputs either 1 or –1 depending on the sign of the input (positive numbers produce 1, 
+negative –1, the zero is never output).
+16.11 G.11. Math > sqrt (>0)
+ 
+Square root approximation. Works only for inputs greater than 0.
+16.12 G.12. Math > sqrt
+ 
+Square root approximation (zero input is allowed).
+16.13 G.13. Math > x(>0)^y
+ 
+Appendix G. Expert Macros
+G.9. Math > round
+ 
+REAKTOR 5.5 - Core Reference - 196
+
+
+--- Page 197 ---
+
+An approximation of x^y. x must be >0. The output event is sent each time there is an 
+event at either of the inputs or at both of them simultaneously.
+16.14 G.14. Math > x^2 / x^3 / x^4
+ 
+Computes the 2nd/3rd/4th power of x.
+16.15 G.15. Math > Chain Add / Chain Mult
+ 
+Add/multiply the signals together in a top to bottom order. The output event is generated if 
+there is one or more events at any of the inputs.
+16.16 G.16. Math > Trig-Hyp > 2 pi wrap
+ 
+Wraps the incoming value into the range [-π..π] (the wrapping period is 2π).
+16.17 G.17. Math > Trig-Hyp > arcsin / arccos / arctan
+ 
+Arcsine/arccosine/arctangent approximation.
+Appendix G. Expert Macros
+G.14. Math > x^2 / x^3 / x^4
+ 
+REAKTOR 5.5 - Core Reference - 197
+
+
+--- Page 198 ---
+
+16.18 G.18. Math > Trig-Hyp > sin / cos / tan
+ 
+Sine/cosine/tangent approximation.
+16.19 G.19. Math > Trig-Hyp > sin –pi..pi / cos –pi..pi / tan –pi..pi
+ 
+Sine/cosine/tangent approximation (works only in the range [-π..π]).
+16.20 G.20. Math > Trig-Hyp > tan –pi4..pi4
+ 
+Tangent approximation (works only in the range [-π/4..π/4]).
+16.21 G.21. Math > Trig-Hyp > sinh / cosh / tanh
+ 
+Hyperbolic sine/cosine/tangent approximation.
+16.22 G.22. Memory > Latch / ILatch
+ 
+Latches (delays) the signal at the upper input until a clock event arrives at the lower input. 
+If both events arrive simultaneously, the incoming signal will be let through immediately.
+Appendix G. Expert Macros
+G.18. Math > Trig-Hyp > sin / cos / tan
+ 
+REAKTOR 5.5 - Core Reference - 198
+
+
+--- Page 199 ---
+
+16.23 G.23. Memory > z^-1 / z^-1 ndc
+ 
+Sends out the last value that has been received at the upper input before a clock event 
+arrives at the lower input in response to that clock event. If the clock input is disconnect­
+ed the module will use the standard audio clock (SR.C) instead and effectively work as a 
+one sample delay.
+Both modules can automatically resolve feedback loops, however only z^-1 version pro­
+vides denormal cancellation. The z^-1 ndc version is meant to be used only in the places 
+where denormals are not expected.
+16.24 G.24. Memory > Read []
+ 
+Reads a value from an array at a given index (specified by the middle input) in response to 
+an incoming clock event (at the upper input). The lower (OBC) input is the array connec­
+tion.
+Use the OBC output of the module to create OBC chains to serialize array access opera­
+tions!
+16.25 G.25. Memory > Write []
+ 
+Appendix G. Expert Macros
+G.23. Memory > z^-1 / z^-1 ndc
+ 
+REAKTOR 5.5 - Core Reference - 199
+
+
+--- Page 200 ---
+
+Writes a value (received by the upper input) into an array at a given index (specified by the 
+middle input). The writing operation is triggered by an incoming value. The lower (OBC) 
+input is the array connection.
+Use the OBC output of the module to create OBC chains to serialize array access opera­
+tions!
+16.26 G.26. Modulation > x + a / Integer > Ix + a
+ 
+Adds a parameter (lower input) to the signal (upper input) in response to an incoming sig­
+nal event. Parameter changes do not generate events.
+16.27 G.27. Modulation > x * a / Integer > Ix * a
+ 
+Multiplies the signal (upper input) by a parameter (lower input) in response to an incoming 
+signal event. Parameter changes do not generate events.
+16.28 G.28. Modulation > x – a / Integer > Ix – a
+ 
+Subtracts a parameter (lower input) from the signal (upper input) in response to an incom­
+ing signal event. Parameter changes do not generate events.
+Appendix G. Expert Macros
+G.26. Modulation > x + a / Integer > Ix + a
+ 
+REAKTOR 5.5 - Core Reference - 200
+
+
+--- Page 201 ---
+
+16.29 G.29. Modulation > a – x / Integer > Ia – x
+ 
+Subtracts the signal (lower input) from a parameter (upper input) in response to an incom­
+ing signal event. Parameter changes do not generate events.
+16.30 G.30. Modulation > x / a
+ 
+Divides the signal (upper input) by a parameter (lower input) in response to an incoming 
+signal event. Parameter changes do not generate events.
+16.31 G.31. Modulation > a / x
+ 
+Divides a parameter (upper input) by the signal (lower input) in response to an incoming 
+signal event. Parameter changes do not generate events.
+16.32 G.32. Modulation > xa + y
+ 
+Appendix G. Expert Macros
+G.29. Modulation > a – x / Integer > Ia – x
+ 
+REAKTOR 5.5 - Core Reference - 201
+
+
+--- Page 202 ---
+
+Multiplies the signal at the upper input by the gain parameter (middle input) and adds the 
+result to the signal at the lower input. Events at either or both signal inputs generate a 
+new output value, events at the parameter input do not.
+Appendix G. Expert Macros
+G.32. Modulation > xa + y
+ 
+REAKTOR 5.5 - Core Reference - 202
+

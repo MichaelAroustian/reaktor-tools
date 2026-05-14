@@ -1,0 +1,143 @@
+--- Page 7 ---
+
+1
+Welcome to Diving Deeper
+ 
+Welcome to Diving Deeper into REAKTOR. This document picks up where the Getting Started
+left off, covering some of the more advanced techniques and options available when using RE-
+AKTOR. As such, it assumes you are familiar with the main areas of the user interface, the
+general audio and midi settings, and how to load and play Ensembles, including Snapshot han-
+dling and basic MIDI control. If this sounds unfamiliar to you, we recommend that you read
+the Getting Started document first.
+This document is designed to show you how to get the most out of your REAKTOR instruments
+and effects. It covers subjects that you have already been introduced to, like Snapshots and
+MIDI connections, in more detail. It also introduces more complex concepts like controlling
+REAKTOR with OSC.
+The last section in this document introduces you to the Structure View as a precursor to the
+REAKTOR 6 Building in Primary document.
+Welcome to Diving Deeper
+ 
+REAKTOR 6 - Diving Deeper - 7
+
+
+--- Page 8 ---
+
+1.1
+The REAKTOR 6 Documentation
+ 
+The REAKTOR documentation is accessible from the Help menu
+The documentation for REAKTOR 6 is divided into five separate documents, guiding you from
+loading and playing pre-built Ensembles to building your own Instruments.
+•
+REAKTOR 6 What Is New is written for users who are already familiar with previous versions
+of REAKTOR and only describes the latest features in brief.
+•
+REAKTOR 6 Getting Started is for new users. It is the only document needed for users who
+intend to use REAKTOR for loading and playing pre-built REAKTOR instruments and ef-
+fects.
+•
+REAKTOR 6 Diving Deeper expands on the concepts introduced in the Getting Started docu-
+ment. It provides more detail on subjects like Snapshots (REAKTOR's preset system), and
+introduces advanced topics like OSC control and combining multiple Instruments in one
+Ensemble.
+Welcome to Diving Deeper
+The REAKTOR 6 Documentation
+ 
+REAKTOR 6 - Diving Deeper - 8
+
+
+--- Page 9 ---
+
+•
+REAKTOR 6 Building in Primary shows you how to build your own Instruments in REAK-
+TOR’s Primary level. It focuses on a series of tutorials that guide you through building
+your first synthesizers, effects, and sequencers.
+•
+REAKTOR 6 Building in Core describes the Core level of REAKTOR with its low-level build-
+ing features, which can be used for implementing custom DSP algorithms. It includes ref-
+erence information about the Core Macro Library, an comprehensive collection of DSP
+building blocks.
+With the exception of the What Is New document, each of the documents listed above builds
+on the knowledge of the previous documents. While it is not necessary to read all of every
+document, some of the more advanced documents, like Building in Primary, assume knowl-
+edge from the previous documents.
+REAKTOR Content Documentation
+REAKTOR comes with a comprehensive Factory Library, including many pre-built instruments
+and effects, as well as Blocks, a new modular synthesizer framework that brings the experience
+of patching an analog modular synthesizer to REAKTOR. The manuals for this content, as well
+as any REAKTOR-based KOMPLETE instruments or effects you have installed, can be ac-
+cessed from the Browser in REAKTOR’s Side Pane.
+To open the manuals for REAKTOR content:
+1.
+Click on the Browser icon in the Side Pane to open the Browser.
+Welcome to Diving Deeper
+The REAKTOR 6 Documentation
+ 
+REAKTOR 6 - Diving Deeper - 9
+
+
+--- Page 10 ---
+
+2.
+Select the Player tab.
+3.
+Double-click on the folder of the content you wish to view the manual for.
+Welcome to Diving Deeper
+The REAKTOR 6 Documentation
+ 
+REAKTOR 6 - Diving Deeper - 10
+
+
+--- Page 11 ---
+
+4.
+Select the Documentation subfolder. The manual shows up as a PDF file in the lower sec-
+tion of the Browser.
+5.
+Double-click on the PDF file.
+→
+The manual will open in your standard PDF reader.
+ 
+Welcome to Diving Deeper
+The REAKTOR 6 Documentation
+ 
+REAKTOR 6 - Diving Deeper - 11
+
+
+--- Page 12 ---
+
+1.2
+Manual Conventions
+ 
+This section introduces you to the signage and text highlighting used in this manual.
+•
+Text appearing in (drop-down) menus (such as Open…, Save as… etc.) and paths to loca-
+tions on your hard disk or other storage devices is printed in italics.
+•
+Text appearing elsewhere (labels of buttons, controls, text next to checkboxes etc.) is
+printed in blue. Whenever you see this formatting applied, you will find the same text ap-
+pearing somewhere on the screen.
+•
+Important names and concepts are printed in bold.
+•
+References to keys on your computer’s keyboard you’ll find put in square brackets (e.g.,
+“Press [Shift] + [Enter]”).
+►
+Single instructions are introduced by this play button type arrow.
+→
+Results of actions are introduced by this smaller arrow.
+An indented, gray paragraph contains additional, contextual information.
+Furthermore, this manual uses particular formatting to point out special facts and to warn you
+of potential issues. The icons introducing these notes let you see what kind of information is to
+be expected:
+The speech bubble icon indicates a useful tip that may often help you to solve a task
+more efficiently.
+The exclamation mark icon highlights important information that is essential for the giv-
+en context.
+The red cross icon warns you of serious issues and potential risks that require your full
+attention.
+Welcome to Diving Deeper
+Manual Conventions
+ 
+REAKTOR 6 - Diving Deeper - 12
+

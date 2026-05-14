@@ -26,6 +26,15 @@ EOF
 git commit -F /tmp/msg.txt
 ```
 
+**`gh pr create` bodies must also use `--body-file`** — same dquote trap applies. Never use `--body "..."` or inline heredocs with `gh`:
+```bash
+# Write body first (use create_file tool, not heredoc in shell)
+gh pr create --base main --head my-branch \
+  --title "PR title here" \
+  --body-file /tmp/pr_body.md
+```
+Use the `create_file` tool to write `/tmp/pr_body.md` — do **not** use `cat > /tmp/pr_body.md << 'EOF'` in the shell, as backtick-wrapped content in the body will corrupt the heredoc and leave the terminal stuck.
+
 The repo also has `core.pager=cat` set in `.git/config` as a safety net.
 
 ## Architecture

@@ -497,7 +497,7 @@ async def list_tools() -> list[Tool]:
         Tool(
             name="write_session_note",
             description=(
-                "Append a timestamped note to skills/session-notes.md. "
+                "Append a timestamped note to .ai/skills/session-notes.md. "
                 "Use this to record important findings, verified module settings, patch patterns, "
                 "or techniques discovered during a session so they persist for future sessions."
             ),
@@ -605,7 +605,7 @@ async def list_tools() -> list[Tool]:
                 "IMPORTANT: Keywords that take a structure path (Get Num Modules, Create Instrument, "
                 "Create Macro, Create Core Cell, Delete Module, Find Module By Label) require the path "
                 "as an array argument. Use [[]] for the root level, e.g. args=[[]] not args=[]. "
-                "See skills/reaktor-robot-skill.md for the complete keyword reference."
+                "See .ai/skills/reaktor-robot-skill.md for the complete keyword reference."
             ),
             inputSchema={
                 "type": "object",
@@ -1006,7 +1006,7 @@ async def call_tool(name: str, arguments: dict) -> list[TextContent]:
         if not content:
             return [TextContent(type="text", text="Error: content must not be empty.")]
 
-        notes_path = Path(__file__).parent / "skills" / "session-notes.md"
+        notes_path = Path(__file__).parent / ".ai" / "skills" / "session-notes.md"
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M")
 
         entry_parts = [f"\n---\n\n### {heading}\n\n_{timestamp}_\n\n{content}\n" if heading

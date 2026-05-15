@@ -6,9 +6,19 @@ Single-file Python MCP server (`reaktor_mcp.py`) that gives AI assistants access
 
 ## Git & PR Workflow
 
-- **Never push directly to `main`, `master`, or `develop`** — all changes must go via a PR.
+> **Always create a branch before doing any work. Never write or commit directly to `main`, `master`, or `develop`.**
+
+Standard flow for every change, no matter how small:
+1. `git checkout -b <name>` — do this **first**, before any edits
+2. Commit changes on that branch
+3. Show the user the commit message for confirmation before committing
+4. Push the branch (`git push -u origin <name>`)
+5. Show the user the PR title and body for confirmation before creating
+6. Create the PR (`gh pr create --body-file ...`)
+7. User reviews and merges
+
+Additional rules:
 - **Never force push to any branch** unless the user explicitly approves it for that specific case.
-- **Commit and PR messages must be confirmed by the user** before pushing or merging.
 - Always use `--body-file` for `gh pr create` (never inline `--body`); write the body to a temp file first.
 - Branch heads are auto-deleted after merge.
 - All PR review conversations must be resolved before merging.
